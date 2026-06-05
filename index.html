@@ -1142,3 +1142,13 @@ function updateWithdrawCountdown(){
   var el=document.getElementById('withdrawCountdown');if(!el)return;
   var now=new Date();var malawiOffset=2*60;var utc=now.getTime()+(now.getTimezoneOffset()*60000);var malawiTime=new Date(utc+(malawiOffset*60000));var day=malawiTime.getDay();var hour=malawiTime.getHours();
   if(day===5&&hour>=18&&hour<21){var end=new Date(malawiTime);end.setHours(21,0,0,0);var diff=end-m
+function updateWithdrawCountdown(){
+  var el=document.getElementById('withdrawCountdown');if(!el)return;
+  var now=new Date();var malawiOffset=2*60;var utc=now.getTime()+(now.getTimezoneOffset()*60000);var malawiTime=new Date(utc+(malawiOffset*60000));var day=malawiTime.getDay();var hour=malawiTime.getHours();
+  if(day===5&&hour>=18&&hour<21){var end=new Date(malawiTime);end.setHours(21,0,0,0);var diff=end-malawiTime;var h=Math.floor(diff/3600000);var m=Math.floor((diff%3600000)/60000);var s=Math.floor((diff%60000)/1000);el.innerHTML='<span style="color:#51cf66">🟢 OPEN! Closes in '+h+'h '+m+'m '+s+'s</span>';return}
+  var next=new Date(malawiTime);var daysUntilFri=(5-day+7)%7;if(daysUntilFri===0)daysUntilFri=7;if(day===5&&hour<18)daysUntilFri=0;next.setDate(malawiTime.getDate()+daysUntilFri);next.setHours(18,0,0,0);var diff=next-malawiTime;var days=Math.floor(diff/86400000);var h=Math.floor((diff%86400000)/3600000);var m=Math.floor((diff%3600000)/60000);var s=Math.floor((diff%60000)/1000);var text='';if(days>0)text+=days+'d ';text+=h+'h '+m+'m '+s+'s';el.innerHTML='⏰ Next: Friday 6PM<br><span style="color:#ffd700">'+text+'</span>';
+}
+setInterval(updateWithdrawCountdown,1000);setTimeout(updateWithdrawCountdown,500);
+</script>
+</body>
+</html>
