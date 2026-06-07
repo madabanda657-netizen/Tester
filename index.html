@@ -561,7 +561,6 @@ window.sendInboxMsg=function(){if(!db||!myUid)return;var i=document.getElementBy
 function setupInboxNotif(){if(!db||!myUid)return;db.ref('admin_inbox/'+myUid+'/messages').orderByChild('timestamp').limitToLast(1).on('value',function(s){s.forEach(c=>{if(c.val().from==='admin'){var ip=document.getElementById('inboxPage');if(ip&&!ip.classList.contains('active')){var d=document.getElementById('inboxNotifDot');if(d)d.style.display='inline-block'}}})})}
 document.addEventListener('DOMContentLoaded',function(){setTimeout(function(){var sp=document.getElementById('splashScreen');if(sp){sp.classList.add('splash-hide');setTimeout(function(){sp.style.display='none'},700)}},2500);var lsb=document.getElementById("loginSubmitBtn");if(lsb)lsb.addEventListener('click',function(e){e.preventDefault();login()});var lui=document.getElementById("loginUsernameInput");if(lui)lui.addEventListener('keypress',function(e){if(e.key==='Enter'){e.preventDefault();login()}});var lb=document.getElementById("loginBtn");if(lb)lb.addEventListener('click',function(e){e.preventDefault();register()});var ui=document.getElementById("usernameInput");if(ui){ui.addEventListener('keypress',function(e){if(e.key==='Enter'){e.preventDefault();register()}});setTimeout(function(){ui.focus();generateCaptcha()},300)}var pi=document.getElementById("phoneInput");if(pi)pi.addEventListener('input',function(e){this.value=this.value.replace(/[^0-9]/g,'')});var el;el=document.getElementById("navProfile");if(el)el.onclick=function(){showPage('profile')};el=document.getElementById("navWallet");if(el)el.onclick=function(){showPage('wallet')};el=document.getElementById("navPlay");if(el)el.onclick=function(){showPage('play')};el=document.getElementById("navInbox");if(el)el.onclick=function(){showPage('inbox')};try{var u=localStorage.getItem("user");if(u){myUid=u;document.getElementById("loginPage").classList.remove("active");document.getElementById("mainNav").style.display="flex";document.getElementById('waFloatBtn').style.display='flex';showPage('profile');if(db)lockPaymentMethod(localStorage.getItem("userPhone")||'',localStorage.getItem("network")||'');initGameListeners();setupInboxNotif()}}catch(e){}});
 </script>
-
 <!-- ===== CHAT & VOICE SYSTEM (Fixed message visibility) ===== -->
 <script>
 (function(){
@@ -569,4 +568,192 @@ document.addEventListener('DOMContentLoaded',function(){setTimeout(function(){va
   var mediaRecorder = null; var audioChunks = []; var isRecording = false; var recordingTimer = null; var recordingSeconds = 0;
 
   function getOtherUserId(chatId) { var parts = chatId.split('_'); return parts[0] === myUid ? parts[1] : parts[0]; }
-  function setOnlineStatus(online) { if (!db || !myUid) return; var ref
+  function setOnlineStatus(online) { if (!db || !myUid) return; var ref = db.ref('online_status/' + myUid); if (online) { ref.set({online: true, lastSeen: Date.now()}); ref.onDisconnect().set({online: false, lastSeen: Date.now()}); } else { ref.set({online: false, lastSeen: Date.now()}); } }
+  function getChatId(uid1, uid2) { return uid1 < uid2 ? uid1 + '_' + uid2 : uid2 + '_' + uid1; }
+  function escapeHtml(text) { var d = document.createElement('div'); d.textContent = text; return d.innerHTML; }
+
+  function showChatPage() {
+    var pages = document.querySelectorAll('.page');
+    for (var i = 0; i < pages.length; i++) { pages[i].classList.remove('active'); pages[i].style.display = ''; }
+    document.getElementById('chatPage').classList.add('active');
+    var btns = document.querySelectorAll('.nav-btn');
+    for (var j = 0; j < btns.length; j++) btns[j].classList.remove('active');
+    if(btns[2]) btns[2].classList.add('active');
+    document.getElementById('mainNav').style.display = 'flex';
+    document.getElementById('waFloatBtn').style.display = 'flex';
+    loadChatUsers();
+  }
+
+  function loadChatUsers() { if (!db || !myUid) return; db.ref('leaderboard_all').once('value', function(snap) { chatUsersCache = []; snap.forEach(function(child) { if (child.key !== myUid) chatUsersCache.push({ uid: child.key, displayName: (child.val()||{}).displayName || child.key }); }); renderChatUsers(chatUsersCache); listenAllOnlineStatus(); loadAllLastMessages(); loadAllUnreadCounts(); }); }
+  function listenAllOnlineStatus() { chatOnlineListeners.forEach(r => r.off()); chatOnlineListeners = []; chatUsersCache.forEach(function(u) { var ref = db.ref('online_status/' + u.uid); ref.on('value', function(sSnap) { var dotEl = document.getElementById('cdot_' + u.uid); var sd = sSnap.val(); if (dotEl) { if (sd && sd.online) dotEl.classList.add('on'); else dotEl.classList.remove('on'); } }); chatOnlineListeners.push(ref); }); }
+  function loadAllLastMessages() { chatUsersCache.forEach(function(u) { var chatId = getChatId(myUid, u.uid); db.ref('chats/' + chatId + '/messages').orderByChild('timestamp').limitToLast(1).once('value', function(snap) { snap.forEach(function(child) { var msg = child.val(); var el = document.getElementById('lastmsg_' + u.uid); if (el) el.innerText = (msg.from === myUid ? 'You: ' : '') + (msg.image ? '📷' : (msg.audio ? '🎤' : (msg.text || ''))); }); }); }); }
+  function loadAllUnreadCounts() { chatUsersCache.forEach(function(u) { var chatId = getChatId(myUid, u.uid); db.ref('chats/' + chatId + '/messages').orderByChild('read').equalTo(false).once('value', function(snap) { var count = 0; snap.forEach(c => { if(c.val().from !== myUid) count++; }); var badge = document.getElementById('unread_' + u.uid); if (badge) { if (count > 0) { badge.style.display = 'flex'; badge.innerText = count; } else badge.style.display = 'none'; } }); }); }
+  function renderChatUsers(users) { var el = document.getElementById('chatUserList'); if (!el) return; if (!users.length) { el.innerHTML = '<div style="padding:30px;color:#555">No users yet</div>'; return; } var html = ''; users.forEach(function(u) { html += '<div class="chat-user-row" onclick="window._openChatWith(\''+u.uid+'\',\''+u.displayName+'\')" style="display:flex;align-items:center;gap:12px;padding:12px 8px;border-bottom:1px solid #1a1a1a"><div class="chat-avatar">'+escapeHtml(u.displayName[0])+'<span id="cdot_'+u.uid+'" class="chat-online-dot"></span></div><div style="flex:1;text-align:left;min-width:0"><div style="font-weight:bold;color:#fff;font-size:14px">'+escapeHtml(u.displayName)+'</div><div id="lastmsg_'+u.uid+'" style="font-size:12px;color:#888;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">Tap to chat</div></div><div id="unread_'+u.uid+'" class="chat-unread-badge">0</div></div>'; }); el.innerHTML = html; }
+  window.filterChatUsers = function() { var q = (document.getElementById('chatSearchInput').value || '').toLowerCase(); renderChatUsers(chatUsersCache.filter(u => u.displayName.toLowerCase().indexOf(q) >= 0)); listenAllOnlineStatus(); };
+
+  window._openChatWith = function(uid, displayName) {
+    chatCurrentWith = uid;
+    document.getElementById('chatConvName').innerText = displayName;
+    document.getElementById('chatConvAvatar').innerText = displayName[0];
+    cancelReply();
+    var pages = document.querySelectorAll('.page');
+    for (var i = 0; i < pages.length; i++) { pages[i].classList.remove('active'); pages[i].style.display = ''; }
+    document.getElementById('chatConvPage').classList.add('active');
+    document.getElementById('mainNav').style.display = 'none';
+    document.getElementById('waFloatBtn').style.display = 'none';
+    listenForChatMessages(uid);
+  };
+
+  window.backToChatList = function() { if (chatListenerRef && db) db.ref('chats/' + chatListenerRef + '/messages').off(); chatCurrentWith = null; showChatPage(); };
+  function listenForChatMessages(uid) { var chatId = getChatId(myUid, uid); if (chatListenerRef && db) db.ref('chats/' + chatListenerRef + '/messages').off(); chatListenerRef = chatId; db.ref('chats/' + chatId + '/messages').orderByChild('timestamp').on('value', function(snap) { chatMessagesData = []; snap.forEach(c => { var m = c.val(); m._id = c.key; chatMessagesData.push(m); }); renderChatMessages(chatMessagesData); markChatAsRead(chatId, chatMessagesData); }); }
+
+  /* ===== FIX: Render messages with PROPER alignment and VISIBLE colors ===== */
+  function renderChatMessages(messages) {
+    var container = document.getElementById('chatMessages');
+    var html = '';
+    var prevDate = '';
+    for (var idx = 0; idx < messages.length; idx++) {
+      var msg = messages[idx];
+      var isMine = msg.from === myUid;
+      var dateStr = new Date(msg.timestamp).toLocaleDateString();
+      if (dateStr !== prevDate) { html += '<div class="chat-date-sep"><span>'+dateStr+'</span></div>'; prevDate = dateStr; }
+      var tickHtml = isMine ? (msg.read ? ' <span class="chat-tick-read">✓✓</span>' : ' <span class="chat-tick-unread">✓✓</span>') : '';
+      var replyHtml = msg.replyTo ? '<div style="background:rgba(0,255,204,0.1);padding:4px 8px;border-radius:5px;border-left:3px solid #00ffcc;margin-bottom:6px;font-size:11px;color:#00ffcc">'+escapeHtml(msg.replyTo.text||'📷')+'</div>' : '';
+
+      /* FIX: Images now render for BOTH sent and received */
+      var imageHtml = '';
+      if (msg.image) {
+        imageHtml = '<img src="'+msg.image+'" class="chat-msg-img" onclick="openImageViewer(this.src)">';
+      }
+
+      var audioHtml = msg.audio ? '<audio controls class="chat-voice-player" src="'+msg.audio+'"></audio>' : '';
+
+      /* FIX: Full width container with clear left/right alignment */
+      html += '<div class="chat-msg-container" style="justify-content:'+(isMine?'flex-end':'flex-start')+'">';
+
+      if(!isMine) html += '<button class="chat-reply-btn" onclick="window._setReplyByIndex('+idx+')">↩</button>';
+
+      html += '<div class="chat-msg-bubble '+(isMine?'chat-msg-mine':'chat-msg-other')+'">';
+      html += replyHtml;
+      html += imageHtml;
+      html += audioHtml;
+      if(msg.text) html += '<div style="color:#fff;font-size:14px;white-space:pre-wrap">'+escapeHtml(msg.text)+'</div>';
+      html += '<div style="font-size:10px;color:#aaa;margin-top:4px;text-align:right">'+new Date(msg.timestamp).toLocaleTimeString([],{hour:'2-digit',minute:'2-digit'})+tickHtml+'</div>';
+      html += '</div>';
+
+      if(isMine) html += '<button class="chat-reply-btn" onclick="window._setReplyByIndex('+idx+')">↩</button><button class="chat-delete-btn" onclick="window._deleteMsg(\''+msg._id+'\')" title="Delete">🗑️</button>';
+
+      html += '</div>';
+    }
+    container.innerHTML = html;
+    container.scrollTop = container.scrollHeight;
+  }
+
+  function markChatAsRead(chatId, msgs) { if (!db) return; msgs.forEach(m => { if (m.from !== myUid && !m.read) db.ref('chats/' + chatId + '/messages/' + m._id).update({read: true}); }); }
+
+  window.sendChatMsg = function() {
+    if (!db || !chatCurrentWith || !myUid) { alert('Chat not ready. Please try again.'); return; }
+    var input = document.getElementById('chatMsgInput');
+    var text = (input.value || '').trim();
+    if (!text) return;
+    var msgData = { from: myUid, text: text, timestamp: Date.now(), read: false };
+    if (replyToMsg) { msgData.replyTo = {id: replyToMsg.id, text: replyToMsg.text}; cancelReply(); }
+    db.ref('chats/' + getChatId(myUid, chatCurrentWith) + '/messages').push(msgData, function(err) {
+      if(err) { alert('Message failed: ' + err.message); } else { input.value = ''; }
+    });
+  };
+
+  window._setReplyByIndex = function(idx) { var msg = chatMessagesData[idx]; if (!msg) return; replyToMsg = {id: msg._id, text: msg.text || (msg.image?'📷':(msg.audio?'🎤':''))}; document.getElementById('replyPreview').style.display = 'block'; document.getElementById('replyPreviewText').innerText = replyToMsg.text; document.getElementById('chatMsgInput').focus(); };
+  function cancelReply() { replyToMsg = null; document.getElementById('replyPreview').style.display = 'none'; } window.cancelReply = cancelReply;
+
+  /* ===== FIX: Chat image upload — sends image for YOUR messages too ===== */
+  window.handleChatFileUpload = function(e) {
+    var file = e.target.files && e.target.files[0];
+    if (!file || !db || !chatCurrentWith) return;
+    var reader = new FileReader();
+    reader.onload = function(ev) {
+      var img = new Image();
+      img.onload = function() {
+        var c = document.createElement('canvas');
+        var w=600, h=600, iw=img.width, ih=img.height;
+        if(iw>w){ih*=w/iw; iw=w;}
+        if(ih>h){iw*=h/ih; ih=h;}
+        c.width=Math.round(iw);
+        c.height=Math.round(ih);
+        c.getContext('2d').drawImage(img,0,0,c.width,c.height);
+        var imageData = c.toDataURL('image/jpeg', 0.5);
+        var chatId = getChatId(myUid, chatCurrentWith);
+        db.ref('chats/' + chatId + '/messages').push({
+          from: myUid,
+          text: '',
+          image: imageData,
+          timestamp: Date.now(),
+          read: false
+        }, function(err) {
+          if(err) { alert('Image send failed: ' + err.message); }
+        });
+      };
+      img.src = ev.target.result;
+    };
+    reader.readAsDataURL(file);
+    e.target.value = '';
+  };
+
+  window._deleteMsg = function(msgId) { if(!chatListenerRef || !db) return; if(confirm('Delete?')) db.ref('chats/' + chatListenerRef + '/messages/' + msgId).remove(); };
+  window.clearChat = function() { if(!chatCurrentWith || !db) return; if(confirm('Delete ALL messages?')) db.ref('chats/' + getChatId(myUid, chatCurrentWith) + '/messages').remove(); };
+
+  window.toggleVoiceNote = function() { if (isRecording) stopVoiceRecording(); else startVoiceRecording(); };
+  function startVoiceRecording() {
+    var getMedia = function() {
+      navigator.mediaDevices.getUserMedia({audio: true}).then(function(stream) {
+        audioChunks = [];
+        mediaRecorder = new MediaRecorder(stream);
+        mediaRecorder.ondataavailable = function(e) { audioChunks.push(e.data); };
+        mediaRecorder.onstop = function() {
+          stream.getTracks().forEach(t => t.stop());
+          var blob = new Blob(audioChunks, {type: 'audio/webm'});
+          var reader = new FileReader();
+          reader.onload = function() {
+            db.ref('chats/' + getChatId(myUid, chatCurrentWith) + '/messages').push({
+              from: myUid,
+              text: '',
+              audio: reader.result,
+              timestamp: Date.now(),
+              read: false
+            });
+          };
+          reader.readAsDataURL(blob);
+        };
+        mediaRecorder.start();
+        isRecording = true;
+        document.getElementById('voiceNoteBtn').style.background = '#ff6b6b';
+        document.getElementById('voiceNoteBtn').innerText = '⏹';
+        document.getElementById('recordingStatus').style.display = 'block';
+        recordingTimer = setInterval(function() {
+          recordingSeconds++;
+          if(recordingSeconds >= 60) stopVoiceRecording();
+        }, 1000);
+      }).catch(function() { alert('Mic denied.'); });
+    };
+    if (window.median) { median.microphone.requestPermission().then(() => getMedia()).catch(() => alert('Mic denied')); }
+    else { getMedia(); }
+  }
+  function stopVoiceRecording() {
+    if (mediaRecorder && mediaRecorder.state !== 'inactive') mediaRecorder.stop();
+    isRecording = false;
+    clearInterval(recordingTimer);
+    recordingSeconds = 0;
+    document.getElementById('voiceNoteBtn').style.background = '#1a1a1a';
+    document.getElementById('voiceNoteBtn').innerText = '🎤';
+    document.getElementById('recordingStatus').style.display = 'none';
+  }
+
+  if(document.getElementById('navChat')) document.getElementById('navChat').addEventListener('click', function(e) { e.preventDefault(); showChatPage(); });
+  function initChatOnline() { if (myUid && db) { setOnlineStatus(true); setInterval(function() { if (myUid && db) setOnlineStatus(true); }, 30000); } }
+  window.addEventListener('beforeunload', function() { setOnlineStatus(false); });
+  setTimeout(function() { if (myUid && db) initChatOnline(); }, 500);
+  var _lastUid = null; setInterval(function() { if (myUid !== _lastUid) { _lastUid = myUid; if (myUid && db) initChatOnline(); } }, 500);
+})();
+</script>
+</body>
+</html>
