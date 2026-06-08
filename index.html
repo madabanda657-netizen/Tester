@@ -561,7 +561,8 @@ window.sendInboxMsg=function(){if(!db||!myUid)return;var i=document.getElementBy
 function setupInboxNotif(){if(!db||!myUid)return;db.ref('admin_inbox/'+myUid+'/messages').orderByChild('timestamp').limitToLast(1).on('value',function(s){s.forEach(c=>{if(c.val().from==='admin'){var ip=document.getElementById('inboxPage');if(ip&&!ip.classList.contains('active')){var d=document.getElementById('inboxNotifDot');if(d)d.style.display='inline-block'}}})})}
 document.addEventListener('DOMContentLoaded',function(){setTimeout(function(){var sp=document.getElementById('splashScreen');if(sp){sp.classList.add('splash-hide');setTimeout(function(){sp.style.display='none'},700)}},2500);var lsb=document.getElementById("loginSubmitBtn");if(lsb)lsb.addEventListener('click',function(e){e.preventDefault();login()});var lui=document.getElementById("loginUsernameInput");if(lui)lui.addEventListener('keypress',function(e){if(e.key==='Enter'){e.preventDefault();login()}});var lb=document.getElementById("loginBtn");if(lb)lb.addEventListener('click',function(e){e.preventDefault();register()});var ui=document.getElementById("usernameInput");if(ui){ui.addEventListener('keypress',function(e){if(e.key==='Enter'){e.preventDefault();register()}});setTimeout(function(){ui.focus();generateCaptcha()},300)}var pi=document.getElementById("phoneInput");if(pi)pi.addEventListener('input',function(e){this.value=this.value.replace(/[^0-9]/g,'')});var el;el=document.getElementById("navProfile");if(el)el.onclick=function(){showPage('profile')};el=document.getElementById("navWallet");if(el)el.onclick=function(){showPage('wallet')};el=document.getElementById("navPlay");if(el)el.onclick=function(){showPage('play')};el=document.getElementById("navInbox");if(el)el.onclick=function(){showPage('inbox')};try{var u=localStorage.getItem("user");if(u){myUid=u;document.getElementById("loginPage").classList.remove("active");document.getElementById("mainNav").style.display="flex";document.getElementById('waFloatBtn').style.display='flex';showPage('profile');if(db)lockPaymentMethod(localStorage.getItem("userPhone")||'',localStorage.getItem("network")||'');initGameListeners();setupInboxNotif()}}catch(e){}});
 </script>
-<!-- ===== CHAT & VOICE SYSTEM (Fixed message visibility) ===== -->
+
+<!-- ===== CHAT & VOICE SYSTEM (Fully fixed - messages VISIBLE) ===== -->
 <script>
 (function(){
   var chatCurrentWith = null; var chatListenerRef = null; var replyToMsg = null; var chatUsersCache = []; var chatMessagesData = []; var chatOnlineListeners = [];
@@ -607,45 +608,97 @@ document.addEventListener('DOMContentLoaded',function(){setTimeout(function(){va
   window.backToChatList = function() { if (chatListenerRef && db) db.ref('chats/' + chatListenerRef + '/messages').off(); chatCurrentWith = null; showChatPage(); };
   function listenForChatMessages(uid) { var chatId = getChatId(myUid, uid); if (chatListenerRef && db) db.ref('chats/' + chatListenerRef + '/messages').off(); chatListenerRef = chatId; db.ref('chats/' + chatId + '/messages').orderByChild('timestamp').on('value', function(snap) { chatMessagesData = []; snap.forEach(c => { var m = c.val(); m._id = c.key; chatMessagesData.push(m); }); renderChatMessages(chatMessagesData); markChatAsRead(chatId, chatMessagesData); }); }
 
-  /* ===== FIX: Render messages with PROPER alignment and VISIBLE colors ===== */
+  /* ===================================================================
+     FIX: ALL styles are INLINE so CSS can NEVER hide messages.
+     Your messages = BRIGHT TEAL on right
+     Other messages = DARK INDIGO on left
+     Both ALWAYS visible no matter what
+     =================================================================== */
   function renderChatMessages(messages) {
     var container = document.getElementById('chatMessages');
+    if (!container) return;
     var html = '';
     var prevDate = '';
+
     for (var idx = 0; idx < messages.length; idx++) {
       var msg = messages[idx];
       var isMine = msg.from === myUid;
       var dateStr = new Date(msg.timestamp).toLocaleDateString();
-      if (dateStr !== prevDate) { html += '<div class="chat-date-sep"><span>'+dateStr+'</span></div>'; prevDate = dateStr; }
-      var tickHtml = isMine ? (msg.read ? ' <span class="chat-tick-read">✓✓</span>' : ' <span class="chat-tick-unread">✓✓</span>') : '';
-      var replyHtml = msg.replyTo ? '<div style="background:rgba(0,255,204,0.1);padding:4px 8px;border-radius:5px;border-left:3px solid #00ffcc;margin-bottom:6px;font-size:11px;color:#00ffcc">'+escapeHtml(msg.replyTo.text||'📷')+'</div>' : '';
 
-      /* FIX: Images now render for BOTH sent and received */
-      var imageHtml = '';
-      if (msg.image) {
-        imageHtml = '<img src="'+msg.image+'" class="chat-msg-img" onclick="openImageViewer(this.src)">';
+      /* Date separator */
+      if (dateStr !== prevDate) {
+        html += '<div style="text-align:center;margin:14px 0;font-size:11px;color:#555"><span style="background:#1a1a1a;padding:3px 14px;border-radius:10px;display:inline-block">'+dateStr+'</span></div>';
+        prevDate = dateStr;
       }
 
-      var audioHtml = msg.audio ? '<audio controls class="chat-voice-player" src="'+msg.audio+'"></audio>' : '';
+      /* Read ticks */
+      var tickHtml = isMine ? (msg.read ? ' <span style="color:#00ffcc;font-size:11px">✓✓</span>' : ' <span style="color:#666;font-size:11px">✓✓</span>') : '';
 
-      /* FIX: Full width container with clear left/right alignment */
-      html += '<div class="chat-msg-container" style="justify-content:'+(isMine?'flex-end':'flex-start')+'">';
+      /* Reply quote */
+      var replyHtml = '';
+      if (msg.replyTo) {
+        replyHtml = '<div style="background:rgba(0,255,204,0.1);padding:4px 8px;border-radius:5px;border-left:3px solid #00ffcc;margin-bottom:6px;font-size:11px;color:#00ffcc">'+escapeHtml(msg.replyTo.text||'📷')+'</div>';
+      }
 
-      if(!isMine) html += '<button class="chat-reply-btn" onclick="window._setReplyByIndex('+idx+')">↩</button>';
+      /* Image - ALWAYS render for both sent and received */
+      var imageHtml = '';
+      if (msg.image) {
+        imageHtml = '<img src="'+msg.image+'" style="max-width:220px;max-height:220px;border-radius:10px;margin-bottom:6px;display:block;cursor:pointer;border:2px solid rgba(0,255,204,0.3);box-shadow:0 2px 8px rgba(0,0,0,0.4)" onclick="openImageViewer(this.src)">';
+      }
 
-      html += '<div class="chat-msg-bubble '+(isMine?'chat-msg-mine':'chat-msg-other')+'">';
+      /* Audio */
+      var audioHtml = '';
+      if (msg.audio) {
+        audioHtml = '<audio controls style="width:180px;height:35px;margin-top:5px" src="'+msg.audio+'"></audio>';
+      }
+
+      /* ===== THE FIX: Inline styles that CANNOT be overridden ===== */
+
+      /* ROW: full width flex container, push left or right */
+      var rowStyle = 'display:flex;margin:6px 0;align-items:flex-end;gap:4px;width:100%;padding:0 4px;'
+        + (isMine ? 'justify-content:flex-end;' : 'justify-content:flex-start;');
+
+      /* BUBBLE: high contrast colors with border so it's ALWAYS visible */
+      var bubbleStyle = 'padding:10px 14px;max-width:75%;min-width:60px;word-wrap:break-word;border-radius:14px;'
+        + (isMine
+          ? 'background:linear-gradient(135deg,#005c4b,#006b5a);border:1.5px solid #00ffcc55;border-bottom-right-radius:4px;box-shadow:0 1px 8px rgba(0,255,204,0.15);'
+          : 'background:linear-gradient(135deg,#1a2744,#1e1b4b);border:1.5px solid #6366f155;border-bottom-left-radius:4px;box-shadow:0 1px 8px rgba(99,102,241,0.1);');
+
+      /* Sender label - small colored name so you ALWAYS know who sent it */
+      var senderLabel = isMine
+        ? '<div style="font-size:10px;color:#00ffcc;margin-bottom:3px;font-weight:bold">You</div>'
+        : '<div style="font-size:10px;color:#818cf8;margin-bottom:3px;font-weight:bold">'+escapeHtml(msg.from||'??')+'</div>';
+
+      html += '<div style="'+rowStyle+'">';
+
+      /* Reply button on left for other's messages */
+      if (!isMine) {
+        html += '<button style="font-size:12px;padding:4px 6px;background:transparent;border:none;cursor:pointer;border-radius:50%;opacity:0.35;color:#555;flex-shrink:0" onclick="window._setReplyByIndex('+idx+')">↩</button>';
+      }
+
+      /* The bubble */
+      html += '<div style="'+bubbleStyle+'">';
+      html += senderLabel;
       html += replyHtml;
       html += imageHtml;
       html += audioHtml;
-      if(msg.text) html += '<div style="color:#fff;font-size:14px;white-space:pre-wrap">'+escapeHtml(msg.text)+'</div>';
-      html += '<div style="font-size:10px;color:#aaa;margin-top:4px;text-align:right">'+new Date(msg.timestamp).toLocaleTimeString([],{hour:'2-digit',minute:'2-digit'})+tickHtml+'</div>';
+      if (msg.text) {
+        html += '<div style="color:#ffffff;font-size:14px;white-space:pre-wrap;line-height:1.4">'+escapeHtml(msg.text)+'</div>';
+      }
+      html += '<div style="font-size:10px;color:rgba(255,255,255,0.5);margin-top:4px;text-align:right">'+new Date(msg.timestamp).toLocaleTimeString([],{hour:'2-digit',minute:'2-digit'})+tickHtml+'</div>';
       html += '</div>';
 
-      if(isMine) html += '<button class="chat-reply-btn" onclick="window._setReplyByIndex('+idx+')">↩</button><button class="chat-delete-btn" onclick="window._deleteMsg(\''+msg._id+'\')" title="Delete">🗑️</button>';
+      /* Reply + Delete buttons on right for own messages */
+      if (isMine) {
+        html += '<button style="font-size:12px;padding:4px 6px;background:transparent;border:none;cursor:pointer;border-radius:50%;opacity:0.35;color:#555;flex-shrink:0" onclick="window._setReplyByIndex('+idx+')">↩</button>';
+        html += '<button style="font-size:12px;padding:4px 6px;background:transparent;border:none;cursor:pointer;border-radius:50%;opacity:0.35;color:#ff6b6b;flex-shrink:0" onclick="window._deleteMsg(\''+msg._id+'\')" title="Delete">🗑️</button>';
+      }
 
       html += '</div>';
     }
+
     container.innerHTML = html;
+    /* Auto-scroll to bottom */
     container.scrollTop = container.scrollHeight;
   }
 
@@ -658,18 +711,20 @@ document.addEventListener('DOMContentLoaded',function(){setTimeout(function(){va
     if (!text) return;
     var msgData = { from: myUid, text: text, timestamp: Date.now(), read: false };
     if (replyToMsg) { msgData.replyTo = {id: replyToMsg.id, text: replyToMsg.text}; cancelReply(); }
-    db.ref('chats/' + getChatId(myUid, chatCurrentWith) + '/messages').push(msgData, function(err) {
-      if(err) { alert('Message failed: ' + err.message); } else { input.value = ''; }
+    var chatId = getChatId(myUid, chatCurrentWith);
+    db.ref('chats/' + chatId + '/messages').push(msgData, function(err) {
+      if(err) { alert('Message failed: ' + err.message); }
+      else { input.value = ''; }
     });
   };
 
   window._setReplyByIndex = function(idx) { var msg = chatMessagesData[idx]; if (!msg) return; replyToMsg = {id: msg._id, text: msg.text || (msg.image?'📷':(msg.audio?'🎤':''))}; document.getElementById('replyPreview').style.display = 'block'; document.getElementById('replyPreviewText').innerText = replyToMsg.text; document.getElementById('chatMsgInput').focus(); };
   function cancelReply() { replyToMsg = null; document.getElementById('replyPreview').style.display = 'none'; } window.cancelReply = cancelReply;
 
-  /* ===== FIX: Chat image upload — sends image for YOUR messages too ===== */
+  /* FIX: Image upload sends with callback and error handling */
   window.handleChatFileUpload = function(e) {
     var file = e.target.files && e.target.files[0];
-    if (!file || !db || !chatCurrentWith) return;
+    if (!file || !db || !chatCurrentWith || !myUid) return;
     var reader = new FileReader();
     reader.onload = function(ev) {
       var img = new Image();
