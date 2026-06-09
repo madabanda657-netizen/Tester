@@ -17,54 +17,23 @@
 *{box-sizing:border-box;margin:0;padding:0}body{font-family:Arial,sans-serif;background:#000;color:#fff;text-align:center;overflow-x:hidden}.container{padding:20px;max-width:600px;margin:0 auto;padding-bottom:80px}.card{background:#111;padding:20px;margin:15px 0;border-radius:15px;box-shadow:0 0 20px #00ffcc55;border:1px solid #00ffcc33}input,select,button{padding:12px;margin:8px 0;border-radius:10px;border:none;width:100%;font-size:16px}button{background:linear-gradient(45deg,#00ffcc,#00ccff);font-weight:bold;color:#000;cursor:pointer}h1{color:#00ffcc;margin-bottom:10px;font-size:28px}h3{color:#00ccff;margin-bottom:10px}.success{color:#51cf66}.error{color:#ff6b6b}.nav{position:fixed;bottom:0;left:0;right:0;background:#111;display:none;justify-content:space-around;padding:10px 0 12px;box-shadow:0 -2px 10px #00ffcc44;z-index:100}.nav-btn{background:transparent;border:1px solid transparent;color:#888;padding:6px 2px;margin:0;width:auto;font-size:10px;display:flex;flex-direction:column;align-items:center;gap:3px}.nav-btn .nav-icon{font-size:18px}.nav-btn.active{color:#00ffcc;border-color:transparent;text-shadow:0 0 10px #00ffcc}.page{display:none}.page.active{display:block}.flex-row{display:flex;justify-content:space-between;align-items:center;margin-bottom:8px;font-size:14px;color:#ccc}
 @keyframes coinDrop { 0% { transform: scale(1); } 50% { transform: scale(1.2); color: #ffd700; } 100% { transform: scale(1); } }
 .coin-update { animation: coinDrop 0.5s ease; }
-.phone-input-group{display:flex;gap:0;margin:8px 0}.phone-prefix{background:#1a1a1a;color:#00ffcc;padding:12px;border-radius:10px 0 0 10px;font-size:16px;font-weight:bold;white-space:nowrap;display:flex;align-items:center;border:1px solid #00ffcc33;border-right:none;min-width:60px;justify-content:center}.phone-input-group input{border-radius:0 10px 10px 0!important;margin:0!important}
+.phone-input-group{display:flex;gap:0;margin:8px 0}.phone-prefix{background:linear-gradient(135deg,#ff0000,#cc0000);color:#fff;padding:12px;border-radius:10px 0 0 10px;font-size:16px;font-weight:bold;white-space:nowrap;display:flex;align-items:center;border:1px solid #ff000055;border-right:none;min-width:60px;justify-content:center}.phone-input-group input{border-radius:0 10px 10px 0!important;margin:0!important}
 .payment-locked-box{background:linear-gradient(135deg,#0a1a1a,#0a1a2e);padding:18px;border-radius:12px;border:2px solid #00ffcc44;margin:10px 0}.payment-locked-row{display:flex;justify-content:space-between;align-items:center}.payment-locked-label{font-size:12px;color:#888}.payment-locked-phone{font-size:22px;font-weight:bold;color:#00ffcc}.payment-locked-flag{font-size:36px}.payment-locked-secure{margin-top:10px;font-size:11px;color:#51cf66;display:flex;align-items:center;justify-content:center;gap:5px}.payment-locked-divider{height:1px;background:#00ffcc33;margin:10px 0}.payment-locked-title{font-size:13px;color:#00ffcc;font-weight:bold;margin-bottom:10px;display:flex;align-items:center;gap:6px}
 .referral-card{background:linear-gradient(135deg,#1a1a2e,#0a2a1a);border:2px solid #ffd700}.referral-link-box{display:flex;gap:8px;margin-top:12px}.referral-link-box input{flex:1;background:#0a0a0a;color:#00ffcc;border:1px solid #ffd700;padding:10px;border-radius:8px;font-size:13px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}.copy-btn{width:auto!important;padding:10px 16px!important;background:linear-gradient(45deg,#ffd700,#ffaa00)!important;color:#000!important;font-weight:bold;border-radius:8px!important;cursor:pointer;border:none!important;margin:0!important}
-.grade-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:15px;margin:20px 0}.grade-card{background:linear-gradient(135deg,#1a1a2e,#16213e);padding:20px;border-radius:15px;cursor:pointer;border:2px solid #00ffcc33;transition:transform 0.2s}.grade-card:hover{transform:translateY(-3px);border-color:#00ffcc}.grade-icon{font-size:40px;margin-bottom:10px}.grade-entry{color:#ff6b6b;font-weight:bold;font-size:18px}.grade-prize{color:#51cf66;font-weight:bold;font-size:16px;margin-top:5px}.grade-fee{color:#888;font-size:11px;margin-top:8px}
+.grade-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:15px;margin:20px 0}.grade-card{background:linear-gradient(135deg,#1a1a2e,#16213e);padding:20px;border-radius:15px;cursor:pointer;border:2px solid #00ffcc33;transition:transform 0.2s;position:relative}.grade-card:hover{transform:translateY(-3px);border-color:#00ffcc}.grade-icon{font-size:40px;margin-bottom:10px}.grade-entry{color:#ff6b6b;font-weight:bold;font-size:18px}.grade-prize{color:#51cf66;font-weight:bold;font-size:16px;margin-top:5px}.grade-fee{color:#888;font-size:11px;margin-top:8px}
 .pvp-board-container{margin:20px auto;max-width:360px}.pvp-info-bar{display:flex;justify-content:space-between;align-items:center;padding:10px;background:#111;border-radius:10px;margin:10px 0;border:1px solid #00ffcc33}.pvp-player{font-weight:bold;font-size:14px}.pvp-turn{color:#ffd700;font-weight:bold;font-size:12px;animation:pulse 1.5s infinite}@keyframes pulse{0%,100%{opacity:1}50%{opacity:0.5}}
 .checkers-board{display:grid;grid-template-columns:repeat(8,1fr);border:3px solid #00ffcc;border-radius:5px;overflow:hidden;aspect-ratio:1}.square{aspect-ratio:1;display:flex;align-items:center;justify-content:center;cursor:pointer;position:relative}.square.dark{background:#1a1a1a}.square.light{background:#e0e0e0}.square.selected{outline:3px solid #ffd700;outline-offset:-3px;z-index:2}.square.valid-move::after{content:'';position:absolute;width:30%;height:30%;background:rgba(0,255,204,0.6);border-radius:50%}.piece{width:70%;height:70%;border-radius:50%;border:2px solid #888;display:flex;align-items:center;justify-content:center;font-size:20px;color:#ffd700;z-index:1}.piece.p1{background:radial-gradient(circle,#ff6b6b,#c92a2a)}.piece.p2{background:radial-gradient(circle,#444,#000)}.piece.king::after{content:'♔'}
 .draw-counter-bar{display:none;padding:8px 12px;background:#1a1a0a;border-radius:8px;margin:8px 0;border:1px solid #ffd70044;text-align:center;font-size:14px;color:#ffd700;font-weight:bold;animation:pulse 1.5s infinite}
 .searching-overlay{position:fixed;top:0;left:0;width:100%;height:100%;background:rgba(0,0,0,0.9);z-index:9999;display:none;align-items:center;justify-content:center;flex-direction:column}.search-spinner{width:60px;height:60px;border:6px solid #333;border-top:6px solid #00ffcc;border-radius:50%;animation:spin 1s linear infinite;margin-bottom:20px}@keyframes spin{0%{transform:rotate(0)}100%{transform:rotate(360deg)}}
 .chat-user-row{transition:background 0.2s;cursor:pointer}.chat-user-row:hover{background:#1a1a1a!important}.chat-avatar{position:relative;width:44px;height:44px;background:linear-gradient(135deg,#1a1a2e,#0a2a2a);border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:18px;color:#00ffcc;flex-shrink:0;font-weight:bold}.chat-online-dot{position:absolute;bottom:2px;right:2px;width:12px;height:12px;border-radius:50%;background:#555;border:2px solid #111;transition:background 0.3s}.chat-online-dot.on{background:#51cf66;box-shadow:0 0 6px #51cf66}.chat-unread-badge{display:none;min-width:20px;height:20px;border-radius:10px;background:#ff6b6b;color:#fff;font-size:10px;font-weight:bold;align-items:center;justify-content:center;padding:0 6px;flex-shrink:0}
-
-/* ===== FIX: Chat message containers MUST be full width ===== */
 .chat-msg-container{display:flex;margin:6px 0;align-items:flex-end;gap:4px;width:100%;padding:0 2px}
-
-/* ===== FIX: Own messages NOW VISIBLE with bright teal/green ===== */
-.chat-msg-mine{
-  background:linear-gradient(135deg,#064e3b,#065f46)!important;
-  border:1px solid rgba(0,255,204,0.3)!important;
-  border-bottom-right-radius:4px!important;
-  border-radius:14px!important;
-  box-shadow:0 1px 6px rgba(0,255,204,0.1)!important;
-}
-
-/* ===== FIX: Other messages with visible border ===== */
-.chat-msg-other{
-  background:linear-gradient(135deg,#1e293b,#1e1b4b)!important;
-  border:1px solid rgba(100,140,255,0.2)!important;
-  border-bottom-left-radius:4px!important;
-  border-radius:14px!important;
-  box-shadow:0 1px 6px rgba(100,100,200,0.08)!important;
-}
-
+.chat-msg-mine{background:linear-gradient(135deg,#064e3b,#065f46)!important;border:1px solid rgba(0,255,204,0.3)!important;border-bottom-right-radius:4px!important;border-radius:14px!important;box-shadow:0 1px 6px rgba(0,255,204,0.1)!important}
+.chat-msg-other{background:linear-gradient(135deg,#1e293b,#1e1b4b)!important;border:1px solid rgba(100,140,255,0.2)!important;border-bottom-left-radius:4px!important;border-radius:14px!important;box-shadow:0 1px 6px rgba(100,100,200,0.08)!important}
 .chat-msg-bubble{padding:10px 14px;border-radius:14px;max-width:75%;word-wrap:break-word;min-width:60px}
-
 .chat-reply-btn,.chat-delete-btn{font-size:12px;padding:4px 6px;background:transparent;border:none;cursor:pointer;border-radius:50%;opacity:0.35;flex-shrink:0;line-height:1;transition:opacity 0.2s}.chat-reply-btn:hover,.chat-delete-btn:hover{opacity:1}.chat-reply-btn{color:#555}.chat-delete-btn{color:#ff6b6b}
 .chat-date-sep{text-align:center;margin:14px 0;font-size:11px;color:#555}.chat-date-sep span{background:#1a1a1a;padding:3px 14px;border-radius:10px;display:inline-block}
 .chat-reply-preview-box{display:none;padding:8px 12px;background:#1a1a2e;border-radius:8px 8px 0 0;border-left:3px solid #00ffcc;margin-top:5px}.chat-input-bar{display:flex;gap:8px;margin-top:5px;align-items:flex-end}.chat-attach-btn,.chat-voice-btn,.chat-clear-btn{cursor:pointer;padding:12px;background:#1a1a1a;border-radius:10px;display:flex;align-items:center;justify-content:center;flex-shrink:0;width:auto;margin:0;font-size:20px;border:1px solid #00ffcc33}.chat-attach-btn input{display:none}
-
-/* ===== FIX: Chat images clearly visible ===== */
-.chat-msg-img{
-  max-width:220px;
-  max-height:220px;
-  border-radius:10px;
-  margin-bottom:6px;
-  display:block;
-  cursor:pointer;
-  border:2px solid rgba(0,255,204,0.25);
-  box-shadow:0 2px 8px rgba(0,0,0,0.4);
-}
+.chat-msg-img{max-width:220px;max-height:220px;border-radius:10px;margin-bottom:6px;display:block;cursor:pointer;border:2px solid rgba(0,255,204,0.25);box-shadow:0 2px 8px rgba(0,0,0,0.4)}
 .chat-voice-player{width:180px;height:35px;margin-top:5px}.chat-tick-read{color:#00ffcc;font-size:11px}.chat-tick-unread{color:#666;font-size:11px}
 .chat-header-bar{display:flex;align-items:center;gap:10px;padding:10px 0;border-bottom:1px solid #1a1a1a;flex-shrink:0}.chat-conv-avatar{width:38px;height:38px;background:linear-gradient(135deg,#1a1a2e,#0a2a2a);border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:16px;color:#00ffcc;font-weight:bold;flex-shrink:0}
 .chat-search-input{background:#1a1a1a!important;color:#fff!important;border:1px solid #00ffcc33!important;margin-bottom:10px!important}.chat-user-list{max-height:calc(100vh - 220px);overflow-y:auto;padding:0!important}
@@ -106,78 +75,39 @@
 .appcheck-badge { position: fixed; top: 8px; right: 8px; font-size: 10px; padding: 3px 8px; border-radius: 6px; z-index: 99999; font-weight: bold; display: none; }
 .appcheck-badge.ok { background: #0a3a0a; color: #51cf66; border: 1px solid #51cf6644; display: block; }
 .appcheck-badge.fail { background: #3a0a0a; color: #ff6b6b; border: 1px solid #ff6b6b44; display: block; }
-
-/* ===== FIX: Full-screen chat conversation layout ===== */
-#chatConvPage.active {
-  position: fixed !important;
-  top: 0; left: 0; right: 0; bottom: 0;
-  display: flex !important;
-  flex-direction: column;
-  background: #000;
-  z-index: 50;
-  padding: 10px;
-  max-width: 100%;
-  margin: 0;
-  overflow: hidden;
-}
-
-/* ===== FIX: Chat messages box proper sizing ===== */
-.chat-messages-box {
-  flex: 1;
-  min-height: 0;
-  overflow-y: auto;
-  padding: 12px 8px;
-  background: #050508;
-  border-radius: 12px;
-  border: 1px solid #1a1a1a;
-  width: 100%;
-  -webkit-overflow-scrolling: touch;
-}
+#chatConvPage.active { position: fixed !important; top: 0; left: 0; right: 0; bottom: 0; display: flex !important; flex-direction: column; background: #000; z-index: 50; padding: 10px; max-width: 100%; margin: 0; overflow: hidden; }
+.chat-messages-box { flex: 1; min-height: 0; overflow-y: auto; padding: 12px 8px; background: #050508; border-radius: 12px; border: 1px solid #1a1a1a; width: 100%; -webkit-overflow-scrolling: touch; }
 .chat-back-btn{width:auto;padding:8px 14px;background:#1a1a1a;color:#00ffcc;border:1px solid #00ffcc44;border-radius:10px;cursor:pointer;font-size:14px;flex-shrink:0;margin:0}
+#imageViewerModal { display: none; position: fixed; top: 0; left: 0; right: 0; bottom: 0; background: rgba(0,0,0,0.97); z-index: 10002; flex-direction: column; align-items: center; justify-content: center; padding: 10px; }
+#imageViewerModal .iv-top-bar { position: absolute; top: 0; left: 0; right: 0; display: flex; justify-content: space-between; align-items: center; padding: 12px 15px; background: linear-gradient(180deg, rgba(0,0,0,0.8), transparent); z-index: 3; }
+#imageViewerModal .iv-img-wrap { flex: 1; display: flex; align-items: center; justify-content: center; width: 100%; min-height: 0; overflow: auto; -webkit-overflow-scrolling: touch; }
+#imageViewerModal img { max-width: 100%; max-height: 80vh; object-fit: contain; border-radius: 8px; user-select: none; -webkit-user-select: none; }
+.airtel-banner { background: linear-gradient(135deg, #ff0000 0%, #cc0000 100%); padding: 12px; border-radius: 10px 10px 0 0; margin-top: 8px; display: flex; align-items: center; gap: 8px; color: #fff; font-weight: bold; }
+.airtel-banner span:first-child { font-size: 24px; }
 
-/* ===== IMAGE VIEWER MODAL ===== */
-#imageViewerModal {
-  display: none;
-  position: fixed;
-  top: 0; left: 0; right: 0; bottom: 0;
-  background: rgba(0,0,0,0.97);
-  z-index: 10002;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  padding: 10px;
-}
-#imageViewerModal .iv-top-bar {
-  position: absolute;
-  top: 0; left: 0; right: 0;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  padding: 12px 15px;
-  background: linear-gradient(180deg, rgba(0,0,0,0.8), transparent);
-  z-index: 3;
-}
-#imageViewerModal .iv-img-wrap {
-  flex: 1;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  width: 100%;
-  min-height: 0;
-  overflow: auto;
-  -webkit-overflow-scrolling: touch;
-}
-#imageViewerModal img {
-  max-width: 100%;
-  max-height: 80vh;
-  object-fit: contain;
-  border-radius: 8px;
-  user-select: none;
-  -webkit-user-select: none;
-}
+.inbox-actions-row { display: flex; gap: 6px; margin-top: 4px; justify-content: flex-end; }
+.inbox-action-btn { font-size: 11px !important; padding: 4px 10px !important; border-radius: 6px !important; border: none !important; cursor: pointer !important; font-weight: bold !important; width: auto !important; margin: 0 !important; display: inline-flex !important; align-items: center !important; gap: 3px !important; transition: opacity 0.2s, transform 0.15s !important; }
+.inbox-action-btn:active { transform: scale(0.95); }
+.inbox-delete-btn { background: linear-gradient(135deg, #ff6b6b, #c92a2a) !important; color: #fff !important; }
+.inbox-delete-btn:hover { opacity: 0.85; }
+.inbox-save-btn { background: linear-gradient(135deg, #51cf66, #2b8a3e) !important; color: #fff !important; }
+.inbox-save-btn:hover { opacity: 0.85; }
+.inbox-item.deleting { opacity: 0.4; pointer-events: none; transition: opacity 0.3s; }
 </style>
 </head>
 <body>
+
+<!-- ===== APP INSTALL GATE ===== -->
+<div id="appInstallGate" style="display:none; position:fixed; top:0; left:0; width:100%; height:100%; background:rgba(0,0,0,0.97); z-index:999999; flex-direction:column; align-items:center; justify-content:center; padding:30px; text-align:center;">
+  <div style="font-size:60px; margin-bottom:20px;">🚀</div>
+  <img src="https://i.imgur.com/VGTXXkQ.jpeg" style="width:100px; height:auto; border-radius:20px; margin-bottom:20px; box-shadow:0 0 30px #00ffcc55;">
+  <h2 style="color:#00ffcc; font-size:24px; margin-bottom:15px;">Mada Game Earn</h2>
+  <p style="color:#ccc; font-size:15px; margin-bottom:30px; line-height:1.5;">For the best experience and to play PvP Checkers, please download our app.</p>
+  <a id="appDownloadLink" href="https://github.com/madabanda657-netizen/Mada-checker-earn/releases/download/v1.0/app-release.2.apk" target="_blank" style="background:linear-gradient(45deg,#00ffcc,#00ccff); color:#000; font-weight:bold; padding:15px 40px; border-radius:12px; text-decoration:none; font-size:18px; display:inline-block; margin-bottom:15px; box-shadow:0 4px 15px #00ffcc44;">
+    📲 Download App
+  </a>
+  <p style="color:#555; font-size:12px; margin-top:20px;">Open this in the Mada Earn App to continue.</p>
+</div>
 
 <div id="appcheckBadge" class="appcheck-badge">🔒 App Check</div>
 
@@ -192,7 +122,6 @@
 <div id="searchingOverlay" class="searching-overlay"><div class="search-spinner"></div><h2 style="color:#00ffcc">Finding Opponent...</h2><p id="searchGradeText" style="color:#ccc;margin-top:10px"></p><button onclick="cancelMatchmaking()" style="margin-top:30px;width:auto;padding:12px 30px;background:#ff6b6b;color:#fff">Cancel</button></div>
 <a href="https://chat.whatsapp.com/CmvdLsifPKS51OyRnrITFz" target="_blank" id="waFloatBtn" class="wa-float" title="Join WhatsApp Group"><svg viewBox="0 0 24 24"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg></a>
 
-<!-- SAFE IMAGE VIEWER -->
 <div id="imageViewerModal">
   <div class="iv-top-bar">
     <span id="ivTitle" style="color:#fff;font-weight:bold;font-size:14px">📷 Photo</span>
@@ -213,8 +142,17 @@
     <div class="card" id="registerCard">
         <h3>👤 Create Account</h3>
         <input type="text" id="usernameInput" placeholder="Username (min 3 chars)" maxlength="20">
-        <select id="networkRegInput"><option value="">📱 Select Network</option><option value="Airtel Money">🟴 Airtel Money</option><option value="TNM Mpamba">🟣 TNM Mpamba</option></select>
-        <div class="phone-input-group" id="regPhoneGroup"><span class="phone-prefix">🇲🇼 +265</span><input type="tel" id="phoneInput" placeholder="99 or 88 (e.g. 991234567)" maxlength="12" pattern="[0-9]*" inputmode="numeric"></div>
+        <select id="networkRegInput" onchange="checkAirtelRecommend()">
+            <option value="">📱 Select Network (Airtel Recommended)</option>
+            <option value="Airtel Money" style="color:#ff0000; font-weight:bold;">🟴 Airtel Money (Recommended ⭐)</option>
+            <option value="TNM Mpamba">🟣 TNM Mpamba</option>
+        </select>
+        <div class="airtel-banner"><span>📶</span><span>Airtel Number Recommended</span></div>
+        <div class="phone-input-group" id="regPhoneGroup" style="margin-top:0; border-radius:0 0 10px 10px;">
+            <span class="phone-prefix">🇲🇼 +265</span>
+            <input type="tel" id="phoneInput" placeholder="99XXXXXXX (Airtel numbers start with 99)" maxlength="12" pattern="[0-9]*" inputmode="numeric" oninput="validateAirtelNumber(this)">
+        </div>
+        <div id="airtelValidationMsg" style="font-size:12px; margin-top:5px; text-align:left; padding-left:5px;"><span style="color:#888;">💡 Tip: Airtel numbers start with 99</span></div>
         <input type="email" id="emailInput" placeholder="📧 Email (Required for Password Reset)">
         <div class="input-wrapper"><input type="password" id="passwordInput" placeholder="Password (min 6 chars)"><span class="toggle-password" onclick="togglePassword('passwordInput', this)">👁️</span></div>
         <div style="text-align:left;margin:10px 0;font-size:13px"><label><input type="checkbox" id="agreeCheck" style="width:auto;margin-right:8px">I am 18+ & agree to <a href="#" onclick="document.getElementById('termsModal').style.display='flex';return false" style="color:#00ffcc">Terms</a></label></div>
@@ -264,7 +202,7 @@
 <div class="card">
     <h3>💰 How to Deposit</h3>
     <div class="deposit-rules">
-        <div class="deposit-step" data-num="1">Send Money to <b>Joff chikwayiti</b> (0882 968 384) via Airtel or TNM.</div>
+        <div class="deposit-step" data-num="1">Send Money to <b>GIFT MEZA</b> (Airtel Code: <b style="color:#00ffcc">378205</b>) via Airtel Money.</div>
         <div class="deposit-step" data-num="2">Use your <b>Username</b> as the Reference Name.</div>
         <div class="deposit-step" data-num="3">Copy the <b>Transaction ID</b> from the SMS you receive.</div>
         <div class="deposit-step" data-num="4">Enter Amount & TxID below, then click Submit.</div>
@@ -274,8 +212,8 @@
     <h3>📝 Submit Deposit Request</h3>
     <div style="background:#1a1a0a;padding:15px;border-radius:10px;border:1px solid #ffd700;margin-bottom:15px;text-align:center">
         <p style="color:#ffd700;font-weight:bold;margin-bottom:8px">📲 Account Details:</p>
-        <p style="color:#fff;font-size:16px;font-weight:bold">Joff chikwayiti</p>
-        <p style="color:#00ffcc;font-size:22px;font-weight:bold;letter-spacing:1px">0882 968 384</p>
+        <p style="color:#fff;font-size:16px;font-weight:bold">GIFT MEZA</p>
+        <p style="color:#00ffcc;font-size:22px;font-weight:bold;letter-spacing:1px">Airtel Code: 378205</p>
     </div>
     <input type="number" id="depositAmountInput" placeholder="Amount MWK (min 50)" min="50" inputmode="numeric">
     <input type="text" id="depositTxIdInput" placeholder="Transaction ID from SMS" maxlength="20">
@@ -285,7 +223,7 @@
 </div>
 <div class="card"><h3>💸 Withdraw</h3><select id="withdrawAmount"><option value="100">100 MWK</option><option value="200">200 MWK</option><option value="500">500 MWK</option></select><button onclick="submitWithdrawRequest()">Request Withdrawal</button><p id="msg" style="margin-top:10px;"></p></div><div class="card"><h3>📜 Withdrawal History</h3><div id="myWithdrawHistory" class="history-list" style="border-top:none; padding-top:0; margin-top:0;"></div></div><div class="card" style="border-color:#ff6b6b44"><h3>⚠️ Rules</h3><div style="text-align:left;color:#ccc;line-height:1.8;font-size:12px">1. Process time up to <b style="color:#fff">3 hours</b>.<br>2. Min withdrawal 100 MWK.<br>3. Withdrawals sent to your registered phone number.<br>4. Fake activity = Permanent ban.</div></div><div style="margin-top:20px;padding:20px;background:#111;border-radius:15px;border:1px solid #222"><div style="font-size:28px;margin-bottom:10px">🔞</div><p style="color:#ff6b6b;font-weight:bold;font-size:16px">18+ Only</p><div style="display:flex;justify-content:center;gap:15px;font-size:13px;margin:15px 0"><a href="#" onclick="document.getElementById('termsModal').style.display='flex';return false" style="color:#00ccff">Terms</a><a href="#" onclick="document.getElementById('privacyModal').style.display='flex';return false" style="color:#00ccff">Privacy</a></div><a href="https://chat.whatsapp.com/CmvdLsifPKS51OyRnrITFz" target="_blank" style="display:block;background:#25d366;color:#fff;padding:12px;border-radius:10px;text-decoration:none;font-weight:bold;font-size:14px">💬 Join WhatsApp Group</a></div></div>
 
-<div id="playPage" class="page"><h1>♟️ PvP Checkers</h1><p style="color:#ccc;margin-bottom:20px">Choose stake and play for real money!</p><div class="grade-grid" id="gradeGrid"></div><div class="card" style="margin-top:30px"><h3>📜 Game Rules (Malawi)</h3><div style="text-align:left;color:#ccc;line-height:1.8;font-size:13px">1. Fee deducted immediately.<br>2. Matched with real player.<br>3. Winner takes 80%.<br>4. 20% platform fee.<br>5. Disconnect = lose.<br>6. <b style="color:#fff">Capture backward is allowed.</b><br>7. <b style="color:#fff">Multiple jumps are forced.</b> (Keep jumping!).<br>8. If you can capture, you must capture.<br>9. <b style="color:#fff">Only Kings can fly (long jumps).</b><br><br><b style="color:#ffd700">⚖️ Draw Rules:</b><br>10. <b style="color:#00ffcc">King vs King</b> = Immediate draw (both refunded).<br>11. <b style="color:#00ffcc">One piece left</b> = Opponent gets <b style="color:#ffd700">12 moves</b> to catch it. If not caught = draw (both refunded).</div></div></div>
+<div id="playPage" class="page"><h1>♟️ PvP Checkers</h1><p style="color:#ccc;margin-bottom:20px">Choose stake and play for real money! ♟️ Play any grade anytime — no limits!</p><div class="grade-grid" id="gradeGrid"></div><div class="card" style="margin-top:30px"><h3>📜 Game Rules (Malawi)</h3><div style="text-align:left;color:#ccc;line-height:1.8;font-size:13px">1. Fee deducted immediately.<br>2. Matched with real player.<br>3. Winner takes 80%.<br>4. 20% platform fee.<br>5. Disconnect = lose.<br>6. <b style="color:#fff">Capture backward is allowed.</b><br>7. <b style="color:#fff">Multiple jumps are forced.</b> (Keep jumping!).<br>8. If you can capture, you must capture.<br>9. <b style="color:#fff">Only Kings can fly (long jumps).</b><br><br><b style="color:#ffd700">⚖️ Draw Rules:</b><br>10. <b style="color:#00ffcc">King vs King</b> = Immediate draw (both refunded).<br>11. <b style="color:#00ffcc">One piece left</b> = Opponent gets <b style="color:#ffd700">12 moves</b> to catch it. If not caught = draw (both refunded).</div></div></div>
 
 <div id="inboxPage" class="page">
   <h1>📥 Admin Inbox</h1>
@@ -345,48 +283,14 @@
 
 <script>
 /* ===== SAFE IMAGE VIEWER ===== */
-function openImageViewer(src) {
-  document.getElementById('imageViewerImg').src = src;
-  document.getElementById('imageViewerModal').style.display = 'flex';
-}
-function closeImageViewer() {
-  document.getElementById('imageViewerModal').style.display = 'none';
-  document.getElementById('imageViewerImg').src = '';
-}
-function saveImageFromViewer() {
-  try {
-    var src = document.getElementById('imageViewerImg').src;
-    if (!src) return;
-    var a = document.createElement('a');
-    a.href = src;
-    a.download = 'mada_photo_' + Date.now() + '.jpg';
-    a.style.display = 'none';
-    document.body.appendChild(a);
-    a.click();
-    setTimeout(function() { document.body.removeChild(a); }, 500);
-    alert('💾 Image saved! Check your Downloads folder.');
-  } catch(e) {
-    alert('Tap and hold the image, then select "Save Image" from the menu.');
-  }
-}
+function openImageViewer(src) { document.getElementById('imageViewerImg').src = src; document.getElementById('imageViewerModal').style.display = 'flex'; }
+function closeImageViewer() { document.getElementById('imageViewerModal').style.display = 'none'; document.getElementById('imageViewerImg').src = ''; }
+function saveImageFromViewer() { try { var src = document.getElementById('imageViewerImg').src; if (!src) return; var a = document.createElement('a'); a.href = src; a.download = 'mada_photo_' + Date.now() + '.jpg'; a.style.display = 'none'; document.body.appendChild(a); a.click(); setTimeout(function() { document.body.removeChild(a); }, 500); alert('💾 Image saved!'); } catch(e) { alert('Tap and hold the image to save.'); } }
 
 /* ===== SOUND EFFECTS ENGINE ===== */
 var audioCtx = null;
 function getAudioCtx() { if (!audioCtx) audioCtx = new (window.AudioContext || window.webkitAudioContext)(); return audioCtx; }
-function playSound(type) {
-  try {
-    var ctx = getAudioCtx();
-    if (ctx.state === 'suspended') ctx.resume();
-    var osc = ctx.createOscillator();
-    var gain = ctx.createGain();
-    osc.connect(gain); gain.connect(ctx.destination);
-    gain.gain.value = 0.2;
-    if (type === 'move') { osc.frequency.value = 400; osc.type = 'sine'; gain.gain.exponentialRampToValueAtTime(0.01, ctx.currentTime + 0.1); osc.start(ctx.currentTime); osc.stop(ctx.currentTime + 0.1); }
-    else if (type === 'capture') { osc.frequency.value = 200; osc.type = 'square'; gain.gain.exponentialRampToValueAtTime(0.01, ctx.currentTime + 0.2); osc.start(ctx.currentTime); osc.stop(ctx.currentTime + 0.2); }
-    else if (type === 'win') { osc.frequency.value = 523.25; osc.type = 'sine'; osc.start(ctx.currentTime); osc.stop(ctx.currentTime + 0.15); var o2 = ctx.createOscillator(); var g2 = ctx.createGain(); o2.connect(g2); g2.connect(ctx.destination); g2.gain.value = 0.2; o2.frequency.value = 659.25; o2.type = 'sine'; o2.start(ctx.currentTime + 0.15); o2.stop(ctx.currentTime + 0.3); var o3 = ctx.createOscillator(); var g3 = ctx.createGain(); o3.connect(g3); g3.connect(ctx.destination); g3.gain.value = 0.2; o3.frequency.value = 783.99; o3.type = 'sine'; o3.start(ctx.currentTime + 0.3); o3.stop(ctx.currentTime + 0.5); }
-    else if (type === 'lose') { osc.frequency.value = 400; osc.type = 'sawtooth'; gain.gain.exponentialRampToValueAtTime(0.01, ctx.currentTime + 0.5); osc.frequency.exponentialRampToValueAtTime(100, ctx.currentTime + 0.5); osc.start(ctx.currentTime); osc.stop(ctx.currentTime + 0.5); }
-  } catch(e) {}
-}
+function playSound(type) { try { var ctx = getAudioCtx(); if (ctx.state === 'suspended') ctx.resume(); var osc = ctx.createOscillator(); var gain = ctx.createGain(); osc.connect(gain); gain.connect(ctx.destination); gain.gain.value = 0.2; if (type === 'move') { osc.frequency.value = 400; osc.type = 'sine'; gain.gain.exponentialRampToValueAtTime(0.01, ctx.currentTime + 0.1); osc.start(ctx.currentTime); osc.stop(ctx.currentTime + 0.1); } else if (type === 'capture') { osc.frequency.value = 200; osc.type = 'square'; gain.gain.exponentialRampToValueAtTime(0.01, ctx.currentTime + 0.2); osc.start(ctx.currentTime); osc.stop(ctx.currentTime + 0.2); } else if (type === 'win') { osc.frequency.value = 523.25; osc.type = 'sine'; osc.start(ctx.currentTime); osc.stop(ctx.currentTime + 0.15); var o2 = ctx.createOscillator(); var g2 = ctx.createGain(); o2.connect(g2); g2.connect(ctx.destination); g2.gain.value = 0.2; o2.frequency.value = 659.25; o2.type = 'sine'; o2.start(ctx.currentTime + 0.15); o2.stop(ctx.currentTime + 0.3); var o3 = ctx.createOscillator(); var g3 = ctx.createGain(); o3.connect(g3); g3.connect(ctx.destination); g3.gain.value = 0.2; o3.frequency.value = 783.99; o3.type = 'sine'; o3.start(ctx.currentTime + 0.3); o3.stop(ctx.currentTime + 0.5); } else if (type === 'lose') { osc.frequency.value = 400; osc.type = 'sawtooth'; gain.gain.exponentialRampToValueAtTime(0.01, ctx.currentTime + 0.5); osc.frequency.exponentialRampToValueAtTime(100, ctx.currentTime + 0.5); osc.start(ctx.currentTime); osc.stop(ctx.currentTime + 0.5); } } catch(e) {} }
 
 /* ===== CORE APP ===== */
 var db = null;
@@ -401,7 +305,7 @@ try {
 } catch(e) { db = null; }
 
 var DAILY_LIMIT = 12000; var gameState = {}; var captchaAnswer = 0;
-const PVP_GRADES = [ { id: 1, name: 'Grade 1', entryMWK: 50, winMWK: 80, icon: '🥉' }, { id: 2, name: 'Grade 2', entryMWK: 200, winMWK: 320, icon: '🥈' }, { id: 3, name: 'Grade 3', entryMWK: 500, winMWK: 800, icon: '🥇' }, { id: 4, name: 'Grade 4', entryMWK: 1000, winMWK: 1600, icon: '💎' } ];
+var PVP_GRADES = [ { id: 1, name: 'Grade 1', entryMWK: 50, winMWK: 80, icon: '🥉' }, { id: 2, name: 'Grade 2', entryMWK: 200, winMWK: 320, icon: '🥈' }, { id: 3, name: 'Grade 3', entryMWK: 500, winMWK: 800, icon: '🥇' }, { id: 4, name: 'Grade 4', entryMWK: 1000, winMWK: 1600, icon: '💎' } ];
 var myUid = null; var myPlayerNumber = 0; var currentGameId = null; var gameListener = null; var processedGameEnds = {};
 
 function escapeHtml(t){if(!t)return'';var d=document.createElement('div');d.textContent=t;return d.innerHTML}
@@ -422,47 +326,98 @@ function copyNewPassword(){var p=document.getElementById('newPassDisplay').textC
 function showRegister(){document.getElementById('registerCard').style.display='block';document.getElementById('loginCard').style.display='none';generateCaptcha()}
 function showLogin(){document.getElementById('registerCard').style.display='none';document.getElementById('loginCard').style.display='block';hideForgotSection()}
 
-function register(){try{var user=(document.getElementById("usernameInput").value||"").trim(),networkReg=document.getElementById("networkRegInput").value,phoneDigits=(document.getElementById("phoneInput").value||"").trim(),email=(document.getElementById("emailInput").value||"").trim(),pass=document.getElementById("passwordInput").value||"",agree=document.getElementById("agreeCheck").checked,captcha=parseInt(document.getElementById("captchaA").value),msgEl=document.getElementById("loginMsg");if(user.length<3){msgEl.innerHTML='<span class="error">Username min 3</span>';return}if(!networkReg){msgEl.innerHTML='<span class="error">Select network</span>';return}var fullPhone=formatMalawiPhone(phoneDigits);if(!isValidMalawiPhone(fullPhone)){msgEl.innerHTML='<span class="error">Invalid Phone</span>';return}if(!email){msgEl.innerHTML='<span class="error">Enter email</span>';return}if(pass.length<6){msgEl.innerHTML='<span class="error">Password min 6</span>';return}if(!agree){msgEl.innerHTML='<span class="error">Must agree</span>';return}if(captcha!==captchaAnswer){msgEl.innerHTML='<span class="error">Wrong captcha</span>';generateCaptcha();return}msgEl.innerHTML='<span class="success">Creating...</span>';var name=user.replace(/\s+/g,'_').replace(/[.#$\[\]]/g,''),refCode=new URLSearchParams(window.location.search).get('ref');if(refCode){try{localStorage.setItem('refCode',refCode)}catch(e){}}var savedRefCode=localStorage.getItem('refCode')||null;try{localStorage.setItem("user",name);localStorage.setItem("userPhone",fullPhone);localStorage.setItem("network",networkReg)}catch(e){}myUid=name;document.getElementById("registerCard").classList.add("hidden");document.getElementById("loginPage").classList.remove("active");document.getElementById("mainNav").style.display="flex";showPage('profile');setTimeout(function(){if(!db)return;var ek=emailToKey(email);db.ref('users/'+name).set({phone:fullPhone,network:networkReg,email:email,created:Date.now(),password:md5(pass)});db.ref('email_index/'+ek).set({uid:name});db.ref('leaderboard_all/'+name).once('value',function(sn){if(!sn.exists()){db.ref('leaderboard_all/'+name).set({coins:0,score:0,gamesPlayed:0,gamesWon:0,gamesLost:0,referralClaimed:0,banned:false,lastPlayed:Date.now(),displayName:user,phone:fullPhone,network:networkReg});if(savedRefCode&&savedRefCode!==name)db.ref('referrals/'+savedRefCode+'/'+name).set(true)}});lockPaymentMethod(fullPhone,networkReg);initGameListeners();setupInboxNotif()},200)}catch(e){alert("Error: "+e.message)}}
+function validateAirtelNumber(input) { var val = input.value.replace(/[^0-9]/g, ''); var msgEl = document.getElementById('airtelValidationMsg'); var networkSelect = document.getElementById('networkRegInput'); if (val.length >= 2) { if (val.substring(0, 2) === '99') { msgEl.innerHTML = '<span style="color:#51cf66;">✅ Airtel number detected - Perfect!</span>'; if (networkSelect.value !== 'Airtel Money') networkSelect.value = 'Airtel Money'; } else if (val.substring(0, 2) === '88') { msgEl.innerHTML = '<span style="color:#ffd700;">⚠️ TNM number detected - Airtel is recommended</span>'; if (networkSelect.value !== 'TNM Mpamba') networkSelect.value = 'TNM Mpamba'; } else { msgEl.innerHTML = '<span style="color:#ff6b6b;">❌ Invalid Malawi number</span>'; } } else { msgEl.innerHTML = '<span style="color:#888;">💡 Tip: Airtel numbers start with 99</span>'; } }
+function checkAirtelRecommend() { var network = document.getElementById('networkRegInput').value; var msgEl = document.getElementById('airtelValidationMsg'); if (network === 'TNM Mpamba') { msgEl.innerHTML = '<span style="color:#ffd700;">⚠️ You selected TNM. Airtel (99) is recommended!</span>'; } }
 
-function login(){try{var rawName=(document.getElementById("loginUsernameInput").value||"").trim(),pass=document.getElementById("loginPasswordInput").value,msgEl=document.getElementById("loginErrorMsg");if(!rawName||!pass){msgEl.innerHTML='<span class="error">Enter username & password</span>';return}var name=rawName.replace(/\s+/g,'_').replace(/[.#$\[\]]/g,'');msgEl.innerHTML='<span class="success">Checking...</span>';if(!db){msgEl.innerHTML='<span class="error">DB error</span>';return}db.ref('users/'+name).once('value',function(sn){var data=sn.val();if(!data){msgEl.innerHTML='<span class="error">User not found</span>';return}if(data.password!==md5(pass)){msgEl.innerHTML='<span class="error">Wrong password</span>';return}if(data.email){var ek=emailToKey(data.email);db.ref('email_index/'+ek).once('value',function(is){if(!is.exists())db.ref('email_index/'+ek).set({uid:name})})}localStorage.setItem("user",name);myUid=name;document.getElementById("loginCard").classList.add("hidden");document.getElementById("loginPage").classList.remove("active");document.getElementById("mainNav").style.display="flex";showPage('profile');lockPaymentMethod(data.phone||'',data.network||'');initGameListeners();setupInboxNotif()})}catch(e){alert(e.message)}}
+function register(){
+    try{
+        var user=(document.getElementById("usernameInput").value||"").trim(),
+        networkReg=document.getElementById("networkRegInput").value,
+        phoneDigits=(document.getElementById("phoneInput").value||"").trim(),
+        email=(document.getElementById("emailInput").value||"").trim(),
+        pass=document.getElementById("passwordInput").value||"",
+        agree=document.getElementById("agreeCheck").checked,
+        captcha=parseInt(document.getElementById("captchaA").value),
+        msgEl=document.getElementById("loginMsg");
+        if(user.length<3){msgEl.innerHTML='<span class="error">Username min 3</span>';return}
+        if(!networkReg){msgEl.innerHTML='<span class="error">Select network</span>';return}
+        var fullPhone=formatMalawiPhone(phoneDigits);
+        if(!isValidMalawiPhone(fullPhone)){msgEl.innerHTML='<span class="error">Invalid Phone</span>';return}
+        var isAirtel = fullPhone.match(/^(?:\+265|0)99/);
+        if (!isAirtel) { if (!confirm('You entered a TNM number (88). Airtel (99) is recommended for faster deposits. Continue anyway?')) return; }
+        if(!email){msgEl.innerHTML='<span class="error">Enter email</span>';return}
+        if(pass.length<6){msgEl.innerHTML='<span class="error">Password min 6</span>';return}
+        if(!agree){msgEl.innerHTML='<span class="error">Must agree</span>';return}
+        if(captcha!==captchaAnswer){msgEl.innerHTML='<span class="error">Wrong captcha</span>';generateCaptcha();return}
+        msgEl.innerHTML='<span class="success">Creating...</span>';
+        var name=user.replace(/\s+/g,'_').replace(/[.#$\[\]]/g,''),refCode=new URLSearchParams(window.location.search).get('ref');
+        if(refCode){try{localStorage.setItem('refCode',refCode)}catch(e){}}
+        var savedRefCode=localStorage.getItem('refCode')||null;
+        try{localStorage.setItem("user",name);localStorage.setItem("userPhone",fullPhone);localStorage.setItem("network",networkReg)}catch(e){}
+        myUid=name;
+        document.getElementById("loginPage").classList.remove("active");
+        document.getElementById("mainNav").style.display="flex";
+        showPage('profile');
+        setTimeout(function(){
+            if(!db)return;
+            var ek=emailToKey(email);
+            db.ref('users/'+name).set({phone:fullPhone,network:networkReg,email:email,created:Date.now(),password:md5(pass)});
+            db.ref('email_index/'+ek).set({uid:name});
+            db.ref('leaderboard_all/'+name).once('value',function(sn){
+                if(!sn.exists()){
+                    db.ref('leaderboard_all/'+name).set({coins:0,score:0,gamesPlayed:0,gamesWon:0,gamesLost:0,referralClaimed:0,banned:false,lastPlayed:Date.now(),displayName:user,phone:fullPhone,network:networkReg});
+                    if(savedRefCode&&savedRefCode!==name)db.ref('referrals/'+savedRefCode+'/'+name).set(true)
+                }
+            });
+            lockPaymentMethod(fullPhone,networkReg);
+            initGameListeners();
+            setupInboxNotif();
+        },200)
+    }catch(e){alert("Error: "+e.message)}
+}
+
+function login(){
+    try{
+        var rawName=(document.getElementById("loginUsernameInput").value||"").trim(),
+        pass=document.getElementById("loginPasswordInput").value,
+        msgEl=document.getElementById("loginErrorMsg");
+        if(!rawName||!pass){msgEl.innerHTML='<span class="error">Enter username & password</span>';return}
+        var name=rawName.replace(/\s+/g,'_').replace(/[.#$\[\]]/g,'');
+        msgEl.innerHTML='<span class="success">Checking...</span>';
+        if(!db){msgEl.innerHTML='<span class="error">DB error</span>';return}
+        db.ref('users/'+name).once('value',function(sn){
+            var data=sn.val();
+            if(!data){msgEl.innerHTML='<span class="error">User not found</span>';return}
+            if(data.password!==md5(pass)){msgEl.innerHTML='<span class="error">Wrong password</span>';return}
+            if(data.email){var ek=emailToKey(data.email);db.ref('email_index/'+ek).once('value',function(is){if(!is.exists())db.ref('email_index/'+ek).set({uid:name})})}
+            localStorage.setItem("user",name);
+            myUid=name;
+            document.getElementById("loginPage").classList.remove("active");
+            document.getElementById("mainNav").style.display="flex";
+            showPage('profile');
+            lockPaymentMethod(data.phone||'',data.network||'');
+            initGameListeners();
+            setupInboxNotif();
+        })
+    }catch(e){alert(e.message)}
+}
 
 function logout(){if(confirm('Logout?')){localStorage.removeItem('user');myUid=null;location.reload()}}
 
 function showPage(page){
   try{
     var pages=document.querySelectorAll('.page');
-    for(var i=0;i<pages.length;i++){
-      pages[i].classList.remove('active');
-      pages[i].style.display='';
-    }
+    for(var i=0;i<pages.length;i++){pages[i].classList.remove('active');pages[i].style.display='';}
     var btns=document.querySelectorAll('.nav-btn');
     for(var j=0;j<btns.length;j++) btns[j].classList.remove('active');
     document.getElementById('mainNav').style.display='flex';
     document.getElementById('waFloatBtn').style.display='flex';
-    if(page==='profile'){
-      document.getElementById('profilePage').classList.add('active');
-      if(btns[0]) btns[0].classList.add('active');
-      loadProfile()
-    }else if(page==='wallet'){
-      document.getElementById('walletPage').classList.add('active');
-      if(btns[1]) btns[1].classList.add('active');
-      showBalance();listenMyDeposits();listenMyWithdrawals();loadReferralData()
-    }else if(page==='chat'){
-      document.getElementById('chatPage').classList.add('active');
-      if(btns[2]) btns[2].classList.add('active')
-    }else if(page==='play'){
-      document.getElementById('playPage').classList.add('active');
-      if(btns[3]) btns[3].classList.add('active');
-      renderGrades()
-    }else if(page==='inbox'){
-      document.getElementById('inboxPage').classList.add('active');
-      if(btns[4]) btns[4].classList.add('active');
-      loadInbox();document.getElementById('inboxNotifDot').style.display='none'
-    }else if(page==='game'){
-      document.getElementById('gamePage').classList.add('active');
-      document.getElementById('mainNav').style.display='none';
-      document.getElementById('waFloatBtn').style.display='none'
-    }
+    if(page==='profile'){document.getElementById('profilePage').classList.add('active');if(btns[0])btns[0].classList.add('active');loadProfile()}
+    else if(page==='wallet'){document.getElementById('walletPage').classList.add('active');if(btns[1])btns[1].classList.add('active');showBalance();listenMyDeposits();listenMyWithdrawals();loadReferralData()}
+    else if(page==='chat'){document.getElementById('chatPage').classList.add('active');if(btns[2])btns[2].classList.add('active')}
+    else if(page==='play'){document.getElementById('playPage').classList.add('active');if(btns[3])btns[3].classList.add('active');renderGrades()}
+    else if(page==='inbox'){document.getElementById('inboxPage').classList.add('active');if(btns[4])btns[4].classList.add('active');loadInbox();document.getElementById('inboxNotifDot').style.display='none'}
+    else if(page==='game'){document.getElementById('gamePage').classList.add('active');document.getElementById('mainNav').style.display='none';document.getElementById('waFloatBtn').style.display='none'}
   }catch(e){console.error('showPage error:',e)}
 }
 
@@ -470,8 +425,34 @@ function showBalance(){try{if(!db)return;db.ref('leaderboard_all/'+myUid).once('
 function loadReferralData(){if(!db||!myUid)return;var bu=window.location.href.split('?')[0];document.getElementById('refLinkInput').value=bu+'?ref='+myUid;db.ref('referrals/'+myUid).once('value',function(s){var c=s.numChildren();document.getElementById('refCount').innerText=c;db.ref('leaderboard_all/'+myUid+'/referralClaimed').once('value',function(cs){var cl=cs.val()||0,uc=Math.floor(c/5)-cl,cb=document.getElementById('claimRefBtn');if(uc>0){cb.style.display='block';cb.innerText='🎉 Claim MWK '+(uc*10)}else cb.style.display='none'})})}
 function copyRefLink(){var ct=document.getElementById("refLinkInput");if(navigator.clipboard)navigator.clipboard.writeText(ct.value);else{ct.select();document.execCommand("copy")}alert("Copied!")}
 function claimReferralBonus(){if(!db||!myUid)return;db.ref('referrals/'+myUid).once('value',function(s){var c=s.numChildren();db.ref('leaderboard_all/'+myUid).once('value',function(us){var ud=us.val()||{},cl=ud.referralClaimed||0,uc=Math.floor(c/5)-cl;if(uc>0){db.ref('leaderboard_all/'+myUid).update({coins:(ud.coins||0)+(uc*10),referralClaimed:cl+uc},function(e){if(!e){alert('🎉 Claimed MWK '+(uc*10)+'!');showBalance();loadReferralData()}})}})})}
-function renderGrades(){var g=document.getElementById('gradeGrid'),h='';PVP_GRADES.forEach(gr=>{h+=`<div class="grade-card" onclick="joinPvP(${gr.id})"><div class="grade-icon">${gr.icon}</div><h3 style="color:#fff;font-size:16px">${gr.name}</h3><div class="grade-entry">Pay: MWK ${gr.entryMWK}</div><div class="grade-prize">Win: MWK ${gr.winMWK}</div></div>`});g.innerHTML=h;showBalance()}
-function joinPvP(gid){if(!db||!myUid){alert('Login first');return}var gr=PVP_GRADES.find(g=>g.id===gid);if(!gr)return;db.ref('leaderboard_all/'+myUid+'/coins').once('value',function(s){var b=s.val()||0;if(b<gr.entryMWK){alert('Not enough balance! Need MWK '+gr.entryMWK);return}db.ref('leaderboard_all/'+myUid).update({coins:b-gr.entryMWK});document.getElementById('searchGradeText').innerText=gr.name+' - MWK '+gr.entryMWK;document.getElementById('searchingOverlay').style.display='flex';db.ref('pvp_queue/'+gid+'/'+myUid).set({timestamp:Date.now()})})}
+
+function renderGrades(){
+  var g=document.getElementById('gradeGrid'),h='';
+  PVP_GRADES.forEach(function(gr){
+    h+='<div class="grade-card" onclick="joinPvP('+gr.id+')">';
+    h+='<div class="grade-icon">'+gr.icon+'</div>';
+    h+='<h3 style="color:#fff;font-size:16px">'+gr.name+'</h3>';
+    h+='<div class="grade-entry">Pay: MWK '+gr.entryMWK+'</div>';
+    h+='<div class="grade-prize">Win: MWK '+gr.winMWK+'</div>';
+    h+='</div>';
+  });
+  g.innerHTML=h;
+  showBalance();
+}
+
+function joinPvP(gid){
+  if(!db||!myUid){alert('Login first');return}
+  var gr=PVP_GRADES.find(function(g){return g.id===gid});
+  if(!gr)return;
+  db.ref('leaderboard_all/'+myUid+'/coins').once('value',function(s){
+    var b=s.val()||0;
+    if(b<gr.entryMWK){alert('Not enough balance! Need MWK '+gr.entryMWK);return}
+    db.ref('leaderboard_all/'+myUid).update({coins:b-gr.entryMWK});
+    document.getElementById('searchGradeText').innerText=gr.name+' - MWK '+gr.entryMWK;
+    document.getElementById('searchingOverlay').style.display='flex';
+    db.ref('pvp_queue/'+gid+'/'+myUid).set({timestamp:Date.now()})
+  })
+}
 
 if(db){db.ref('pvp_queue').on('value',function(s){
   if(!myUid)return;
@@ -481,14 +462,14 @@ if(db){db.ref('pvp_queue').on('value',function(s){
     if(pl.length>=2&&(pl.indexOf(myUid)>=0)){
       var sorted=pl.slice().sort();
       var p1=sorted[0],p2=sorted[1];
-      var gameId='game_'+gid+'_'+p1+'_'+p2;
+      var gameId='game_'+gid+'_'+p1+'_'+p2+'_'+Date.now();
       db.ref('pvp_queue/'+gid+'/'+p1).remove();
       db.ref('pvp_queue/'+gid+'/'+p2).remove();
-      var gd=PVP_GRADES.find(g=>g.id===parseInt(gid));
+      var gd=PVP_GRADES.find(function(g){return g.id===parseInt(gid)});
       var ib=[];
       for(var r=0;r<8;r++){for(var c=0;c<8;c++){ib.push((r+c)%2&&r<3?-1:(r+c)%2&&r>4?1:0)}}
       db.ref('pvp_games/'+gameId).transaction(function(data){
-        if(data===null){
+        if(data===null || (data && data.status==='finished')){
           return{p1:p1,p2:p2,gradeId:gid,winMWK:gd.winMWK,entryMWK:gd.entryMWK,board:ib,turn:1,status:'playing',winner:null,created:Date.now(),drawCounter:0,drawTargetPlayer:0};
         }
         return data;
@@ -505,290 +486,41 @@ function initGameListeners(){
   db.ref('pvp_games').orderByChild('p2').equalTo(myUid).on('value',handleGameUpdate);
 }
 
-function handleGameUpdate(s){if(!myUid)return;s.forEach(function(c){var g=c.val();if(g&&(g.p1===myUid||g.p2===myUid)&&g.status==='playing'){if(currentGameId!==c.key){currentGameId=c.key;myPlayerNumber=g.p1===myUid?1:2;document.getElementById('searchingOverlay').style.display='none';showPage('game');startGameListener(c.key)}}else if(g&&g.status==='finished'&&currentGameId===c.key){endPvPGame(g)}})}
-function startGameListener(gid){if(gameListener)db.ref('pvp_games/'+gameListener).off();gameListener=gid;db.ref('pvp_games/'+gid).on('value',function(s){var g=s.val();if(!g)return;gameState=g;renderPvPBoard()})}
-function renderPvPBoard(){var be=document.getElementById('checkersBoard'),h='';document.getElementById('p1Name').innerText='🔴 '+(gameState.p1===myUid?'You':gameState.p1);document.getElementById('p2Name').innerText='⚫ '+(gameState.p2===myUid?'You':gameState.p2);document.getElementById('gameStake').innerText=gameState.entryMWK+' MWK';document.getElementById('gamePrize').innerText=gameState.winMWK+' MWK';var imt=gameState.turn===myPlayerNumber;var isMultiJump=imt&&gameState.selected&&gameState.validMoves&&gameState.validMoves.length>0;document.getElementById('turnIndicator').innerText=isMultiJump?'⚡ Must Jump!':(imt?'🎯 Your Turn!':'⏳ Opponent');document.getElementById('turnIndicator').style.color=isMultiJump?'#ffd700':(imt?'#51cf66':'#ff6b6b');var db2=document.getElementById('drawCounterBar'),dt=gameState.drawTargetPlayer||0,dc=gameState.drawCounter||0;if(dt>0&&dc>0){db2.style.display='block';db2.innerText='⏱️ Draw in '+(12-dc)+' moves'}else db2.style.display='none';var b=gameState.board.slice();var sel=gameState.selected||null,vm=gameState.validMoves||[];for(var i=0;i<64;i++){var displayR=Math.floor(i/8),displayC=i%8;var boardR=myPlayerNumber===2?7-displayR:displayR;var boardC=myPlayerNumber===2?7-displayC:displayC;var boardIdx=boardR*8+boardC;var isDark=(displayR+displayC)%2===1;var p=b[boardIdx];var sc=sel&&sel[0]===boardR&&sel[1]===boardC?'selected':'';var mc=vm.some(m=>m[0]===boardR&&m[1]===boardC)?'valid-move':'';h+=`<div class="square ${isDark?'dark':'light'} ${sc} ${mc}" onclick="clickPvPSquare(${displayR},${displayC})">`;if(p!==0)h+=`<div class="piece ${p>0?'p1':'p2'} ${Math.abs(p)===2?'king':''}"></div>`;h+='</div>'}be.innerHTML=h}
-function clickPvPSquare(r,c){if(gameState.turn!==myPlayerNumber)return;if(!db||!currentGameId)return;if(myPlayerNumber===2){r=7-r;c=7-c}var b=gameState.board,cv=b[r*8+c],sel=gameState.selected,vm=gameState.validMoves||[];if(sel&&vm.some(m=>m[0]===r&&m[1]===c)){makePvPMove(sel[0],sel[1],r,c);return}if((myPlayerNumber===1&&cv>0)||(myPlayerNumber===2&&cv<0)){var pl=myPlayerNumber;var allMoves=getAllCaptures(b,pl);var mustCapture=allMoves.length>0;var pieceMoves=getValidMovesForPiece(b,r,c,pl);var filteredMoves=[];for(var i=0;i<pieceMoves.length;i++){if(mustCapture&&pieceMoves[i].captured.length===0)continue;filteredMoves.push(pieceMoves[i].to)}if(filteredMoves.length>0)db.ref('pvp_games/'+currentGameId).update({selected:[r,c],validMoves:filteredMoves});else db.ref('pvp_games/'+currentGameId).update({selected:null,validMoves:[]})}else{db.ref('pvp_games/'+currentGameId).update({selected:null,validMoves:[]})}}
-
-function getCapturesForPiece(b, r, c, pl) {
-  var p=b[r*8+c]; if(Math.sign(p)!==pl) return [];
-  var caps=[], isKing=Math.abs(p)===2, dirs=[-1,1], dcs=[-1,1];
-  for(var d=0;d<dirs.length;d++){for(var dc=0;dc<2;dc++){
-    if(isKing){var dist=1,enm=null;while(true){var nr=r+dist*dirs[d],nc=c+dist*dcs[dc];if(nr<0||nr>=8||nc<0||nc>=8)break;if(b[nr*8+nc]!==0){if(Math.sign(b[nr*8+nc])===(-pl)&&!enm)enm=[nr,nc];else break}else if(enm){caps.push({from:[r,c],to:[nr,nc],captured:enm})}dist++}}
-    else{var mr=r+dirs[d],mc=c+dcs[dc],jr=r+2*dirs[d],jc=c+2*dcs[dc];if(jr>=0&&jr<8&&jc>=0&&jc<8&&Math.sign(b[mr*8+mc])===(-pl)&&b[jr*8+jc]===0)caps.push({from:[r,c],to:[jr,jc],captured:[[mr,mc]]})}
-  }} return caps;
-}
-function getAllCaptures(b, pl) { var caps=[]; for(var r=0;r<8;r++){for(var c=0;c<8;c++){if(Math.sign(b[r*8+c])===pl){var pc=getCapturesForPiece(b,r,c,pl);for(var i=0;i<pc.length;i++)caps.push(pc[i])}}} return caps; }
-function getSimpleMovesForPiece(b, r, c, pl) {
-  var p=b[r*8+c]; if(Math.sign(p)!==pl) return [];
-  var mvs=[], isKing=Math.abs(p)===2, dirs=isKing?[-1,1]:(pl===1?[-1]:[1]), dcs=[-1,1];
-  for(var d=0;d<dirs.length;d++){for(var dc=0;dc<2;dc++){
-    if(isKing){var dist=1;while(true){var nr=r+dist*dirs[d],nc=c+dist*dcs[dc];if(nr<0||nr>=8||nc<0||nc>=8)break;if(b[nr*8+nc]!==0)break;mvs.push({from:[r,c],to:[nr,nc],captured:[]});dist++}}
-    else{var nr=r+dirs[d],nc=c+dcs[dc];if(nr>=0&&nr<8&&nc>=0&&nc<8&&b[nr*8+nc]===0)mvs.push({from:[r,c],to:[nr,nc],captured:[]})}
-  }} return mvs;
-}
-function getValidMovesForPiece(b, r, c, pl) {
-  if(getAllCaptures(b,pl).length>0) return getCapturesForPiece(b,r,c,pl);
-  return getSimpleMovesForPiece(b,r,c,pl);
-}
-
-function makePvPMove(fR,fC,tR,tC){
-  var b=gameState.board.slice(),p=b[fR*8+fC],pl=(p>0)?1:2;
-  b[tR*8+tC]=p;b[fR*8+fC]=0;
-  var wasCapture=Math.abs(tR-fR)>1;
-  if(wasCapture){var dR=Math.sign(tR-fR),dC=Math.sign(tC-fC);if(Math.abs(p)===2){var ir=fR+dR,ic=fC+dC;while(ir!==tR||ic!==tC){if(b[ir*8+ic]!==0)b[ir*8+ic]=0;ir+=dR;ic+=dC}}else{b[(fR+dR)*8+(fC+dC)]=0}playSound('capture')}else{playSound('move')}
-  var promoted=false;if(tR===0&&p===1){b[tR*8+tC]=2;promoted=true}if(tR===7&&p===-1){b[tR*8+tC]=-2;promoted=true}
-  var u={board:b,selected:null,validMoves:[]};
-  if(wasCapture&&!promoted){var nc=getCapturesForPiece(b,tR,tC,pl);if(nc.length>0){u.turn=pl;u.selected=[tR,tC];u.validMoves=nc.map(m=>m.to);db.ref('pvp_games/'+currentGameId).update(u);return}}
-  var np=pl===1?2:1;u.turn=np;
-  var p1c=0,p2c=0,p1k=0,p2k=0;for(var i=0;i<64;i++){if(b[i]>0){p1c++;if(b[i]===2)p1k++}if(b[i]<0){p2c++;if(b[i]===-2)p2k++}}
-  if(p1c===0){u.status='finished';u.winner=gameState.p2}else if(p2c===0){u.status='finished';u.winner=gameState.p1}else{var nhm=false;for(var i=0;i<64;i++){var np2=b[i];if((np===1&&np2>0)||(np===2&&np2<0)){if(getValidMovesForPiece(b,Math.floor(i/8),i%8,np).length>0){nhm=true;break}}}if(!nhm){u.status='finished';u.winner=pl}}
-  if(u.status!=='finished'){if(p1c===1&&p1k===1&&p2c===1&&p2k===1){u.status='finished';u.winner='draw'}if(u.status!=='finished'){var lp=0;if(p1c===1&&p2c>=1)lp=1;if(p2c===1&&p1c>=1)lp=2;if(p1c===1&&p2c===1)lp=1;var cdt=gameState.drawTargetPlayer||0,cdc=gameState.drawCounter||0;if(lp>0){if(cdt===0){u.drawTargetPlayer=lp;u.drawCounter=1}else if(cdt===lp){u.drawCounter=cdc+1;u.drawTargetPlayer=lp;if(u.drawCounter>=12){u.status='finished';u.winner='draw'}}else{u.drawTargetPlayer=lp;u.drawCounter=1}}else{u.drawTargetPlayer=0;u.drawCounter=0}}}
-  db.ref('pvp_games/'+currentGameId).update(u)
-}
-function endPvPGame(g){if(!currentGameId)return;if(processedGameEnds[currentGameId]){currentGameId=null;showPage('profile');return}processedGameEnds[currentGameId]=true;db.ref('pvp_games/'+currentGameId).off();var id=g.winner==='draw',iw=!id&&g.winner===myUid;if(id)playSound('move');else if(iw)playSound('win');else playSound('lose');db.ref('leaderboard_all/'+myUid).once('value',function(s){var d=s.val()||{},u={};if(id){u.coins=(d.coins||0)+g.entryMWK;u.gamesPlayed=(parseInt(d.gamesPlayed)||0)+1;db.ref('leaderboard_all/'+myUid).update(u,function(){alert('🤝 DRAW! MWK '+g.entryMWK+' refunded.');currentGameId=null;showPage('profile')})}else{u.gamesPlayed=(parseInt(d.gamesPlayed)||0)+1;u.gamesWon=(parseInt(d.gamesWon)||0)+(iw?1:0);u.gamesLost=(parseInt(d.gamesLost)||0)+(iw?0:1);if(iw)u.coins=(d.coins||0)+g.winMWK;db.ref('leaderboard_all/'+myUid).update(u,function(){alert(iw?'🎉 YOU WIN! +MWK '+g.winMWK:'😞 You Lost! MWK '+g.entryMWK);currentGameId=null;showPage('profile')})}})}
-function cancelMatchmaking(){if(db&&myUid){db.ref('pvp_queue').once('value',function(s){s.forEach(function(gs){if(gs.val()&&gs.val()[myUid]){var gid=gs.key,gr=PVP_GRADES.find(g=>g.id===parseInt(gid));db.ref('pvp_queue/'+gid+'/'+myUid).remove();db.ref('leaderboard_all/'+myUid+'/coins').once('value',function(cs){db.ref('leaderboard_all/'+myUid).update({coins:(cs.val()||0)+gr.entryMWK})})}})})}document.getElementById('searchingOverlay').style.display='none'}
-function exitGame(){if(confirm('Leave & FORFEIT?')){if(db&&currentGameId)db.ref('pvp_games/'+currentGameId).update({status:'finished',winner:myPlayerNumber===1?gameState.p2:gameState.p1})}}
-function submitDepositRequest(){if(!db||!myUid)return;var a=parseInt(document.getElementById("depositAmountInput").value),tx=(document.getElementById("depositTxIdInput").value||"").trim(),m=document.getElementById("depositMsg");if(!a||a<50){m.innerHTML='<span class="error">Minimum 50 MWK</span>';return}if(!tx||tx.length<4){m.innerHTML='<span class="error">Enter valid TxID</span>';return}m.innerHTML='<span class="success">Saving...</span>';db.ref('deposit_requests').push({uid:myUid,amountMWK:a,txId:tx,status:'pending',timestamp:Date.now()},function(e){if(e){m.innerHTML='<span class="error">Failed</span>'}else{alert("✅ Deposit Request Submitted!");document.getElementById("depositAmountInput").value='';document.getElementById("depositTxIdInput").value='';m.innerHTML='<span class="success">Opening Chat...</span>';showPage('inbox');var ii=document.getElementById('inboxMsgInput');if(ii){ii.value="I deposited MWK "+a+". TxID: "+tx+". Screenshot:";ii.focus()}}})}
-function submitWithdrawRequest(){if(!db||!myUid)return;var a=parseInt(document.getElementById("withdrawAmount").value),m=document.getElementById("msg");m.innerHTML='<span class="success">Processing...</span>';db.ref('leaderboard_all/'+myUid+'/coins').once('value',function(s){var cb=s.val()||0;if(cb<a){m.innerHTML='<span class="error">Not enough balance!</span>';return}db.ref('leaderboard_all/'+myUid).update({coins:cb-a},function(e){if(e){m.innerHTML='<span class="error">Error</span>';return}db.ref('withdraw_requests').push({uid:myUid,amountMWK:a,status:'pending',timestamp:Date.now()},function(e2){m.innerHTML=e2?'<span class="error">Failed</span>':'<span class="success">Requested!</span>';if(!e2)showBalance()})})})}
-function listenMyDeposits(){if(!db||!myUid)return;db.ref('deposit_requests').orderByChild('uid').equalTo(myUid).on('value',function(s){var h='<h3 style="font-size:14px;color:#888;margin-bottom:8px">Deposit History</h3>';s.forEach(function(c){var r=c.val();h+=`<div class="history-item"><div><span style="color:#fff">MWK ${r.amountMWK}</span><br><span style="color:#555;font-size:10px">${new Date(r.timestamp).toLocaleDateString()} • ${r.txId||''}</span></div><span class="history-status-${r.status}">${r.status}</span></div>`});document.getElementById('myDepositHistory').innerHTML=h})}
-function listenMyWithdrawals(){if(!db||!myUid)return;db.ref('withdraw_requests').orderByChild('uid').equalTo(myUid).on('value',function(s){var h='';if(!s.exists())h='<div style="text-align:center;color:#555;font-size:12px;padding:10px;">No withdrawals yet</div>';s.forEach(function(c){var r=c.val();var sh=r.status==='pending'?'<span class="history-status-pending">⏳ Pending</span>':r.status==='approved'?'<span class="history-status-approved">✅ Approved</span>':r.status==='declined'?'<span class="history-status-declined">❌ Declined</span>':`<span class="history-status-${r.status}">${r.status}</span>`;h+=`<div class="history-item"><div><span style="color:#fff">MWK ${r.amountMWK}</span><br><span style="color:#555;font-size:10px">${new Date(r.timestamp).toLocaleDateString()}</span></div>${sh}</div>`});document.getElementById('myWithdrawHistory').innerHTML=h})}
-var inboxFileData=null,inboxFileName=null;
-function loadInbox(){if(!db||!myUid)return;db.ref('admin_inbox/'+myUid+'/messages').orderByChild('timestamp').on('value',function(s){var h='';s.forEach(function(c){var m=c.val(),im=m.from==='user',ch='';if(m.image)ch+=`<img src="${m.image}" class="inbox-img" onclick="openImageViewer(this.src)">`;if(m.fileData)ch+=`<a href="${m.fileData}" download="${escapeHtml(m.fileName)||'file'}" class="inbox-file">📎 ${escapeHtml(m.fileName)||'File'}</a>`;if(m.text)ch+=`<div style="color:#fff;font-size:14px;white-space:pre-wrap;">${escapeHtml(m.text)}</div>`;h+=`<div class="inbox-item" style="${im?'text-align:right;background:#0a2a3a;':'text-align:left;background:#1a1a2e;'}">${ch}<div class="inbox-meta"><span>${im?'You':'Admin'}</span><span>${new Date(m.timestamp).toLocaleTimeString([],{hour:'2-digit',minute:'2-digit'})}</span></div></div>`});document.getElementById('inboxMessages').innerHTML=h||'<div style="text-align:center;color:#555;padding:20px;">No messages yet</div>';document.getElementById('inboxMessages').scrollTop=99999})}
-window.handleInboxFileUpload=function(e){var f=e.target.files&&e.target.files[0];if(!f)return;var im=f.type.startsWith('image/'),r=new FileReader();r.onload=function(ev){if(im){var img=new Image();img.onload=function(){var c=document.createElement('canvas'),w=600,h=600,iw=img.width,ih=img.height;if(iw>w){ih*=w/iw;iw=w}if(ih>h){iw*=h/ih;ih=h}c.width=Math.round(iw);c.height=Math.round(ih);c.getContext('2d').drawImage(img,0,0,c.width,c.height);inboxFileData=c.toDataURL('image/jpeg',0.5);inboxFileName=f.name;document.getElementById('inboxFilePreview').style.display='block';document.getElementById('inboxFileName').innerText='📷 '+f.name};img.src=ev.target.result}else{if(f.size>1048576){alert("Max 1MB.");e.target.value='';return}inboxFileData=ev.target.result;inboxFileName=f.name;document.getElementById('inboxFilePreview').style.display='block';document.getElementById('inboxFileName').innerText='📎 '+f.name}};r.readAsDataURL(f)};
-window.clearInboxFile=function(){inboxFileData=null;inboxFileName=null;document.getElementById('inboxFilePreview').style.display='none';document.getElementById('inboxFileInput').value=''};
-window.sendInboxMsg=function(){if(!db||!myUid)return;var i=document.getElementById('inboxMsgInput'),t=(i.value||'').trim();if(!t&&!inboxFileData)return;var md={from:'user',text:t,timestamp:Date.now()};if(inboxFileData){if(inboxFileData.includes('image/'))md.image=inboxFileData;else{md.fileData=inboxFileData;md.fileName=inboxFileName}}db.ref('admin_inbox/'+myUid+'/messages').push(md,function(e){if(!e){i.value='';window.clearInboxFile()}})};
-function setupInboxNotif(){if(!db||!myUid)return;db.ref('admin_inbox/'+myUid+'/messages').orderByChild('timestamp').limitToLast(1).on('value',function(s){s.forEach(c=>{if(c.val().from==='admin'){var ip=document.getElementById('inboxPage');if(ip&&!ip.classList.contains('active')){var d=document.getElementById('inboxNotifDot');if(d)d.style.display='inline-block'}}})})}
-document.addEventListener('DOMContentLoaded',function(){setTimeout(function(){var sp=document.getElementById('splashScreen');if(sp){sp.classList.add('splash-hide');setTimeout(function(){sp.style.display='none'},700)}},2500);var lsb=document.getElementById("loginSubmitBtn");if(lsb)lsb.addEventListener('click',function(e){e.preventDefault();login()});var lui=document.getElementById("loginUsernameInput");if(lui)lui.addEventListener('keypress',function(e){if(e.key==='Enter'){e.preventDefault();login()}});var lb=document.getElementById("loginBtn");if(lb)lb.addEventListener('click',function(e){e.preventDefault();register()});var ui=document.getElementById("usernameInput");if(ui){ui.addEventListener('keypress',function(e){if(e.key==='Enter'){e.preventDefault();register()}});setTimeout(function(){ui.focus();generateCaptcha()},300)}var pi=document.getElementById("phoneInput");if(pi)pi.addEventListener('input',function(e){this.value=this.value.replace(/[^0-9]/g,'')});var el;el=document.getElementById("navProfile");if(el)el.onclick=function(){showPage('profile')};el=document.getElementById("navWallet");if(el)el.onclick=function(){showPage('wallet')};el=document.getElementById("navPlay");if(el)el.onclick=function(){showPage('play')};el=document.getElementById("navInbox");if(el)el.onclick=function(){showPage('inbox')};try{var u=localStorage.getItem("user");if(u){myUid=u;document.getElementById("loginPage").classList.remove("active");document.getElementById("mainNav").style.display="flex";document.getElementById('waFloatBtn').style.display='flex';showPage('profile');if(db)lockPaymentMethod(localStorage.getItem("userPhone")||'',localStorage.getItem("network")||'');initGameListeners();setupInboxNotif()}}catch(e){}});
-</script>
-<!-- ===== CHAT & VOICE SYSTEM (Fixed message visibility - v2) ===== -->
-<script>
-(function(){
-  var chatCurrentWith = null; var chatListenerRef = null; var replyToMsg = null; var chatUsersCache = []; var chatMessagesData = []; var chatOnlineListeners = [];
-  var mediaRecorder = null; var audioChunks = []; var isRecording = false; var recordingTimer = null; var recordingSeconds = 0;
-
-  function getOtherUserId(chatId) { var parts = chatId.split('_'); return parts[0] === myUid? parts[1] : parts[0]; }
-  function setOnlineStatus(online) { if (!db ||!myUid) return; var ref = db.ref('online_status/' + myUid); if (online) { ref.set({online: true, lastSeen: Date.now()}); ref.onDisconnect().set({online: false, lastSeen: Date.now()}); } else { ref.set({online: false, lastSeen: Date.now()}); } }
-  function getChatId(uid1, uid2) { return uid1 < uid2? uid1 + '_' + uid2 : uid2 + '_' + uid1; }
-  function escapeHtml(text) { var d = document.createElement('div'); d.textContent = text; return d.innerHTML; }
-
-  function showChatPage() {
-    var pages = document.querySelectorAll('.page');
-    for (var i = 0; i < pages.length; i++) { pages[i].classList.remove('active'); pages[i].style.display = ''; }
-    document.getElementById('chatPage').classList.add('active');
-    var btns = document.querySelectorAll('.nav-btn');
-    for (var j = 0; j < btns.length; j++) btns[j].classList.remove('active');
-    if(btns[2]) btns[2].classList.add('active');
-    document.getElementById('mainNav').style.display = 'flex';
-    document.getElementById('waFloatBtn').style.display = 'flex';
-    loadChatUsers();
-  }
-
-  function loadChatUsers() { if (!db ||!myUid) return; db.ref('leaderboard_all').once('value', function(snap) { chatUsersCache = []; snap.forEach(function(child) { if (child.key!== myUid) chatUsersCache.push({ uid: child.key, displayName: (child.val()||{}).displayName || child.key }); }); renderChatUsers(chatUsersCache); listenAllOnlineStatus(); loadAllLastMessages(); loadAllUnreadCounts(); }); }
-  function listenAllOnlineStatus() { chatOnlineListeners.forEach(r => r.off()); chatOnlineListeners = []; chatUsersCache.forEach(function(u) { var ref = db.ref('online_status/' + u.uid); ref.on('value', function(sSnap) { var dotEl = document.getElementById('cdot_' + u.uid); var sd = sSnap.val(); if (dotEl) { if (sd && sd.online) dotEl.classList.add('on'); else dotEl.classList.remove('on'); } }); chatOnlineListeners.push(ref); }); }
-  function loadAllLastMessages() { chatUsersCache.forEach(function(u) { var chatId = getChatId(myUid, u.uid); db.ref('chats/' + chatId + '/messages').orderByChild('timestamp').limitToLast(1).once('value', function(snap) { snap.forEach(function(child) { var msg = child.val(); var el = document.getElementById('lastmsg_' + u.uid); if (el) el.innerText = (msg.from === myUid? 'You: ' : '') + (msg.image? '📷' : (msg.audio? '🎤' : (msg.text || ''))); }); }); }); }
-  function loadAllUnreadCounts() { chatUsersCache.forEach(function(u) { var chatId = getChatId(myUid, u.uid); db.ref('chats/' + chatId + '/messages').orderByChild('read').equalTo(false).once('value', function(snap) { var count = 0; snap.forEach(c => { if(c.val().from!== myUid) count++; }); var badge = document.getElementById('unread_' + u.uid); if (badge) { if (count > 0) { badge.style.display = 'flex'; badge.innerText = count; } else badge.style.display = 'none'; } }); }); }
-  function renderChatUsers(users) { var el = document.getElementById('chatUserList'); if (!el) return; if (!users.length) { el.innerHTML = '<div style="padding:30px;color:#555">No users yet</div>'; return; } var html = ''; users.forEach(function(u) { html += '<div class="chat-user-row" onclick="window._openChatWith(\''+u.uid+'\',\''+u.displayName+'\')" style="display:flex;align-items:center;gap:12px;padding:12px 8px;border-bottom:1px solid #1a1a1a"><div class="chat-avatar">'+escapeHtml(u.displayName[0])+'<span id="cdot_'+u.uid+'" class="chat-online-dot"></span></div><div style="flex:1;text-align:left;min-width:0"><div style="font-weight:bold;color:#fff;font-size:14px">'+escapeHtml(u.displayName)+'</div><div id="lastmsg_'+u.uid+'" style="font-size:12px;color:#888;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">Tap to chat</div></div><div id="unread_'+u.uid+'" class="chat-unread-badge">0</div></div>'; }); el.innerHTML = html; }
-  window.filterChatUsers = function() { var q = (document.getElementById('chatSearchInput').value || '').toLowerCase(); renderChatUsers(chatUsersCache.filter(u => u.displayName.toLowerCase().indexOf(q) >= 0)); listenAllOnlineStatus(); };
-
-  window._openChatWith = function(uid, displayName) {
-    chatCurrentWith = uid;
-    document.getElementById('chatConvName').innerText = displayName;
-    document.getElementById('chatConvAvatar').innerText = displayName[0];
-    cancelReply();
-    var pages = document.querySelectorAll('.page');
-    for (var i = 0; i < pages.length; i++) { pages[i].classList.remove('active'); pages[i].style.display = ''; }
-    document.getElementById('chatConvPage').classList.add('active');
-    document.getElementById('mainNav').style.display = 'none';
-    document.getElementById('waFloatBtn').style.display = 'none';
-    listenForChatMessages(uid);
-  };
-
-  window.backToChatList = function() { if (chatListenerRef && db) db.ref('chats/' + chatListenerRef + '/messages').off(); chatCurrentWith = null; showChatPage(); };
-  function listenForChatMessages(uid) { var chatId = getChatId(myUid, uid); if (chatListenerRef && db) db.ref('chats/' + chatListenerRef + '/messages').off(); chatListenerRef = chatId; db.ref('chats/' + chatId + '/messages').orderByChild('timestamp').on('value', function(snap) { chatMessagesData = []; snap.forEach(c => { var m = c.val(); m._id = c.key; chatMessagesData.push(m); }); renderChatMessages(chatMessagesData); markChatAsRead(chatId, chatMessagesData); }); }
-
-  /* ===================================================================
-     FIX v2: Force visibility, normalize IDs, make audio safe
-     =================================================================== */
-  function renderChatMessages(messages) {
-    var container = document.getElementById('chatMessages');
-    if (!container) return;
-    var html = '';
-    var prevDate = '';
-    var me = String(myUid || '').trim();
-
-    for (var idx = 0; idx < messages.length; idx++) {
-      var msg = messages[idx];
-      var fromId = String(msg.from || '').trim();
-      var isMine = fromId === me;
-      var dateStr = new Date(msg.timestamp).toLocaleDateString();
-
-      if (dateStr!== prevDate) {
-        html += '<div style="text-align:center;margin:14px 0;font-size:11px;color:#999"><span style="background:#222;padding:3px 14px;border-radius:10px;display:inline-block">'+dateStr+'</span></div>';
-        prevDate = dateStr;
+function handleGameUpdate(s){
+  if(!myUid)return;
+  s.forEach(function(c){
+    var g=c.val();
+    if(!g)return;
+    if(g.p1!==myUid&&g.p2!==myUid)return;
+    if(g.status==='playing'){
+      if(currentGameId!==c.key){
+        currentGameId=c.key;
+        myPlayerNumber=g.p1===myUid?1:2;
+        document.getElementById('searchingOverlay').style.display='none';
+        showPage('game');
+        startGameListener(c.key);
       }
-
-      var tickHtml = isMine? (msg.read? ' <span style="color:#00ffcc">✓✓</span>' : ' <span style="color:#777">✓✓</span>') : '';
-
-      var replyHtml = '';
-      if (msg.replyTo) {
-        replyHtml = '<div style="background:rgba(255,255,255,0.08);padding:4px 8px;border-radius:5px;border-left:3px solid #00ffcc;margin-bottom:6px;font-size:11px;color:#ccc">'+escapeHtml(msg.replyTo.text||'📷')+'</div>';
-      }
-
-      var imageHtml = '';
-      if (msg.image) {
-        imageHtml = '<img src="'+msg.image+'" style="max-width:220px;max-height:220px;border-radius:10px;margin-bottom:6px;display:block;cursor:pointer;border:2px solid #333" onclick="openImageViewer(this.src)">';
-      }
-
-      var audioHtml = '';
-      if (msg.audio) {
-        audioHtml = '<audio controls preload="none" style="width:200px;height:36px;margin-top:5px" src="'+msg.audio+'"></audio>';
-      }
-
-      var rowStyle = 'display:flex!important;visibility:visible!important;opacity:1!important;margin:8px 0;align-items:flex-end;gap:6px;width:100%;padding:0 6px;box-sizing:border-box;'+(isMine?'justify-content:flex-end;':'justify-content:flex-start;');
-
-      var bubbleStyle = 'padding:10px 14px;max-width:78%;min-width:60px;min-height:28px;word-wrap:break-word;border-radius:16px;box-sizing:border-box;'+
-        (isMine
-        ? 'background-color:#005c4b;background:linear-gradient(135deg,#005c4b,#00786a);border:1px solid #00ffcc;color:#fff;border-bottom-right-radius:4px;'
-         : 'background-color:#2a2f45;background:linear-gradient(135deg,#2a2f45,#32395e);border:1px solid #4a5568;color:#fff;border-bottom-left-radius:4px;');
-
-      var senderLabel = isMine
-       ? '<div style="font-size:10px;color:#7fffd4;margin-bottom:3px;font-weight:bold">You</div>'
-        : '<div style="font-size:10px;color:#a0b4ff;margin-bottom:3px;font-weight:bold">'+escapeHtml((msg.from||'User').substring(0,12))+'</div>';
-
-      html += '<div style="'+rowStyle+'" title="from:'+fromId+' me:'+me+'">';
-
-      if (!isMine) {
-        html += '<button style="font-size:14px;padding:4px;background:transparent;border:none;cursor:pointer;opacity:0.5;color:#888" onclick="window._setReplyByIndex('+idx+')">↩</button>';
-      }
-
-      html += '<div style="'+bubbleStyle+'">';
-      html += senderLabel;
-      html += replyHtml;
-      html += imageHtml;
-      html += audioHtml;
-      if (msg.text) {
-        html += '<div style="color:#ffffff!important;font-size:14px;white-space:pre-wrap;line-height:1.4">'+escapeHtml(msg.text)+'</div>';
-      }
-      html += '<div style="font-size:10px;color:rgba(255,255,255,0.6);margin-top:5px;text-align:right">'+new Date(msg.timestamp).toLocaleTimeString([],{hour:'2-digit',minute:'2-digit'})+tickHtml+'</div>';
-      html += '</div>';
-
-      if (isMine) {
-        html += '<button style="font-size:14px;padding:4px;background:transparent;border:none;cursor:pointer;opacity:0.5;color:#888" onclick="window._setReplyByIndex('+idx+')">↩</button>';
-        html += '<button style="font-size:14px;padding:4px;background:transparent;border:none;cursor:pointer;opacity:0.6;color:#ff7b7b" onclick="window._deleteMsg(\''+msg._id+'\')" title="Delete">🗑</button>';
-      }
-      html += '</div>';
+    }else if(g.status==='finished'&&currentGameId===c.key){
+      endPvPGame(g);
     }
+  });
+}
 
-    container.innerHTML = html;
-    container.scrollTop = container.scrollHeight;
-  }
+function startGameListener(gid){
+  if(gameListener)db.ref('pvp_games/'+gameListener).off();
+  gameListener=gid;
+  db.ref('pvp_games/'+gid).on('value',function(s){
+    var g=s.val();
+    if(!g)return;
+    gameState=g;
+    renderPvPBoard();
+    if(g.status==='finished'&&currentGameId===gid){
+      endPvPGame(g);
+    }
+  });
+}
 
-  function markChatAsRead(chatId, msgs) { if (!db) return; msgs.forEach(m => { if (m.from!== myUid &&!m.read) db.ref('chats/' + chatId + '/messages/' + m._id).update({read: true}); }); }
+function renderPvPBoard(){var be=document.getElementById('checkersBoard'),h='';document.getElementById('p1Name').innerText='🔴 '+(gameState.p1===myUid?'You':gameState.p1);document.getElementById('p2Name').innerText='⚫ '+(gameState.p2===myUid?'You':gameState.p2);document.getElementById('gameStake').innerText=gameState.entryMWK+' MWK';document.getElementById('gamePrize').innerText=gameState.winMWK+' MWK';var imt=gameState.turn===myPlayerNumber;var isMultiJump=imt&&gameState.selected&&gameState.validMoves&&gameState.validMoves.length>0;document.getElementById('turnIndicator').innerText=isMultiJump?'⚡ Must Jump!':(imt?'🎯 Your Turn!':'⏳ Opponent');document.getElementById('turnIndicator').style.color=isMultiJump?'#ffd700':(imt?'#51cf66':'#ff6b6b');var db2=document.getElementById('drawCounterBar'),dt=gameState.drawTargetPlayer||0,dc=gameState.drawCounter||0;if(dt>0&&dc>0){db2.style.display='block';db2.innerText='⏱️ Draw in '+(12-dc)+' moves'}else db2.style.display='none';var b=gameState.board.slice();var sel=gameState.selected||null,vm=gameState.validMoves||[];for(var i=0;i<64;i++){var displayR=Math.floor(i/8),displayC=i%8;var boardR=myPlayerNumber===2?7-displayR:displayR;var boardC=myPlayerNumber===2?7-displayC:displayC;var boardIdx=boardR*8+boardC;var isDark=(displayR+displayC)%2===1;var p=b[boardIdx];var sc=sel&&sel[0]===boardR&&sel[1]===boardC?'selected':'';var mc=vm.some(function(m){return m[0]===boardR&&m[1]===boardC})?'valid-move':'';h+='<div class="square '+(isDark?'dark':'light')+' '+sc+' '+mc+'" onclick="clickPvPSquare('+displayR+','+displayC+')">';if(p!==0)h+='<div class="piece '+(p>0?'p1':'p2')+' '+(Math.abs(p)===2?'king':'')+'"></div>';h+='</div>'}be.innerHTML=h}
+function clickPvPSquare(r,c){if(gameState.turn!==myPlayerNumber)return;if(!db||!currentGameId)return;if(myPlayerNumber===2){r=7-r;c=7-c}var b=gameState.board,cv=b[r*8+c],sel=gameState.selected,vm=gameState.validMoves||[];if(sel&&vm.some(function(m){return m[0]===r&&m[1]===c})){makePvPMove(sel[0],sel[1],r,c);return}if((myPlayerNumber===1&&cv>0)||(myPlayerNumber===2&&cv<0)){var pl=myPlayerNumber;var allMoves=getAllCaptures(b,pl);var mustCapture=allMoves.length>0;var pieceMoves=getValidMovesForPiece(b,r,c,pl);var filteredMoves=[];for(var i=0;i<pieceMoves.length;i++){if(mustCapture&&pieceMoves[i].captured.length===0)continue;filteredMoves.push(pieceMoves[i].to)}if(filteredMoves.length>0)db.ref('pvp_games/'+currentGameId).update({selected:[r,c],validMoves:filteredMoves});else db.ref('pvp_games/'+currentGameId).update({selected:null,validMoves:[]})}else{db.ref('pvp_games/'+currentGameId).update({selected:null,validMoves:[]})}}
 
-  window.sendChatMsg = function() {
-    if (!db ||!chatCurrentWith ||!myUid) { alert('Chat not ready. Please try again.'); return; }
-    var input = document.getElementById('chatMsgInput');
-    var text = (input.value || '').trim();
-    if (!text) return;
-    var msgData = { from: myUid, text: text, timestamp: Date.now(), read: false };
-    if (replyToMsg) { msgData.replyTo = {id: replyToMsg.id, text: replyToMsg.text}; cancelReply(); }
-    var chatId = getChatId(myUid, chatCurrentWith);
-    db.ref('chats/' + chatId + '/messages').push(msgData, function(err) {
-      if(err) { alert('Message failed: ' + err.message); }
-      else { input.value = ''; }
-    });
-  };
-
-  window._setReplyByIndex = function(idx) { var msg = chatMessagesData[idx]; if (!msg) return; replyToMsg = {id: msg._id, text: msg.text || (msg.image?'📷':(msg.audio?'🎤':''))}; document.getElementById('replyPreview').style.display = 'block'; document.getElementById('replyPreviewText').innerText = replyToMsg.text; document.getElementById('chatMsgInput').focus(); };
-  function cancelReply() { replyToMsg = null; document.getElementById('replyPreview').style.display = 'none'; } window.cancelReply = cancelReply;
-
-  /* FIX: Image upload sends with callback and error handling */
-  window.handleChatFileUpload = function(e) {
-    var file = e.target.files && e.target.files[0];
-    if (!file ||!db ||!chatCurrentWith ||!myUid) return;
-    var reader = new FileReader();
-    reader.onload = function(ev) {
-      var img = new Image();
-      img.onload = function() {
-        var c = document.createElement('canvas');
-        var w=600, h=600, iw=img.width, ih=img.height;
-        if(iw>w){ih*=w/iw; iw=w;}
-        if(ih>h){iw*=h/ih; ih=h;}
-        c.width=Math.round(iw);
-        c.height=Math.round(ih);
-        c.getContext('2d').drawImage(img,0,0,c.width,c.height);
-        var imageData = c.toDataURL('image/jpeg', 0.5);
-        var chatId = getChatId(myUid, chatCurrentWith);
-        db.ref('chats/' + chatId + '/messages').push({
-          from: myUid,
-          text: '',
-          image: imageData,
-          timestamp: Date.now(),
-          read: false
-        }, function(err) {
-          if(err) { alert('Image send failed: ' + err.message); }
-        });
-      };
-      img.src = ev.target.result;
-    };
-    reader.readAsDataURL(file);
-    e.target.value = '';
-  };
-
-  window._deleteMsg = function(msgId) { if(!chatListenerRef ||!db) return; if(confirm('Delete?')) db.ref('chats/' + chatListenerRef + '/messages/' + msgId).remove(); };
-  window.clearChat = function() { if(!chatCurrentWith ||!db) return; if(confirm('Delete ALL messages?')) db.ref('chats/' + getChatId(myUid, chatCurrentWith) + '/messages').remove(); };
-
-  window.toggleVoiceNote = function() { if (isRecording) stopVoiceRecording(); else startVoiceRecording(); };
-  function startVoiceRecording() {
-    var getMedia = function() {
-      navigator.mediaDevices.getUserMedia({audio: true}).then(function(stream) {
-        audioChunks = [];
-        mediaRecorder = new MediaRecorder(stream);
-        mediaRecorder.ondataavailable = function(e) { audioChunks.push(e.data); };
-        mediaRecorder.onstop = function() {
-          stream.getTracks().forEach(t => t.stop());
-          var blob = new Blob(audioChunks, {type: 'audio/webm'});
-          var reader = new FileReader();
-          reader.onload = function() {
-            db.ref('chats/' + getChatId(myUid, chatCurrentWith) + '/messages').push({
-              from: myUid,
-              text: '',
-              audio: reader.result,
-              timestamp: Date.now(),
-              read: false
-            });
-          };
-          reader.readAsDataURL(blob);
-        };
-        mediaRecorder.start();
-        isRecording = true;
-        document.getElementById('voiceNoteBtn').style.background = '#ff6b6b';
-        document.getElementById('voiceNoteBtn').innerText = '⏹';
-        document.getElementById('recordingStatus').style.display = 'block';
-        recordingTimer = setInterval(function() {
-          recordingSeconds++;
-          if(recordingSeconds >= 60) stopVoiceRecording();
-        }, 1000);
-      }).catch(function() { alert('Mic denied.'); });
-    };
-    if (window.median) { median.microphone.requestPermission().then(() => getMedia()).catch(() => alert('Mic denied')); }
-    else { getMedia(); }
-  }
-  function stopVoiceRecording() {
-    if (mediaRecorder && mediaRecorder.state!== 'inactive') mediaRecorder.stop();
-    isRecording = false;
-    clearInterval(recordingTimer);
-    recordingSeconds = 0;
-    document.getElementById('voiceNoteBtn').style.background = '#1a1a1a';
-    document.getElementById('voiceNoteBtn').innerText = '🎤';
-    document.getElementById('recordingStatus').style.display = 'none';
-  }
-
-  if(document.getElementById('navChat')) document.getElementById('navChat').addEventListener('click', function(e) { e.preventDefault(); showChatPage(); });
-  function initChatOnline() { if (myUid && db) { setOnlineStatus(true); setInterval(function() { if (myUid && db) setOnlineStatus(true); }, 30000); } }
-  window.addEventListener('beforeunload', function() { setOnlineStatus(false); });
-  setTimeout(function() { if (myUid && db) initChatOnline(); }, 500);
-  var _lastUid = null; setInterval(function() { if (myUid!== _lastUid) { _lastUid = myUid; if (myUid && db) initChatOnline(); } }, 500);
-})();
-</script>
+function getCapturesForPiece(b, r, c, pl) { var s=pl===1?1:-1; var p=b[r*8+c]; if(Math.sign(p)!==s) return []; var caps=[], isKing=Math.abs(p)===2, dirs=[-1,1], dcs=[-1,1]; for(var d=0;d<dirs.length;d++){for(var dc=0;dc<2;dc++){ if(isKing){var dist=1,enm=null;while(true){var nr=r+dist*dirs[d],nc=c+dist*dcs[dc];if(nr<0||nr>=8||nc<0||nc>=8)break;if(b[nr*8+nc]!==0){if(Math.sign(b[nr*8+nc])===(-s)&&!enm)enm=[nr,nc];else break}else if(enm){caps.push({from:[r,c],to:[nr,nc],captured:enm})}dist++}} else{var mr=r+dirs[d],mc=c+dcs[dc],jr=r+2*dirs[d],jc=c+2*dcs[dc
