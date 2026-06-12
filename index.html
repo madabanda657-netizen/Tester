@@ -11,22 +11,19 @@
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
 <style>
   :root {
-    --bg: #0c0c0f;
-    --bg2: #141418;
-    --bg3: #1c1c22;
-    --fg: #e8e6e3;
+    --bg: #0a0a0d;
+    --bg2: #111116;
+    --bg3: #1a1a20;
+    --fg: #eae8e4;
     --muted: #7a7880;
-    --accent: #f59e0b;
-    --accent2: #d97706;
-    --accent-glow: rgba(245, 158, 11, 0.15);
+    --accent: #e8a217;
+    --accent2: #cc8f0e;
     --success: #22c55e;
     --error: #ef4444;
-    --card: #18181d;
-    --border: #2a2a32;
+    --card: #15151b;
+    --border: #27272e;
   }
-
   * { box-sizing: border-box; margin: 0; padding: 0; }
-
   body {
     font-family: 'Space Grotesk', sans-serif;
     background: var(--bg);
@@ -34,593 +31,305 @@
     min-height: 100vh;
     overflow-x: hidden;
   }
-
   .bg-grid {
-    position: fixed;
-    inset: 0;
+    position: fixed; inset: 0;
     background-image:
-      linear-gradient(rgba(245,158,11,0.03) 1px, transparent 1px),
-      linear-gradient(90deg, rgba(245,158,11,0.03) 1px, transparent 1px);
+      linear-gradient(rgba(232,162,23,0.025) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(232,162,23,0.025) 1px, transparent 1px);
     background-size: 60px 60px;
-    pointer-events: none;
-    z-index: 0;
+    pointer-events: none; z-index: 0;
+  }
+  .bg-glow {
+    position: fixed; top: -250px; right: -200px;
+    width: 700px; height: 700px;
+    background: radial-gradient(circle, rgba(232,162,23,0.07) 0%, transparent 70%);
+    pointer-events: none; z-index: 0;
+    animation: gFloat 14s ease-in-out infinite;
+  }
+  .bg-glow2 {
+    position: fixed; bottom: -300px; left: -200px;
+    width: 600px; height: 600px;
+    background: radial-gradient(circle, rgba(232,162,23,0.04) 0%, transparent 70%);
+    pointer-events: none; z-index: 0;
+    animation: gFloat 18s ease-in-out infinite reverse;
+  }
+  @keyframes gFloat {
+    0%,100%{transform:translate(0,0) scale(1);}
+    50%{transform:translate(25px,-15px) scale(1.08);}
   }
 
-  .bg-glow-1 {
-    position: fixed;
-    top: -200px;
-    right: -200px;
-    width: 600px;
-    height: 600px;
-    background: radial-gradient(circle, rgba(245,158,11,0.08) 0%, transparent 70%);
-    pointer-events: none;
-    z-index: 0;
-    animation: floatGlow 12s ease-in-out infinite;
-  }
-
-  .bg-glow-2 {
-    position: fixed;
-    bottom: -300px;
-    left: -200px;
-    width: 700px;
-    height: 700px;
-    background: radial-gradient(circle, rgba(245,158,11,0.05) 0%, transparent 70%);
-    pointer-events: none;
-    z-index: 0;
-    animation: floatGlow 15s ease-in-out infinite reverse;
-  }
-
-  @keyframes floatGlow {
-    0%, 100% { transform: translate(0, 0) scale(1); }
-    50% { transform: translate(30px, -20px) scale(1.1); }
-  }
-
+  /* Phone */
   .phone-frame {
-    width: 260px;
-    height: 520px;
-    border: 3px solid #333;
-    border-radius: 32px;
-    background: #000;
-    position: relative;
-    overflow: hidden;
-    box-shadow:
-      0 0 0 1px rgba(255,255,255,0.05),
-      0 20px 60px rgba(0,0,0,0.6),
-      inset 0 0 30px rgba(0,0,0,0.3);
+    width: 250px; height: 500px;
+    border: 3px solid #2a2a2a; border-radius: 30px;
+    background: #000; position: relative; overflow: hidden;
+    box-shadow: 0 0 0 1px rgba(255,255,255,0.04), 0 20px 60px rgba(0,0,0,0.5);
   }
-
   .phone-notch {
-    position: absolute;
-    top: 0;
-    left: 50%;
-    transform: translateX(-50%);
-    width: 120px;
-    height: 24px;
-    background: #000;
-    border-radius: 0 0 16px 16px;
-    z-index: 10;
+    position: absolute; top: 0; left: 50%; transform: translateX(-50%);
+    width: 110px; height: 22px; background: #000;
+    border-radius: 0 0 14px 14px; z-index: 10;
   }
-
   .phone-screen {
-    position: absolute;
-    inset: 6px;
-    border-radius: 26px;
-    overflow: hidden;
-    background: #fff;
+    position: absolute; inset: 5px; border-radius: 25px;
+    overflow: hidden; background: #fff;
   }
-
   .phone-statusbar {
-    height: 28px;
-    background: var(--accent);
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-size: 10px;
-    font-weight: 600;
-    color: #000;
+    height: 26px; display: flex; align-items: center;
+    justify-content: center; font-size: 10px; font-weight: 600; color: #000;
   }
-
   .phone-content {
-    flex: 1;
-    display: flex;
-    flex-direction: column;
-    height: calc(100% - 28px);
+    display: flex; flex-direction: column;
+    height: calc(100% - 26px);
   }
-
   .phone-toolbar {
-    height: 36px;
-    background: var(--accent);
-    display: flex;
-    align-items: center;
-    padding: 0 8px;
-    gap: 6px;
+    height: 34px; display: flex; align-items: center;
+    padding: 0 8px; gap: 6px;
   }
-
   .phone-toolbar-title {
-    flex: 1;
-    font-size: 11px;
-    font-weight: 600;
-    color: #000;
-    white-space: nowrap;
-    overflow: hidden;
-    text-overflow: ellipsis;
+    flex: 1; font-size: 11px; font-weight: 600; color: #000;
+    white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
   }
-
   .phone-webview {
-    flex: 1;
-    background: #f5f5f5;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
+    flex: 1; background: #f5f5f5;
+    display: flex; flex-direction: column;
+    align-items: center; justify-content: center;
     padding: 12px;
-    position: relative;
   }
-
-  .phone-webview .skeleton-line {
-    width: 80%;
-    height: 8px;
-    background: #e0e0e0;
-    border-radius: 4px;
-    margin-bottom: 8px;
+  .skeleton-line {
+    width: 80%; height: 7px; background: #e0e0e0;
+    border-radius: 4px; margin-bottom: 7px;
     animation: shimmer 1.5s infinite;
   }
-
-  .phone-webview .skeleton-line:nth-child(2) { width: 60%; }
-  .phone-webview .skeleton-line:nth-child(4) { width: 90%; height: 40px; }
-
-  @keyframes shimmer {
-    0% { opacity: 0.5; }
-    50% { opacity: 1; }
-    100% { opacity: 0.5; }
-  }
+  .skeleton-line:nth-child(2){width:60%;}
+  .skeleton-line:nth-child(4){width:90%;height:30px;}
+  @keyframes shimmer {0%{opacity:.5;}50%{opacity:1;}100%{opacity:.5;}}
 
   .splash-preview {
-    position: absolute;
-    inset: 0;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    z-index: 5;
-    transition: opacity 0.5s;
+    position: absolute; inset: 0;
+    display: flex; flex-direction: column;
+    align-items: center; justify-content: center;
+    z-index: 5; transition: opacity 0.5s;
   }
 
+  /* Steps */
   .step-dot {
-    width: 36px;
-    height: 36px;
-    border-radius: 50%;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-weight: 700;
-    font-size: 14px;
-    transition: all 0.4s ease;
-    border: 2px solid var(--border);
-    background: var(--bg2);
-    color: var(--muted);
+    width: 34px; height: 34px; border-radius: 50%;
+    display: flex; align-items: center; justify-content: center;
+    font-weight: 700; font-size: 13px;
+    transition: all 0.4s; border: 2px solid var(--border);
+    background: var(--bg2); color: var(--muted);
   }
-
   .step-dot.active {
-    border-color: var(--accent);
-    background: var(--accent);
-    color: #000;
-    box-shadow: 0 0 20px rgba(245,158,11,0.3);
+    border-color: var(--accent); background: var(--accent);
+    color: #000; box-shadow: 0 0 18px rgba(232,162,23,0.25);
   }
-
   .step-dot.done {
-    border-color: var(--success);
-    background: var(--success);
-    color: #fff;
+    border-color: var(--success); background: var(--success); color: #fff;
   }
-
-  .step-line {
-    flex: 1;
-    height: 2px;
-    background: var(--border);
-    transition: background 0.4s;
-  }
-
+  .step-line { flex: 1; height: 2px; background: var(--border); transition: background 0.4s; }
   .step-line.done { background: var(--success); }
 
+  /* Form */
   .form-input {
-    width: 100%;
-    padding: 12px 16px;
-    background: var(--bg2);
-    border: 1.5px solid var(--border);
-    border-radius: 10px;
-    color: var(--fg);
-    font-family: 'Space Grotesk', sans-serif;
-    font-size: 14px;
-    outline: none;
-    transition: border-color 0.3s, box-shadow 0.3s;
+    width: 100%; padding: 11px 14px;
+    background: var(--bg2); border: 1.5px solid var(--border);
+    border-radius: 9px; color: var(--fg);
+    font-family: 'Space Grotesk', sans-serif; font-size: 14px;
+    outline: none; transition: border-color 0.3s, box-shadow 0.3s;
   }
-
-  .form-input:focus {
-    border-color: var(--accent);
-    box-shadow: 0 0 0 3px rgba(245,158,11,0.1);
-  }
-
+  .form-input:focus { border-color: var(--accent); box-shadow: 0 0 0 3px rgba(232,162,23,0.1); }
   .form-input::placeholder { color: var(--muted); }
-
   .form-select {
-    width: 100%;
-    padding: 12px 16px;
-    background: var(--bg2);
-    border: 1.5px solid var(--border);
-    border-radius: 10px;
-    color: var(--fg);
-    font-family: 'Space Grotesk', sans-serif;
-    font-size: 14px;
-    outline: none;
-    cursor: pointer;
-    appearance: none;
-    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8'%3E%3Cpath d='M1 1l5 5 5-5' stroke='%237a7880' stroke-width='2' fill='none'/%3E%3C/svg%3E");
-    background-repeat: no-repeat;
-    background-position: right 14px center;
+    width: 100%; padding: 11px 14px;
+    background: var(--bg2); border: 1.5px solid var(--border);
+    border-radius: 9px; color: var(--fg);
+    font-family: 'Space Grotesk', sans-serif; font-size: 14px;
+    outline: none; cursor: pointer; appearance: none;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8'%3E%3Cpath d='M1 1l5 5 5-5' stroke='%237a7880' stroke-width='2' fill='none'/%3E%3C/svg%3E");
+    background-repeat: no-repeat; background-position: right 12px center;
     transition: border-color 0.3s;
   }
-
   .form-select:focus { border-color: var(--accent); }
-
   .form-label {
-    display: block;
-    font-size: 13px;
-    font-weight: 600;
-    color: var(--muted);
-    margin-bottom: 6px;
-    text-transform: uppercase;
-    letter-spacing: 0.5px;
+    display: block; font-size: 12px; font-weight: 600;
+    color: var(--muted); margin-bottom: 5px;
+    text-transform: uppercase; letter-spacing: 0.5px;
   }
-
   .toggle-track {
-    width: 44px;
-    height: 24px;
-    background: var(--border);
-    border-radius: 12px;
-    position: relative;
-    cursor: pointer;
-    transition: background 0.3s;
-    flex-shrink: 0;
+    width: 42px; height: 22px; background: var(--border);
+    border-radius: 11px; position: relative; cursor: pointer;
+    transition: background 0.3s; flex-shrink: 0;
   }
-
   .toggle-track.on { background: var(--accent); }
-
   .toggle-thumb {
-    width: 18px;
-    height: 18px;
-    background: #fff;
-    border-radius: 50%;
-    position: absolute;
-    top: 3px;
-    left: 3px;
-    transition: transform 0.3s;
-    box-shadow: 0 1px 4px rgba(0,0,0,0.3);
+    width: 16px; height: 16px; background: #fff; border-radius: 50%;
+    position: absolute; top: 3px; left: 3px; transition: transform 0.3s;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.3);
   }
-
   .toggle-track.on .toggle-thumb { transform: translateX(20px); }
-
   .btn-primary {
-    padding: 12px 28px;
-    background: var(--accent);
-    color: #000;
-    font-weight: 700;
-    font-size: 15px;
-    border: none;
-    border-radius: 10px;
-    cursor: pointer;
-    transition: all 0.3s;
+    padding: 11px 24px; background: var(--accent); color: #000;
+    font-weight: 700; font-size: 14px; border: none; border-radius: 9px;
+    cursor: pointer; transition: all 0.3s;
     font-family: 'Space Grotesk', sans-serif;
-    display: inline-flex;
-    align-items: center;
-    gap: 8px;
+    display: inline-flex; align-items: center; gap: 7px;
   }
-
-  .btn-primary:hover {
-    background: var(--accent2);
-    transform: translateY(-1px);
-    box-shadow: 0 8px 24px rgba(245,158,11,0.25);
-  }
-
-  .btn-primary:disabled {
-    opacity: 0.5;
-    cursor: not-allowed;
-    transform: none;
-    box-shadow: none;
-  }
-
+  .btn-primary:hover { background: var(--accent2); transform: translateY(-1px); box-shadow: 0 6px 20px rgba(232,162,23,0.2); }
+  .btn-primary:disabled { opacity: 0.5; cursor: not-allowed; transform: none; box-shadow: none; }
   .btn-secondary {
-    padding: 12px 28px;
-    background: transparent;
-    color: var(--fg);
-    font-weight: 600;
-    font-size: 15px;
-    border: 1.5px solid var(--border);
-    border-radius: 10px;
-    cursor: pointer;
-    transition: all 0.3s;
+    padding: 11px 24px; background: transparent; color: var(--fg);
+    font-weight: 600; font-size: 14px; border: 1.5px solid var(--border);
+    border-radius: 9px; cursor: pointer; transition: all 0.3s;
     font-family: 'Space Grotesk', sans-serif;
-    display: inline-flex;
-    align-items: center;
-    gap: 8px;
+    display: inline-flex; align-items: center; gap: 7px;
   }
-
-  .btn-secondary:hover {
-    border-color: var(--muted);
-    background: var(--bg3);
+  .btn-secondary:hover { border-color: var(--muted); background: var(--bg3); }
+  .btn-dark {
+    padding: 11px 24px; background: var(--bg3); color: var(--fg);
+    font-weight: 600; font-size: 14px; border: 1.5px solid var(--border);
+    border-radius: 9px; cursor: pointer; transition: all 0.3s;
+    font-family: 'Space Grotesk', sans-serif;
+    display: inline-flex; align-items: center; gap: 7px;
   }
+  .btn-dark:hover { border-color: var(--accent); background: rgba(232,162,23,0.05); }
 
-  .color-picker-wrap {
-    display: flex;
-    align-items: center;
-    gap: 10px;
-  }
-
+  .color-picker-wrap { display: flex; align-items: center; gap: 10px; }
   .color-swatch {
-    width: 40px;
-    height: 40px;
-    border-radius: 8px;
-    border: 2px solid var(--border);
-    cursor: pointer;
-    overflow: hidden;
-    position: relative;
-    flex-shrink: 0;
+    width: 38px; height: 38px; border-radius: 8px;
+    border: 2px solid var(--border); cursor: pointer;
+    overflow: hidden; position: relative; flex-shrink: 0;
   }
-
   .color-swatch input[type="color"] {
-    position: absolute;
-    inset: -8px;
-    width: calc(100% + 16px);
-    height: calc(100% + 16px);
-    cursor: pointer;
-    border: none;
-    padding: 0;
+    position: absolute; inset: -8px;
+    width: calc(100% + 16px); height: calc(100% + 16px);
+    cursor: pointer; border: none; padding: 0;
   }
 
   .toast {
-    position: fixed;
-    top: 20px;
-    right: 20px;
-    padding: 14px 20px;
-    border-radius: 10px;
-    font-weight: 600;
-    font-size: 14px;
-    z-index: 9999;
+    position: fixed; top: 20px; right: 20px;
+    padding: 12px 18px; border-radius: 9px;
+    font-weight: 600; font-size: 13px; z-index: 9999;
     transform: translateX(120%);
-    transition: transform 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
-    display: flex;
-    align-items: center;
-    gap: 10px;
+    transition: transform 0.4s cubic-bezier(0.34,1.56,0.64,1);
+    display: flex; align-items: center; gap: 8px;
   }
-
   .toast.show { transform: translateX(0); }
   .toast.success { background: var(--success); color: #fff; }
   .toast.error { background: var(--error); color: #fff; }
-  .toast.info { background: var(--accent); color: #000; }
 
-  .progress-bar {
-    width: 100%;
-    height: 6px;
-    background: var(--bg3);
-    border-radius: 3px;
-    overflow: hidden;
-  }
-
+  .progress-bar { width: 100%; height: 5px; background: var(--bg3); border-radius: 3px; overflow: hidden; }
   .progress-fill {
-    height: 100%;
-    background: linear-gradient(90deg, var(--accent), var(--accent2));
-    border-radius: 3px;
-    width: 0%;
-    transition: width 0.3s ease;
+    height: 100%; background: linear-gradient(90deg, var(--accent), var(--accent2));
+    border-radius: 3px; width: 0%; transition: width 0.3s ease;
   }
 
   .code-block {
-    background: #0d0d12;
-    border: 1px solid var(--border);
-    border-radius: 10px;
-    padding: 16px;
+    background: #09090d; border: 1px solid var(--border);
+    border-radius: 9px; padding: 14px;
     font-family: 'JetBrains Mono', monospace;
-    font-size: 12px;
-    line-height: 1.6;
-    overflow-x: auto;
-    color: #a0a0a8;
-    max-height: 300px;
-    overflow-y: auto;
+    font-size: 11.5px; line-height: 1.6;
+    overflow-x: auto; color: #a0a0a8;
+    max-height: 260px; overflow-y: auto;
   }
+  .code-block .kw{color:#c792ea;} .code-block .st{color:#c3e88d;}
+  .code-block .cm{color:#546e7a;} .code-block .tg{color:#f07178;}
+  .code-block .at{color:#ffcb6b;}
 
-  .code-block .keyword { color: #c792ea; }
-  .code-block .string { color: #c3e88d; }
-  .code-block .comment { color: #546e7a; }
-  .code-block .tag { color: #f07178; }
-  .code-block .attr { color: #ffcb6b; }
+  .fade-in { animation: fadeIn 0.45s ease forwards; }
+  @keyframes fadeIn { from{opacity:0;transform:translateY(14px);}to{opacity:1;transform:translateY(0);} }
+  .float-anim { animation: fl 6s ease-in-out infinite; }
+  @keyframes fl { 0%,100%{transform:translateY(0);}50%{transform:translateY(-8px);} }
 
-  .fade-in { animation: fadeIn 0.5s ease forwards; }
-
-  @keyframes fadeIn {
-    from { opacity: 0; transform: translateY(16px); }
-    to { opacity: 1; transform: translateY(0); }
-  }
-
-  .float-anim { animation: float 6s ease-in-out infinite; }
-
-  @keyframes float {
-    0%, 100% { transform: translateY(0); }
-    50% { transform: translateY(-10px); }
-  }
-
-  ::-webkit-scrollbar { width: 6px; }
+  ::-webkit-scrollbar { width: 5px; }
   ::-webkit-scrollbar-track { background: var(--bg); }
   ::-webkit-scrollbar-thumb { background: var(--border); border-radius: 3px; }
 
-  .app-icon-preview {
-    width: 48px;
-    height: 48px;
-    border-radius: 12px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-weight: 800;
-    font-size: 20px;
-    color: #fff;
-    text-shadow: 0 1px 2px rgba(0,0,0,0.3);
-  }
-
-  .feature-card {
-    background: var(--card);
-    border: 1px solid var(--border);
-    border-radius: 14px;
-    padding: 20px;
-    transition: all 0.3s;
-  }
-
-  .feature-card:hover {
-    border-color: rgba(245,158,11,0.3);
-    transform: translateY(-2px);
-    box-shadow: 0 8px 30px rgba(0,0,0,0.3);
-  }
-
   .perm-check {
-    display: flex;
-    align-items: center;
-    gap: 10px;
-    padding: 10px 14px;
-    background: var(--bg2);
-    border: 1px solid var(--border);
-    border-radius: 8px;
-    cursor: pointer;
-    transition: all 0.2s;
+    display: flex; align-items: center; gap: 10px;
+    padding: 9px 12px; background: var(--bg2);
+    border: 1px solid var(--border); border-radius: 8px;
+    cursor: pointer; transition: all 0.2s;
   }
-
   .perm-check:hover { border-color: var(--muted); }
-  .perm-check.active { border-color: var(--accent); background: rgba(245,158,11,0.05); }
-
+  .perm-check.active { border-color: var(--accent); background: rgba(232,162,23,0.04); }
   .perm-check .check-box {
-    width: 20px;
-    height: 20px;
-    border: 2px solid var(--border);
-    border-radius: 5px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    transition: all 0.2s;
-    flex-shrink: 0;
+    width: 18px; height: 18px; border: 2px solid var(--border);
+    border-radius: 4px; display: flex; align-items: center;
+    justify-content: center; transition: all 0.2s; flex-shrink: 0;
   }
-
-  .perm-check.active .check-box {
-    background: var(--accent);
-    border-color: var(--accent);
-  }
-
+  .perm-check.active .check-box { background: var(--accent); border-color: var(--accent); }
   .perm-badge {
-    display: inline-flex;
-    align-items: center;
-    gap: 4px;
-    padding: 3px 8px;
-    border-radius: 4px;
-    font-size: 10px;
-    font-weight: 700;
-    text-transform: uppercase;
+    display: inline-flex; align-items: center; gap: 3px;
+    padding: 2px 7px; border-radius: 4px;
+    font-size: 9px; font-weight: 700; text-transform: uppercase;
+  }
+  .perm-badge.grant { background: rgba(34,197,94,0.12); color: var(--success); }
+  .perm-badge.warn { background: rgba(232,162,23,0.12); color: var(--accent); }
+
+  .build-path {
+    background: var(--card); border: 1.5px solid var(--border);
+    border-radius: 12px; padding: 20px;
+    transition: all 0.3s; cursor: default;
+  }
+  .build-path:hover { border-color: rgba(232,162,23,0.3); }
+
+  .icon-canvas-preview {
+    border-radius: 16px;
+    box-shadow: 0 4px 16px rgba(0,0,0,0.4);
   }
 
-  .perm-badge.grant { background: rgba(34,197,94,0.15); color: var(--success); }
-  .perm-badge.warn { background: rgba(245,158,11,0.15); color: var(--accent); }
-
-  @media (max-width: 1024px) {
-    .phone-frame { transform: scale(0.8); }
-  }
-
-  @media (max-width: 768px) {
-    .phone-frame { transform: scale(0.7); margin: -30px 0; }
-  }
-
-  @media (prefers-reduced-motion: reduce) {
-    *, *::before, *::after {
-      animation-duration: 0.01ms !important;
-      transition-duration: 0.01ms !important;
-    }
-  }
+  @media (max-width:1024px) { .phone-frame{transform:scale(0.75);} }
+  @media (max-width:768px) { .phone-frame{transform:scale(0.65);margin:-40px 0;} }
+  @media (prefers-reduced-motion:reduce) { *,*::before,*::after{animation-duration:0.01ms!important;transition-duration:0.01ms!important;} }
 </style>
 </head>
 <body>
 
 <div class="bg-grid"></div>
-<div class="bg-glow-1"></div>
-<div class="bg-glow-2"></div>
-
+<div class="bg-glow"></div>
+<div class="bg-glow2"></div>
 <div id="toast" class="toast"></div>
 
-<!-- Header -->
-<header style="position:relative;z-index:10;border-bottom:1px solid var(--border);background:rgba(12,12,15,0.8);backdrop-filter:blur(16px);">
-  <div style="max-width:1200px;margin:0 auto;padding:16px 24px;display:flex;align-items:center;justify-content:space-between;">
+<!-- Hidden canvases for icon generation -->
+<canvas id="iconCanvas" style="display:none;"></canvas>
+
+<header style="position:relative;z-index:10;border-bottom:1px solid var(--border);background:rgba(10,10,13,0.85);backdrop-filter:blur(16px);">
+  <div style="max-width:1200px;margin:0 auto;padding:14px 24px;display:flex;align-items:center;justify-content:space-between;">
     <div style="display:flex;align-items:center;gap:10px;">
-      <div style="width:36px;height:36px;background:var(--accent);border-radius:8px;display:flex;align-items:center;justify-content:center;">
-        <i class="fas fa-mobile-alt" style="color:#000;font-size:18px;"></i>
+      <div style="width:34px;height:34px;background:var(--accent);border-radius:8px;display:flex;align-items:center;justify-content:center;">
+        <i class="fas fa-mobile-alt" style="color:#000;font-size:16px;"></i>
       </div>
-      <span style="font-size:22px;font-weight:700;letter-spacing:-0.5px;">Web<span style="color:var(--accent)">To</span>APK</span>
+      <span style="font-size:20px;font-weight:700;letter-spacing:-0.5px;">Web<span style="color:var(--accent)">To</span>APK</span>
     </div>
-    <div style="display:flex;align-items:center;gap:16px;">
-      <a href="#how-it-works" style="color:var(--muted);text-decoration:none;font-size:14px;font-weight:500;transition:color 0.2s;" onmouseover="this.style.color='var(--fg)'" onmouseout="this.style.color='var(--muted)'">How It Works</a>
-      <button class="btn-primary" style="padding:8px 18px;font-size:13px;" onclick="scrollToBuilder()">Get Started</button>
-    </div>
+    <button class="btn-primary" style="padding:7px 16px;font-size:12px;" onclick="scrollTo('#builder')">
+      <i class="fas fa-rocket"></i> Start Building
+    </button>
   </div>
 </header>
 
 <!-- Hero -->
-<section style="position:relative;z-index:5;text-align:center;padding:80px 24px 60px;">
-  <div style="max-width:700px;margin:0 auto;">
-    <div style="display:inline-block;padding:6px 14px;border:1px solid rgba(245,158,11,0.3);border-radius:20px;font-size:12px;font-weight:600;color:var(--accent);margin-bottom:20px;background:rgba(245,158,11,0.05);">
-      <i class="fas fa-shield-alt" style="margin-right:4px;"></i> Full Permission Granting — Website Gets Full Device Access
+<section style="position:relative;z-index:5;text-align:center;padding:70px 24px 50px;">
+  <div style="max-width:680px;margin:0 auto;">
+    <div style="display:inline-block;padding:5px 12px;border:1px solid rgba(232,162,23,0.3);border-radius:18px;font-size:11px;font-weight:600;color:var(--accent);margin-bottom:18px;background:rgba(232,162,23,0.05);">
+      <i class="fas fa-image" style="margin-right:4px;"></i> Custom Icon Included — Real APK via GitHub Actions
     </div>
-    <h1 style="font-size:clamp(36px,5vw,56px);font-weight:700;line-height:1.1;letter-spacing:-1.5px;margin-bottom:20px;">
-      Turn Any Website Into a<br><span style="color:var(--accent)">Native Android App</span>
+    <h1 style="font-size:clamp(32px,5vw,52px);font-weight:700;line-height:1.1;letter-spacing:-1.5px;margin-bottom:18px;">
+      Website to APK<br><span style="color:var(--accent);">With Custom Icon</span>
     </h1>
-    <p style="font-size:17px;color:var(--muted);line-height:1.7;max-width:560px;margin:0 auto 32px;">
-      Your website gets full access to the device — camera, microphone, location, storage, and more. Every permission request from the web page is auto-granted.
+    <p style="font-size:16px;color:var(--muted);line-height:1.7;max-width:520px;margin:0 auto 28px;">
+      Configure, customize the icon, and download a complete Android project. Push to GitHub and get a real APK — automatically built with GitHub Actions.
     </p>
-    <button class="btn-primary" style="padding:16px 36px;font-size:17px;" onclick="scrollToBuilder()">
+    <button class="btn-primary" style="padding:14px 32px;font-size:16px;" onclick="scrollTo('#builder')">
       <i class="fas fa-rocket"></i> Start Building
     </button>
-  </div>
-</section>
-
-<!-- Features -->
-<section id="how-it-works" style="position:relative;z-index:5;max-width:1000px;margin:0 auto 60px;padding:0 24px;">
-  <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:16px;">
-    <div class="feature-card" style="text-align:center;">
-      <div style="width:44px;height:44px;border-radius:10px;background:rgba(245,158,11,0.1);display:flex;align-items:center;justify-content:center;margin:0 auto 12px;">
-        <i class="fas fa-link" style="color:var(--accent);font-size:18px;"></i>
-      </div>
-      <div style="font-weight:700;margin-bottom:4px;">Enter URL</div>
-      <div style="font-size:13px;color:var(--muted);">Paste any website URL to wrap it in a WebView app</div>
-    </div>
-    <div class="feature-card" style="text-align:center;">
-      <div style="width:44px;height:44px;border-radius:10px;background:rgba(245,158,11,0.1);display:flex;align-items:center;justify-content:center;margin:0 auto 12px;">
-        <i class="fas fa-palette" style="color:var(--accent);font-size:18px;"></i>
-      </div>
-      <div style="font-weight:700;margin-bottom:4px;">Customize</div>
-      <div style="font-size:13px;color:var(--muted);">Set app name, colors, icon, and behavior</div>
-    </div>
-    <div class="feature-card" style="text-align:center;">
-      <div style="width:44px;height:44px;border-radius:10px;background:rgba(34,197,94,0.1);display:flex;align-items:center;justify-content:center;margin:0 auto 12px;">
-        <i class="fas fa-unlock-alt" style="color:var(--success);font-size:18px;"></i>
-      </div>
-      <div style="font-weight:700;margin-bottom:4px;">Full Access</div>
-      <div style="font-size:13px;color:var(--muted);">Camera, mic, location, storage — all auto-granted</div>
-    </div>
-    <div class="feature-card" style="text-align:center;">
-      <div style="width:44px;height:44px;border-radius:10px;background:rgba(245,158,11,0.1);display:flex;align-items:center;justify-content:center;margin:0 auto 12px;">
-        <i class="fas fa-download" style="color:var(--accent);font-size:18px;"></i>
-      </div>
-      <div style="font-weight:700;margin-bottom:4px;">Download</div>
-      <div style="font-size:13px;color:var(--muted);">Get a ZIP with full Android Studio project</div>
-    </div>
   </div>
 </section>
 
 <!-- Builder -->
 <section id="builder" style="position:relative;z-index:5;max-width:1100px;margin:0 auto;padding:0 24px 80px;">
 
-  <div style="display:flex;align-items:center;gap:0;margin-bottom:40px;max-width:500px;margin-left:auto;margin-right:auto;" id="stepIndicator">
+  <div style="display:flex;align-items:center;gap:0;margin-bottom:36px;max-width:460px;margin-left:auto;margin-right:auto;" id="stepIndicator">
     <div class="step-dot active" data-step="1">1</div>
     <div class="step-line" data-line="1"></div>
     <div class="step-dot" data-step="2">2</div>
@@ -630,662 +339,578 @@
     <div class="step-dot" data-step="4">4</div>
   </div>
 
-  <div style="display:flex;gap:40px;align-items:flex-start;flex-wrap:wrap;">
+  <div style="display:flex;gap:36px;align-items:flex-start;flex-wrap:wrap;">
 
-    <!-- Left: Form -->
-    <div style="flex:1;min-width:320px;">
+    <!-- Left form -->
+    <div style="flex:1;min-width:300px;">
 
       <!-- Step 1 -->
       <div id="step1" class="fade-in">
-        <h2 style="font-size:24px;font-weight:700;margin-bottom:6px;">Enter Your Website</h2>
-        <p style="color:var(--muted);font-size:14px;margin-bottom:24px;">Provide the full URL of the website you want to convert.</p>
+        <h2 style="font-size:22px;font-weight:700;margin-bottom:4px;">Enter Your Website</h2>
+        <p style="color:var(--muted);font-size:13px;margin-bottom:22px;">Provide the URL and basic app info.</p>
 
-        <div style="margin-bottom:20px;">
+        <div style="margin-bottom:18px;">
           <label class="form-label">Website URL</label>
           <div style="position:relative;">
-            <i class="fas fa-globe" style="position:absolute;left:14px;top:50%;transform:translateY(-50%);color:var(--muted);font-size:14px;"></i>
-            <input type="url" id="inputUrl" class="form-input" style="padding-left:38px;" placeholder="https://example.com" oninput="updatePreview()">
+            <i class="fas fa-globe" style="position:absolute;left:13px;top:50%;transform:translateY(-50%);color:var(--muted);font-size:13px;"></i>
+            <input type="url" id="inputUrl" class="form-input" style="padding-left:36px;" placeholder="https://example.com" oninput="updatePreview()">
           </div>
         </div>
-
-        <div style="margin-bottom:24px;">
+        <div style="margin-bottom:18px;">
           <label class="form-label">App Name</label>
           <input type="text" id="inputAppName" class="form-input" placeholder="My Awesome App" oninput="updatePreview()">
         </div>
-
-        <div style="margin-bottom:24px;">
+        <div style="margin-bottom:22px;">
           <label class="form-label">Package Name</label>
           <input type="text" id="inputPackage" class="form-input" placeholder="com.example.myapp" oninput="updatePreview()" style="font-family:'JetBrains Mono',monospace;font-size:13px;">
-          <div style="font-size:11px;color:var(--muted);margin-top:4px;">Must be unique — used as your app's identifier on the Play Store</div>
+          <div style="font-size:11px;color:var(--muted);margin-top:3px;">Unique identifier for the Play Store</div>
         </div>
-
         <button class="btn-primary" onclick="goToStep(2)">Continue <i class="fas fa-arrow-right"></i></button>
       </div>
 
       <!-- Step 2 -->
       <div id="step2" style="display:none;">
-        <h2 style="font-size:24px;font-weight:700;margin-bottom:6px;">Customize Your App</h2>
-        <p style="color:var(--muted);font-size:14px;margin-bottom:24px;">Choose the visual style and behavior of your app.</p>
+        <h2 style="font-size:22px;font-weight:700;margin-bottom:4px;">Customize Appearance</h2>
+        <p style="color:var(--muted);font-size:13px;margin-bottom:22px;">Set colors, icon style, and behavior.</p>
 
-        <div style="display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-bottom:20px;">
-          <div>
-            <label class="form-label">Theme Color</label>
-            <div class="color-picker-wrap">
-              <div class="color-swatch" id="themeSwatch" style="background:#f59e0b;">
-                <input type="color" id="inputThemeColor" value="#f59e0b" oninput="updatePreview()">
-              </div>
-              <input type="text" id="themeHexInput" class="form-input" value="#f59e0b" style="font-family:'JetBrains Mono',monospace;font-size:13px;" oninput="syncColorFromHex()">
-            </div>
-          </div>
-          <div>
-            <label class="form-label">Splash Background</label>
-            <div class="color-picker-wrap">
-              <div class="color-swatch" id="splashSwatch" style="background:#f59e0b;">
-                <input type="color" id="inputSplashColor" value="#f59e0b" oninput="updatePreview()">
-              </div>
-              <input type="text" id="splashHexInput" class="form-input" value="#f59e0b" style="font-family:'JetBrains Mono',monospace;font-size:13px;" oninput="syncSplashFromHex()">
+        <div style="margin-bottom:18px;">
+          <label class="form-label">App Icon Preview</label>
+          <div style="display:flex;align-items:center;gap:16px;margin-bottom:8px;">
+            <canvas id="iconPreviewLarge" width="96" height="96" style="width:96px;height:96px;border-radius:20px;box-shadow:0 4px 16px rgba(0,0,0,0.4);"></canvas>
+            <div>
+              <div style="font-weight:700;font-size:15px;" id="iconLabel">M</div>
+              <div style="font-size:12px;color:var(--muted);">Adaptive icon with your color and initial</div>
+              <div style="font-size:11px;color:var(--muted);margin-top:2px;">PNG generated at 5 resolutions</div>
             </div>
           </div>
         </div>
 
-        <div style="margin-bottom:20px;">
-          <label class="form-label">Icon Background Color</label>
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-bottom:18px;">
+          <div>
+            <label class="form-label">Icon Color</label>
+            <div class="color-picker-wrap">
+              <div class="color-swatch" id="iconSwatch" style="background:#e8a217;">
+                <input type="color" id="inputIconColor" value="#e8a217" oninput="updatePreview()">
+              </div>
+              <input type="text" id="iconHexInput" class="form-input" value="#e8a217" style="font-family:'JetBrains Mono',monospace;font-size:12px;" oninput="syncIconFromHex()">
+            </div>
+          </div>
+          <div>
+            <label class="form-label">Theme / Toolbar</label>
+            <div class="color-picker-wrap">
+              <div class="color-swatch" id="themeSwatch" style="background:#e8a217;">
+                <input type="color" id="inputThemeColor" value="#e8a217" oninput="updatePreview()">
+              </div>
+              <input type="text" id="themeHexInput" class="form-input" value="#e8a217" style="font-family:'JetBrains Mono',monospace;font-size:12px;" oninput="syncColorFromHex()">
+            </div>
+          </div>
+        </div>
+
+        <div style="margin-bottom:18px;">
+          <label class="form-label">Splash Background</label>
           <div class="color-picker-wrap">
-            <div class="color-swatch" id="iconSwatch" style="background:#f59e0b;">
-              <input type="color" id="inputIconColor" value="#f59e0b" oninput="updatePreview()">
+            <div class="color-swatch" id="splashSwatch" style="background:#e8a217;">
+              <input type="color" id="inputSplashColor" value="#e8a217" oninput="updatePreview()">
             </div>
-            <input type="text" id="iconHexInput" class="form-input" value="#f59e0b" style="font-family:'JetBrains Mono',monospace;font-size:13px;width:120px;" oninput="syncIconFromHex()">
+            <input type="text" id="splashHexInput" class="form-input" value="#e8a217" style="font-family:'JetBrains Mono',monospace;font-size:12px;width:120px;" oninput="syncSplashFromHex()">
           </div>
         </div>
 
-        <div style="display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-bottom:20px;">
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-bottom:18px;">
           <div>
             <label class="form-label">Orientation</label>
             <select id="inputOrientation" class="form-select" onchange="updatePreview()">
               <option value="unspecified">Auto-Rotate</option>
-              <option value="portrait">Portrait Only</option>
-              <option value="landscape">Landscape Only</option>
+              <option value="portrait">Portrait</option>
+              <option value="landscape">Landscape</option>
             </select>
           </div>
           <div>
             <label class="form-label">Min SDK</label>
             <select id="inputMinSdk" class="form-select">
-              <option value="21">API 21 (Android 5.0)</option>
-              <option value="24" selected>API 24 (Android 7.0)</option>
-              <option value="28">API 28 (Android 9.0)</option>
-              <option value="31">API 31 (Android 12)</option>
+              <option value="21">API 21 (5.0)</option>
+              <option value="24" selected>API 24 (7.0)</option>
+              <option value="28">API 28 (9.0)</option>
             </select>
           </div>
         </div>
 
-        <div style="display:flex;flex-direction:column;gap:12px;margin-bottom:24px;">
+        <div style="display:flex;flex-direction:column;gap:10px;margin-bottom:22px;">
           <div style="display:flex;align-items:center;justify-content:space-between;">
-            <div>
-              <div style="font-weight:600;font-size:14px;">Show Toolbar</div>
-              <div style="font-size:12px;color:var(--muted);">Display a top bar with the app title</div>
-            </div>
-            <div class="toggle-track on" id="toggleToolbar" onclick="toggleSwitch(this);updatePreview();">
-              <div class="toggle-thumb"></div>
-            </div>
+            <div><div style="font-weight:600;font-size:13px;">Toolbar</div><div style="font-size:11px;color:var(--muted);">Top bar with app name</div></div>
+            <div class="toggle-track on" id="toggleToolbar" onclick="toggleSwitch(this);updatePreview();"><div class="toggle-thumb"></div></div>
           </div>
           <div style="display:flex;align-items:center;justify-content:space-between;">
-            <div>
-              <div style="font-weight:600;font-size:14px;">Allow Fullscreen</div>
-              <div style="font-size:12px;color:var(--muted);">Hide status bar for immersive mode</div>
-            </div>
-            <div class="toggle-track" id="toggleFullscreen" onclick="toggleSwitch(this);updatePreview();">
-              <div class="toggle-thumb"></div>
-            </div>
+            <div><div style="font-weight:600;font-size:13px;">Fullscreen</div><div style="font-size:11px;color:var(--muted);">Immersive mode</div></div>
+            <div class="toggle-track" id="toggleFullscreen" onclick="toggleSwitch(this);updatePreview();"><div class="toggle-thumb"></div></div>
           </div>
           <div style="display:flex;align-items:center;justify-content:space-between;">
-            <div>
-              <div style="font-weight:600;font-size:14px;">Enable JavaScript</div>
-              <div style="font-size:12px;color:var(--muted);">Required for most modern websites</div>
-            </div>
-            <div class="toggle-track on" id="toggleJS" onclick="toggleSwitch(this);updatePreview();">
-              <div class="toggle-thumb"></div>
-            </div>
+            <div><div style="font-weight:600;font-size:13px;">JavaScript</div><div style="font-size:11px;color:var(--muted);">Required for modern sites</div></div>
+            <div class="toggle-track on" id="toggleJS" onclick="toggleSwitch(this);updatePreview();"><div class="toggle-thumb"></div></div>
           </div>
           <div style="display:flex;align-items:center;justify-content:space-between;">
-            <div>
-              <div style="font-weight:600;font-size:14px;">Show Splash Screen</div>
-              <div style="font-size:12px;color:var(--muted);">Display a splash screen on app launch</div>
-            </div>
-            <div class="toggle-track on" id="toggleSplash" onclick="toggleSwitch(this);updatePreview();">
-              <div class="toggle-thumb"></div>
-            </div>
+            <div><div style="font-weight:600;font-size:13px;">Splash Screen</div><div style="font-size:11px;color:var(--muted);">Shown on app launch</div></div>
+            <div class="toggle-track on" id="toggleSplash" onclick="toggleSwitch(this);updatePreview();"><div class="toggle-thumb"></div></div>
           </div>
         </div>
 
-        <div style="display:flex;gap:12px;">
+        <div style="display:flex;gap:10px;">
           <button class="btn-secondary" onclick="goToStep(1)"><i class="fas fa-arrow-left"></i> Back</button>
           <button class="btn-primary" onclick="goToStep(3)">Continue <i class="fas fa-arrow-right"></i></button>
         </div>
       </div>
 
-      <!-- Step 3: Permissions -->
+      <!-- Step 3 -->
       <div id="step3" style="display:none;">
-        <h2 style="font-size:24px;font-weight:700;margin-bottom:6px;">Website Permissions</h2>
-        <p style="color:var(--muted);font-size:14px;margin-bottom:8px;">Select which device features the website can access.</p>
-        <div style="display:flex;align-items:center;gap:8px;padding:10px 14px;background:rgba(34,197,94,0.08);border:1px solid rgba(34,197,94,0.2);border-radius:8px;margin-bottom:20px;">
-          <i class="fas fa-shield-alt" style="color:var(--success);font-size:14px;"></i>
-          <span style="font-size:13px;color:var(--success);font-weight:600;">All selected permissions are auto-granted to the website at runtime — no user prompts.</span>
+        <h2 style="font-size:22px;font-weight:700;margin-bottom:4px;">Permissions</h2>
+        <p style="color:var(--muted);font-size:13px;margin-bottom:6px;">Select which device features the website can access.</p>
+        <div style="display:flex;align-items:center;gap:6px;padding:8px 12px;background:rgba(34,197,94,0.06);border:1px solid rgba(34,197,94,0.15);border-radius:7px;margin-bottom:16px;">
+          <i class="fas fa-shield-alt" style="color:var(--success);font-size:12px;"></i>
+          <span style="font-size:12px;color:var(--success);font-weight:600;">All permissions are auto-granted at runtime — no user prompts.</span>
         </div>
-
-        <div style="display:flex;flex-direction:column;gap:10px;margin-bottom:24px;" id="permissionsList">
-          <div class="perm-check active" onclick="togglePerm(this)" data-perm="INTERNET">
-            <div class="check-box"><i class="fas fa-check" style="font-size:10px;color:#000;"></i></div>
-            <div style="flex:1;"><div style="font-weight:600;font-size:13px;">INTERNET <span class="perm-badge grant">Always On</span></div><div style="font-size:11px;color:var(--muted);">Load web content — required</div></div>
-          </div>
-          <div class="perm-check active" onclick="togglePerm(this)" data-perm="ACCESS_NETWORK_STATE">
-            <div class="check-box"><i class="fas fa-check" style="font-size:10px;color:#000;"></i></div>
-            <div style="flex:1;"><div style="font-weight:600;font-size:13px;">ACCESS_NETWORK_STATE <span class="perm-badge grant">Recommended</span></div><div style="font-size:11px;color:var(--muted);">Check if internet connection is available</div></div>
-          </div>
-          <div class="perm-check active" onclick="togglePerm(this)" data-perm="ACCESS_WIFI_STATE">
-            <div class="check-box"><i class="fas fa-check" style="font-size:10px;color:#000;"></i></div>
-            <div style="flex:1;"><div style="font-weight:600;font-size:13px;">ACCESS_WIFI_STATE <span class="perm-badge grant">Recommended</span></div><div style="font-size:11px;color:var(--muted);">Check WiFi connection status</div></div>
-          </div>
-          <div class="perm-check active" onclick="togglePerm(this)" data-perm="CAMERA">
-            <div class="check-box"><i class="fas fa-check" style="font-size:10px;color:#000;"></i></div>
-            <div style="flex:1;"><div style="font-weight:600;font-size:13px;">CAMERA <span class="perm-badge warn">Hardware</span></div><div style="font-size:11px;color:var(--muted);">WebRTC video calls, QR scanning, photo upload</div></div>
-          </div>
-          <div class="perm-check active" onclick="togglePerm(this)" data-perm="RECORD_AUDIO">
-            <div class="check-box"><i class="fas fa-check" style="font-size:10px;color:#000;"></i></div>
-            <div style="flex:1;"><div style="font-weight:600;font-size:13px;">RECORD_AUDIO <span class="perm-badge warn">Hardware</span></div><div style="font-size:11px;color:var(--muted);">Voice input, WebRTC audio, recording</div></div>
-          </div>
-          <div class="perm-check active" onclick="togglePerm(this)" data-perm="ACCESS_FINE_LOCATION">
-            <div class="check-box"><i class="fas fa-check" style="font-size:10px;color:#000;"></i></div>
-            <div style="flex:1;"><div style="font-weight:600;font-size:13px;">ACCESS_FINE_LOCATION <span class="perm-badge warn">Location</span></div><div style="font-size:11px;color:var(--muted);">navigator.geolocation — maps, local content</div></div>
-          </div>
-          <div class="perm-check active" onclick="togglePerm(this)" data-perm="ACCESS_COARSE_LOCATION">
-            <div class="check-box"><i class="fas fa-check" style="font-size:10px;color:#000;"></i></div>
-            <div style="flex:1;"><div style="font-weight:600;font-size:13px;">ACCESS_COARSE_LOCATION <span class="perm-badge warn">Location</span></div><div style="font-size:11px;color:var(--muted);">Approximate location — less battery drain</div></div>
-          </div>
-          <div class="perm-check active" onclick="togglePerm(this)" data-perm="READ_EXTERNAL_STORAGE">
-            <div class="check-box"><i class="fas fa-check" style="font-size:10px;color:#000;"></i></div>
-            <div style="flex:1;"><div style="font-weight:600;font-size:13px;">READ_EXTERNAL_STORAGE <span class="perm-badge warn">Storage</span></div><div style="font-size:11px;color:var(--muted);">File upload from device, photo selection</div></div>
-          </div>
-          <div class="perm-check active" onclick="togglePerm(this)" data-perm="WRITE_EXTERNAL_STORAGE">
-            <div class="check-box"><i class="fas fa-check" style="font-size:10px;color:#000;"></i></div>
-            <div style="flex:1;"><div style="font-weight:600;font-size:13px;">WRITE_EXTERNAL_STORAGE <span class="perm-badge warn">Storage</span></div><div style="font-size:11px;color:var(--muted);">Download files from website to device</div></div>
-          </div>
-          <div class="perm-check" onclick="togglePerm(this)" data-perm="VIBRATE">
-            <div class="check-box"><i class="fas fa-check" style="font-size:10px;color:#000;display:none;"></i></div>
-            <div style="flex:1;"><div style="font-weight:600;font-size:13px;">VIBRATE <span class="perm-badge warn">Haptic</span></div><div style="font-size:11px;color:var(--muted);">Vibration API for notifications & feedback</div></div>
-          </div>
-          <div class="perm-check" onclick="togglePerm(this)" data-perm="BLUETOOTH">
-            <div class="check-box"><i class="fas fa-check" style="font-size:10px;color:#000;display:none;"></i></div>
-            <div style="flex:1;"><div style="font-weight:600;font-size:13px;">BLUETOOTH <span class="perm-badge warn">Hardware</span></div><div style="font-size:11px;color:var(--muted);">Web Bluetooth API for BLE devices</div></div>
-          </div>
+        <div style="display:flex;flex-direction:column;gap:8px;margin-bottom:20px;" id="permissionsList">
+          <div class="perm-check active" onclick="togglePerm(this)" data-perm="INTERNET"><div class="check-box"><i class="fas fa-check" style="font-size:9px;color:#000;"></i></div><div style="flex:1;"><div style="font-weight:600;font-size:12px;">INTERNET <span class="perm-badge grant">Required</span></div></div></div>
+          <div class="perm-check active" onclick="togglePerm(this)" data-perm="ACCESS_NETWORK_STATE"><div class="check-box"><i class="fas fa-check" style="font-size:9px;color:#000;"></i></div><div style="flex:1;"><div style="font-weight:600;font-size:12px;">ACCESS_NETWORK_STATE <span class="perm-badge grant">Rec.</span></div></div></div>
+          <div class="perm-check active" onclick="togglePerm(this)" data-perm="ACCESS_WIFI_STATE"><div class="check-box"><i class="fas fa-check" style="font-size:9px;color:#000;"></i></div><div style="flex:1;"><div style="font-weight:600;font-size:12px;">ACCESS_WIFI_STATE <span class="perm-badge grant">Rec.</span></div></div></div>
+          <div class="perm-check active" onclick="togglePerm(this)" data-perm="CAMERA"><div class="check-box"><i class="fas fa-check" style="font-size:9px;color:#000;"></i></div><div style="flex:1;"><div style="font-weight:600;font-size:12px;">CAMERA <span class="perm-badge warn">HW</span></div></div></div>
+          <div class="perm-check active" onclick="togglePerm(this)" data-perm="RECORD_AUDIO"><div class="check-box"><i class="fas fa-check" style="font-size:9px;color:#000;"></i></div><div style="flex:1;"><div style="font-weight:600;font-size:12px;">RECORD_AUDIO <span class="perm-badge warn">HW</span></div></div></div>
+          <div class="perm-check active" onclick="togglePerm(this)" data-perm="ACCESS_FINE_LOCATION"><div class="check-box"><i class="fas fa-check" style="font-size:9px;color:#000;"></i></div><div style="flex:1;"><div style="font-weight:600;font-size:12px;">ACCESS_FINE_LOCATION <span class="perm-badge warn">Loc</span></div></div></div>
+          <div class="perm-check active" onclick="togglePerm(this)" data-perm="ACCESS_COARSE_LOCATION"><div class="check-box"><i class="fas fa-check" style="font-size:9px;color:#000;"></i></div><div style="flex:1;"><div style="font-weight:600;font-size:12px;">ACCESS_COARSE_LOCATION <span class="perm-badge warn">Loc</span></div></div></div>
+          <div class="perm-check active" onclick="togglePerm(this)" data-perm="READ_EXTERNAL_STORAGE"><div class="check-box"><i class="fas fa-check" style="font-size:9px;color:#000;"></i></div><div style="flex:1;"><div style="font-weight:600;font-size:12px;">READ_EXTERNAL_STORAGE <span class="perm-badge warn">Disk</span></div></div></div>
+          <div class="perm-check active" onclick="togglePerm(this)" data-perm="WRITE_EXTERNAL_STORAGE"><div class="check-box"><i class="fas fa-check" style="font-size:9px;color:#000;"></i></div><div style="flex:1;"><div style="font-weight:600;font-size:12px;">WRITE_EXTERNAL_STORAGE <span class="perm-badge warn">Disk</span></div></div></div>
+          <div class="perm-check" onclick="togglePerm(this)" data-perm="VIBRATE"><div class="check-box"><i class="fas fa-check" style="font-size:9px;color:#000;display:none;"></i></div><div style="flex:1;"><div style="font-weight:600;font-size:12px;">VIBRATE</div></div></div>
         </div>
-
-        <div style="display:flex;gap:12px;">
+        <div style="display:flex;gap:10px;">
           <button class="btn-secondary" onclick="goToStep(2)"><i class="fas fa-arrow-left"></i> Back</button>
-          <button class="btn-primary" onclick="goToStep(3);generatePreview();goToStep(4);">Build Project <i class="fas fa-hammer"></i></button>
+          <button class="btn-primary" onclick="startBuild()">Build Project <i class="fas fa-hammer"></i></button>
         </div>
       </div>
 
       <!-- Step 4 -->
       <div id="step4" style="display:none;">
-        <h2 style="font-size:24px;font-weight:700;margin-bottom:6px;">Your App is Ready</h2>
-        <p style="color:var(--muted);font-size:14px;margin-bottom:24px;">Review the generated project and download it.</p>
+        <h2 style="font-size:22px;font-weight:700;margin-bottom:4px;">Project Ready</h2>
+        <p style="color:var(--muted);font-size:13px;margin-bottom:20px;">Download the project and build your APK.</p>
 
-        <div id="buildProgress" style="margin-bottom:24px;">
-          <div style="display:flex;justify-content:space-between;margin-bottom:8px;">
-            <span style="font-size:13px;font-weight:600;" id="buildStatus">Generating project files...</span>
-            <span style="font-size:13px;color:var(--accent);font-weight:600;" id="buildPercent">0%</span>
+        <div id="buildProgress" style="margin-bottom:20px;">
+          <div style="display:flex;justify-content:space-between;margin-bottom:6px;">
+            <span style="font-size:12px;font-weight:600;" id="buildStatus">Generating...</span>
+            <span style="font-size:12px;color:var(--accent);font-weight:600;" id="buildPercent">0%</span>
           </div>
-          <div class="progress-bar">
-            <div class="progress-fill" id="progressFill"></div>
-          </div>
+          <div class="progress-bar"><div class="progress-fill" id="progressFill"></div></div>
         </div>
 
         <div id="buildResult" style="display:none;">
-          <div style="background:var(--card);border:1px solid var(--border);border-radius:12px;padding:20px;margin-bottom:20px;">
-            <div style="font-weight:700;font-size:16px;margin-bottom:14px;color:var(--accent);"><i class="fas fa-check-circle" style="margin-right:6px;"></i>Build Summary</div>
-            <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;font-size:13px;" id="buildSummary"></div>
-          </div>
 
-          <div style="background:rgba(34,197,94,0.06);border:1px solid rgba(34,197,94,0.2);border-radius:12px;padding:16px;margin-bottom:20px;">
-            <div style="font-weight:700;font-size:14px;margin-bottom:8px;color:var(--success);"><i class="fas fa-shield-alt" style="margin-right:6px;"></i>Permission Auto-Grant</div>
-            <div style="font-size:13px;color:var(--muted);line-height:1.7;" id="permGrantSummary">
-              The generated app includes <strong style="color:var(--fg);">PermissionHandler.java</strong> which automatically:
+          <!-- Icon preview -->
+          <div style="display:flex;align-items:center;gap:16px;margin-bottom:20px;padding:16px;background:var(--card);border:1px solid var(--border);border-radius:10px;">
+            <canvas id="resultIcon" width="64" height="64" style="width:64px;height:64px;border-radius:14px;"></canvas>
+            <div>
+              <div style="font-weight:700;font-size:15px;" id="resultAppName">My App</div>
+              <div style="font-size:12px;color:var(--muted);" id="resultPkgName">com.example.app</div>
+              <div style="font-size:11px;color:var(--success);margin-top:2px;"><i class="fas fa-check-circle"></i> Icon PNGs generated at 5 resolutions</div>
             </div>
-            <ul style="font-size:12px;color:var(--muted);line-height:1.8;margin-top:8px;padding-left:16px;" id="permFeatureList">
-            </ul>
           </div>
 
-          <div style="margin-bottom:16px;">
-            <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:8px;">
-              <span style="font-weight:700;font-size:14px;">Generated Files</span>
-              <span style="font-size:12px;color:var(--muted);" id="fileCount">10 files</span>
+          <!-- Two build paths -->
+          <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:20px;">
+            <div class="build-path">
+              <div style="font-size:20px;margin-bottom:8px;">🔬</div>
+              <div style="font-weight:700;font-size:14px;margin-bottom:4px;">Build Locally</div>
+              <div style="font-size:11px;color:var(--muted);line-height:1.6;margin-bottom:10px;">
+                Open in Android Studio, click <strong style="color:var(--fg);">Build &gt; Build APK</strong>
+              </div>
+              <a href="https://developer.android.com/studio" target="_blank" style="font-size:11px;color:var(--accent);text-decoration:none;font-weight:600;">
+                <i class="fas fa-external-link-alt"></i> Get Android Studio
+              </a>
             </div>
-            <div class="code-block" id="fileTree" style="font-size:12px;line-height:1.8;"></div>
+            <div class="build-path" style="border-color:rgba(34,197,94,0.25);">
+              <div style="font-size:20px;margin-bottom:8px;">☁️</div>
+              <div style="font-weight:700;font-size:14px;margin-bottom:4px;color:var(--success);">Build on GitHub</div>
+              <div style="font-size:11px;color:var(--muted);line-height:1.6;margin-bottom:10px;">
+                Push to GitHub — <strong style="color:var(--fg);">APK builds automatically</strong> via Actions
+              </div>
+              <div style="font-size:11px;color:var(--success);font-weight:600;"><i class="fas fa-check"></i> Workflow included in ZIP</div>
+            </div>
           </div>
 
-          <div style="margin-bottom:20px;">
-            <div style="font-weight:700;font-size:14px;margin-bottom:8px;">MainActivity.java — Permission Handling</div>
-            <div class="code-block" id="mainPreview"></div>
+          <!-- GitHub Actions steps -->
+          <div style="background:var(--card);border:1px solid var(--border);border-radius:10px;padding:16px;margin-bottom:16px;">
+            <div style="font-weight:700;font-size:13px;margin-bottom:10px;"><i class="fab fa-github" style="margin-right:4px;"></i> Get APK via GitHub (5 minutes)</div>
+            <div style="font-size:12px;color:var(--muted);line-height:2;">
+              <div><span style="display:inline-block;width:20px;height:20px;background:var(--accent);color:#000;border-radius:50%;text-align:center;line-height:20px;font-size:10px;font-weight:700;margin-right:6px;">1</span> Download & unzip the project</div>
+              <div><span style="display:inline-block;width:20px;height:20px;background:var(--accent);color:#000;border-radius:50%;text-align:center;line-height:20px;font-size:10px;font-weight:700;margin-right:6px;">2</span> Create a new GitHub repo & push the files</div>
+              <div><span style="display:inline-block;width:20px;height:20px;background:var(--accent);color:#000;border-radius:50%;text-align:center;line-height:20px;font-size:10px;font-weight:700;margin-right:6px;">3</span> Go to <strong style="color:var(--fg);">Actions</strong> tab — workflow runs automatically</div>
+              <div><span style="display:inline-block;width:20px;height:20px;background:var(--accent);color:#000;border-radius:50%;text-align:center;line-height:20px;font-size:10px;font-weight:700;margin-right:6px;">4</span> Download the <strong style="color:var(--success);">APK artifact</strong></div>
+            </div>
           </div>
 
-          <div style="display:flex;gap:12px;flex-wrap:wrap;">
-            <button class="btn-primary" onclick="downloadProject()"><i class="fas fa-download"></i> Download ZIP</button>
-            <button class="btn-secondary" onclick="goToStep(1);resetBuilder();"><i class="fas fa-redo"></i> Build Another</button>
+          <!-- File tree -->
+          <details style="margin-bottom:14px;">
+            <summary style="font-weight:700;font-size:13px;cursor:pointer;margin-bottom:8px;color:var(--muted);">
+              <i class="fas fa-folder-tree" style="margin-right:4px;"></i> Project Files
+            </summary>
+            <div class="code-block" id="fileTree" style="font-size:11px;line-height:1.7;"></div>
+          </details>
+
+          <div style="display:flex;gap:10px;flex-wrap:wrap;">
+            <button class="btn-primary" onclick="downloadProject()"><i class="fas fa-download"></i> Download Project ZIP</button>
+            <button class="btn-dark" onclick="goToStep(1);resetBuilder();"><i class="fas fa-redo"></i> Build Another</button>
           </div>
         </div>
       </div>
     </div>
 
-    <!-- Right: Phone preview -->
+    <!-- Right: Phone + Icon -->
     <div style="flex-shrink:0;display:flex;flex-direction:column;align-items:center;position:sticky;top:20px;">
-      <div style="font-size:12px;font-weight:600;color:var(--muted);text-transform:uppercase;letter-spacing:1px;margin-bottom:12px;">Live Preview</div>
+      <div style="font-size:11px;font-weight:600;color:var(--muted);text-transform:uppercase;letter-spacing:1px;margin-bottom:10px;">Live Preview</div>
       <div class="phone-frame float-anim">
         <div class="phone-notch"></div>
         <div class="phone-screen">
           <div class="phone-statusbar" id="previewStatusBar">12:00</div>
           <div class="phone-content">
             <div class="phone-toolbar" id="previewToolbar">
-              <div class="app-icon-preview" id="previewIconSmall" style="width:22px;height:22px;border-radius:5px;font-size:10px;">W</div>
+              <div style="width:18px;height:18px;border-radius:4px;display:flex;align-items:center;justify-content:center;font-size:8px;font-weight:800;color:#fff;" id="previewIconSmall">W</div>
               <div class="phone-toolbar-title" id="previewTitle">My App</div>
-              <i class="fas fa-ellipsis-v" style="color:rgba(0,0,0,0.5);font-size:10px;"></i>
             </div>
-            <div class="phone-webview" id="previewWebview">
-              <div class="skeleton-line"></div>
-              <div class="skeleton-line"></div>
-              <div class="skeleton-line"></div>
-              <div class="skeleton-line"></div>
-              <div class="skeleton-line"></div>
-              <div class="skeleton-line"></div>
+            <div class="phone-webview">
+              <div class="skeleton-line"></div><div class="skeleton-line"></div>
+              <div class="skeleton-line"></div><div class="skeleton-line"></div>
+              <div class="skeleton-line"></div><div class="skeleton-line"></div>
               <div class="skeleton-line"></div>
             </div>
           </div>
-          <div class="splash-preview" id="splashOverlay" style="background:#f59e0b;">
-            <div class="app-icon-preview" id="splashIcon" style="width:56px;height:56px;border-radius:14px;font-size:24px;margin-bottom:12px;">W</div>
-            <div style="font-size:14px;font-weight:700;color:#fff;" id="splashAppName">My App</div>
+          <div class="splash-preview" id="splashOverlay" style="background:#e8a217;">
+            <div style="width:44px;height:44px;border-radius:11px;display:flex;align-items:center;justify-content:center;font-weight:800;font-size:20px;color:#fff;margin-bottom:8px;" id="splashIcon">W</div>
+            <div style="font-size:12px;font-weight:700;color:#fff;" id="splashAppName">My App</div>
           </div>
         </div>
       </div>
-      <!-- Permission badges under phone -->
-      <div style="margin-top:12px;display:flex;flex-wrap:wrap;gap:4px;justify-content:center;max-width:260px;" id="previewPermBadges">
-        <span style="font-size:10px;padding:2px 6px;border-radius:3px;background:rgba(34,197,94,0.15);color:var(--success);font-weight:600;">CAMERA</span>
-        <span style="font-size:10px;padding:2px 6px;border-radius:3px;background:rgba(34,197,94,0.15);color:var(--success);font-weight:600;">MIC</span>
-        <span style="font-size:10px;padding:2px 6px;border-radius:3px;background:rgba(34,197,94,0.15);color:var(--success);font-weight:600;">LOCATION</span>
-        <span style="font-size:10px;padding:2px 6px;border-radius:3px;background:rgba(34,197,94,0.15);color:var(--success);font-weight:600;">STORAGE</span>
-      </div>
-      <div style="font-size:11px;color:var(--muted);margin-top:6px;text-align:center;">All permissions auto-granted to website</div>
+      <div style="margin-top:10px;display:flex;flex-wrap:wrap;gap:3px;justify-content:center;max-width:250px;" id="previewPermBadges"></div>
     </div>
   </div>
 </section>
 
-<footer style="position:relative;z-index:5;border-top:1px solid var(--border);padding:24px;text-align:center;">
-  <p style="color:var(--muted);font-size:13px;">WebToAPK — Generate Android WebView projects with full permission support. Open the ZIP in Android Studio to compile your APK.</p>
+<footer style="position:relative;z-index:5;border-top:1px solid var(--border);padding:20px;text-align:center;">
+  <p style="color:var(--muted);font-size:12px;">WebToAPK — Generate Android WebView projects with icons and GitHub Actions auto-build.</p>
 </footer>
 
 <script>
 let currentStep = 1;
 let generatedZip = null;
 
-function scrollToBuilder() {
-  document.getElementById('builder').scrollIntoView({ behavior: 'smooth' });
-}
+function scrollTo(sel) { document.querySelector(sel).scrollIntoView({behavior:'smooth'}); }
 
 function goToStep(step) {
   if (step > 1 && currentStep === 1) {
     const url = document.getElementById('inputUrl').value.trim();
     const name = document.getElementById('inputAppName').value.trim();
     const pkg = document.getElementById('inputPackage').value.trim();
-    if (!url) { showToast('Please enter a website URL', 'error'); return; }
-    if (!name) { showToast('Please enter an app name', 'error'); return; }
-    if (!pkg) { showToast('Please enter a package name', 'error'); return; }
-    try { new URL(url); } catch(e) { showToast('Please enter a valid URL (include https://)', 'error'); return; }
-    if (!/^[a-z][a-z0-9]*(\.[a-z][a-z0-9]*){2,}$/.test(pkg)) {
-      showToast('Package name must be like com.example.myapp', 'error'); return;
-    }
+    if (!url) { showToast('Enter a website URL','error'); return; }
+    if (!name) { showToast('Enter an app name','error'); return; }
+    if (!pkg) { showToast('Enter a package name','error'); return; }
+    try { new URL(url); } catch(e) { showToast('Enter a valid URL (include https://)','error'); return; }
+    if (!/^[a-z][a-z0-9]*(\.[a-z][a-z0-9]*){2,}$/.test(pkg)) { showToast('Package must be like com.example.app','error'); return; }
   }
-
-  for (let i = 1; i <= 4; i++) {
-    document.getElementById('step' + i).style.display = 'none';
-  }
-
-  const target = document.getElementById('step' + step);
-  target.style.display = 'block';
-  target.classList.remove('fade-in');
-  void target.offsetWidth;
-  target.classList.add('fade-in');
-
-  document.querySelectorAll('.step-dot').forEach(dot => {
-    const s = parseInt(dot.dataset.step);
-    dot.classList.remove('active', 'done');
-    if (s < step) { dot.classList.add('done'); dot.innerHTML = '<i class="fas fa-check" style="font-size:14px;"></i>'; }
-    else if (s === step) { dot.classList.add('active'); dot.textContent = s; }
-    else { dot.textContent = s; }
+  for (let i=1;i<=4;i++) document.getElementById('step'+i).style.display='none';
+  const t = document.getElementById('step'+step);
+  t.style.display='block'; t.classList.remove('fade-in'); void t.offsetWidth; t.classList.add('fade-in');
+  document.querySelectorAll('.step-dot').forEach(d=>{
+    const s=+d.dataset.step; d.classList.remove('active','done');
+    if(s<step){d.classList.add('done');d.innerHTML='<i class="fas fa-check" style="font-size:12px;"></i>';}
+    else if(s===step){d.classList.add('active');d.textContent=s;}
+    else d.textContent=s;
   });
-
-  document.querySelectorAll('.step-line').forEach(line => {
-    line.classList.toggle('done', parseInt(line.dataset.line) < step);
-  });
-
-  currentStep = step;
-  scrollToBuilder();
+  document.querySelectorAll('.step-line').forEach(l=>l.classList.toggle('done',+l.dataset.line<step));
+  currentStep=step;
+  scrollTo('#builder');
 }
 
 function resetBuilder() {
-  document.getElementById('inputUrl').value = '';
-  document.getElementById('inputAppName').value = '';
-  document.getElementById('inputPackage').value = '';
-  document.getElementById('inputThemeColor').value = '#f59e0b';
-  document.getElementById('inputSplashColor').value = '#f59e0b';
-  document.getElementById('inputIconColor').value = '#f59e0b';
-  document.getElementById('themeHexInput').value = '#f59e0b';
-  document.getElementById('splashHexInput').value = '#f59e0b';
-  document.getElementById('iconHexInput').value = '#f59e0b';
-  document.getElementById('inputOrientation').value = 'unspecified';
-  document.getElementById('inputMinSdk').value = '24';
-  document.querySelectorAll('.toggle-track').forEach(t => {
-    if (t.id === 'toggleFullscreen') t.classList.remove('on');
-    else t.classList.add('on');
+  document.getElementById('inputUrl').value='';
+  document.getElementById('inputAppName').value='';
+  document.getElementById('inputPackage').value='';
+  ['inputIconColor','inputThemeColor','inputSplashColor'].forEach(id=>{document.getElementById(id).value='#e8a217';});
+  ['iconHexInput','themeHexInput','splashHexInput'].forEach(id=>{document.getElementById(id).value='#e8a217';});
+  document.getElementById('inputOrientation').value='unspecified';
+  document.getElementById('inputMinSdk').value='24';
+  document.querySelectorAll('.toggle-track').forEach(t=>t.id==='toggleFullscreen'?t.classList.remove('on'):t.classList.add('on'));
+  document.querySelectorAll('.perm-check').forEach(p=>{
+    if(p.dataset.perm==='VIBRATE'){p.classList.remove('active');p.querySelector('.fa-check').style.display='none';}
+    else{p.classList.add('active');p.querySelector('.fa-check').style.display='';}
   });
-  // Reset all perms to active except vibrate and bluetooth
-  document.querySelectorAll('.perm-check').forEach(p => {
-    if (p.dataset.perm === 'VIBRATE' || p.dataset.perm === 'BLUETOOTH') {
-      p.classList.remove('active');
-      p.querySelector('.fa-check').style.display = 'none';
-    } else {
-      p.classList.add('active');
-      p.querySelector('.fa-check').style.display = '';
-    }
-  });
-  generatedZip = null;
-  updatePreview();
+  generatedZip=null; updatePreview();
 }
 
-function toggleSwitch(el) { el.classList.toggle('on'); }
-
-function togglePerm(el) {
-  if (el.dataset.perm === 'INTERNET') return;
+function toggleSwitch(el){el.classList.toggle('on');}
+function togglePerm(el){
+  if(el.dataset.perm==='INTERNET')return;
   el.classList.toggle('active');
-  const icon = el.querySelector('.fa-check');
-  icon.style.display = el.classList.contains('active') ? '' : 'none';
-  updatePreviewPermBadges();
-}
-
-function updatePreviewPermBadges() {
-  const container = document.getElementById('previewPermBadges');
-  const shortNames = {
-    INTERNET: 'NET',
-    ACCESS_NETWORK_STATE: 'NET_STATE',
-    ACCESS_WIFI_STATE: 'WIFI',
-    CAMERA: 'CAMERA',
-    RECORD_AUDIO: 'MIC',
-    ACCESS_FINE_LOCATION: 'LOCATION',
-    ACCESS_COARSE_LOCATION: 'LOC_APPROX',
-    READ_EXTERNAL_STORAGE: 'READ',
-    WRITE_EXTERNAL_STORAGE: 'WRITE',
-    VIBRATE: 'VIBRATE',
-    BLUETOOTH: 'BT'
-  };
-  const active = document.querySelectorAll('.perm-check.active');
-  container.innerHTML = '';
-  active.forEach(p => {
-    const perm = p.dataset.perm;
-    const short = shortNames[perm] || perm;
-    container.innerHTML += `<span style="font-size:10px;padding:2px 6px;border-radius:3px;background:rgba(34,197,94,0.15);color:var(--success);font-weight:600;">${short}</span>`;
-  });
+  el.querySelector('.fa-check').style.display=el.classList.contains('active')?'':'none';
+  updatePermBadges();
 }
 
 // Color sync
-document.getElementById('inputThemeColor').addEventListener('input', function() {
-  document.getElementById('themeHexInput').value = this.value;
-  document.getElementById('themeSwatch').style.background = this.value;
+document.getElementById('inputThemeColor').addEventListener('input',function(){
+  document.getElementById('themeHexInput').value=this.value;
+  document.getElementById('themeSwatch').style.background=this.value;
+  updatePreview();
 });
-document.getElementById('inputSplashColor').addEventListener('input', function() {
-  document.getElementById('splashHexInput').value = this.value;
-  document.getElementById('splashSwatch').style.background = this.value;
+document.getElementById('inputSplashColor').addEventListener('input',function(){
+  document.getElementById('splashHexInput').value=this.value;
+  document.getElementById('splashSwatch').style.background=this.value;
+  updatePreview();
 });
-document.getElementById('inputIconColor').addEventListener('input', function() {
-  document.getElementById('iconHexInput').value = this.value;
-  document.getElementById('iconSwatch').style.background = this.value;
+document.getElementById('inputIconColor').addEventListener('input',function(){
+  document.getElementById('iconHexInput').value=this.value;
+  document.getElementById('iconSwatch').style.background=this.value;
+  updatePreview();
+});
+function syncColorFromHex(){const v=document.getElementById('themeHexInput').value;if(/^#[0-9a-fA-F]{6}$/.test(v)){document.getElementById('inputThemeColor').value=v;document.getElementById('themeSwatch').style.background=v;updatePreview();}}
+function syncSplashFromHex(){const v=document.getElementById('splashHexInput').value;if(/^#[0-9a-fA-F]{6}$/.test(v)){document.getElementById('inputSplashColor').value=v;document.getElementById('splashSwatch').style.background=v;updatePreview();}}
+function syncIconFromHex(){const v=document.getElementById('iconHexInput').value;if(/^#[0-9a-fA-F]{6}$/.test(v)){document.getElementById('inputIconColor').value=v;document.getElementById('iconSwatch').style.background=v;updatePreview();}}
+
+document.getElementById('inputAppName').addEventListener('input',function(){
+  const n=this.value.trim().toLowerCase().replace(/[^a-z0-9]/g,'');
+  if(n.length>0)document.getElementById('inputPackage').value='com.'+n+'.app';
 });
 
-function syncColorFromHex() {
-  const v = document.getElementById('themeHexInput').value;
-  if (/^#[0-9a-fA-F]{6}$/.test(v)) {
-    document.getElementById('inputThemeColor').value = v;
-    document.getElementById('themeSwatch').style.background = v;
-    updatePreview();
-  }
-}
-function syncSplashFromHex() {
-  const v = document.getElementById('splashHexInput').value;
-  if (/^#[0-9a-fA-F]{6}$/.test(v)) {
-    document.getElementById('inputSplashColor').value = v;
-    document.getElementById('splashSwatch').style.background = v;
-    updatePreview();
-  }
-}
-function syncIconFromHex() {
-  const v = document.getElementById('iconHexInput').value;
-  if (/^#[0-9a-fA-F]{6}$/.test(v)) {
-    document.getElementById('inputIconColor').value = v;
-    document.getElementById('iconSwatch').style.background = v;
-    updatePreview();
-  }
+// ========== Icon Generation ==========
+function drawRoundedRect(ctx,x,y,w,h,r){
+  ctx.beginPath();ctx.moveTo(x+r,y);ctx.lineTo(x+w-r,y);
+  ctx.quadraticCurveTo(x+w,y,x+w,y+r);ctx.lineTo(x+w,y+h-r);
+  ctx.quadraticCurveTo(x+w,y+h,x+w-r,y+h);ctx.lineTo(x+r,y+h);
+  ctx.quadraticCurveTo(x,y+h,x,y+h-r);ctx.lineTo(x,y+r);
+  ctx.quadraticCurveTo(x,y,x+r,y);ctx.closePath();
 }
 
-function updatePreview() {
-  const name = document.getElementById('inputAppName').value.trim() || 'My App';
-  const theme = document.getElementById('inputThemeColor').value;
-  const splash = document.getElementById('inputSplashColor').value;
-  const iconColor = document.getElementById('inputIconColor').value;
-  const showToolbar = document.getElementById('toggleToolbar').classList.contains('on');
-  const showSplash = document.getElementById('toggleSplash').classList.contains('on');
-  const fullscreen = document.getElementById('toggleFullscreen').classList.contains('on');
-  const initial = name.charAt(0).toUpperCase();
-
-  document.getElementById('previewToolbar').style.display = showToolbar ? 'flex' : 'none';
-  document.getElementById('previewToolbar').style.background = theme;
-  document.getElementById('previewTitle').textContent = name;
-  document.getElementById('previewIconSmall').textContent = initial;
-  document.getElementById('previewIconSmall').style.background = iconColor;
-  document.getElementById('previewStatusBar').style.background = theme;
-
-  const splashEl = document.getElementById('splashOverlay');
-  splashEl.style.background = splash;
-  splashEl.style.opacity = showSplash ? '1' : '0';
-  splashEl.style.pointerEvents = showSplash ? 'auto' : 'none';
-  document.getElementById('splashIcon').textContent = initial;
-  document.getElementById('splashIcon').style.background = iconColor;
-  document.getElementById('splashAppName').textContent = name;
-
-  document.getElementById('previewStatusBar').style.display = fullscreen ? 'none' : 'flex';
+function renderIcon(canvas, size, color, letter){
+  canvas.width=size; canvas.height=size;
+  const ctx=canvas.getContext('2d');
+  ctx.clearRect(0,0,size,size);
+  // Background rounded rect
+  const rad=size*0.22;
+  drawRoundedRect(ctx,0,0,size,size,rad);
+  ctx.fillStyle=color; ctx.fill();
+  // Letter
+  ctx.fillStyle='#FFFFFF';
+  ctx.font=`${Math.round(size*0.5)}px 'Space Grotesk', sans-serif`;
+  ctx.textAlign='center'; ctx.textBaseline='middle';
+  ctx.fillText(letter, size/2, size/2 + size*0.02);
 }
 
-function getConfig() {
-  const perms = [];
-  document.querySelectorAll('.perm-check.active').forEach(p => {
-    perms.push(p.dataset.perm);
+function generateIconPNG(size, color, letter){
+  const c=document.createElement('canvas');
+  renderIcon(c, size, color, letter);
+  return c.toDataURL('image/png');
+}
+
+function dataURLtoUint8Array(dataURL){
+  const b64=dataURL.split(',')[1];
+  const bin=atob(b64);
+  const arr=new Uint8Array(bin.length);
+  for(let i=0;i<bin.length;i++)arr[i]=bin.charCodeAt(i);
+  return arr;
+}
+
+// ========== Preview ==========
+function updatePreview(){
+  const name=document.getElementById('inputAppName').value.trim()||'My App';
+  const theme=document.getElementById('inputThemeColor').value;
+  const splash=document.getElementById('inputSplashColor').value;
+  const iconColor=document.getElementById('inputIconColor').value;
+  const showToolbar=document.getElementById('toggleToolbar').classList.contains('on');
+  const showSplash=document.getElementById('toggleSplash').classList.contains('on');
+  const fullscreen=document.getElementById('toggleFullscreen').classList.contains('on');
+  const initial=name.charAt(0).toUpperCase();
+
+  document.getElementById('previewToolbar').style.display=showToolbar?'flex':'none';
+  document.getElementById('previewToolbar').style.background=theme;
+  document.getElementById('previewTitle').textContent=name;
+  document.getElementById('previewIconSmall').textContent=initial;
+  document.getElementById('previewIconSmall').style.background=iconColor;
+  document.getElementById('previewStatusBar').style.background=theme;
+  document.getElementById('previewStatusBar').style.display=fullscreen?'none':'flex';
+
+  const sp=document.getElementById('splashOverlay');
+  sp.style.background=splash;sp.style.opacity=showSplash?'1':'0';
+  sp.style.pointerEvents=showSplash?'auto':'none';
+  document.getElementById('splashIcon').textContent=initial;
+  document.getElementById('splashIcon').style.background=iconColor;
+  document.getElementById('splashAppName').textContent=name;
+
+  // Render icon preview
+  renderIcon(document.getElementById('iconPreviewLarge'), 192, iconColor, initial);
+
+  updatePermBadges();
+}
+
+function updatePermBadges(){
+  const c=document.getElementById('previewPermBadges');
+  const short={INTERNET:'NET',ACCESS_NETWORK_STATE:'NET',ACCESS_WIFI_STATE:'WIFI',CAMERA:'CAM',RECORD_AUDIO:'MIC',ACCESS_FINE_LOCATION:'GPS',ACCESS_COARSE_LOCATION:'LOC',READ_EXTERNAL_STORAGE:'READ',WRITE_EXTERNAL_STORAGE:'WRITE',VIBRATE:'VIB'};
+  c.innerHTML='';
+  document.querySelectorAll('.perm-check.active').forEach(p=>{
+    const s=short[p.dataset.perm]||p.dataset.perm;
+    c.innerHTML+=`<span style="font-size:9px;padding:2px 5px;border-radius:3px;background:rgba(34,197,94,0.12);color:var(--success);font-weight:600;">${s}</span>`;
   });
-  return {
-    url: document.getElementById('inputUrl').value.trim(),
-    appName: document.getElementById('inputAppName').value.trim(),
-    packageName: document.getElementById('inputPackage').value.trim(),
-    themeColor: document.getElementById('inputThemeColor').value,
-    splashColor: document.getElementById('inputSplashColor').value,
-    iconColor: document.getElementById('inputIconColor').value,
-    orientation: document.getElementById('inputOrientation').value,
-    minSdk: document.getElementById('inputMinSdk').value,
-    showToolbar: document.getElementById('toggleToolbar').classList.contains('on'),
-    fullscreen: document.getElementById('toggleFullscreen').classList.contains('on'),
-    jsEnabled: document.getElementById('toggleJS').classList.contains('on'),
-    showSplash: document.getElementById('toggleSplash').classList.contains('on'),
-    permissions: perms
+}
+
+// Time
+function updateTime(){const n=new Date();document.getElementById('previewStatusBar').textContent=n.getHours().toString().padStart(2,'0')+':'+n.getMinutes().toString().padStart(2,'0');}
+updateTime();setInterval(updateTime,30000);
+
+// Splash click
+document.getElementById('splashOverlay').addEventListener('click',function(){
+  this.style.opacity='0';this.style.pointerEvents='none';
+  setTimeout(()=>{this.style.opacity='1';this.style.pointerEvents='auto';},2000);
+});
+
+// ========== Build ==========
+function getConfig(){
+  const perms=[];
+  document.querySelectorAll('.perm-check.active').forEach(p=>perms.push(p.dataset.perm));
+  return{
+    url:document.getElementById('inputUrl').value.trim(),
+    appName:document.getElementById('inputAppName').value.trim(),
+    packageName:document.getElementById('inputPackage').value.trim(),
+    themeColor:document.getElementById('inputThemeColor').value,
+    splashColor:document.getElementById('inputSplashColor').value,
+    iconColor:document.getElementById('inputIconColor').value,
+    orientation:document.getElementById('inputOrientation').value,
+    minSdk:document.getElementById('inputMinSdk').value,
+    showToolbar:document.getElementById('toggleToolbar').classList.contains('on'),
+    fullscreen:document.getElementById('toggleFullscreen').classList.contains('on'),
+    jsEnabled:document.getElementById('toggleJS').classList.contains('on'),
+    showSplash:document.getElementById('toggleSplash').classList.contains('on'),
+    permissions:perms
   };
 }
 
-function generatePreview() {
-  const cfg = getConfig();
-  const progressFill = document.getElementById('progressFill');
-  const buildStatus = document.getElementById('buildStatus');
-  const buildPercent = document.getElementById('buildPercent');
-  const buildProgress = document.getElementById('buildProgress');
-  const buildResult = document.getElementById('buildResult');
+function startBuild(){
+  goToStep(4);
+  const pf=document.getElementById('progressFill');
+  const bs=document.getElementById('buildStatus');
+  const bp=document.getElementById('buildPercent');
+  document.getElementById('buildProgress').style.display='block';
+  document.getElementById('buildResult').style.display='none';
+  pf.style.width='0%';
 
-  buildProgress.style.display = 'block';
-  buildResult.style.display = 'none';
-  progressFill.style.width = '0%';
-
-  const steps = [
-    { pct: 10, text: 'Creating project structure...' },
-    { pct: 22, text: 'Generating AndroidManifest.xml with permissions...' },
-    { pct: 35, text: 'Writing PermissionHandler.java...' },
-    { pct: 48, text: 'Writing MainActivity.java with auto-grant logic...' },
-    { pct: 58, text: 'Configuring WebChromeClient permission callbacks...' },
-    { pct: 68, text: 'Adding file upload & camera capture support...' },
-    { pct: 78, text: 'Configuring build.gradle...' },
-    { pct: 88, text: 'Generating splash screen resources...' },
-    { pct: 95, text: 'Creating icon assets...' },
-    { pct: 100, text: 'Packaging ZIP...' }
+  const steps=[
+    {p:10,t:'Generating icon PNGs at 5 resolutions...'},
+    {p:25,t:'Writing AndroidManifest.xml...'},
+    {p:40,t:'Writing PermissionHandler.java...'},
+    {p:55,t:'Writing MainActivity.java...'},
+    {p:70,t:'Creating GitHub Actions workflow...'},
+    {p:82,t:'Writing Gradle wrapper...'},
+    {p:92,t:'Creating resources...'},
+    {p:100,t:'Packaging ZIP...'}
   ];
-
-  let i = 0;
-  const interval = setInterval(() => {
-    if (i < steps.length) {
-      progressFill.style.width = steps[i].pct + '%';
-      buildStatus.textContent = steps[i].text;
-      buildPercent.textContent = steps[i].pct + '%';
-      i++;
-    } else {
-      clearInterval(interval);
-      setTimeout(() => {
-        buildProgress.style.display = 'none';
-        buildResult.style.display = 'block';
-        showBuildResult(cfg);
-        actuallyGenerateZip(cfg);
-      }, 400);
-    }
-  }, 350);
+  let i=0;
+  const iv=setInterval(()=>{
+    if(i<steps.length){pf.style.width=steps[i].p+'%';bs.textContent=steps[i].t;bp.textContent=steps[i].p+'%';i++;}
+    else{clearInterval(iv);setTimeout(()=>{
+      document.getElementById('buildProgress').style.display='none';
+      document.getElementById('buildResult').style.display='block';
+      showBuildResult();actuallyGenerateZip();
+    },300);}
+  },300);
 }
 
-function showBuildResult(cfg) {
-  const summary = document.getElementById('buildSummary');
-  const items = [
-    ['App Name', cfg.appName],
-    ['Package', cfg.packageName],
-    ['Website', cfg.url],
-    ['Min SDK', 'API ' + cfg.minSdk],
-    ['Orientation', cfg.orientation],
-    ['Theme', cfg.themeColor],
-    ['Permissions', cfg.permissions.length + ' granted'],
-    ['Auto-Grant', 'Enabled']
-  ];
-  summary.innerHTML = items.map(([k, v]) => `
-    <div style="display:flex;justify-content:space-between;padding:4px 0;border-bottom:1px solid var(--border);">
-      <span style="color:var(--muted);">${k}</span>
-      <span style="font-weight:600;max-width:160px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;" title="${v}">${v}</span>
-    </div>
-  `).join('');
+function darkenColor(hex,amt){
+  let r=parseInt(hex.slice(1,3),16),g=parseInt(hex.slice(3,5),16),b=parseInt(hex.slice(5,7),16);
+  r=Math.max(0,r-amt);g=Math.max(0,g-amt);b=Math.max(0,b-amt);
+  return '#'+[r,g,b].map(c=>c.toString(16).padStart(2,'0')).join('');
+}
 
-  // Permission feature list
-  const permFeatures = [
-    'Requests all selected permissions at app startup on Android 6.0+',
-    'Auto-grants all WebChromeClient permission requests (camera, mic, location)',
-    'Auto-approves geolocation without prompting the user',
-    'Handles file upload from camera or gallery via WebView',
-    'File chooser supports image capture directly from camera',
-    'Downloads files from the website to device storage',
-    'Re-requests denied permissions when the user returns to the app'
-  ];
-  document.getElementById('permFeatureList').innerHTML = permFeatures.map(f =>
-    `<li style="color:var(--fg);">${f}</li>`
-  ).join('');
+function showBuildResult(){
+  const cfg=getConfig();
+  const initial=cfg.appName.charAt(0).toUpperCase();
+
+  // Render result icon
+  renderIcon(document.getElementById('resultIcon'),192,cfg.iconColor,initial);
+  document.getElementById('resultAppName').textContent=cfg.appName;
+  document.getElementById('resultPkgName').textContent=cfg.packageName;
 
   // File tree
-  const pkgPath = cfg.packageName.replace(/\./g, '/');
-  const fileCount = cfg.showSplash ? 11 : 10;
-  document.getElementById('fileCount').textContent = fileCount + ' files';
-  document.getElementById('fileTree').innerHTML = `<span class="string">${cfg.appName.replace(/\s+/g, '')}/</span>
-├── <span class="attr">app/</span>
-│   ├── <span class="attr">src/</span>
-│   │   ├── <span class="attr">main/</span>
-│   │   │   ├── <span class="keyword">AndroidManifest.xml</span>
-│   │   │   ├── <span class="attr">java/${pkgPath}/</span>
-│   │   │   │   ├── <span class="string">MainActivity.java</span>
-│   │   │   │   ├── <span class="string">PermissionHandler.java</span> <span class="comment">← NEW</span>
- ${cfg.showSplash ? `│   │   │   │   └── <span class="string">SplashActivity.java</span>\n` : ''}│   │   │   └── <span class="attr">res/</span>
-│   │   │       ├── <span class="attr">values/</span>
-│   │   │       │   ├── <span class="string">colors.xml</span>
-│   │   │       │   └── <span class="string">strings.xml</span>
-│   │   │       └── <span class="attr">drawable/</span>
-│   │   │           └── <span class="string">splash_bg.xml</span>
-│   └── <span class="string">build.gradle</span>
-├── <span class="string">build.gradle</span> <span class="comment">(project)</span>
-├── <span class="string">settings.gradle</span>
-└── <span class="string">gradle.properties</span>`;
-
-  // Code preview — focus on permission handling parts
-  document.getElementById('mainPreview').innerHTML = `<span class="comment">// Auto-grant all web permission requests</span>
-webView.setWebChromeClient(<span class="keyword">new</span> WebChromeClient() {
-    <span class="keyword">@Override</span>
-    <span class="keyword">public void</span> <span class="attr">onPermissionRequest</span>(PermissionRequest request) {
-        <span class="comment">// GRANT ALL — camera, mic, location, etc.</span>
-        request.<span class="attr">grant</span>(request.getResources());
-    }
-
-    <span class="keyword">@Override</span>
-    <span class="keyword">public void</span> <span class="attr">onGeolocationPermissionsShowPrompt</span>(
-        String origin, GeolocationPermissions.Callback callback) {
-        <span class="comment">// Auto-allow geolocation without prompt</span>
-        callback.<span class="attr">invoke</span>(origin, <span class="keyword">true</span>, <span class="keyword">false</span>);
-    }
-
-    <span class="comment">// File upload — camera + gallery support</span>
-    <span class="keyword">@Override</span>
-    <span class="keyword">public boolean</span> <span class="attr">onShowFileChooser</span>(WebView webView,
-        ValueCallback&lt;Uri[]&gt; filePathCallback,
-        WebChromeClient.FileChooserParams params) {
-        <span class="comment">// Handles file picker + camera capture</span>
-        <span class="keyword">return</span> <span class="keyword">true</span>;
-    }
-});
-
-<span class="comment">// Request all Android permissions at startup</span>
-PermissionHandler.<span class="attr">requestAllPermissions</span>(<span class="keyword">this</span>);`;
+  const pp=cfg.packageName.replace(/\./g,'/');
+  document.getElementById('fileTree').innerHTML=`<span class="st">${cfg.appName.replace(/\s+/g,'')}/</span>
+├── <span class="at">.github/workflows/</span>
+│   └── <span class="st">build.yml</span> <span class="cm">← Auto-build APK</span>
+├── <span class="at">app/</span>
+│   ├── <span class="at">src/main/</span>
+│   │   ├── <span class="kw">AndroidManifest.xml</span>
+│   │   ├── <span class="at">java/${pp}/</span>
+│   │   │   ├── <span class="st">MainActivity.java</span>
+│   │   │   └── <span class="st">PermissionHandler.java</span>
+ ${cfg.showSplash?'│   │   │   └── <span class="st">SplashActivity.java</span>\n':''}│   │   └── <span class="at">res/</span>
+│   │       ├── <span class="at">mipmap-mdpi/</span> <span class="cm">48×48 icon</span>
+│   │       ├── <span class="at">mipmap-hdpi/</span> <span class="cm">72×72 icon</span>
+│   │       ├── <span class="at">mipmap-xhdpi/</span> <span class="cm">96×96 icon</span>
+│   │       ├── <span class="at">mipmap-xxhdpi/</span> <span class="cm">144×144 icon</span>
+│   │       ├── <span class="at">mipmap-xxxhdpi/</span> <span class="cm">192×192 icon</span>
+│   │       └── <span class="at">values/</span>
+│   │           ├── <span class="st">colors.xml</span>
+│   │           └── <span class="st">strings.xml</span>
+│   └── <span class="st">build.gradle</span>
+├── <span class="st">build.gradle</span> <span class="cm">(project)</span>
+├── <span class="st">settings.gradle</span>
+├── <span class="st">gradle.properties</span>
+├── <span class="at">gradle/wrapper/</span>
+│   └── <span class="st">gradle-wrapper.properties</span>
+├── <span class="st">gradlew</span>
+└── <span class="st">gradlew.bat</span>`;
 }
 
-function darkenColor(hex, amount) {
-  let r = parseInt(hex.slice(1, 3), 16);
-  let g = parseInt(hex.slice(3, 5), 16);
-  let b = parseInt(hex.slice(5, 7), 16);
-  r = Math.max(0, r - amount);
-  g = Math.max(0, g - amount);
-  b = Math.max(0, b - amount);
-  return '#' + [r, g, b].map(c => c.toString(16).padStart(2, '0')).join('');
-}
+function actuallyGenerateZip(){
+  const cfg=getConfig();
+  const zip=new JSZip();
+  const pp=cfg.packageName.replace(/\./g,'/');
+  const pn=cfg.appName.replace(/\s+/g,'');
+  const root=zip.folder(pn);
+  const initial=cfg.appName.charAt(0).toUpperCase();
+  const iconColor=cfg.iconColor;
 
-function actuallyGenerateZip(cfg) {
-  const zip = new JSZip();
-  const pkgPath = cfg.packageName.replace(/\./g, '/');
-  const projName = cfg.appName.replace(/\s+/g, '');
-  const root = zip.folder(projName);
-  const initial = cfg.appName.charAt(0).toUpperCase();
-
-  // Build the permission strings for manifest
-  const permXml = cfg.permissions.map(p =>
-    `    <uses-permission android:name="android.permission.${p}" />`
-  ).join('\n');
-
-  // Camera feature (optional, for Play Store filtering)
-  let usesFeatures = '';
-  if (cfg.permissions.includes('CAMERA')) {
-    usesFeatures += `    <uses-feature android:name="android.hardware.camera" android:required="false" />\n`;
-  }
-  if (cfg.permissions.includes('BLUETOOTH')) {
-    usesFeatures += `    <uses-feature android:name="android.hardware.bluetooth" android:required="false" />\n`;
+  // ===== Generate icon PNGs at all mipmap sizes =====
+  const mipmapSizes={mdpi:48,hdpi:72,xhdpi:96,xxhdpi:144,xxxhdpi:192};
+  for(const[density,size] of Object.entries(mipmapSizes)){
+    const pngData=generateIconPNG(size, iconColor, initial);
+    root.folder(`app/src/main/res/mipmap-${density}`).file('ic_launcher.png', dataURLtoUint8Array(pngData));
   }
 
-  // ==================== Project-level build.gradle ====================
-  root.file('build.gradle', `// Top-level build file
-buildscript {
+  // ===== GitHub Actions workflow =====
+  root.folder('.github/workflows').file('build.yml', `name: Build APK
+
+on:
+  push:
+    branches: [ main ]
+  workflow_dispatch:
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Set up JDK 17
+        uses: actions/setup-java@v4
+        with:
+          java-version: '17'
+          distribution: 'temurin'
+
+      - name: Make gradlew executable
+        run: chmod +x gradlew
+
+      - name: Build Debug APK
+        run: ./gradlew assembleDebug
+
+      - name: Upload APK
+        uses: actions/upload-artifact@v4
+        with:
+          name: ${pn}-debug-apk
+          path: app/build/outputs/apk/debug/*.apk
+`);
+
+  // ===== Project build.gradle =====
+  root.file('build.gradle', `buildscript {
     repositories {
         google()
         mavenCentral()
@@ -1294,20 +919,16 @@ buildscript {
         classpath 'com.android.tools.build:gradle:8.1.0'
     }
 }
-
 allprojects {
     repositories {
         google()
         mavenCentral()
     }
 }
-
-task clean(type: Delete) {
-    delete rootProject.buildDir
-}
+task clean(type: Delete) { delete rootProject.buildDir }
 `);
 
-  root.file('settings.gradle', `rootProject.name = '${projName}'
+  root.file('settings.gradle', `rootProject.name = '${pn}'
 include ':app'
 `);
 
@@ -1315,15 +936,33 @@ include ':app'
 android.useAndroidX=true
 `);
 
-  // ==================== App build.gradle ====================
+  // ===== Gradle wrapper =====
+  root.folder('gradle/wrapper').file('gradle-wrapper.properties', `distributionBase=GRADLE_USER_HOME
+distributionPath=wrapper/dists
+distributionUrl=https\\://services.gradle.org/distributions/gradle-8.0-bin.zip
+zipStoreBase=GRADLE_USER_HOME
+zipStorePath=wrapper/dists
+`);
+
+  // gradlew (minimal shell script)
+  root.file('gradlew', `#!/bin/sh
+# Gradle wrapper stub — Android Studio will download full wrapper on first build
+exec gradle "$@"
+`);
+
+  // gradlew.bat
+  root.file('gradlew.bat', `@echo off
+REM Gradle wrapper stub
+gradle %*
+`);
+
+  // ===== App build.gradle =====
   root.folder('app').file('build.gradle', `plugins {
     id 'com.android.application'
 }
-
 android {
     namespace '${cfg.packageName}'
     compileSdk 34
-
     defaultConfig {
         applicationId '${cfg.packageName}'
         minSdk ${cfg.minSdk}
@@ -1331,58 +970,47 @@ android {
         versionCode 1
         versionName '1.0'
     }
-
     buildTypes {
         release {
             minifyEnabled true
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
         }
     }
-
     compileOptions {
         sourceCompatibility JavaVersion.VERSION_1_8
         targetCompatibility JavaVersion.VERSION_1_8
     }
 }
-
 dependencies {
     implementation 'androidx.appcompat:appcompat:1.6.1'
     implementation 'androidx.webkit:webkit:1.8.0'
 }
 `);
 
-  root.folder('app').file('proguard-rules.pro', `# WebView rules
--keepclassmembers class * {
+  root.folder('app').file('proguard-rules.pro', `-keepclassmembers class * {
     @android.webkit.JavascriptInterface <methods>;
-}
--keepclassmembers class * extends android.webkit.WebViewClient {
-    public void *(android.webkit.WebView, java.lang.String, android.graphics.Bitmap);
 }
 `);
 
-  // ==================== AndroidManifest.xml ====================
-  let manifestActivities = '';
-  if (cfg.showSplash) {
-    manifestActivities += `        <activity
-            android:name=".SplashActivity"
-            android:theme="@style/SplashTheme"
-            android:exported="true">
+  // ===== AndroidManifest.xml =====
+  const permXml=cfg.permissions.map(p=>`    <uses-permission android:name="android.permission.${p}" />`).join('\n');
+  let usesFeatures='';
+  if(cfg.permissions.includes('CAMERA'))usesFeatures+=`    <uses-feature android:name="android.hardware.camera" android:required="false" />\n`;
+
+  let activities='';
+  if(cfg.showSplash){
+    activities+=`        <activity android:name=".SplashActivity" android:theme="@style/SplashTheme" android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>\n`;
   }
-
-  manifestActivities += `        <activity
-            android:name=".MainActivity"
-            android:screenOrientation="${cfg.orientation}"
-            android:configChanges="orientation|screenSize|keyboard|keyboardHidden"
-            android:exported="${!cfg.showSplash}">
- ${!cfg.showSplash ? `            <intent-filter>
+  activities+=`        <activity android:name=".MainActivity" android:screenOrientation="${cfg.orientation}" android:configChanges="orientation|screenSize|keyboard|keyboardHidden" android:exported="${!cfg.showSplash}">
+ ${!cfg.showSplash?`            <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>` : ''}
+            </intent-filter>`:''}
         </activity>`;
 
   root.folder('app/src/main').file('AndroidManifest.xml', `<?xml version="1.0" encoding="utf-8"?>
@@ -1400,22 +1028,16 @@ dependencies {
         android:hardwareAccelerated="true"
         android:requestLegacyExternalStorage="true">
 
- ${manifestActivities}
-
+ ${activities}
     </application>
 </manifest>
 `);
 
-  // ==================== PermissionHandler.java ====================
-  // This is the key file — handles ALL runtime permission requesting
-  const javaDir = root.folder(`app/src/main/java/${pkgPath}`);
+  // ===== Java files =====
+  const javaDir=root.folder(`app/src/main/java/${pp}`);
 
-  // Build the permission array for Java code
-  const permArray = cfg.permissions
-    .filter(p => p !== 'INTERNET' && p !== 'ACCESS_NETWORK_STATE' && p !== 'ACCESS_WIFI_STATE')
-    .map(p => `Manifest.permission.${p}`)
-    .join(',\n            ');
-
+  // PermissionHandler.java
+  const dangerousPerms=cfg.permissions.filter(p=>!['INTERNET','ACCESS_NETWORK_STATE','ACCESS_WIFI_STATE'].includes(p));
   javaDir.file('PermissionHandler.java', `package ${cfg.packageName};
 
 import android.Manifest;
@@ -1423,95 +1045,46 @@ import android.app.Activity;
 import android.content.pm.PackageManager;
 import android.os.Build;
 import android.util.Log;
-
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
-
 import java.util.ArrayList;
 import java.util.List;
 
-/**
- * PermissionHandler — Automatically requests all required Android permissions
- * at app startup so the WebView has full device access without user prompts.
- *
- * All permissions are requested together. If any are denied, they are
- * re-requested on the next app launch.
- */
 public class PermissionHandler {
-
     private static final String TAG = "PermissionHandler";
-    private static final int REQUEST_CODE_ALL_PERMISSIONS = 1001;
+    private static final int REQ_CODE = 1001;
 
-    /**
-     * All dangerous permissions that require runtime requests on Android 6.0+
-     * INTERNET, ACCESS_NETWORK_STATE, ACCESS_WIFI_STATE are normal permissions
-     * and are automatically granted at install time.
-     */
     private static final String[] DANGEROUS_PERMISSIONS = {
- ${cfg.permissions
-  .filter(p => p !== 'INTERNET' && p !== 'ACCESS_NETWORK_STATE' && p !== 'ACCESS_WIFI_STATE')
-  .map(p => `            Manifest.permission.${p}`)
-  .join(',\n')}
+ ${dangerousPerms.map(p=>`            Manifest.permission.${p}`).join(',\n')}
     };
 
-    /**
-     * Request all required permissions at startup.
-     * Call this from onCreate() of your main Activity.
-     */
     public static void requestAllPermissions(Activity activity) {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
             List<String> needed = new ArrayList<>();
             for (String perm : DANGEROUS_PERMISSIONS) {
-                if (ContextCompat.checkSelfPermission(activity, perm)
-                        != PackageManager.PERMISSION_GRANTED) {
+                if (ContextCompat.checkSelfPermission(activity, perm) != PackageManager.PERMISSION_GRANTED) {
                     needed.add(perm);
-                    Log.d(TAG, "Permission needed: " + perm);
-                } else {
-                    Log.d(TAG, "Permission already granted: " + perm);
                 }
             }
             if (!needed.isEmpty()) {
-                Log.d(TAG, "Requesting " + needed.size() + " permissions");
-                ActivityCompat.requestPermissions(activity,
-                        needed.toArray(new String[0]),
-                        REQUEST_CODE_ALL_PERMISSIONS);
-            } else {
-                Log.d(TAG, "All permissions already granted");
+                ActivityCompat.requestPermissions(activity, needed.toArray(new String[0]), REQ_CODE);
             }
         }
     }
 
-    /**
-     * Check if all permissions are granted.
-     * Call this from onRequestPermissionsResult() to log results.
-     */
     public static boolean allPermissionsGranted(int requestCode, String[] permissions, int[] grantResults) {
-        if (requestCode != REQUEST_CODE_ALL_PERMISSIONS) return false;
-
-        boolean allGranted = true;
+        if (requestCode != REQ_CODE) return false;
         for (int i = 0; i < grantResults.length; i++) {
             if (grantResults[i] != PackageManager.PERMISSION_GRANTED) {
                 Log.w(TAG, "Permission DENIED: " + permissions[i]);
-                allGranted = false;
-            } else {
-                Log.d(TAG, "Permission GRANTED: " + permissions[i]);
             }
         }
-        return allGranted;
-    }
-
-    /**
-     * Check if a specific permission is currently granted.
-     */
-    public static boolean hasPermission(Activity activity, String permission) {
-        return ContextCompat.checkSelfPermission(activity, permission)
-                == PackageManager.PERMISSION_GRANTED;
+        return true;
     }
 }
 `);
 
-  // ==================== MainActivity.java ====================
-  // This is the big one — full WebView with ALL permission auto-granting
+  // MainActivity.java
   javaDir.file('MainActivity.java', `package ${cfg.packageName};
 
 import android.Manifest;
@@ -1550,87 +1123,58 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import java.io.File;
-import java.text.SimpleDateFormat;
-import java.util.Date;
-import java.util.Locale;
+import java.util.Arrays;
 
 public class MainActivity extends Activity {
 
     private WebView webView;
     private ProgressBar progressBar;
     private LinearLayout toolbar;
-
     private static final String URL = "${cfg.url}";
     private static final String TAG = "MainActivity";
-
-    // File upload support
-    private static final int FILE_CHOOSER_REQUEST_CODE = 10001;
+    private static final int FILE_CHOOSER_REQ = 10001;
     private ValueCallback<Uri[]> filePathCallback;
-    private Uri cameraImageUri;
 
     @SuppressLint("SetJavaScriptEnabled")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
- ${cfg.fullscreen ? `
-        // Fullscreen mode
+ ${cfg.fullscreen?`
         requestWindowFeature(Window.FEATURE_NO_TITLE);
-        getWindow().setFlags(
-            WindowManager.LayoutParams.FLAG_FULLSCREEN,
-            WindowManager.LayoutParams.FLAG_FULLSCREEN
-        );
+        getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
         getWindow().getDecorView().setSystemUiVisibility(
-            View.SYSTEM_UI_FLAG_IMMERSIVE_STICKY
-            | View.SYSTEM_UI_FLAG_FULLSCREEN
-            | View.SYSTEM_UI_FLAG_HIDE_NAVIGATION
-            | View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN
-            | View.SYSTEM_UI_FLAG_LAYOUT_HIDE_NAVIGATION
-            | View.SYSTEM_UI_FLAG_LAYOUT_STABLE
-        );
-` : ""}
-        // ===== REQUEST ALL PERMISSIONS AT STARTUP =====
+            View.SYSTEM_UI_FLAG_IMMERSIVE_STICKY | View.SYSTEM_UI_FLAG_FULLSCREEN
+            | View.SYSTEM_UI_FLAG_HIDE_NAVIGATION | View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN
+            | View.SYSTEM_UI_FLAG_LAYOUT_HIDE_NAVIGATION | View.SYSTEM_UI_FLAG_LAYOUT_STABLE);
+`: ""}
+        // Request all permissions at startup
         PermissionHandler.requestAllPermissions(this);
 
-        // Create layout
         LinearLayout layout = new LinearLayout(this);
         layout.setOrientation(LinearLayout.VERTICAL);
 
- ${cfg.showToolbar ? `        // Toolbar
+ ${cfg.showToolbar?`
         toolbar = new LinearLayout(this);
         toolbar.setOrientation(LinearLayout.HORIZONTAL);
         toolbar.setPadding(16, 32, 16, 16);
         toolbar.setBackgroundColor(Color.parseColor("${cfg.themeColor}"));
-        toolbar.setLayoutParams(new LinearLayout.LayoutParams(
-            LinearLayout.LayoutParams.MATCH_PARENT,
-            LinearLayout.LayoutParams.WRAP_CONTENT
-        ));
-
+        toolbar.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT));
         TextView titleView = new TextView(this);
         titleView.setText("${cfg.appName}");
         titleView.setTextColor(Color.WHITE);
         titleView.setTextSize(18);
         titleView.setTypeface(null, android.graphics.Typeface.BOLD);
         toolbar.addView(titleView);
-
         layout.addView(toolbar);
-` : ""}
-        // Progress bar
+`:""}
         progressBar = new ProgressBar(this, null, android.R.attr.progressBarStyleHorizontal);
-        progressBar.setLayoutParams(new LinearLayout.LayoutParams(
-            LinearLayout.LayoutParams.MATCH_PARENT, 8
-        ));
+        progressBar.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, 8));
         progressBar.setMax(100);
         layout.addView(progressBar);
 
-        // WebView
         webView = new WebView(this);
-        webView.setLayoutParams(new LinearLayout.LayoutParams(
-            LinearLayout.LayoutParams.MATCH_PARENT,
-            0, 1.0f
-        ));
+        webView.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, 0, 1.0f));
 
-        // ===== WEB SETTINGS — Enable everything =====
         WebSettings settings = webView.getSettings();
         settings.setJavaScriptEnabled(${cfg.jsEnabled});
         settings.setDomStorageEnabled(true);
@@ -1646,231 +1190,110 @@ public class MainActivity extends Activity {
         settings.setDisplayZoomControls(false);
         settings.setMediaPlaybackRequiresUserGesture(false);
         settings.setJavaScriptCanOpenWindowsAutomatically(true);
-        settings.setSupportMultipleWindows(false);
         settings.setCacheMode(WebSettings.LOAD_DEFAULT);
         settings.setMixedContentMode(WebSettings.MIXED_CONTENT_ALWAYS_ALLOW);
         settings.setSaveFormData(true);
-        settings.setSavePassword(true);
-
-        // Enable responsive viewport
         settings.setLayoutAlgorithm(WebSettings.LayoutAlgorithm.TEXT_AUTOSIZING);
 
-        // ===== WebViewClient =====
         webView.setWebViewClient(new WebViewClient() {
             @Override
-            public boolean shouldOverrideUrlLoading(WebView view, String url) {
-                // Stay inside WebView for all URLs
-                view.loadUrl(url);
-                return true;
-            }
-
+            public boolean shouldOverrideUrlLoading(WebView view, String url) { view.loadUrl(url); return true; }
             @Override
-            public void onPageStarted(WebView view, String url, Bitmap favicon) {
-                super.onPageStarted(view, url, favicon);
-                progressBar.setVisibility(View.VISIBLE);
-            }
-
+            public void onPageStarted(WebView view, String url, Bitmap favicon) { super.onPageStarted(view, url, favicon); progressBar.setVisibility(View.VISIBLE); }
             @Override
-            public void onPageFinished(WebView view, String url) {
-                super.onPageFinished(view, url);
-                progressBar.setVisibility(View.GONE);
- ${cfg.fullscreen ? `
-                // Re-apply fullscreen after page loads
-                getWindow().getDecorView().setSystemUiVisibility(
-                    View.SYSTEM_UI_FLAG_IMMERSIVE_STICKY
-                    | View.SYSTEM_UI_FLAG_FULLSCREEN
-                    | View.SYSTEM_UI_FLAG_HIDE_NAVIGATION
-                );
-` : ""}
-            }
-
-            @Override
-            public void onReceivedError(WebView view, WebResourceRequest request, WebResourceError error) {
-                Log.e(TAG, "WebView error: " + error.getDescription());
-            }
+            public void onPageFinished(WebView view, String url) { super.onPageFinished(view, url); progressBar.setVisibility(View.GONE); }
         });
 
-        // ===== WebChromeClient — AUTO-GRANT ALL PERMISSIONS =====
+        // AUTO-GRANT ALL WEB PERMISSIONS
         webView.setWebChromeClient(new WebChromeClient() {
-
-            /**
-             * AUTO-GRANT all web permission requests.
-             * This includes: camera, microphone, geolocation, etc.
-             * The website will NEVER see a permission prompt — everything is approved.
-             */
             @Override
             public void onPermissionRequest(PermissionRequest request) {
-                Log.d(TAG, "Web permission requested: " + java.util.Arrays.toString(request.getResources()));
-                // GRANT ALL requested permissions automatically
+                Log.d(TAG, "Web permission request: " + Arrays.toString(request.getResources()));
                 runOnUiThread(() -> request.grant(request.getResources()));
             }
-
-            /**
-             * AUTO-GRANT geolocation permission.
-             * The website's navigator.geolocation will work without any user prompt.
-             */
             @Override
-            public void onGeolocationPermissionsShowPrompt(String origin,
-                    GeolocationPermissions.Callback callback) {
-                Log.d(TAG, "Geolocation permission requested from: " + origin);
-                // origin, allow, remember
+            public void onGeolocationPermissionsShowPrompt(String origin, GeolocationPermissions.Callback callback) {
                 callback.invoke(origin, true, true);
             }
-
-            /**
-             * FILE UPLOAD — Support file picker and camera capture.
-             * Handles <input type="file"> and camera image capture.
-             */
             @Override
-            public boolean onShowFileChooser(WebView webView,
-                    ValueCallback<Uri[]> filePathCallback,
-                    FileChooserParams params) {
-                Log.d(TAG, "File chooser requested");
-
-                // Cancel previous callback
-                if (this.filePathCallback != null) {
-                    this.filePathCallback.onReceiveValue(null);
-                }
-                this.filePathCallback = filePathCallback;
-
-                Intent intent = params.createIntent();
-                try {
-                    startActivityForResult(intent, FILE_CHOOSER_REQUEST_CODE);
-                } catch (Exception e) {
-                    Log.e(TAG, "File chooser error: " + e.getMessage());
-                    this.filePathCallback = null;
-                    return false;
-                }
+            public boolean onShowFileChooser(WebView webView, ValueCallback<Uri[]> filePathCallback, FileChooserParams params) {
+                if (MainActivity.this.filePathCallback != null) MainActivity.this.filePathCallback.onReceiveValue(null);
+                MainActivity.this.filePathCallback = filePathCallback;
+                try { startActivityForResult(params.createIntent(), FILE_CHOOSER_REQ); } catch (Exception e) { return false; }
                 return true;
             }
-
             @Override
             public void onProgressChanged(WebView view, int newProgress) {
                 progressBar.setProgress(newProgress);
-                if (newProgress == 100) {
-                    new Handler(Looper.getMainLooper()).postDelayed(() ->
-                        progressBar.setVisibility(View.GONE), 200);
-                }
-            }
-
-            @Override
-            public void onReceivedTitle(WebView view, String title) {
-                super.onReceivedTitle(view, title);
- ${cfg.showToolbar ? `                TextView tv = toolbar.findViewWithTag("title");
-                if (tv == null) {
-                    tv = toolbar.findViewWithTag("appTitle");
-                }
-` : ""}
+                if (newProgress == 100) new Handler(Looper.getMainLooper()).postDelayed(() -> progressBar.setVisibility(View.GONE), 200);
             }
         });
 
-        // ===== ENABLE FILE DOWNLOAD =====
+        // FILE DOWNLOAD SUPPORT
         webView.setDownloadListener((url, userAgent, contentDisposition, mimetype, contentLength) -> {
-            Log.d(TAG, "Download requested: " + url);
             try {
                 DownloadManager.Request request = new DownloadManager.Request(Uri.parse(url));
                 request.setMimeType(mimetype);
-                String fileName = java.net.URLDecoder.decode(
-                    android.webkit.URLUtil.guessFileName(url, contentDisposition, mimetype), "UTF-8");
+                String fileName = java.net.URLDecoder.decode(android.webkit.URLUtil.guessFileName(url, contentDisposition, mimetype), "UTF-8");
                 request.setTitle(fileName);
-                request.setDescription("Downloading file...");
                 request.allowScanningByMediaScanner();
-                request.setNotificationVisibility(
-                    DownloadManager.Request.VISIBILITY_VISIBLE_NOTIFY_COMPLETED);
+                request.setNotificationVisibility(DownloadManager.Request.VISIBILITY_VISIBLE_NOTIFY_COMPLETED);
                 request.setDestinationInExternalPublicDir(Environment.DIRECTORY_DOWNLOADS, fileName);
-                DownloadManager dm = (DownloadManager) getSystemService(Context.DOWNLOAD_SERVICE);
-                dm.enqueue(request);
-                Toast.makeText(MainActivity.this, "Downloading: " + fileName,
-                    Toast.LENGTH_SHORT).show();
+                ((DownloadManager) getSystemService(Context.DOWNLOAD_SERVICE)).enqueue(request);
+                Toast.makeText(this, "Downloading: " + fileName, Toast.LENGTH_SHORT).show();
             } catch (Exception e) {
-                Log.e(TAG, "Download error: " + e.getMessage());
-                // Fallback: open in browser
-                Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse(url));
-                startActivity(intent);
+                startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse(url)));
             }
         });
 
         layout.addView(webView);
         setContentView(layout);
-
-        // Load the website
         webView.loadUrl(URL);
     }
 
-    // ===== HANDLE FILE CHOOSER RESULT =====
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        if (requestCode == FILE_CHOOSER_REQUEST_CODE) {
-            if (filePathCallback == null) return;
-
+        if (requestCode == FILE_CHOOSER_REQ && filePathCallback != null) {
             Uri[] results = null;
             if (resultCode == RESULT_OK && data != null) {
-                String dataString = data.getDataString();
-                ClipData clipData = data.getClipData();
-                if (clipData != null) {
-                    results = new Uri[clipData.getItemCount()];
-                    for (int i = 0; i < clipData.getItemCount(); i++) {
-                        results[i] = clipData.getItemAt(i).getUri();
-                    }
-                } else if (dataString != null) {
-                    results = new Uri[]{Uri.parse(dataString)};
-                }
+                if (data.getClipData() != null) {
+                    results = new Uri[data.getClipData().getItemCount()];
+                    for (int i = 0; i < data.getClipData().getItemCount(); i++) results[i] = data.getClipData().getItemAt(i).getUri();
+                } else if (data.getDataString() != null) { results = new Uri[]{Uri.parse(data.getDataString())}; }
             }
             filePathCallback.onReceiveValue(results);
             filePathCallback = null;
         }
     }
 
-    // ===== HANDLE RUNTIME PERMISSION RESULTS =====
     @Override
     public void onRequestPermissionsResult(int requestCode, String[] permissions, int[] grantResults) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults);
-        boolean allGranted = PermissionHandler.allPermissionsGranted(requestCode, permissions, grantResults);
-        if (!allGranted) {
-            Log.w(TAG, "Some permissions were denied. The website may not have full access.");
-            // Re-request denied permissions
-            new Handler(Looper.getMainLooper()).postDelayed(() -> {
-                PermissionHandler.requestAllPermissions(MainActivity.this);
-            }, 1000);
-        }
+        PermissionHandler.allPermissionsGranted(requestCode, permissions, grantResults);
     }
 
-    // ===== BACK BUTTON NAVIGATION =====
     @Override
     public boolean onKeyDown(int keyCode, KeyEvent event) {
-        if (keyCode == KeyEvent.KEYCODE_BACK && webView.canGoBack()) {
-            webView.goBack();
-            return true;
-        }
+        if (keyCode == KeyEvent.KEYCODE_BACK && webView.canGoBack()) { webView.goBack(); return true; }
         return super.onKeyDown(keyCode, event);
     }
 
     @Override
     protected void onResume() {
         super.onResume();
- ${cfg.fullscreen ? `        getWindow().getDecorView().setSystemUiVisibility(
-            View.SYSTEM_UI_FLAG_IMMERSIVE_STICKY
-            | View.SYSTEM_UI_FLAG_FULLSCREEN
-            | View.SYSTEM_UI_FLAG_HIDE_NAVIGATION
-        );
-` : ""}
+ ${cfg.fullscreen?`        getWindow().getDecorView().setSystemUiVisibility(View.SYSTEM_UI_FLAG_IMMERSIVE_STICKY | View.SYSTEM_UI_FLAG_FULLSCREEN | View.SYSTEM_UI_FLAG_HIDE_NAVIGATION);
+`:""}
     }
 
     @Override
-    protected void onDestroy() {
-        if (webView != null) {
-            webView.destroy();
-        }
-        super.onDestroy();
-    }
+    protected void onDestroy() { if (webView != null) webView.destroy(); super.onDestroy(); }
 }
 `);
 
-  // ==================== SplashActivity.java ====================
-  if (cfg.showSplash) {
+  // SplashActivity.java
+  if(cfg.showSplash){
     javaDir.file('SplashActivity.java', `package ${cfg.packageName};
-
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
@@ -1881,47 +1304,34 @@ import android.widget.TextView;
 import android.graphics.Color;
 
 public class SplashActivity extends Activity {
-
-    private static final int SPLASH_DURATION = 2000;
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
         LinearLayout layout = new LinearLayout(this);
         layout.setOrientation(LinearLayout.VERTICAL);
         layout.setBackgroundColor(Color.parseColor("${cfg.splashColor}"));
         layout.setGravity(android.view.Gravity.CENTER);
-        layout.setLayoutParams(new LinearLayout.LayoutParams(
-            LinearLayout.LayoutParams.MATCH_PARENT,
-            LinearLayout.LayoutParams.MATCH_PARENT
-        ));
-
+        layout.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.MATCH_PARENT));
         TextView appName = new TextView(this);
         appName.setText("${cfg.appName}");
         appName.setTextColor(Color.WHITE);
         appName.setTextSize(28);
         appName.setTypeface(null, android.graphics.Typeface.BOLD);
         layout.addView(appName);
-
         setContentView(layout);
-
-        new Handler(Looper.getMainLooper()).postDelayed(() -> {
-            startActivity(new Intent(SplashActivity.this, MainActivity.class));
-            finish();
-        }, SPLASH_DURATION);
+        new Handler(Looper.getMainLooper()).postDelayed(() -> { startActivity(new Intent(this, MainActivity.class)); finish(); }, 2000);
     }
 }
 `);
   }
 
-  // ==================== Resources ====================
-  const res = root.folder('app/src/main/res');
+  // ===== Resources =====
+  const res=root.folder('app/src/main/res');
 
   res.folder('values').file('colors.xml', `<?xml version="1.0" encoding="utf-8"?>
 <resources>
     <color name="colorPrimary">${cfg.themeColor}</color>
-    <color name="colorPrimaryDark">${darkenColor(cfg.themeColor, 20)}</color>
+    <color name="colorPrimaryDark">${darkenColor(cfg.themeColor,20)}</color>
     <color name="colorAccent">${cfg.themeColor}</color>
     <color name="splashBackground">${cfg.splashColor}</color>
 </resources>
@@ -1933,7 +1343,7 @@ public class SplashActivity extends Activity {
 </resources>
 `);
 
-  let styles = `<?xml version="1.0" encoding="utf-8"?>
+  let styles=`<?xml version="1.0" encoding="utf-8"?>
 <resources>
     <style name="AppTheme" parent="Theme.AppCompat.Light.NoActionBar">
         <item name="colorPrimary">@color/colorPrimary</item>
@@ -1941,155 +1351,78 @@ public class SplashActivity extends Activity {
         <item name="colorAccent">@color/colorAccent</item>
     </style>
 `;
-  if (cfg.showSplash) {
-    styles += `    <style name="SplashTheme" parent="Theme.AppCompat.NoActionBar">
+  if(cfg.showSplash)styles+=`    <style name="SplashTheme" parent="Theme.AppCompat.NoActionBar">
         <item name="android:windowBackground">@color/splashBackground</item>
         <item name="android:windowNoTitle">true</item>
-    </style>
-`;
-  }
-  styles += `</resources>`;
+    </style>\n`;
+  styles+=`</resources>`;
   res.folder('values').file('styles.xml', styles);
 
-  res.folder('drawable').file('splash_bg.xml', `<?xml version="1.0" encoding="utf-8"?>
-<shape xmlns:android="http://schemas.android.com/apk/res/android">
-    <solid android:color="${cfg.splashColor}" />
-</shape>
-`);
+  // README
+  root.file('README.md', `# ${cfg.appName}
 
-  res.folder('drawable').file('ic_launcher.xml', `<?xml version="1.0" encoding="utf-8"?>
-<vector xmlns:android="http://schemas.android.com/apk/res/android"
-    android:width="108dp"
-    android:height="108dp"
-    android:viewportWidth="108"
-    android:viewportHeight="108">
-    <path
-        android:fillColor="${cfg.iconColor}"
-        android:pathData="M0,0h108v108H0z" />
-    <path
-        android:fillColor="#FFFFFF"
-        android:pathData="M54,54m-24,0a24,24 0,1 1,48 0a24,24 0,1 1,-48 0" />
-</vector>
-`);
+## Quick Start — Get Your APK
 
-  // ==================== README ====================
-  const permList = cfg.permissions.join(', ');
-  root.file('README.md', `# ${cfg.appName} — Android WebView App
+### Option 1: GitHub Actions (Recommended — No install needed)
 
-## Project Info
-- **Website**: ${cfg.url}
-- **Package**: ${cfg.packageName}
-- **Min SDK**: API ${cfg.minSdk}
-- **Permissions**: ${permList}
+1. Download and unzip this project
+2. Create a new GitHub repository
+3. Push all files to the repo:
+   \`\`\`
+   git init
+   git add .
+   git commit -m "Initial commit"
+   git remote add origin https://github.com/YOUR_USERNAME/YOUR_REPO.git
+   git push -u origin main
+   \`\`\`
+4. Go to the **Actions** tab in your GitHub repo
+5. The "Build APK" workflow runs automatically
+6. When complete, download the APK from **Artifacts**
 
-## How to Build the APK
+### Option 2: Android Studio
 
-1. Open this project folder in **Android Studio**
-2. Wait for Gradle sync to complete
-3. Go to **Build > Build Bundle(s) / APK(s) > Build APK(s)**
-4. Find the generated APK in \`app/build/outputs/apk/debug/\`
-
-## Permission Handling
-
-This app **automatically grants all permissions** to the website:
-
-### At App Startup
-- \`PermissionHandler.java\` requests all selected Android runtime permissions
-- On Android 6.0+ (API 23+), dangerous permissions are requested automatically
-- If any permission is denied, it is re-requested on next app launch
-
-### WebView Permission Auto-Grant
-- **onPermissionRequest()** — Automatically grants ALL web permission requests
-  (camera, microphone, protected media, etc.)
-- **onGeolocationPermissionsShowPrompt()** — Auto-approves geolocation
-  without showing any prompt to the user
-- **onShowFileChooser()** — Handles file upload and camera capture
-- **DownloadListener** — Allows the website to download files to the device
-
-### WebView Settings (Full Access)
-- JavaScript: enabled
-- DOM Storage: enabled
-- File Access: enabled
-- Content Access: enabled
-- Universal file access: enabled
-- Media playback without gesture: enabled
-- Mixed content: allowed
-- Auto-open windows: enabled
+1. Download Android Studio from https://developer.android.com/studio
+2. Open this project folder
+3. Wait for Gradle sync
+4. Click **Build > Build APK**
+5. Find the APK in \`app/build/outputs/apk/debug/\`
 
 ## Features
-- WebView wrapper for ${cfg.url}
- ${cfg.showToolbar ? '- Custom toolbar with app name\n' : ''}${cfg.showSplash ? '- Splash screen on launch\n' : ''}${cfg.jsEnabled ? '- JavaScript enabled\n' : ''}${cfg.fullscreen ? '- Fullscreen immersive mode\n' : ''}- Back button navigation
+- Full WebView wrapper for ${cfg.url}
+- Custom app icon (generated PNG at 5 resolutions)
+- All permissions auto-granted to the website
 - File upload + camera capture support
 - File download support
-- All permissions auto-granted
-
-Generated by **WebToAPK**
+ ${cfg.showSplash?'- Splash screen on launch\n':''}${cfg.showToolbar?'- Custom toolbar with app name\n':''}${cfg.fullscreen?'- Fullscreen immersive mode\n':''}- Back button navigation
 `);
 
-  generatedZip = zip;
+  generatedZip=zip;
 }
 
-async function downloadProject() {
-  if (!generatedZip) {
-    showToast('Project not generated yet', 'error');
-    return;
-  }
-  try {
-    const cfg = getConfig();
-    const projName = cfg.appName.replace(/\s+/g, '');
-    const blob = await generatedZip.generateAsync({ type: 'blob' });
-    const url = URL.createObjectURL(blob);
-    const a = document.createElement('a');
-    a.href = url;
-    a.download = projName + '_AndroidProject.zip';
-    document.body.appendChild(a);
-    a.click();
-    document.body.removeChild(a);
+async function downloadProject(){
+  if(!generatedZip){showToast('Not generated yet','error');return;}
+  try{
+    const cfg=getConfig();
+    const pn=cfg.appName.replace(/\s+/g,'');
+    const blob=await generatedZip.generateAsync({type:'blob'});
+    const url=URL.createObjectURL(blob);
+    const a=document.createElement('a');
+    a.href=url;a.download=pn+'_AndroidProject.zip';
+    document.body.appendChild(a);a.click();document.body.removeChild(a);
     URL.revokeObjectURL(url);
-    showToast('Project downloaded successfully!', 'success');
-  } catch (e) {
-    showToast('Error generating download: ' + e.message, 'error');
-  }
+    showToast('Downloaded! Push to GitHub to auto-build APK','success');
+  }catch(e){showToast('Error: '+e.message,'error');}
 }
 
-function showToast(msg, type) {
-  const toast = document.getElementById('toast');
-  toast.className = 'toast ' + type;
-  toast.innerHTML = `<i class="fas fa-${type === 'success' ? 'check-circle' : type === 'error' ? 'exclamation-circle' : 'info-circle'}"></i> ${msg}`;
-  toast.classList.add('show');
-  setTimeout(() => toast.classList.remove('show'), 3500);
+function showToast(msg,type){
+  const t=document.getElementById('toast');
+  t.className='toast '+type;
+  t.innerHTML=`<i class="fas fa-${type==='success'?'check-circle':'exclamation-circle'}"></i> ${msg}`;
+  t.classList.add('show');
+  setTimeout(()=>t.classList.remove('show'),3500);
 }
-
-// Auto-fill package name
-document.getElementById('inputAppName').addEventListener('input', function() {
-  const name = this.value.trim().toLowerCase().replace(/[^a-z0-9]/g, '');
-  if (name.length > 0) {
-    document.getElementById('inputPackage').value = 'com.' + name + '.app';
-  }
-});
-
-// Phone status bar time
-function updatePhoneTime() {
-  const now = new Date();
-  const h = now.getHours().toString().padStart(2, '0');
-  const m = now.getMinutes().toString().padStart(2, '0');
-  document.getElementById('previewStatusBar').textContent = h + ':' + m;
-}
-updatePhoneTime();
-setInterval(updatePhoneTime, 30000);
-
-// Splash demo
-document.getElementById('splashOverlay').addEventListener('click', function() {
-  this.style.opacity = '0';
-  this.style.pointerEvents = 'none';
-  setTimeout(() => {
-    this.style.opacity = '1';
-    this.style.pointerEvents = 'auto';
-  }, 2000);
-});
 
 updatePreview();
-updatePreviewPermBadges();
 </script>
 </body>
   </html>
