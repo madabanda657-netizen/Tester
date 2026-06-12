@@ -1,1428 +1,1757 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>WebToAPK — Convert Any Website to Android App</title>
-<script src="https://cdn.tailwindcss.com"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script>
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
-<style>
-  :root {
-    --bg: #0a0a0d;
-    --bg2: #111116;
-    --bg3: #1a1a20;
-    --fg: #eae8e4;
-    --muted: #7a7880;
-    --accent: #e8a217;
-    --accent2: #cc8f0e;
-    --success: #22c55e;
-    --error: #ef4444;
-    --card: #15151b;
-    --border: #27272e;
-  }
-  * { box-sizing: border-box; margin: 0; padding: 0; }
-  body {
-    font-family: 'Space Grotesk', sans-serif;
-    background: var(--bg);
-    color: var(--fg);
-    min-height: 100vh;
-    overflow-x: hidden;
-  }
-  .bg-grid {
-    position: fixed; inset: 0;
-    background-image:
-      linear-gradient(rgba(232,162,23,0.025) 1px, transparent 1px),
-      linear-gradient(90deg, rgba(232,162,23,0.025) 1px, transparent 1px);
-    background-size: 60px 60px;
-    pointer-events: none; z-index: 0;
-  }
-  .bg-glow {
-    position: fixed; top: -250px; right: -200px;
-    width: 700px; height: 700px;
-    background: radial-gradient(circle, rgba(232,162,23,0.07) 0%, transparent 70%);
-    pointer-events: none; z-index: 0;
-    animation: gFloat 14s ease-in-out infinite;
-  }
-  .bg-glow2 {
-    position: fixed; bottom: -300px; left: -200px;
-    width: 600px; height: 600px;
-    background: radial-gradient(circle, rgba(232,162,23,0.04) 0%, transparent 70%);
-    pointer-events: none; z-index: 0;
-    animation: gFloat 18s ease-in-out infinite reverse;
-  }
-  @keyframes gFloat {
-    0%,100%{transform:translate(0,0) scale(1);}
-    50%{transform:translate(25px,-15px) scale(1.08);}
-  }
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AppBuilder Pro - Convert Websites to Apps</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
 
-  /* Phone */
-  .phone-frame {
-    width: 250px; height: 500px;
-    border: 3px solid #2a2a2a; border-radius: 30px;
-    background: #000; position: relative; overflow: hidden;
-    box-shadow: 0 0 0 1px rgba(255,255,255,0.04), 0 20px 60px rgba(0,0,0,0.5);
-  }
-  .phone-notch {
-    position: absolute; top: 0; left: 50%; transform: translateX(-50%);
-    width: 110px; height: 22px; background: #000;
-    border-radius: 0 0 14px 14px; z-index: 10;
-  }
-  .phone-screen {
-    position: absolute; inset: 5px; border-radius: 25px;
-    overflow: hidden; background: #fff;
-  }
-  .phone-statusbar {
-    height: 26px; display: flex; align-items: center;
-    justify-content: center; font-size: 10px; font-weight: 600; color: #000;
-  }
-  .phone-content {
-    display: flex; flex-direction: column;
-    height: calc(100% - 26px);
-  }
-  .phone-toolbar {
-    height: 34px; display: flex; align-items: center;
-    padding: 0 8px; gap: 6px;
-  }
-  .phone-toolbar-title {
-    flex: 1; font-size: 11px; font-weight: 600; color: #000;
-    white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
-  }
-  .phone-webview {
-    flex: 1; background: #f5f5f5;
-    display: flex; flex-direction: column;
-    align-items: center; justify-content: center;
-    padding: 12px;
-  }
-  .skeleton-line {
-    width: 80%; height: 7px; background: #e0e0e0;
-    border-radius: 4px; margin-bottom: 7px;
-    animation: shimmer 1.5s infinite;
-  }
-  .skeleton-line:nth-child(2){width:60%;}
-  .skeleton-line:nth-child(4){width:90%;height:30px;}
-  @keyframes shimmer {0%{opacity:.5;}50%{opacity:1;}100%{opacity:.5;}}
+        :root {
+            --primary: #6366f1;
+            --primary-dark: #4f46e5;
+            --secondary: #ec4899;
+            --dark: #0f0f23;
+            --darker: #0a0a1a;
+            --card: #1a1a2e;
+            --card-hover: #252542;
+            --text: #e2e8f0;
+            --text-muted: #94a3b8;
+            --border: #2d2d44;
+            --success: #22c55e;
+            --warning: #f59e0b;
+            --error: #ef4444;
+            --glass: rgba(255, 255, 255, 0.05);
+        }
 
-  .splash-preview {
-    position: absolute; inset: 0;
-    display: flex; flex-direction: column;
-    align-items: center; justify-content: center;
-    z-index: 5; transition: opacity 0.5s;
-  }
+        body {
+            font-family: 'Segoe UI', system-ui, sans-serif;
+            background: var(--dark);
+            color: var(--text);
+            min-height: 100vh;
+            overflow-x: hidden;
+        }
 
-  /* Steps */
-  .step-dot {
-    width: 34px; height: 34px; border-radius: 50%;
-    display: flex; align-items: center; justify-content: center;
-    font-weight: 700; font-size: 13px;
-    transition: all 0.4s; border: 2px solid var(--border);
-    background: var(--bg2); color: var(--muted);
-  }
-  .step-dot.active {
-    border-color: var(--accent); background: var(--accent);
-    color: #000; box-shadow: 0 0 18px rgba(232,162,23,0.25);
-  }
-  .step-dot.done {
-    border-color: var(--success); background: var(--success); color: #fff;
-  }
-  .step-line { flex: 1; height: 2px; background: var(--border); transition: background 0.4s; }
-  .step-line.done { background: var(--success); }
+        /* Background Animation */
+        .bg-animation {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: 0;
+            overflow: hidden;
+        }
 
-  /* Form */
-  .form-input {
-    width: 100%; padding: 11px 14px;
-    background: var(--bg2); border: 1.5px solid var(--border);
-    border-radius: 9px; color: var(--fg);
-    font-family: 'Space Grotesk', sans-serif; font-size: 14px;
-    outline: none; transition: border-color 0.3s, box-shadow 0.3s;
-  }
-  .form-input:focus { border-color: var(--accent); box-shadow: 0 0 0 3px rgba(232,162,23,0.1); }
-  .form-input::placeholder { color: var(--muted); }
-  .form-select {
-    width: 100%; padding: 11px 14px;
-    background: var(--bg2); border: 1.5px solid var(--border);
-    border-radius: 9px; color: var(--fg);
-    font-family: 'Space Grotesk', sans-serif; font-size: 14px;
-    outline: none; cursor: pointer; appearance: none;
-    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8'%3E%3Cpath d='M1 1l5 5 5-5' stroke='%237a7880' stroke-width='2' fill='none'/%3E%3C/svg%3E");
-    background-repeat: no-repeat; background-position: right 12px center;
-    transition: border-color 0.3s;
-  }
-  .form-select:focus { border-color: var(--accent); }
-  .form-label {
-    display: block; font-size: 12px; font-weight: 600;
-    color: var(--muted); margin-bottom: 5px;
-    text-transform: uppercase; letter-spacing: 0.5px;
-  }
-  .toggle-track {
-    width: 42px; height: 22px; background: var(--border);
-    border-radius: 11px; position: relative; cursor: pointer;
-    transition: background 0.3s; flex-shrink: 0;
-  }
-  .toggle-track.on { background: var(--accent); }
-  .toggle-thumb {
-    width: 16px; height: 16px; background: #fff; border-radius: 50%;
-    position: absolute; top: 3px; left: 3px; transition: transform 0.3s;
-    box-shadow: 0 1px 3px rgba(0,0,0,0.3);
-  }
-  .toggle-track.on .toggle-thumb { transform: translateX(20px); }
-  .btn-primary {
-    padding: 11px 24px; background: var(--accent); color: #000;
-    font-weight: 700; font-size: 14px; border: none; border-radius: 9px;
-    cursor: pointer; transition: all 0.3s;
-    font-family: 'Space Grotesk', sans-serif;
-    display: inline-flex; align-items: center; gap: 7px;
-  }
-  .btn-primary:hover { background: var(--accent2); transform: translateY(-1px); box-shadow: 0 6px 20px rgba(232,162,23,0.2); }
-  .btn-primary:disabled { opacity: 0.5; cursor: not-allowed; transform: none; box-shadow: none; }
-  .btn-secondary {
-    padding: 11px 24px; background: transparent; color: var(--fg);
-    font-weight: 600; font-size: 14px; border: 1.5px solid var(--border);
-    border-radius: 9px; cursor: pointer; transition: all 0.3s;
-    font-family: 'Space Grotesk', sans-serif;
-    display: inline-flex; align-items: center; gap: 7px;
-  }
-  .btn-secondary:hover { border-color: var(--muted); background: var(--bg3); }
-  .btn-dark {
-    padding: 11px 24px; background: var(--bg3); color: var(--fg);
-    font-weight: 600; font-size: 14px; border: 1.5px solid var(--border);
-    border-radius: 9px; cursor: pointer; transition: all 0.3s;
-    font-family: 'Space Grotesk', sans-serif;
-    display: inline-flex; align-items: center; gap: 7px;
-  }
-  .btn-dark:hover { border-color: var(--accent); background: rgba(232,162,23,0.05); }
+        .bg-animation::before {
+            content: '';
+            position: absolute;
+            width: 600px;
+            height: 600px;
+            background: radial-gradient(circle, var(--primary) 0%, transparent 70%);
+            top: -300px;
+            right: -300px;
+            opacity: 0.3;
+            animation: float 20s infinite ease-in-out;
+        }
 
-  .color-picker-wrap { display: flex; align-items: center; gap: 10px; }
-  .color-swatch {
-    width: 38px; height: 38px; border-radius: 8px;
-    border: 2px solid var(--border); cursor: pointer;
-    overflow: hidden; position: relative; flex-shrink: 0;
-  }
-  .color-swatch input[type="color"] {
-    position: absolute; inset: -8px;
-    width: calc(100% + 16px); height: calc(100% + 16px);
-    cursor: pointer; border: none; padding: 0;
-  }
+        .bg-animation::after {
+            content: '';
+            position: absolute;
+            width: 400px;
+            height: 400px;
+            background: radial-gradient(circle, var(--secondary) 0%, transparent 70%);
+            bottom: -200px;
+            left: -200px;
+            opacity: 0.2;
+            animation: float 15s infinite ease-in-out reverse;
+        }
 
-  .toast {
-    position: fixed; top: 20px; right: 20px;
-    padding: 12px 18px; border-radius: 9px;
-    font-weight: 600; font-size: 13px; z-index: 9999;
-    transform: translateX(120%);
-    transition: transform 0.4s cubic-bezier(0.34,1.56,0.64,1);
-    display: flex; align-items: center; gap: 8px;
-  }
-  .toast.show { transform: translateX(0); }
-  .toast.success { background: var(--success); color: #fff; }
-  .toast.error { background: var(--error); color: #fff; }
+        @keyframes float {
+            0%, 100% { transform: translate(0, 0) scale(1); }
+            50% { transform: translate(30px, -30px) scale(1.1); }
+        }
 
-  .progress-bar { width: 100%; height: 5px; background: var(--bg3); border-radius: 3px; overflow: hidden; }
-  .progress-fill {
-    height: 100%; background: linear-gradient(90deg, var(--accent), var(--accent2));
-    border-radius: 3px; width: 0%; transition: width 0.3s ease;
-  }
+        /* Auth Pages */
+        .auth-container {
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+            position: relative;
+            z-index: 1;
+        }
 
-  .code-block {
-    background: #09090d; border: 1px solid var(--border);
-    border-radius: 9px; padding: 14px;
-    font-family: 'JetBrains Mono', monospace;
-    font-size: 11.5px; line-height: 1.6;
-    overflow-x: auto; color: #a0a0a8;
-    max-height: 260px; overflow-y: auto;
-  }
-  .code-block .kw{color:#c792ea;} .code-block .st{color:#c3e88d;}
-  .code-block .cm{color:#546e7a;} .code-block .tg{color:#f07178;}
-  .code-block .at{color:#ffcb6b;}
+        .auth-box {
+            background: var(--glass);
+            backdrop-filter: blur(20px);
+            border: 1px solid var(--border);
+            border-radius: 24px;
+            padding: 48px;
+            width: 100%;
+            max-width: 420px;
+            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
+        }
 
-  .fade-in { animation: fadeIn 0.45s ease forwards; }
-  @keyframes fadeIn { from{opacity:0;transform:translateY(14px);}to{opacity:1;transform:translateY(0);} }
-  .float-anim { animation: fl 6s ease-in-out infinite; }
-  @keyframes fl { 0%,100%{transform:translateY(0);}50%{transform:translateY(-8px);} }
+        .auth-logo {
+            text-align: center;
+            margin-bottom: 32px;
+        }
 
-  ::-webkit-scrollbar { width: 5px; }
-  ::-webkit-scrollbar-track { background: var(--bg); }
-  ::-webkit-scrollbar-thumb { background: var(--border); border-radius: 3px; }
+        .auth-logo i {
+            font-size: 48px;
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            margin-bottom: 16px;
+        }
 
-  .perm-check {
-    display: flex; align-items: center; gap: 10px;
-    padding: 9px 12px; background: var(--bg2);
-    border: 1px solid var(--border); border-radius: 8px;
-    cursor: pointer; transition: all 0.2s;
-  }
-  .perm-check:hover { border-color: var(--muted); }
-  .perm-check.active { border-color: var(--accent); background: rgba(232,162,23,0.04); }
-  .perm-check .check-box {
-    width: 18px; height: 18px; border: 2px solid var(--border);
-    border-radius: 4px; display: flex; align-items: center;
-    justify-content: center; transition: all 0.2s; flex-shrink: 0;
-  }
-  .perm-check.active .check-box { background: var(--accent); border-color: var(--accent); }
-  .perm-badge {
-    display: inline-flex; align-items: center; gap: 3px;
-    padding: 2px 7px; border-radius: 4px;
-    font-size: 9px; font-weight: 700; text-transform: uppercase;
-  }
-  .perm-badge.grant { background: rgba(34,197,94,0.12); color: var(--success); }
-  .perm-badge.warn { background: rgba(232,162,23,0.12); color: var(--accent); }
+        .auth-logo h1 {
+            font-size: 28px;
+            font-weight: 700;
+        }
 
-  .build-path {
-    background: var(--card); border: 1.5px solid var(--border);
-    border-radius: 12px; padding: 20px;
-    transition: all 0.3s; cursor: default;
-  }
-  .build-path:hover { border-color: rgba(232,162,23,0.3); }
+        .auth-logo p {
+            color: var(--text-muted);
+            margin-top: 8px;
+        }
 
-  .icon-canvas-preview {
-    border-radius: 16px;
-    box-shadow: 0 4px 16px rgba(0,0,0,0.4);
-  }
+        .form-group {
+            margin-bottom: 20px;
+        }
 
-  @media (max-width:1024px) { .phone-frame{transform:scale(0.75);} }
-  @media (max-width:768px) { .phone-frame{transform:scale(0.65);margin:-40px 0;} }
-  @media (prefers-reduced-motion:reduce) { *,*::before,*::after{animation-duration:0.01ms!important;transition-duration:0.01ms!important;} }
-</style>
+        .form-group label {
+            display: block;
+            margin-bottom: 8px;
+            font-size: 14px;
+            font-weight: 500;
+            color: var(--text-muted);
+        }
+
+        .input-wrapper {
+            position: relative;
+        }
+
+        .input-wrapper i {
+            position: absolute;
+            left: 16px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: var(--text-muted);
+        }
+
+        .form-control {
+            width: 100%;
+            padding: 14px 16px 14px 48px;
+            background: var(--darker);
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            color: var(--text);
+            font-size: 15px;
+            transition: all 0.3s;
+        }
+
+        .form-control:focus {
+            outline: none;
+            border-color: var(--primary);
+            box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.1);
+        }
+
+        .form-control::placeholder {
+            color: var(--text-muted);
+        }
+
+        .btn {
+            width: 100%;
+            padding: 14px 24px;
+            background: linear-gradient(135deg, var(--primary), var(--primary-dark));
+            border: none;
+            border-radius: 12px;
+            color: white;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+        }
+
+        .btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 30px -10px var(--primary);
+        }
+
+        .btn-secondary {
+            background: var(--card);
+            border: 1px solid var(--border);
+        }
+
+        .btn-secondary:hover {
+            background: var(--card-hover);
+        }
+
+        .auth-footer {
+            text-align: center;
+            margin-top: 24px;
+            color: var(--text-muted);
+            font-size: 14px;
+        }
+
+        .auth-footer a {
+            color: var(--primary);
+            text-decoration: none;
+            font-weight: 500;
+        }
+
+        .auth-footer a:hover {
+            text-decoration: underline;
+        }
+
+        .divider {
+            display: flex;
+            align-items: center;
+            margin: 24px 0;
+            color: var(--text-muted);
+            font-size: 14px;
+        }
+
+        .divider::before,
+        .divider::after {
+            content: '';
+            flex: 1;
+            height: 1px;
+            background: var(--border);
+        }
+
+        .divider span {
+            padding: 0 16px;
+        }
+
+        .social-login {
+            display: flex;
+            gap: 12px;
+        }
+
+        .social-btn {
+            flex: 1;
+            padding: 12px;
+            background: var(--darker);
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            color: var(--text);
+            cursor: pointer;
+            transition: all 0.3s;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .social-btn:hover {
+            background: var(--card);
+            border-color: var(--primary);
+        }
+
+        /* Dashboard Layout */
+        .dashboard {
+            display: none;
+            min-height: 100vh;
+        }
+
+        .dashboard.active {
+            display: flex;
+        }
+
+        /* Sidebar */
+        .sidebar {
+            width: 280px;
+            background: var(--darker);
+            border-right: 1px solid var(--border);
+            display: flex;
+            flex-direction: column;
+            position: fixed;
+            height: 100vh;
+            z-index: 100;
+        }
+
+        .sidebar-header {
+            padding: 24px;
+            border-bottom: 1px solid var(--border);
+        }
+
+        .sidebar-brand {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            font-size: 24px;
+            font-weight: 700;
+        }
+
+        .sidebar-brand i {
+            color: var(--primary);
+        }
+
+        .sidebar-nav {
+            flex: 1;
+            padding: 16px;
+            overflow-y: auto;
+        }
+
+        .nav-section {
+            margin-bottom: 24px;
+        }
+
+        .nav-section-title {
+            font-size: 12px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            color: var(--text-muted);
+            margin-bottom: 12px;
+            padding: 0 12px;
+        }
+
+        .nav-item {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 12px 16px;
+            border-radius: 12px;
+            cursor: pointer;
+            transition: all 0.3s;
+            margin-bottom: 4px;
+            color: var(--text-muted);
+        }
+
+        .nav-item:hover,
+        .nav-item.active {
+            background: var(--card);
+            color: var(--text);
+        }
+
+        .nav-item.active {
+            background: linear-gradient(135deg, var(--primary), var(--primary-dark));
+            color: white;
+        }
+
+        .nav-item i {
+            width: 24px;
+            text-align: center;
+        }
+
+        .sidebar-footer {
+            padding: 16px;
+            border-top: 1px solid var(--border);
+        }
+
+        .user-card {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 12px;
+            background: var(--card);
+            border-radius: 12px;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .user-card:hover {
+            background: var(--card-hover);
+        }
+
+        .user-avatar {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 600;
+        }
+
+        .user-info {
+            flex: 1;
+        }
+
+        .user-name {
+            font-weight: 600;
+            font-size: 14px;
+        }
+
+        .user-tier {
+            font-size: 12px;
+            color: var(--text-muted);
+        }
+
+        /* Main Content */
+        .main-content {
+            flex: 1;
+            margin-left: 280px;
+            padding: 32px;
+            position: relative;
+            z-index: 1;
+        }
+
+        .page-header {
+            margin-bottom: 32px;
+        }
+
+        .page-title {
+            font-size: 32px;
+            font-weight: 700;
+            margin-bottom: 8px;
+        }
+
+        .page-subtitle {
+            color: var(--text-muted);
+        }
+
+        /* Cards */
+        .card {
+            background: var(--card);
+            border: 1px solid var(--border);
+            border-radius: 16px;
+            padding: 24px;
+            margin-bottom: 24px;
+        }
+
+        .card-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 20px;
+        }
+
+        .card-title {
+            font-size: 18px;
+            font-weight: 600;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .card-title i {
+            color: var(--primary);
+        }
+
+        /* Upload Zones */
+        .upload-zone {
+            border: 2px dashed var(--border);
+            border-radius: 16px;
+            padding: 48px;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.3s;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .upload-zone:hover {
+            border-color: var(--primary);
+            background: rgba(99, 102, 241, 0.05);
+        }
+
+        .upload-zone.dragover {
+            border-color: var(--primary);
+            background: rgba(99, 102, 241, 0.1);
+        }
+
+        .upload-zone.has-file {
+            border-color: var(--success);
+            background: rgba(34, 197, 94, 0.05);
+        }
+
+        .upload-icon {
+            width: 80px;
+            height: 80px;
+            background: var(--darker);
+            border-radius: 20px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 20px;
+            font-size: 32px;
+            color: var(--primary);
+        }
+
+        .upload-text {
+            font-size: 18px;
+            font-weight: 600;
+            margin-bottom: 8px;
+        }
+
+        .upload-hint {
+            color: var(--text-muted);
+            font-size: 14px;
+        }
+
+        .upload-preview {
+            display: none;
+            max-width: 200px;
+            max-height: 200px;
+            margin: 0 auto;
+            border-radius: 12px;
+        }
+
+        .upload-zone.has-file .upload-preview {
+            display: block;
+        }
+
+        .upload-zone.has-file .upload-icon,
+        .upload-zone.has-file .upload-text,
+        .upload-zone.has-file .upload-hint {
+            display: none;
+        }
+
+        .upload-remove {
+            position: absolute;
+            top: 12px;
+            right: 12px;
+            width: 32px;
+            height: 32px;
+            background: var(--error);
+            border: none;
+            border-radius: 8px;
+            color: white;
+            cursor: pointer;
+            display: none;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .upload-zone.has-file .upload-remove {
+            display: flex;
+        }
+
+        /* Form Elements */
+        .form-row {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 20px;
+            margin-bottom: 20px;
+        }
+
+        .form-label {
+            display: block;
+            margin-bottom: 8px;
+            font-size: 14px;
+            font-weight: 500;
+        }
+
+        .form-input,
+        .form-select,
+        .form-textarea {
+            width: 100%;
+            padding: 14px 16px;
+            background: var(--darker);
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            color: var(--text);
+            font-size: 15px;
+            transition: all 0.3s;
+        }
+
+        .form-input:focus,
+        .form-select:focus,
+        .form-textarea:focus {
+            outline: none;
+            border-color: var(--primary);
+        }
+
+        .form-textarea {
+            min-height: 120px;
+            resize: vertical;
+        }
+
+        /* Permission Grid */
+        .permission-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+            gap: 16px;
+        }
+
+        .permission-item {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+            padding: 16px;
+            background: var(--darker);
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .permission-item:hover {
+            border-color: var(--primary);
+        }
+
+        .permission-item.active {
+            border-color: var(--primary);
+            background: rgba(99, 102, 241, 0.1);
+        }
+
+        .permission-icon {
+            width: 48px;
+            height: 48px;
+            background: var(--card);
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 20px;
+            color: var(--primary);
+        }
+
+        .permission-info {
+            flex: 1;
+        }
+
+        .permission-name {
+            font-weight: 600;
+            margin-bottom: 4px;
+        }
+
+        .permission-desc {
+            font-size: 13px;
+            color: var(--text-muted);
+        }
+
+        .permission-toggle {
+            width: 52px;
+            height: 28px;
+            background: var(--border);
+            border-radius: 14px;
+            position: relative;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .permission-toggle::after {
+            content: '';
+            position: absolute;
+            width: 24px;
+            height: 24px;
+            background: white;
+            border-radius: 50%;
+            top: 2px;
+            left: 2px;
+            transition: all 0.3s;
+        }
+
+        .permission-item.active .permission-toggle {
+            background: var(--primary);
+        }
+
+        .permission-item.active .permission-toggle::after {
+            left: 26px;
+        }
+
+        /* Platform Selection */
+        .platform-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 16px;
+        }
+
+        .platform-card {
+            padding: 24px;
+            background: var(--darker);
+            border: 2px solid var(--border);
+            border-radius: 16px;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .platform-card:hover {
+            border-color: var(--primary);
+        }
+
+        .platform-card.active {
+            border-color: var(--primary);
+            background: rgba(99, 102, 241, 0.1);
+        }
+
+        .platform-card i {
+            font-size: 40px;
+            margin-bottom: 16px;
+            color: var(--text-muted);
+        }
+
+        .platform-card.active i {
+            color: var(--primary);
+        }
+
+        .platform-card.android i {
+            color: #3ddc84;
+        }
+
+        .platform-card.ios i {
+            color: #007aff;
+        }
+
+        .platform-card.desktop i {
+            color: #00a4ef;
+        }
+
+        .platform-name {
+            font-weight: 600;
+            margin-bottom: 4px;
+        }
+
+        .platform-desc {
+            font-size: 13px;
+            color: var(--text-muted);
+        }
+
+        /* Build Button */
+        .build-section {
+            position: sticky;
+            bottom: 0;
+            background: var(--dark);
+            padding: 24px;
+            border-top: 1px solid var(--border);
+            margin: 0 -32px -32px;
+        }
+
+        .build-btn {
+            width: 100%;
+            padding: 18px 32px;
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            border: none;
+            border-radius: 16px;
+            color: white;
+            font-size: 18px;
+            font-weight: 700;
+            cursor: pointer;
+            transition: all 0.3s;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 12px;
+        }
+
+        .build-btn:hover:not(:disabled) {
+            transform: translateY(-2px);
+            box-shadow: 0 20px 40px -10px rgba(99, 102, 241, 0.5);
+        }
+
+        .build-btn:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+        }
+
+        /* Progress Modal */
+        .modal-overlay {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.8);
+            backdrop-filter: blur(10px);
+            z-index: 1000;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .modal-overlay.active {
+            display: flex;
+        }
+
+        .modal-content {
+            background: var(--card);
+            border: 1px solid var(--border);
+            border-radius: 24px;
+            padding: 48px;
+            width: 90%;
+            max-width: 500px;
+            text-align: center;
+        }
+
+        .modal-icon {
+            width: 100px;
+            height: 100px;
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 24px;
+            font-size: 40px;
+            animation: pulse 2s infinite;
+        }
+
+        @keyframes pulse {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.05); }
+        }
+
+        .modal-title {
+            font-size: 24px;
+            font-weight: 700;
+            margin-bottom: 12px;
+        }
+
+        .modal-text {
+            color: var(--text-muted);
+            margin-bottom: 32px;
+        }
+
+        .progress-bar {
+            height: 8px;
+            background: var(--darker);
+            border-radius: 4px;
+            overflow: hidden;
+            margin-bottom: 16px;
+        }
+
+        .progress-fill {
+            height: 100%;
+            background: linear-gradient(90deg, var(--primary), var(--secondary));
+            border-radius: 4px;
+            transition: width 0.3s;
+            width: 0%;
+        }
+
+        .progress-steps {
+            display: flex;
+            justify-content: space-between;
+            font-size: 12px;
+            color: var(--text-muted);
+        }
+
+        .progress-steps span.active {
+            color: var(--primary);
+        }
+
+        /* Toast Notifications */
+        .toast-container {
+            position: fixed;
+            top: 24px;
+            right: 24px;
+            z-index: 2000;
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+
+        .toast {
+            padding: 16px 24px;
+            background: var(--card);
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            animation: slideIn 0.3s ease;
+            box-shadow: 0 10px 40px -10px rgba(0, 0, 0, 0.5);
+        }
+
+        @keyframes slideIn {
+            from {
+                transform: translateX(100%);
+                opacity: 0;
+            }
+            to {
+                transform: translateX(0);
+                opacity: 1;
+            }
+        }
+
+        .toast.success { border-left: 4px solid var(--success); }
+        .toast.error { border-left: 4px solid var(--error); }
+        .toast.warning { border-left: 4px solid var(--warning); }
+
+        /* Responsive */
+        @media (max-width: 1024px) {
+            .sidebar {
+                transform: translateX(-100%);
+                transition: transform 0.3s;
+            }
+
+            .sidebar.open {
+                transform: translateX(0);
+            }
+
+            .main-content {
+                margin-left: 0;
+            }
+
+            .platform-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        /* Loading Spinner */
+        .spinner {
+            width: 20px;
+            height: 20px;
+            border: 2px solid transparent;
+            border-top-color: currentColor;
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+        }
+
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+
+        /* Hidden */
+        .hidden {
+            display: none !important;
+        }
+
+        /* Color Preview */
+        .color-preview {
+            width: 40px;
+            height: 40px;
+            border-radius: 8px;
+            border: 2px solid var(--border);
+            cursor: pointer;
+        }
+
+        .form-row-inline {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+        }
+
+        .form-row-inline .form-group {
+            flex: 1;
+            margin-bottom: 0;
+        }
+    </style>
 </head>
 <body>
+    <div class="bg-animation"></div>
+    <div class="toast-container" id="toastContainer"></div>
 
-<div class="bg-grid"></div>
-<div class="bg-glow"></div>
-<div class="bg-glow2"></div>
-<div id="toast" class="toast"></div>
-
-<!-- Hidden canvases for icon generation -->
-<canvas id="iconCanvas" style="display:none;"></canvas>
-
-<header style="position:relative;z-index:10;border-bottom:1px solid var(--border);background:rgba(10,10,13,0.85);backdrop-filter:blur(16px);">
-  <div style="max-width:1200px;margin:0 auto;padding:14px 24px;display:flex;align-items:center;justify-content:space-between;">
-    <div style="display:flex;align-items:center;gap:10px;">
-      <div style="width:34px;height:34px;background:var(--accent);border-radius:8px;display:flex;align-items:center;justify-content:center;">
-        <i class="fas fa-mobile-alt" style="color:#000;font-size:16px;"></i>
-      </div>
-      <span style="font-size:20px;font-weight:700;letter-spacing:-0.5px;">Web<span style="color:var(--accent)">To</span>APK</span>
-    </div>
-    <button class="btn-primary" style="padding:7px 16px;font-size:12px;" onclick="scrollTo('#builder')">
-      <i class="fas fa-rocket"></i> Start Building
-    </button>
-  </div>
-</header>
-
-<!-- Hero -->
-<section style="position:relative;z-index:5;text-align:center;padding:70px 24px 50px;">
-  <div style="max-width:680px;margin:0 auto;">
-    <div style="display:inline-block;padding:5px 12px;border:1px solid rgba(232,162,23,0.3);border-radius:18px;font-size:11px;font-weight:600;color:var(--accent);margin-bottom:18px;background:rgba(232,162,23,0.05);">
-      <i class="fas fa-image" style="margin-right:4px;"></i> Custom Icon Included — Real APK via GitHub Actions
-    </div>
-    <h1 style="font-size:clamp(32px,5vw,52px);font-weight:700;line-height:1.1;letter-spacing:-1.5px;margin-bottom:18px;">
-      Website to APK<br><span style="color:var(--accent);">With Custom Icon</span>
-    </h1>
-    <p style="font-size:16px;color:var(--muted);line-height:1.7;max-width:520px;margin:0 auto 28px;">
-      Configure, customize the icon, and download a complete Android project. Push to GitHub and get a real APK — automatically built with GitHub Actions.
-    </p>
-    <button class="btn-primary" style="padding:14px 32px;font-size:16px;" onclick="scrollTo('#builder')">
-      <i class="fas fa-rocket"></i> Start Building
-    </button>
-  </div>
-</section>
-
-<!-- Builder -->
-<section id="builder" style="position:relative;z-index:5;max-width:1100px;margin:0 auto;padding:0 24px 80px;">
-
-  <div style="display:flex;align-items:center;gap:0;margin-bottom:36px;max-width:460px;margin-left:auto;margin-right:auto;" id="stepIndicator">
-    <div class="step-dot active" data-step="1">1</div>
-    <div class="step-line" data-line="1"></div>
-    <div class="step-dot" data-step="2">2</div>
-    <div class="step-line" data-line="2"></div>
-    <div class="step-dot" data-step="3">3</div>
-    <div class="step-line" data-line="3"></div>
-    <div class="step-dot" data-step="4">4</div>
-  </div>
-
-  <div style="display:flex;gap:36px;align-items:flex-start;flex-wrap:wrap;">
-
-    <!-- Left form -->
-    <div style="flex:1;min-width:300px;">
-
-      <!-- Step 1 -->
-      <div id="step1" class="fade-in">
-        <h2 style="font-size:22px;font-weight:700;margin-bottom:4px;">Enter Your Website</h2>
-        <p style="color:var(--muted);font-size:13px;margin-bottom:22px;">Provide the URL and basic app info.</p>
-
-        <div style="margin-bottom:18px;">
-          <label class="form-label">Website URL</label>
-          <div style="position:relative;">
-            <i class="fas fa-globe" style="position:absolute;left:13px;top:50%;transform:translateY(-50%);color:var(--muted);font-size:13px;"></i>
-            <input type="url" id="inputUrl" class="form-input" style="padding-left:36px;" placeholder="https://example.com" oninput="updatePreview()">
-          </div>
-        </div>
-        <div style="margin-bottom:18px;">
-          <label class="form-label">App Name</label>
-          <input type="text" id="inputAppName" class="form-input" placeholder="My Awesome App" oninput="updatePreview()">
-        </div>
-        <div style="margin-bottom:22px;">
-          <label class="form-label">Package Name</label>
-          <input type="text" id="inputPackage" class="form-input" placeholder="com.example.myapp" oninput="updatePreview()" style="font-family:'JetBrains Mono',monospace;font-size:13px;">
-          <div style="font-size:11px;color:var(--muted);margin-top:3px;">Unique identifier for the Play Store</div>
-        </div>
-        <button class="btn-primary" onclick="goToStep(2)">Continue <i class="fas fa-arrow-right"></i></button>
-      </div>
-
-      <!-- Step 2 -->
-      <div id="step2" style="display:none;">
-        <h2 style="font-size:22px;font-weight:700;margin-bottom:4px;">Customize Appearance</h2>
-        <p style="color:var(--muted);font-size:13px;margin-bottom:22px;">Set colors, icon style, and behavior.</p>
-
-        <div style="margin-bottom:18px;">
-          <label class="form-label">App Icon Preview</label>
-          <div style="display:flex;align-items:center;gap:16px;margin-bottom:8px;">
-            <canvas id="iconPreviewLarge" width="96" height="96" style="width:96px;height:96px;border-radius:20px;box-shadow:0 4px 16px rgba(0,0,0,0.4);"></canvas>
-            <div>
-              <div style="font-weight:700;font-size:15px;" id="iconLabel">M</div>
-              <div style="font-size:12px;color:var(--muted);">Adaptive icon with your color and initial</div>
-              <div style="font-size:11px;color:var(--muted);margin-top:2px;">PNG generated at 5 resolutions</div>
+    <!-- ==================== AUTH PAGES ==================== -->
+    
+    <!-- Login Page -->
+    <div class="auth-container" id="loginPage">
+        <div class="auth-box">
+            <div class="auth-logo">
+                <i class="fas fa-mobile-alt"></i>
+                <h1>AppBuilder Pro</h1>
+                <p>Convert websites to native apps</p>
             </div>
-          </div>
-        </div>
-
-        <div style="display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-bottom:18px;">
-          <div>
-            <label class="form-label">Icon Color</label>
-            <div class="color-picker-wrap">
-              <div class="color-swatch" id="iconSwatch" style="background:#e8a217;">
-                <input type="color" id="inputIconColor" value="#e8a217" oninput="updatePreview()">
-              </div>
-              <input type="text" id="iconHexInput" class="form-input" value="#e8a217" style="font-family:'JetBrains Mono',monospace;font-size:12px;" oninput="syncIconFromHex()">
+            
+            <form id="loginForm">
+                <div class="form-group">
+                    <label>Email Address</label>
+                    <div class="input-wrapper">
+                        <i class="fas fa-envelope"></i>
+                        <input type="email" class="form-control" id="loginEmail" placeholder="you@example.com" required>
+                    </div>
+                </div>
+                
+                <div class="form-group">
+                    <label>Password</label>
+                    <div class="input-wrapper">
+                        <i class="fas fa-lock"></i>
+                        <input type="password" class="form-control" id="loginPassword" placeholder="••••••••" required>
+                    </div>
+                </div>
+                
+                <div class="form-group" style="display: flex; align-items: center; justify-content: space-between;">
+                    <label style="display: flex; align-items: center; gap: 8px; cursor: pointer;">
+                        <input type="checkbox" id="rememberMe" style="width: 18px; height: 18px; accent-color: var(--primary);">
+                        <span>Remember me</span>
+                    </label>
+                    <a href="#" onclick="showForgotPassword()">Forgot password?</a>
+                </div>
+                
+                <button type="submit" class="btn" id="loginBtn">
+                    <span>Sign In</span>
+                    <i class="fas fa-arrow-right"></i>
+                </button>
+            </form>
+            
+            <div class="divider"><span>or continue with</span></div>
+            
+            <div class="social-login">
+                <button class="social-btn" onclick="socialLogin('google')">
+                    <i class="fab fa-google"></i>
+                </button>
+                <button class="social-btn" onclick="socialLogin('github')">
+                    <i class="fab fa-github"></i>
+                </button>
+                <button class="social-btn" onclick="socialLogin('apple')">
+                    <i class="fab fa-apple"></i>
+                </button>
             </div>
-          </div>
-          <div>
-            <label class="form-label">Theme / Toolbar</label>
-            <div class="color-picker-wrap">
-              <div class="color-swatch" id="themeSwatch" style="background:#e8a217;">
-                <input type="color" id="inputThemeColor" value="#e8a217" oninput="updatePreview()">
-              </div>
-              <input type="text" id="themeHexInput" class="form-input" value="#e8a217" style="font-family:'JetBrains Mono',monospace;font-size:12px;" oninput="syncColorFromHex()">
+            
+            <div class="auth-footer">
+                Don't have an account? <a href="#" onclick="showRegister()">Create one</a>
             </div>
-          </div>
         </div>
-
-        <div style="margin-bottom:18px;">
-          <label class="form-label">Splash Background</label>
-          <div class="color-picker-wrap">
-            <div class="color-swatch" id="splashSwatch" style="background:#e8a217;">
-              <input type="color" id="inputSplashColor" value="#e8a217" oninput="updatePreview()">
-            </div>
-            <input type="text" id="splashHexInput" class="form-input" value="#e8a217" style="font-family:'JetBrains Mono',monospace;font-size:12px;width:120px;" oninput="syncSplashFromHex()">
-          </div>
-        </div>
-
-        <div style="display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-bottom:18px;">
-          <div>
-            <label class="form-label">Orientation</label>
-            <select id="inputOrientation" class="form-select" onchange="updatePreview()">
-              <option value="unspecified">Auto-Rotate</option>
-              <option value="portrait">Portrait</option>
-              <option value="landscape">Landscape</option>
-            </select>
-          </div>
-          <div>
-            <label class="form-label">Min SDK</label>
-            <select id="inputMinSdk" class="form-select">
-              <option value="21">API 21 (5.0)</option>
-              <option value="24" selected>API 24 (7.0)</option>
-              <option value="28">API 28 (9.0)</option>
-            </select>
-          </div>
-        </div>
-
-        <div style="display:flex;flex-direction:column;gap:10px;margin-bottom:22px;">
-          <div style="display:flex;align-items:center;justify-content:space-between;">
-            <div><div style="font-weight:600;font-size:13px;">Toolbar</div><div style="font-size:11px;color:var(--muted);">Top bar with app name</div></div>
-            <div class="toggle-track on" id="toggleToolbar" onclick="toggleSwitch(this);updatePreview();"><div class="toggle-thumb"></div></div>
-          </div>
-          <div style="display:flex;align-items:center;justify-content:space-between;">
-            <div><div style="font-weight:600;font-size:13px;">Fullscreen</div><div style="font-size:11px;color:var(--muted);">Immersive mode</div></div>
-            <div class="toggle-track" id="toggleFullscreen" onclick="toggleSwitch(this);updatePreview();"><div class="toggle-thumb"></div></div>
-          </div>
-          <div style="display:flex;align-items:center;justify-content:space-between;">
-            <div><div style="font-weight:600;font-size:13px;">JavaScript</div><div style="font-size:11px;color:var(--muted);">Required for modern sites</div></div>
-            <div class="toggle-track on" id="toggleJS" onclick="toggleSwitch(this);updatePreview();"><div class="toggle-thumb"></div></div>
-          </div>
-          <div style="display:flex;align-items:center;justify-content:space-between;">
-            <div><div style="font-weight:600;font-size:13px;">Splash Screen</div><div style="font-size:11px;color:var(--muted);">Shown on app launch</div></div>
-            <div class="toggle-track on" id="toggleSplash" onclick="toggleSwitch(this);updatePreview();"><div class="toggle-thumb"></div></div>
-          </div>
-        </div>
-
-        <div style="display:flex;gap:10px;">
-          <button class="btn-secondary" onclick="goToStep(1)"><i class="fas fa-arrow-left"></i> Back</button>
-          <button class="btn-primary" onclick="goToStep(3)">Continue <i class="fas fa-arrow-right"></i></button>
-        </div>
-      </div>
-
-      <!-- Step 3 -->
-      <div id="step3" style="display:none;">
-        <h2 style="font-size:22px;font-weight:700;margin-bottom:4px;">Permissions</h2>
-        <p style="color:var(--muted);font-size:13px;margin-bottom:6px;">Select which device features the website can access.</p>
-        <div style="display:flex;align-items:center;gap:6px;padding:8px 12px;background:rgba(34,197,94,0.06);border:1px solid rgba(34,197,94,0.15);border-radius:7px;margin-bottom:16px;">
-          <i class="fas fa-shield-alt" style="color:var(--success);font-size:12px;"></i>
-          <span style="font-size:12px;color:var(--success);font-weight:600;">All permissions are auto-granted at runtime — no user prompts.</span>
-        </div>
-        <div style="display:flex;flex-direction:column;gap:8px;margin-bottom:20px;" id="permissionsList">
-          <div class="perm-check active" onclick="togglePerm(this)" data-perm="INTERNET"><div class="check-box"><i class="fas fa-check" style="font-size:9px;color:#000;"></i></div><div style="flex:1;"><div style="font-weight:600;font-size:12px;">INTERNET <span class="perm-badge grant">Required</span></div></div></div>
-          <div class="perm-check active" onclick="togglePerm(this)" data-perm="ACCESS_NETWORK_STATE"><div class="check-box"><i class="fas fa-check" style="font-size:9px;color:#000;"></i></div><div style="flex:1;"><div style="font-weight:600;font-size:12px;">ACCESS_NETWORK_STATE <span class="perm-badge grant">Rec.</span></div></div></div>
-          <div class="perm-check active" onclick="togglePerm(this)" data-perm="ACCESS_WIFI_STATE"><div class="check-box"><i class="fas fa-check" style="font-size:9px;color:#000;"></i></div><div style="flex:1;"><div style="font-weight:600;font-size:12px;">ACCESS_WIFI_STATE <span class="perm-badge grant">Rec.</span></div></div></div>
-          <div class="perm-check active" onclick="togglePerm(this)" data-perm="CAMERA"><div class="check-box"><i class="fas fa-check" style="font-size:9px;color:#000;"></i></div><div style="flex:1;"><div style="font-weight:600;font-size:12px;">CAMERA <span class="perm-badge warn">HW</span></div></div></div>
-          <div class="perm-check active" onclick="togglePerm(this)" data-perm="RECORD_AUDIO"><div class="check-box"><i class="fas fa-check" style="font-size:9px;color:#000;"></i></div><div style="flex:1;"><div style="font-weight:600;font-size:12px;">RECORD_AUDIO <span class="perm-badge warn">HW</span></div></div></div>
-          <div class="perm-check active" onclick="togglePerm(this)" data-perm="ACCESS_FINE_LOCATION"><div class="check-box"><i class="fas fa-check" style="font-size:9px;color:#000;"></i></div><div style="flex:1;"><div style="font-weight:600;font-size:12px;">ACCESS_FINE_LOCATION <span class="perm-badge warn">Loc</span></div></div></div>
-          <div class="perm-check active" onclick="togglePerm(this)" data-perm="ACCESS_COARSE_LOCATION"><div class="check-box"><i class="fas fa-check" style="font-size:9px;color:#000;"></i></div><div style="flex:1;"><div style="font-weight:600;font-size:12px;">ACCESS_COARSE_LOCATION <span class="perm-badge warn">Loc</span></div></div></div>
-          <div class="perm-check active" onclick="togglePerm(this)" data-perm="READ_EXTERNAL_STORAGE"><div class="check-box"><i class="fas fa-check" style="font-size:9px;color:#000;"></i></div><div style="flex:1;"><div style="font-weight:600;font-size:12px;">READ_EXTERNAL_STORAGE <span class="perm-badge warn">Disk</span></div></div></div>
-          <div class="perm-check active" onclick="togglePerm(this)" data-perm="WRITE_EXTERNAL_STORAGE"><div class="check-box"><i class="fas fa-check" style="font-size:9px;color:#000;"></i></div><div style="flex:1;"><div style="font-weight:600;font-size:12px;">WRITE_EXTERNAL_STORAGE <span class="perm-badge warn">Disk</span></div></div></div>
-          <div class="perm-check" onclick="togglePerm(this)" data-perm="VIBRATE"><div class="check-box"><i class="fas fa-check" style="font-size:9px;color:#000;display:none;"></i></div><div style="flex:1;"><div style="font-weight:600;font-size:12px;">VIBRATE</div></div></div>
-        </div>
-        <div style="display:flex;gap:10px;">
-          <button class="btn-secondary" onclick="goToStep(2)"><i class="fas fa-arrow-left"></i> Back</button>
-          <button class="btn-primary" onclick="startBuild()">Build Project <i class="fas fa-hammer"></i></button>
-        </div>
-      </div>
-
-      <!-- Step 4 -->
-      <div id="step4" style="display:none;">
-        <h2 style="font-size:22px;font-weight:700;margin-bottom:4px;">Project Ready</h2>
-        <p style="color:var(--muted);font-size:13px;margin-bottom:20px;">Download the project and build your APK.</p>
-
-        <div id="buildProgress" style="margin-bottom:20px;">
-          <div style="display:flex;justify-content:space-between;margin-bottom:6px;">
-            <span style="font-size:12px;font-weight:600;" id="buildStatus">Generating...</span>
-            <span style="font-size:12px;color:var(--accent);font-weight:600;" id="buildPercent">0%</span>
-          </div>
-          <div class="progress-bar"><div class="progress-fill" id="progressFill"></div></div>
-        </div>
-
-        <div id="buildResult" style="display:none;">
-
-          <!-- Icon preview -->
-          <div style="display:flex;align-items:center;gap:16px;margin-bottom:20px;padding:16px;background:var(--card);border:1px solid var(--border);border-radius:10px;">
-            <canvas id="resultIcon" width="64" height="64" style="width:64px;height:64px;border-radius:14px;"></canvas>
-            <div>
-              <div style="font-weight:700;font-size:15px;" id="resultAppName">My App</div>
-              <div style="font-size:12px;color:var(--muted);" id="resultPkgName">com.example.app</div>
-              <div style="font-size:11px;color:var(--success);margin-top:2px;"><i class="fas fa-check-circle"></i> Icon PNGs generated at 5 resolutions</div>
-            </div>
-          </div>
-
-          <!-- Two build paths -->
-          <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:20px;">
-            <div class="build-path">
-              <div style="font-size:20px;margin-bottom:8px;">🔬</div>
-              <div style="font-weight:700;font-size:14px;margin-bottom:4px;">Build Locally</div>
-              <div style="font-size:11px;color:var(--muted);line-height:1.6;margin-bottom:10px;">
-                Open in Android Studio, click <strong style="color:var(--fg);">Build &gt; Build APK</strong>
-              </div>
-              <a href="https://developer.android.com/studio" target="_blank" style="font-size:11px;color:var(--accent);text-decoration:none;font-weight:600;">
-                <i class="fas fa-external-link-alt"></i> Get Android Studio
-              </a>
-            </div>
-            <div class="build-path" style="border-color:rgba(34,197,94,0.25);">
-              <div style="font-size:20px;margin-bottom:8px;">☁️</div>
-              <div style="font-weight:700;font-size:14px;margin-bottom:4px;color:var(--success);">Build on GitHub</div>
-              <div style="font-size:11px;color:var(--muted);line-height:1.6;margin-bottom:10px;">
-                Push to GitHub — <strong style="color:var(--fg);">APK builds automatically</strong> via Actions
-              </div>
-              <div style="font-size:11px;color:var(--success);font-weight:600;"><i class="fas fa-check"></i> Workflow included in ZIP</div>
-            </div>
-          </div>
-
-          <!-- GitHub Actions steps -->
-          <div style="background:var(--card);border:1px solid var(--border);border-radius:10px;padding:16px;margin-bottom:16px;">
-            <div style="font-weight:700;font-size:13px;margin-bottom:10px;"><i class="fab fa-github" style="margin-right:4px;"></i> Get APK via GitHub (5 minutes)</div>
-            <div style="font-size:12px;color:var(--muted);line-height:2;">
-              <div><span style="display:inline-block;width:20px;height:20px;background:var(--accent);color:#000;border-radius:50%;text-align:center;line-height:20px;font-size:10px;font-weight:700;margin-right:6px;">1</span> Download & unzip the project</div>
-              <div><span style="display:inline-block;width:20px;height:20px;background:var(--accent);color:#000;border-radius:50%;text-align:center;line-height:20px;font-size:10px;font-weight:700;margin-right:6px;">2</span> Create a new GitHub repo & push the files</div>
-              <div><span style="display:inline-block;width:20px;height:20px;background:var(--accent);color:#000;border-radius:50%;text-align:center;line-height:20px;font-size:10px;font-weight:700;margin-right:6px;">3</span> Go to <strong style="color:var(--fg);">Actions</strong> tab — workflow runs automatically</div>
-              <div><span style="display:inline-block;width:20px;height:20px;background:var(--accent);color:#000;border-radius:50%;text-align:center;line-height:20px;font-size:10px;font-weight:700;margin-right:6px;">4</span> Download the <strong style="color:var(--success);">APK artifact</strong></div>
-            </div>
-          </div>
-
-          <!-- File tree -->
-          <details style="margin-bottom:14px;">
-            <summary style="font-weight:700;font-size:13px;cursor:pointer;margin-bottom:8px;color:var(--muted);">
-              <i class="fas fa-folder-tree" style="margin-right:4px;"></i> Project Files
-            </summary>
-            <div class="code-block" id="fileTree" style="font-size:11px;line-height:1.7;"></div>
-          </details>
-
-          <div style="display:flex;gap:10px;flex-wrap:wrap;">
-            <button class="btn-primary" onclick="downloadProject()"><i class="fas fa-download"></i> Download Project ZIP</button>
-            <button class="btn-dark" onclick="goToStep(1);resetBuilder();"><i class="fas fa-redo"></i> Build Another</button>
-          </div>
-        </div>
-      </div>
     </div>
 
-    <!-- Right: Phone + Icon -->
-    <div style="flex-shrink:0;display:flex;flex-direction:column;align-items:center;position:sticky;top:20px;">
-      <div style="font-size:11px;font-weight:600;color:var(--muted);text-transform:uppercase;letter-spacing:1px;margin-bottom:10px;">Live Preview</div>
-      <div class="phone-frame float-anim">
-        <div class="phone-notch"></div>
-        <div class="phone-screen">
-          <div class="phone-statusbar" id="previewStatusBar">12:00</div>
-          <div class="phone-content">
-            <div class="phone-toolbar" id="previewToolbar">
-              <div style="width:18px;height:18px;border-radius:4px;display:flex;align-items:center;justify-content:center;font-size:8px;font-weight:800;color:#fff;" id="previewIconSmall">W</div>
-              <div class="phone-toolbar-title" id="previewTitle">My App</div>
+    <!-- Register Page -->
+    <div class="auth-container hidden" id="registerPage">
+        <div class="auth-box">
+            <div class="auth-logo">
+                <i class="fas fa-mobile-alt"></i>
+                <h1>Create Account</h1>
+                <p>Start building apps for free</p>
             </div>
-            <div class="phone-webview">
-              <div class="skeleton-line"></div><div class="skeleton-line"></div>
-              <div class="skeleton-line"></div><div class="skeleton-line"></div>
-              <div class="skeleton-line"></div><div class="skeleton-line"></div>
-              <div class="skeleton-line"></div>
+            
+            <form id="registerForm">
+                <div class="form-row">
+                    <div class="form-group">
+                        <label>First Name</label>
+                        <input type="text" class="form-control" id="regFirstName" placeholder="John">
+                    </div>
+                    <div class="form-group">
+                        <label>Last Name</label>
+                        <input type="text" class="form-control" id="regLastName" placeholder="Doe">
+                    </div>
+                </div>
+                
+                <div class="form-group">
+                    <label>Email Address</label>
+                    <div class="input-wrapper">
+                        <i class="fas fa-envelope"></i>
+                        <input type="email" class="form-control" id="regEmail" placeholder="you@example.com" required>
+                    </div>
+                </div>
+                
+                <div class="form-group">
+                    <label>Password</label>
+                    <div class="input-wrapper">
+                        <i class="fas fa-lock"></i>
+                        <input type="password" class="form-control" id="regPassword" placeholder="Min 8 characters" required>
+                    </div>
+                </div>
+                
+                <div class="form-group">
+                    <label>Confirm Password</label>
+                    <div class="input-wrapper">
+                        <i class="fas fa-lock"></i>
+                        <input type="password" class="form-control" id="regConfirmPassword" placeholder="Repeat password" required>
+                    </div>
+                </div>
+                
+                <div class="form-group">
+                    <label style="display: flex; align-items: flex-start; gap: 12px; cursor: pointer; font-weight: normal;">
+                        <input type="checkbox" id="agreeTerms" required style="width: 18px; height: 18px; margin-top: 2px; accent-color: var(--primary);">
+                        <span style="font-size: 14px; color: var(--text-muted);">
+                            I agree to the <a href="#">Terms of Service</a> and <a href="#">Privacy Policy</a>
+                        </span>
+                    </label>
+                </div>
+                
+                <button type="submit" class="btn" id="registerBtn">
+                    <span>Create Account</span>
+                    <i class="fas fa-user-plus"></i>
+                </button>
+            </form>
+            
+            <div class="auth-footer">
+                Already have an account? <a href="#" onclick="showLogin()">Sign in</a>
             </div>
-          </div>
-          <div class="splash-preview" id="splashOverlay" style="background:#e8a217;">
-            <div style="width:44px;height:44px;border-radius:11px;display:flex;align-items:center;justify-content:center;font-weight:800;font-size:20px;color:#fff;margin-bottom:8px;" id="splashIcon">W</div>
-            <div style="font-size:12px;font-weight:700;color:#fff;" id="splashAppName">My App</div>
-          </div>
         </div>
-      </div>
-      <div style="margin-top:10px;display:flex;flex-wrap:wrap;gap:3px;justify-content:center;max-width:250px;" id="previewPermBadges"></div>
     </div>
-  </div>
-</section>
 
-<footer style="position:relative;z-index:5;border-top:1px solid var(--border);padding:20px;text-align:center;">
-  <p style="color:var(--muted);font-size:12px;">WebToAPK — Generate Android WebView projects with icons and GitHub Actions auto-build.</p>
-</footer>
+    <!-- Forgot Password Page -->
+    <div class="auth-container hidden" id="forgotPage">
+        <div class="auth-box">
+            <div class="auth-logo">
+                <i class="fas fa-key"></i>
+                <h1>Reset Password</h1>
+                <p>Enter your email to receive reset instructions</p>
+            </div>
+            
+            <form id="forgotForm">
+                <div class="form-group">
+                    <label>Email Address</label>
+                    <div class="input-wrapper">
+                        <i class="fas fa-envelope"></i>
+                        <input type="email" class="form-control" id="forgotEmail" placeholder="you@example.com" required>
+                    </div>
+                </div>
+                
+                <button type="submit" class="btn" id="forgotBtn">
+                    <span>Send Reset Link</span>
+                    <i class="fas fa-paper-plane"></i>
+                </button>
+            </form>
+            
+            <div class="auth-footer">
+                <a href="#" onclick="showLogin()">← Back to login</a>
+            </div>
+        </div>
+    </div>
 
-<script>
-let currentStep = 1;
-let generatedZip = null;
+    <!-- ==================== DASHBOARD ==================== -->
+    <div class="dashboard" id="dashboard">
+        <!-- Sidebar -->
+        <aside class="sidebar" id="sidebar">
+            <div class="sidebar-header">
+                <div class="sidebar-brand">
+                    <i class="fas fa-mobile-alt"></i>
+                    <span>AppBuilder</span>
+                </div>
+            </div>
+            
+            <nav class="sidebar-nav">
+                <div class="nav-section">
+                    <div class="nav-section-title">Build</div>
+                    <div class="nav-item active" onclick="showSection('builder')">
+                        <i class="fas fa-plus-circle"></i>
+                        <span>New App</span>
+                    </div>
+                    <div class="nav-item" onclick="showSection('apps')">
+                        <i class="fas fa-layer-group"></i>
+                        <span>My Apps</span>
+                    </div>
+                </div>
+                
+                <div class="nav-section">
+                    <div class="nav-section-title">Account</div>
+                    <div class="nav-item" onclick="showSection('profile')">
+                        <i class="fas fa-user"></i>
+                        <span>Profile</span>
+                    </div>
+                    <div class="nav-item" onclick="showSection('billing')">
+                        <i class="fas fa-credit-card"></i>
+                        <span>Billing</span>
+                    </div>
+                    <div class="nav-item" onclick="showSection('api')">
+                        <i class="fas fa-code"></i>
+                        <span>API Keys</span>
+                    </div>
+                </div>
+                
+                <div class="nav-section">
+                    <div class="nav-section-title">Support</div>
+                    <div class="nav-item" onclick="showSection('docs')">
+                        <i class="fas fa-book"></i>
+                        <span>Documentation</span>
+                    </div>
+                    <div class="nav-item" onclick="showSection('help')">
+                        <i class="fas fa-question-circle"></i>
+                        <span>Help Center</span>
+                    </div>
+                </div>
+            </nav>
+            
+            <div class="sidebar-footer">
+                <div class="user-card" onclick="logout()">
+                    <div class="user-avatar" id="userAvatar">JD</div>
+                    <div class="user-info">
+                        <div class="user-name" id="userName">John Doe</div>
+                        <div class="user-tier">Free Plan</div>
+                    </div>
+                    <i class="fas fa-sign-out-alt"></i>
+                </div>
+            </div>
+        </aside>
 
-function scrollTo(sel) { document.querySelector(sel).scrollIntoView({behavior:'smooth'}); }
+        <!-- Main Content -->
+        <main class="main-content" id="mainContent">
+            <!-- Builder Section -->
+            <div id="builderSection">
+                <div class="page-header">
+                    <h1 class="page-title">Create New App</h1>
+                    <p class="page-subtitle">Convert your website into a native mobile app</p>
+                </div>
 
-function goToStep(step) {
-  if (step > 1 && currentStep === 1) {
-    const url = document.getElementById('inputUrl').value.trim();
-    const name = document.getElementById('inputAppName').value.trim();
-    const pkg = document.getElementById('inputPackage').value.trim();
-    if (!url) { showToast('Enter a website URL','error'); return; }
-    if (!name) { showToast('Enter an app name','error'); return; }
-    if (!pkg) { showToast('Enter a package name','error'); return; }
-    try { new URL(url); } catch(e) { showToast('Enter a valid URL (include https://)','error'); return; }
-    if (!/^[a-z][a-z0-9]*(\.[a-z][a-z0-9]*){2,}$/.test(pkg)) { showToast('Package must be like com.example.app','error'); return; }
-  }
-  for (let i=1;i<=4;i++) document.getElementById('step'+i).style.display='none';
-  const t = document.getElementById('step'+step);
-  t.style.display='block'; t.classList.remove('fade-in'); void t.offsetWidth; t.classList.add('fade-in');
-  document.querySelectorAll('.step-dot').forEach(d=>{
-    const s=+d.dataset.step; d.classList.remove('active','done');
-    if(s<step){d.classList.add('done');d.innerHTML='<i class="fas fa-check" style="font-size:12px;"></i>';}
-    else if(s===step){d.classList.add('active');d.textContent=s;}
-    else d.textContent=s;
-  });
-  document.querySelectorAll('.step-line').forEach(l=>l.classList.toggle('done',+l.dataset.line<step));
-  currentStep=step;
-  scrollTo('#builder');
-}
+                <!-- Step 1: Website URL -->
+                <div class="card">
+                    <div class="card-header">
+                        <div class="card-title">
+                            <i class="fas fa-globe"></i>
+                            Website Information
+                        </div>
+                        <span class="badge">Step 1 of 4</span>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label class="form-label">Website URL</label>
+                        <input type="url" class="form-input" id="websiteUrl" placeholder="https://your-website.com">
+                    </div>
+                    
+                    <div class="form-group">
+                        <label class="form-label">App Name</label>
+                        <input type="text" class="form-input" id="appName" placeholder="My Awesome App">
+                    </div>
+                    
+                    <div class="form-group">
+                        <label class="form-label">App Description</label>
+                        <textarea class="form-textarea" id="appDescription" placeholder="Brief description of your app..."></textarea>
+                    </div>
+                </div>
 
-function resetBuilder() {
-  document.getElementById('inputUrl').value='';
-  document.getElementById('inputAppName').value='';
-  document.getElementById('inputPackage').value='';
-  ['inputIconColor','inputThemeColor','inputSplashColor'].forEach(id=>{document.getElementById(id).value='#e8a217';});
-  ['iconHexInput','themeHexInput','splashHexInput'].forEach(id=>{document.getElementById(id).value='#e8a217';});
-  document.getElementById('inputOrientation').value='unspecified';
-  document.getElementById('inputMinSdk').value='24';
-  document.querySelectorAll('.toggle-track').forEach(t=>t.id==='toggleFullscreen'?t.classList.remove('on'):t.classList.add('on'));
-  document.querySelectorAll('.perm-check').forEach(p=>{
-    if(p.dataset.perm==='VIBRATE'){p.classList.remove('active');p.querySelector('.fa-check').style.display='none';}
-    else{p.classList.add('active');p.querySelector('.fa-check').style.display='';}
-  });
-  generatedZip=null; updatePreview();
-}
+                <!-- Step 2: Assets -->
+                <div class="card">
+                    <div class="card-header">
+                        <div class="card-title">
+                            <i class="fas fa-images"></i>
+                            App Assets
+                        </div>
+                        <span class="badge">Step 2 of 4</span>
+                    </div>
+                    
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label class="form-label">App Icon (1024x1024 PNG)</label>
+                            <div class="upload-zone" id="iconUpload" onclick="document.getElementById('iconInput').click()">
+                                <div class="upload-icon">
+                                    <i class="fas fa-image"></i>
+                                </div>
+                                <div class="upload-text">Drop icon here or click to browse</div>
+                                <div class="upload-hint">Recommended: 1024x1024px PNG with transparency</div>
+                                <img class="upload-preview" id="iconPreview" alt="Icon preview">
+                                <button class="upload-remove" onclick="event.stopPropagation(); removeFile('icon')">
+                                    <i class="fas fa-times"></i>
+                                </button>
+                                <input type="file" id="iconInput" accept="image/png,image/jpeg,image/svg+xml" hidden onchange="handleFileSelect(event, 'icon')">
+                            </div>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label class="form-label">Splash Screen (2732x2732 PNG)</label>
+                            <div class="upload-zone" id="splashUpload" onclick="document.getElementById('splashInput').click()">
+                                <div class="upload-icon">
+                                    <i class="fas fa-image"></i>
+                                </div>
+                                <div class="upload-text">Drop splash image or click to browse</div>
+                                <div class="upload-hint">Recommended: 2732x2732px PNG</div>
+                                <img class="upload-preview" id="splashPreview" alt="Splash preview">
+                                <button class="upload-remove" onclick="event.stopPropagation(); removeFile('splash')">
+                                    <i class="fas fa-times"></i>
+                                </button>
+                                <input type="file" id="splashInput" accept="image/png,image/jpeg" hidden onchange="handleFileSelect(event, 'splash')">
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label class="form-label">Loading Text</label>
+                        <input type="text" class="form-input" id="loadingText" placeholder="Loading..." value="Loading...">
+                    </div>
+                    
+                    <div class="form-row-inline">
+                        <div class="form-group">
+                            <label class="form-label">Text Color</label>
+                            <input type="color" class="form-input" id="textColor" value="#000000">
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label">Background Color</label>
+                            <input type="color" class="form-input" id="bgColor" value="#ffffff">
+                        </div>
+                    </div>
+                </div>
 
-function toggleSwitch(el){el.classList.toggle('on');}
-function togglePerm(el){
-  if(el.dataset.perm==='INTERNET')return;
-  el.classList.toggle('active');
-  el.querySelector('.fa-check').style.display=el.classList.contains('active')?'':'none';
-  updatePermBadges();
-}
+                <!-- Step 3: Platforms -->
+                <div class="card">
+                    <div class="card-header">
+                        <div class="card-title">
+                            <i class="fas fa-mobile-alt"></i>
+                            Target Platforms
+                        </div>
+                        <span class="badge">Step 3 of 4</span>
+                    </div>
+                    
+                    <div class="platform-grid">
+                        <div class="platform-card android" onclick="togglePlatform(this, 'android')">
+                            <i class="fab fa-android"></i>
+                            <div class="platform-name">Android</div>
+                            <div class="platform-desc">APK & AAB formats</div>
+                        </div>
+                        <div class="platform-card ios" onclick="togglePlatform(this, 'ios')">
+                            <i class="fab fa-apple"></i>
+                            <div class="platform-name">iOS</div>
+                            <div class="platform-desc">IPA for iPhone/iPad</div>
+                        </div>
+                        <div class="platform-card desktop" onclick="togglePlatform(this, 'desktop')">
+                            <i class="fas fa-desktop"></i>
+                            <div class="platform-name">Desktop</div>
+                            <div class="platform-desc">Windows, Mac & Linux</div>
+                        </div>
+                    </div>
+                </div>
 
-// Color sync
-document.getElementById('inputThemeColor').addEventListener('input',function(){
-  document.getElementById('themeHexInput').value=this.value;
-  document.getElementById('themeSwatch').style.background=this.value;
-  updatePreview();
-});
-document.getElementById('inputSplashColor').addEventListener('input',function(){
-  document.getElementById('splashHexInput').value=this.value;
-  document.getElementById('splashSwatch').style.background=this.value;
-  updatePreview();
-});
-document.getElementById('inputIconColor').addEventListener('input',function(){
-  document.getElementById('iconHexInput').value=this.value;
-  document.getElementById('iconSwatch').style.background=this.value;
-  updatePreview();
-});
-function syncColorFromHex(){const v=document.getElementById('themeHexInput').value;if(/^#[0-9a-fA-F]{6}$/.test(v)){document.getElementById('inputThemeColor').value=v;document.getElementById('themeSwatch').style.background=v;updatePreview();}}
-function syncSplashFromHex(){const v=document.getElementById('splashHexInput').value;if(/^#[0-9a-fA-F]{6}$/.test(v)){document.getElementById('inputSplashColor').value=v;document.getElementById('splashSwatch').style.background=v;updatePreview();}}
-function syncIconFromHex(){const v=document.getElementById('iconHexInput').value;if(/^#[0-9a-fA-F]{6}$/.test(v)){document.getElementById('inputIconColor').value=v;document.getElementById('iconSwatch').style.background=v;updatePreview();}}
+                <!-- Step 4: Permissions -->
+                <div class="card">
+                    <div class="card-header">
+                        <div class="card-title">
+                            <i class="fas fa-shield-alt"></i>
+                            App Permissions
+                        </div>
+                        <span class="badge">Step 4 of 4</span>
+                    </div>
+                    
+                    <div class="permission-grid" id="permissionGrid">
+                        <!-- Permissions injected by JS -->
+                    </div>
+                </div>
 
-document.getElementById('inputAppName').addEventListener('input',function(){
-  const n=this.value.trim().toLowerCase().replace(/[^a-z0-9]/g,'');
-  if(n.length>0)document.getElementById('inputPackage').value='com.'+n+'.app';
-});
+                <!-- Build Button -->
+                <div class="build-section">
+                    <button class="build-btn" id="buildBtn" onclick="startBuild()">
+                        <i class="fas fa-hammer"></i>
+                        <span>Build My App</span>
+                    </button>
+                </div>
+            </div>
 
-// ========== Icon Generation ==========
-function drawRoundedRect(ctx,x,y,w,h,r){
-  ctx.beginPath();ctx.moveTo(x+r,y);ctx.lineTo(x+w-r,y);
-  ctx.quadraticCurveTo(x+w,y,x+w,y+r);ctx.lineTo(x+w,y+h-r);
-  ctx.quadraticCurveTo(x+w,y+h,x+w-r,y+h);ctx.lineTo(x+r,y+h);
-  ctx.quadraticCurveTo(x,y+h,x,y+h-r);ctx.lineTo(x,y+r);
-  ctx.quadraticCurveTo(x,y,x+r,y);ctx.closePath();
-}
+            <!-- Other Sections (hidden by default) -->
+            <div id="appsSection" class="hidden">
+                <div class="page-header">
+                    <h1 class="page-title">My Apps</h1>
+                    <p class="page-subtitle">Manage your built applications</p>
+                </div>
+                <div class="card">
+                    <p style="color: var(--text-muted); text-align: center; padding: 48px;">
+                        <i class="fas fa-box-open" style="font-size: 48px; margin-bottom: 16px; display: block;"></i>
+                        No apps built yet. Create your first app!
+                    </p>
+                </div>
+            </div>
 
-function renderIcon(canvas, size, color, letter){
-  canvas.width=size; canvas.height=size;
-  const ctx=canvas.getContext('2d');
-  ctx.clearRect(0,0,size,size);
-  // Background rounded rect
-  const rad=size*0.22;
-  drawRoundedRect(ctx,0,0,size,size,rad);
-  ctx.fillStyle=color; ctx.fill();
-  // Letter
-  ctx.fillStyle='#FFFFFF';
-  ctx.font=`${Math.round(size*0.5)}px 'Space Grotesk', sans-serif`;
-  ctx.textAlign='center'; ctx.textBaseline='middle';
-  ctx.fillText(letter, size/2, size/2 + size*0.02);
-}
+            <div id="profileSection" class="hidden">
+                <div class="page-header">
+                    <h1 class="page-title">Profile Settings</h1>
+                </div>
+                <div class="card">
+                    <div class="form-group">
+                        <label class="form-label">Display Name</label>
+                        <input type="text" class="form-input" id="profileName" value="John Doe">
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">Email</label>
+                        <input type="email" class="form-input" value="john@example.com" disabled>
+                    </div>
+                    <button class="btn" style="width: auto;" onclick="saveProfile()">
+                        <i class="fas fa-save"></i> Save Changes
+                    </button>
+                </div>
+            </div>
+        </main>
+    </div>
 
-function generateIconPNG(size, color, letter){
-  const c=document.createElement('canvas');
-  renderIcon(c, size, color, letter);
-  return c.toDataURL('image/png');
-}
+    <!-- Build Progress Modal -->
+    <div class="modal-overlay" id="buildModal">
+        <div class="modal-content">
+            <div class="modal-icon">
+                <i class="fas fa-cog fa-spin"></i>
+            </div>
+            <h2 class="modal-title">Building Your App</h2>
+            <p class="modal-text">Please don't close this window</p>
+            
+            <div class="progress-bar">
+                <div class="progress-fill" id="progressFill"></div>
+            </div>
+            
+            <div class="progress-steps">
+                <span class="active" id="step1">Validating</span>
+                <span id="step2">Processing Assets</span>
+                <span id="step3">Building</span>
+                <span id="step4">Packaging</span>
+            </div>
+        </div>
+    </div>
 
-function dataURLtoUint8Array(dataURL){
-  const b64=dataURL.split(',')[1];
-  const bin=atob(b64);
-  const arr=new Uint8Array(bin.length);
-  for(let i=0;i<bin.length;i++)arr[i]=bin.charCodeAt(i);
-  return arr;
-}
-
-// ========== Preview ==========
-function updatePreview(){
-  const name=document.getElementById('inputAppName').value.trim()||'My App';
-  const theme=document.getElementById('inputThemeColor').value;
-  const splash=document.getElementById('inputSplashColor').value;
-  const iconColor=document.getElementById('inputIconColor').value;
-  const showToolbar=document.getElementById('toggleToolbar').classList.contains('on');
-  const showSplash=document.getElementById('toggleSplash').classList.contains('on');
-  const fullscreen=document.getElementById('toggleFullscreen').classList.contains('on');
-  const initial=name.charAt(0).toUpperCase();
-
-  document.getElementById('previewToolbar').style.display=showToolbar?'flex':'none';
-  document.getElementById('previewToolbar').style.background=theme;
-  document.getElementById('previewTitle').textContent=name;
-  document.getElementById('previewIconSmall').textContent=initial;
-  document.getElementById('previewIconSmall').style.background=iconColor;
-  document.getElementById('previewStatusBar').style.background=theme;
-  document.getElementById('previewStatusBar').style.display=fullscreen?'none':'flex';
-
-  const sp=document.getElementById('splashOverlay');
-  sp.style.background=splash;sp.style.opacity=showSplash?'1':'0';
-  sp.style.pointerEvents=showSplash?'auto':'none';
-  document.getElementById('splashIcon').textContent=initial;
-  document.getElementById('splashIcon').style.background=iconColor;
-  document.getElementById('splashAppName').textContent=name;
-
-  // Render icon preview
-  renderIcon(document.getElementById('iconPreviewLarge'), 192, iconColor, initial);
-
-  updatePermBadges();
-}
-
-function updatePermBadges(){
-  const c=document.getElementById('previewPermBadges');
-  const short={INTERNET:'NET',ACCESS_NETWORK_STATE:'NET',ACCESS_WIFI_STATE:'WIFI',CAMERA:'CAM',RECORD_AUDIO:'MIC',ACCESS_FINE_LOCATION:'GPS',ACCESS_COARSE_LOCATION:'LOC',READ_EXTERNAL_STORAGE:'READ',WRITE_EXTERNAL_STORAGE:'WRITE',VIBRATE:'VIB'};
-  c.innerHTML='';
-  document.querySelectorAll('.perm-check.active').forEach(p=>{
-    const s=short[p.dataset.perm]||p.dataset.perm;
-    c.innerHTML+=`<span style="font-size:9px;padding:2px 5px;border-radius:3px;background:rgba(34,197,94,0.12);color:var(--success);font-weight:600;">${s}</span>`;
-  });
-}
-
-// Time
-function updateTime(){const n=new Date();document.getElementById('previewStatusBar').textContent=n.getHours().toString().padStart(2,'0')+':'+n.getMinutes().toString().padStart(2,'0');}
-updateTime();setInterval(updateTime,30000);
-
-// Splash click
-document.getElementById('splashOverlay').addEventListener('click',function(){
-  this.style.opacity='0';this.style.pointerEvents='none';
-  setTimeout(()=>{this.style.opacity='1';this.style.pointerEvents='auto';},2000);
-});
-
-// ========== Build ==========
-function getConfig(){
-  const perms=[];
-  document.querySelectorAll('.perm-check.active').forEach(p=>perms.push(p.dataset.perm));
-  return{
-    url:document.getElementById('inputUrl').value.trim(),
-    appName:document.getElementById('inputAppName').value.trim(),
-    packageName:document.getElementById('inputPackage').value.trim(),
-    themeColor:document.getElementById('inputThemeColor').value,
-    splashColor:document.getElementById('inputSplashColor').value,
-    iconColor:document.getElementById('inputIconColor').value,
-    orientation:document.getElementById('inputOrientation').value,
-    minSdk:document.getElementById('inputMinSdk').value,
-    showToolbar:document.getElementById('toggleToolbar').classList.contains('on'),
-    fullscreen:document.getElementById('toggleFullscreen').classList.contains('on'),
-    jsEnabled:document.getElementById('toggleJS').classList.contains('on'),
-    showSplash:document.getElementById('toggleSplash').classList.contains('on'),
-    permissions:perms
-  };
-}
-
-function startBuild(){
-  goToStep(4);
-  const pf=document.getElementById('progressFill');
-  const bs=document.getElementById('buildStatus');
-  const bp=document.getElementById('buildPercent');
-  document.getElementById('buildProgress').style.display='block';
-  document.getElementById('buildResult').style.display='none';
-  pf.style.width='0%';
-
-  const steps=[
-    {p:10,t:'Generating icon PNGs at 5 resolutions...'},
-    {p:25,t:'Writing AndroidManifest.xml...'},
-    {p:40,t:'Writing PermissionHandler.java...'},
-    {p:55,t:'Writing MainActivity.java...'},
-    {p:70,t:'Creating GitHub Actions workflow...'},
-    {p:82,t:'Writing Gradle wrapper...'},
-    {p:92,t:'Creating resources...'},
-    {p:100,t:'Packaging ZIP...'}
-  ];
-  let i=0;
-  const iv=setInterval(()=>{
-    if(i<steps.length){pf.style.width=steps[i].p+'%';bs.textContent=steps[i].t;bp.textContent=steps[i].p+'%';i++;}
-    else{clearInterval(iv);setTimeout(()=>{
-      document.getElementById('buildProgress').style.display='none';
-      document.getElementById('buildResult').style.display='block';
-      showBuildResult();actuallyGenerateZip();
-    },300);}
-  },300);
-}
-
-function darkenColor(hex,amt){
-  let r=parseInt(hex.slice(1,3),16),g=parseInt(hex.slice(3,5),16),b=parseInt(hex.slice(5,7),16);
-  r=Math.max(0,r-amt);g=Math.max(0,g-amt);b=Math.max(0,b-amt);
-  return '#'+[r,g,b].map(c=>c.toString(16).padStart(2,'0')).join('');
-}
-
-function showBuildResult(){
-  const cfg=getConfig();
-  const initial=cfg.appName.charAt(0).toUpperCase();
-
-  // Render result icon
-  renderIcon(document.getElementById('resultIcon'),192,cfg.iconColor,initial);
-  document.getElementById('resultAppName').textContent=cfg.appName;
-  document.getElementById('resultPkgName').textContent=cfg.packageName;
-
-  // File tree
-  const pp=cfg.packageName.replace(/\./g,'/');
-  document.getElementById('fileTree').innerHTML=`<span class="st">${cfg.appName.replace(/\s+/g,'')}/</span>
-├── <span class="at">.github/workflows/</span>
-│   └── <span class="st">build.yml</span> <span class="cm">← Auto-build APK</span>
-├── <span class="at">app/</span>
-│   ├── <span class="at">src/main/</span>
-│   │   ├── <span class="kw">AndroidManifest.xml</span>
-│   │   ├── <span class="at">java/${pp}/</span>
-│   │   │   ├── <span class="st">MainActivity.java</span>
-│   │   │   └── <span class="st">PermissionHandler.java</span>
- ${cfg.showSplash?'│   │   │   └── <span class="st">SplashActivity.java</span>\n':''}│   │   └── <span class="at">res/</span>
-│   │       ├── <span class="at">mipmap-mdpi/</span> <span class="cm">48×48 icon</span>
-│   │       ├── <span class="at">mipmap-hdpi/</span> <span class="cm">72×72 icon</span>
-│   │       ├── <span class="at">mipmap-xhdpi/</span> <span class="cm">96×96 icon</span>
-│   │       ├── <span class="at">mipmap-xxhdpi/</span> <span class="cm">144×144 icon</span>
-│   │       ├── <span class="at">mipmap-xxxhdpi/</span> <span class="cm">192×192 icon</span>
-│   │       └── <span class="at">values/</span>
-│   │           ├── <span class="st">colors.xml</span>
-│   │           └── <span class="st">strings.xml</span>
-│   └── <span class="st">build.gradle</span>
-├── <span class="st">build.gradle</span> <span class="cm">(project)</span>
-├── <span class="st">settings.gradle</span>
-├── <span class="st">gradle.properties</span>
-├── <span class="at">gradle/wrapper/</span>
-│   └── <span class="st">gradle-wrapper.properties</span>
-├── <span class="st">gradlew</span>
-└── <span class="st">gradlew.bat</span>`;
-}
-
-function actuallyGenerateZip(){
-  const cfg=getConfig();
-  const zip=new JSZip();
-  const pp=cfg.packageName.replace(/\./g,'/');
-  const pn=cfg.appName.replace(/\s+/g,'');
-  const root=zip.folder(pn);
-  const initial=cfg.appName.charAt(0).toUpperCase();
-  const iconColor=cfg.iconColor;
-
-  // ===== Generate icon PNGs at all mipmap sizes =====
-  const mipmapSizes={mdpi:48,hdpi:72,xhdpi:96,xxhdpi:144,xxxhdpi:192};
-  for(const[density,size] of Object.entries(mipmapSizes)){
-    const pngData=generateIconPNG(size, iconColor, initial);
-    root.folder(`app/src/main/res/mipmap-${density}`).file('ic_launcher.png', dataURLtoUint8Array(pngData));
-  }
-
-  // ===== GitHub Actions workflow =====
-  root.folder('.github/workflows').file('build.yml', `name: Build APK
-
-on:
-  push:
-    branches: [ main ]
-  workflow_dispatch:
-
-jobs:
-  build:
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v4
-
-      - name: Set up JDK 17
-        uses: actions/setup-java@v4
-        with:
-          java-version: '17'
-          distribution: 'temurin'
-
-      - name: Make gradlew executable
-        run: chmod +x gradlew
-
-      - name: Build Debug APK
-        run: ./gradlew assembleDebug
-
-      - name: Upload APK
-        uses: actions/upload-artifact@v4
-        with:
-          name: ${pn}-debug-apk
-          path: app/build/outputs/apk/debug/*.apk
-`);
-
-  // ===== Project build.gradle =====
-  root.file('build.gradle', `buildscript {
-    repositories {
-        google()
-        mavenCentral()
-    }
-    dependencies {
-        classpath 'com.android.tools.build:gradle:8.1.0'
-    }
-}
-allprojects {
-    repositories {
-        google()
-        mavenCentral()
-    }
-}
-task clean(type: Delete) { delete rootProject.buildDir }
-`);
-
-  root.file('settings.gradle', `rootProject.name = '${pn}'
-include ':app'
-`);
-
-  root.file('gradle.properties', `org.gradle.jvmargs=-Xmx2048m
-android.useAndroidX=true
-`);
-
-  // ===== Gradle wrapper =====
-  root.folder('gradle/wrapper').file('gradle-wrapper.properties', `distributionBase=GRADLE_USER_HOME
-distributionPath=wrapper/dists
-distributionUrl=https\\://services.gradle.org/distributions/gradle-8.0-bin.zip
-zipStoreBase=GRADLE_USER_HOME
-zipStorePath=wrapper/dists
-`);
-
-  // gradlew (minimal shell script)
-  root.file('gradlew', `#!/bin/sh
-# Gradle wrapper stub — Android Studio will download full wrapper on first build
-exec gradle "$@"
-`);
-
-  // gradlew.bat
-  root.file('gradlew.bat', `@echo off
-REM Gradle wrapper stub
-gradle %*
-`);
-
-  // ===== App build.gradle =====
-  root.folder('app').file('build.gradle', `plugins {
-    id 'com.android.application'
-}
-android {
-    namespace '${cfg.packageName}'
-    compileSdk 34
-    defaultConfig {
-        applicationId '${cfg.packageName}'
-        minSdk ${cfg.minSdk}
-        targetSdk 34
-        versionCode 1
-        versionName '1.0'
-    }
-    buildTypes {
-        release {
-            minifyEnabled true
-            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
-        }
-    }
-    compileOptions {
-        sourceCompatibility JavaVersion.VERSION_1_8
-        targetCompatibility JavaVersion.VERSION_1_8
-    }
-}
-dependencies {
-    implementation 'androidx.appcompat:appcompat:1.6.1'
-    implementation 'androidx.webkit:webkit:1.8.0'
-}
-`);
-
-  root.folder('app').file('proguard-rules.pro', `-keepclassmembers class * {
-    @android.webkit.JavascriptInterface <methods>;
-}
-`);
-
-  // ===== AndroidManifest.xml =====
-  const permXml=cfg.permissions.map(p=>`    <uses-permission android:name="android.permission.${p}" />`).join('\n');
-  let usesFeatures='';
-  if(cfg.permissions.includes('CAMERA'))usesFeatures+=`    <uses-feature android:name="android.hardware.camera" android:required="false" />\n`;
-
-  let activities='';
-  if(cfg.showSplash){
-    activities+=`        <activity android:name=".SplashActivity" android:theme="@style/SplashTheme" android:exported="true">
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
-        </activity>\n`;
-  }
-  activities+=`        <activity android:name=".MainActivity" android:screenOrientation="${cfg.orientation}" android:configChanges="orientation|screenSize|keyboard|keyboardHidden" android:exported="${!cfg.showSplash}">
- ${!cfg.showSplash?`            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>`:''}
-        </activity>`;
-
-  root.folder('app/src/main').file('AndroidManifest.xml', `<?xml version="1.0" encoding="utf-8"?>
-<manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="${cfg.packageName}">
-
- ${permXml}
- ${usesFeatures}
-    <application
-        android:allowBackup="true"
-        android:icon="@mipmap/ic_launcher"
-        android:label="${cfg.appName}"
-        android:theme="@style/AppTheme"
-        android:usesCleartextTraffic="true"
-        android:hardwareAccelerated="true"
-        android:requestLegacyExternalStorage="true">
-
- ${activities}
-    </application>
-</manifest>
-`);
-
-  // ===== Java files =====
-  const javaDir=root.folder(`app/src/main/java/${pp}`);
-
-  // PermissionHandler.java
-  const dangerousPerms=cfg.permissions.filter(p=>!['INTERNET','ACCESS_NETWORK_STATE','ACCESS_WIFI_STATE'].includes(p));
-  javaDir.file('PermissionHandler.java', `package ${cfg.packageName};
-
-import android.Manifest;
-import android.app.Activity;
-import android.content.pm.PackageManager;
-import android.os.Build;
-import android.util.Log;
-import androidx.core.app.ActivityCompat;
-import androidx.core.content.ContextCompat;
-import java.util.ArrayList;
-import java.util.List;
-
-public class PermissionHandler {
-    private static final String TAG = "PermissionHandler";
-    private static final int REQ_CODE = 1001;
-
-    private static final String[] DANGEROUS_PERMISSIONS = {
- ${dangerousPerms.map(p=>`            Manifest.permission.${p}`).join(',\n')}
-    };
-
-    public static void requestAllPermissions(Activity activity) {
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-            List<String> needed = new ArrayList<>();
-            for (String perm : DANGEROUS_PERMISSIONS) {
-                if (ContextCompat.checkSelfPermission(activity, perm) != PackageManager.PERMISSION_GRANTED) {
-                    needed.add(perm);
-                }
+    <script>
+        // ==================== STATE MANAGEMENT ====================
+        const state = {
+            user: null,
+            token: localStorage.getItem('token'),
+            selectedPlatforms: [],
+            selectedPermissions: [],
+            files: {
+                icon: null,
+                splash: null
             }
-            if (!needed.isEmpty()) {
-                ActivityCompat.requestPermissions(activity, needed.toArray(new String[0]), REQ_CODE);
-            }
-        }
-    }
+        };
 
-    public static boolean allPermissionsGranted(int requestCode, String[] permissions, int[] grantResults) {
-        if (requestCode != REQ_CODE) return false;
-        for (int i = 0; i < grantResults.length; i++) {
-            if (grantResults[i] != PackageManager.PERMISSION_GRANTED) {
-                Log.w(TAG, "Permission DENIED: " + permissions[i]);
-            }
-        }
-        return true;
-    }
-}
-`);
+        // ==================== PERMISSIONS DATA ====================
+        const permissions = [
+            { id: 'camera', name: 'Camera', icon: 'fa-camera', desc: 'Take photos and record video' },
+            { id: 'microphone', name: 'Microphone', icon: 'fa-microphone', desc: 'Record audio and voice calls' },
+            { id: 'location', name: 'Location', icon: 'fa-map-marker-alt', desc: 'Access GPS location data' },
+            { id: 'storage', name: 'Storage', icon: 'fa-hdd', desc: 'Read and write files' },
+            { id: 'notifications', name: 'Notifications', icon: 'fa-bell', desc: 'Send push notifications' },
+            { id: 'contacts', name: 'Contacts', icon: 'fa-address-book', desc: 'Access phone contacts' },
+            { id: 'calendar', name: 'Calendar', icon: 'fa-calendar', desc: 'Read and write calendar events' },
+            { id: 'bluetooth', name: 'Bluetooth', icon: 'fa-bluetooth-b', desc: 'Connect to Bluetooth devices' },
+            { id: 'network', name: 'Network', icon: 'fa-wifi', desc: 'Full network access' },
+            { id: 'phone', name: 'Phone', icon: 'fa-phone', desc: 'Make and manage phone calls' },
+            { id: 'sms', name: 'SMS', icon: 'fa-comment', desc: 'Send and read SMS messages' },
+            { id: 'sensors', name: 'Sensors', icon: 'fa-compass', desc: 'Access device sensors' }
+        ];
 
-  // MainActivity.java
-  javaDir.file('MainActivity.java', `package ${cfg.packageName};
-
-import android.Manifest;
-import android.annotation.SuppressLint;
-import android.app.Activity;
-import android.app.DownloadManager;
-import android.content.ClipData;
-import android.content.Context;
-import android.content.Intent;
-import android.content.pm.PackageManager;
-import android.graphics.Bitmap;
-import android.graphics.Color;
-import android.net.Uri;
-import android.os.Build;
-import android.os.Bundle;
-import android.os.Environment;
-import android.os.Handler;
-import android.os.Looper;
-import android.util.Log;
-import android.view.KeyEvent;
-import android.view.View;
-import android.view.Window;
-import android.view.WindowManager;
-import android.webkit.GeolocationPermissions;
-import android.webkit.MimeTypeMap;
-import android.webkit.PermissionRequest;
-import android.webkit.ValueCallback;
-import android.webkit.WebChromeClient;
-import android.webkit.WebResourceError;
-import android.webkit.WebResourceRequest;
-import android.webkit.WebSettings;
-import android.webkit.WebView;
-import android.webkit.WebViewClient;
-import android.widget.LinearLayout;
-import android.widget.ProgressBar;
-import android.widget.TextView;
-import android.widget.Toast;
-
-import java.util.Arrays;
-
-public class MainActivity extends Activity {
-
-    private WebView webView;
-    private ProgressBar progressBar;
-    private LinearLayout toolbar;
-    private static final String URL = "${cfg.url}";
-    private static final String TAG = "MainActivity";
-    private static final int FILE_CHOOSER_REQ = 10001;
-    private ValueCallback<Uri[]> filePathCallback;
-
-    @SuppressLint("SetJavaScriptEnabled")
-    @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
- ${cfg.fullscreen?`
-        requestWindowFeature(Window.FEATURE_NO_TITLE);
-        getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
-        getWindow().getDecorView().setSystemUiVisibility(
-            View.SYSTEM_UI_FLAG_IMMERSIVE_STICKY | View.SYSTEM_UI_FLAG_FULLSCREEN
-            | View.SYSTEM_UI_FLAG_HIDE_NAVIGATION | View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN
-            | View.SYSTEM_UI_FLAG_LAYOUT_HIDE_NAVIGATION | View.SYSTEM_UI_FLAG_LAYOUT_STABLE);
-`: ""}
-        // Request all permissions at startup
-        PermissionHandler.requestAllPermissions(this);
-
-        LinearLayout layout = new LinearLayout(this);
-        layout.setOrientation(LinearLayout.VERTICAL);
-
- ${cfg.showToolbar?`
-        toolbar = new LinearLayout(this);
-        toolbar.setOrientation(LinearLayout.HORIZONTAL);
-        toolbar.setPadding(16, 32, 16, 16);
-        toolbar.setBackgroundColor(Color.parseColor("${cfg.themeColor}"));
-        toolbar.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT));
-        TextView titleView = new TextView(this);
-        titleView.setText("${cfg.appName}");
-        titleView.setTextColor(Color.WHITE);
-        titleView.setTextSize(18);
-        titleView.setTypeface(null, android.graphics.Typeface.BOLD);
-        toolbar.addView(titleView);
-        layout.addView(toolbar);
-`:""}
-        progressBar = new ProgressBar(this, null, android.R.attr.progressBarStyleHorizontal);
-        progressBar.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, 8));
-        progressBar.setMax(100);
-        layout.addView(progressBar);
-
-        webView = new WebView(this);
-        webView.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, 0, 1.0f));
-
-        WebSettings settings = webView.getSettings();
-        settings.setJavaScriptEnabled(${cfg.jsEnabled});
-        settings.setDomStorageEnabled(true);
-        settings.setDatabaseEnabled(true);
-        settings.setAllowFileAccess(true);
-        settings.setAllowContentAccess(true);
-        settings.setAllowFileAccessFromFileURLs(true);
-        settings.setAllowUniversalAccessFromFileURLs(true);
-        settings.setLoadWithOverviewMode(true);
-        settings.setUseWideViewPort(true);
-        settings.setSupportZoom(true);
-        settings.setBuiltInZoomControls(true);
-        settings.setDisplayZoomControls(false);
-        settings.setMediaPlaybackRequiresUserGesture(false);
-        settings.setJavaScriptCanOpenWindowsAutomatically(true);
-        settings.setCacheMode(WebSettings.LOAD_DEFAULT);
-        settings.setMixedContentMode(WebSettings.MIXED_CONTENT_ALWAYS_ALLOW);
-        settings.setSaveFormData(true);
-        settings.setLayoutAlgorithm(WebSettings.LayoutAlgorithm.TEXT_AUTOSIZING);
-
-        webView.setWebViewClient(new WebViewClient() {
-            @Override
-            public boolean shouldOverrideUrlLoading(WebView view, String url) { view.loadUrl(url); return true; }
-            @Override
-            public void onPageStarted(WebView view, String url, Bitmap favicon) { super.onPageStarted(view, url, favicon); progressBar.setVisibility(View.VISIBLE); }
-            @Override
-            public void onPageFinished(WebView view, String url) { super.onPageFinished(view, url); progressBar.setVisibility(View.GONE); }
+        // ==================== INITIALIZATION ====================
+        document.addEventListener('DOMContentLoaded', () => {
+            initPermissions();
+            checkAuth();
+            setupDragAndDrop();
         });
 
-        // AUTO-GRANT ALL WEB PERMISSIONS
-        webView.setWebChromeClient(new WebChromeClient() {
-            @Override
-            public void onPermissionRequest(PermissionRequest request) {
-                Log.d(TAG, "Web permission request: " + Arrays.toString(request.getResources()));
-                runOnUiThread(() -> request.grant(request.getResources()));
-            }
-            @Override
-            public void onGeolocationPermissionsShowPrompt(String origin, GeolocationPermissions.Callback callback) {
-                callback.invoke(origin, true, true);
-            }
-            @Override
-            public boolean onShowFileChooser(WebView webView, ValueCallback<Uri[]> filePathCallback, FileChooserParams params) {
-                if (MainActivity.this.filePathCallback != null) MainActivity.this.filePathCallback.onReceiveValue(null);
-                MainActivity.this.filePathCallback = filePathCallback;
-                try { startActivityForResult(params.createIntent(), FILE_CHOOSER_REQ); } catch (Exception e) { return false; }
-                return true;
-            }
-            @Override
-            public void onProgressChanged(WebView view, int newProgress) {
-                progressBar.setProgress(newProgress);
-                if (newProgress == 100) new Handler(Looper.getMainLooper()).postDelayed(() -> progressBar.setVisibility(View.GONE), 200);
-            }
-        });
-
-        // FILE DOWNLOAD SUPPORT
-        webView.setDownloadListener((url, userAgent, contentDisposition, mimetype, contentLength) -> {
-            try {
-                DownloadManager.Request request = new DownloadManager.Request(Uri.parse(url));
-                request.setMimeType(mimetype);
-                String fileName = java.net.URLDecoder.decode(android.webkit.URLUtil.guessFileName(url, contentDisposition, mimetype), "UTF-8");
-                request.setTitle(fileName);
-                request.allowScanningByMediaScanner();
-                request.setNotificationVisibility(DownloadManager.Request.VISIBILITY_VISIBLE_NOTIFY_COMPLETED);
-                request.setDestinationInExternalPublicDir(Environment.DIRECTORY_DOWNLOADS, fileName);
-                ((DownloadManager) getSystemService(Context.DOWNLOAD_SERVICE)).enqueue(request);
-                Toast.makeText(this, "Downloading: " + fileName, Toast.LENGTH_SHORT).show();
-            } catch (Exception e) {
-                startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse(url)));
-            }
-        });
-
-        layout.addView(webView);
-        setContentView(layout);
-        webView.loadUrl(URL);
-    }
-
-    @Override
-    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        super.onActivityResult(requestCode, resultCode, data);
-        if (requestCode == FILE_CHOOSER_REQ && filePathCallback != null) {
-            Uri[] results = null;
-            if (resultCode == RESULT_OK && data != null) {
-                if (data.getClipData() != null) {
-                    results = new Uri[data.getClipData().getItemCount()];
-                    for (int i = 0; i < data.getClipData().getItemCount(); i++) results[i] = data.getClipData().getItemAt(i).getUri();
-                } else if (data.getDataString() != null) { results = new Uri[]{Uri.parse(data.getDataString())}; }
-            }
-            filePathCallback.onReceiveValue(results);
-            filePathCallback = null;
+        function initPermissions() {
+            const grid = document.getElementById('permissionGrid');
+            permissions.forEach(perm => {
+                const item = document.createElement('div');
+                item.className = 'permission-item';
+                item.onclick = () => togglePermission(item, perm.id);
+                item.innerHTML = `
+                    <div class="permission-icon">
+                        <i class="fas ${perm.icon}"></i>
+                    </div>
+                    <div class="permission-info">
+                        <div class="permission-name">${perm.name}</div>
+                        <div class="permission-desc">${perm.desc}</div>
+                    </div>
+                    <div class="permission-toggle"></div>
+                `;
+                grid.appendChild(item);
+            });
         }
-    }
 
-    @Override
-    public void onRequestPermissionsResult(int requestCode, String[] permissions, int[] grantResults) {
-        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
-        PermissionHandler.allPermissionsGranted(requestCode, permissions, grantResults);
-    }
+        // ==================== AUTH NAVIGATION ====================
+        function showLogin() {
+            hideAllAuth();
+            document.getElementById('loginPage').classList.remove('hidden');
+        }
 
-    @Override
-    public boolean onKeyDown(int keyCode, KeyEvent event) {
-        if (keyCode == KeyEvent.KEYCODE_BACK && webView.canGoBack()) { webView.goBack(); return true; }
-        return super.onKeyDown(keyCode, event);
-    }
+        function showRegister() {
+            hideAllAuth();
+            document.getElementById('registerPage').classList.remove('hidden');
+        }
 
-    @Override
-    protected void onResume() {
-        super.onResume();
- ${cfg.fullscreen?`        getWindow().getDecorView().setSystemUiVisibility(View.SYSTEM_UI_FLAG_IMMERSIVE_STICKY | View.SYSTEM_UI_FLAG_FULLSCREEN | View.SYSTEM_UI_FLAG_HIDE_NAVIGATION);
-`:""}
-    }
+        function showForgotPassword() {
+            hideAllAuth();
+            document.getElementById('forgotPage').classList.remove('hidden');
+        }
 
-    @Override
-    protected void onDestroy() { if (webView != null) webView.destroy(); super.onDestroy(); }
-}
-`);
+        function hideAllAuth() {
+            document.querySelectorAll('.auth-container').forEach(el => el.classList.add('hidden'));
+        }
 
-  // SplashActivity.java
-  if(cfg.showSplash){
-    javaDir.file('SplashActivity.java', `package ${cfg.packageName};
-import android.app.Activity;
-import android.content.Intent;
-import android.os.Bundle;
-import android.os.Handler;
-import android.os.Looper;
-import android.widget.LinearLayout;
-import android.widget.TextView;
-import android.graphics.Color;
+        function showDashboard() {
+            document.querySelectorAll('.auth-container').forEach(el => el.classList.add('hidden'));
+            document.getElementById('dashboard').classList.add('active');
+        }
 
-public class SplashActivity extends Activity {
-    @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        LinearLayout layout = new LinearLayout(this);
-        layout.setOrientation(LinearLayout.VERTICAL);
-        layout.setBackgroundColor(Color.parseColor("${cfg.splashColor}"));
-        layout.setGravity(android.view.Gravity.CENTER);
-        layout.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.MATCH_PARENT));
-        TextView appName = new TextView(this);
-        appName.setText("${cfg.appName}");
-        appName.setTextColor(Color.WHITE);
-        appName.setTextSize(28);
-        appName.setTypeface(null, android.graphics.Typeface.BOLD);
-        layout.addView(appName);
-        setContentView(layout);
-        new Handler(Looper.getMainLooper()).postDelayed(() -> { startActivity(new Intent(this, MainActivity.class)); finish(); }, 2000);
-    }
-}
-`);
-  }
+        // ==================== AUTH FORMS ====================
+        document.getElementById('loginForm').addEventListener('submit', async (e) => {
+            e.preventDefault();
+            const btn = document.getElementById('loginBtn');
+            btn.disabled = true;
+            btn.innerHTML = '<div class="spinner"></div>';
 
-  // ===== Resources =====
-  const res=root.folder('app/src/main/res');
+            const email = document.getElementById('loginEmail').value;
+            const password = document.getElementById('loginPassword').value;
+            const rememberMe = document.getElementById('rememberMe').checked;
 
-  res.folder('values').file('colors.xml', `<?xml version="1.0" encoding="utf-8"?>
-<resources>
-    <color name="colorPrimary">${cfg.themeColor}</color>
-    <color name="colorPrimaryDark">${darkenColor(cfg.themeColor,20)}</color>
-    <color name="colorAccent">${cfg.themeColor}</color>
-    <color name="splashBackground">${cfg.splashColor}</color>
-</resources>
-`);
+            // Simulate API call
+            await new Promise(r => setTimeout(r, 1500));
 
-  res.folder('values').file('strings.xml', `<?xml version="1.0" encoding="utf-8"?>
-<resources>
-    <string name="app_name">${cfg.appName}</string>
-</resources>
-`);
+            // Mock successful login
+            state.user = {
+                id: '1',
+                email: email,
+                firstName: 'John',
+                lastName: 'Doe',
+                subscriptionTier: 'free'
+            };
+            state.token = 'mock-jwt-token';
+            localStorage.setItem('token', state.token);
+            localStorage.setItem('user', JSON.stringify(state.user));
 
-  let styles=`<?xml version="1.0" encoding="utf-8"?>
-<resources>
-    <style name="AppTheme" parent="Theme.AppCompat.Light.NoActionBar">
-        <item name="colorPrimary">@color/colorPrimary</item>
-        <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
-        <item name="colorAccent">@color/colorAccent</item>
-    </style>
-`;
-  if(cfg.showSplash)styles+=`    <style name="SplashTheme" parent="Theme.AppCompat.NoActionBar">
-        <item name="android:windowBackground">@color/splashBackground</item>
-        <item name="android:windowNoTitle">true</item>
-    </style>\n`;
-  styles+=`</resources>`;
-  res.folder('values').file('styles.xml', styles);
+            showToast('Welcome back!', 'success');
+            updateUserUI();
+            showDashboard();
 
-  // README
-  root.file('README.md', `# ${cfg.appName}
+            btn.disabled = false;
+            btn.innerHTML = '<span>Sign In</span><i class="fas fa-arrow-right"></i>';
+        });
 
-## Quick Start — Get Your APK
+        document.getElementById('registerForm').addEventListener('submit', async (e) => {
+            e.preventDefault();
+            const btn = document.getElementById('registerBtn');
+            
+            const password = document.getElementById('regPassword').value;
+            const confirm = document.getElementById('regConfirmPassword').value;
 
-### Option 1: GitHub Actions (Recommended — No install needed)
+            if (password !== confirm) {
+                showToast('Passwords do not match', 'error');
+                return;
+            }
 
-1. Download and unzip this project
-2. Create a new GitHub repository
-3. Push all files to the repo:
-   \`\`\`
-   git init
-   git add .
-   git commit -m "Initial commit"
-   git remote add origin https://github.com/YOUR_USERNAME/YOUR_REPO.git
-   git push -u origin main
-   \`\`\`
-4. Go to the **Actions** tab in your GitHub repo
-5. The "Build APK" workflow runs automatically
-6. When complete, download the APK from **Artifacts**
+            btn.disabled = true;
+            btn.innerHTML = '<div class="spinner"></div>';
 
-### Option 2: Android Studio
+            // Simulate API call
+            await new Promise(r => setTimeout(r, 1500));
 
-1. Download Android Studio from https://developer.android.com/studio
-2. Open this project folder
-3. Wait for Gradle sync
-4. Click **Build > Build APK**
-5. Find the APK in \`app/build/outputs/apk/debug/\`
+            showToast('Account created! Please check your email.', 'success');
+            showLogin();
 
-## Features
-- Full WebView wrapper for ${cfg.url}
-- Custom app icon (generated PNG at 5 resolutions)
-- All permissions auto-granted to the website
-- File upload + camera capture support
-- File download support
- ${cfg.showSplash?'- Splash screen on launch\n':''}${cfg.showToolbar?'- Custom toolbar with app name\n':''}${cfg.fullscreen?'- Fullscreen immersive mode\n':''}- Back button navigation
-`);
+            btn.disabled = false;
+            btn.innerHTML = '<span>Create Account</span><i class="fas fa-user-plus"></i>';
+        });
 
-  generatedZip=zip;
-}
+        document.getElementById('forgotForm').addEventListener('submit', async (e) => {
+            e.preventDefault();
+            const btn = document.getElementById('forgotBtn');
+            btn.disabled = true;
+            btn.innerHTML = '<div class="spinner"></div>';
 
-async function downloadProject(){
-  if(!generatedZip){showToast('Not generated yet','error');return;}
-  try{
-    const cfg=getConfig();
-    const pn=cfg.appName.replace(/\s+/g,'');
-    const blob=await generatedZip.generateAsync({type:'blob'});
-    const url=URL.createObjectURL(blob);
-    const a=document.createElement('a');
-    a.href=url;a.download=pn+'_AndroidProject.zip';
-    document.body.appendChild(a);a.click();document.body.removeChild(a);
-    URL.revokeObjectURL(url);
-    showToast('Downloaded! Push to GitHub to auto-build APK','success');
-  }catch(e){showToast('Error: '+e.message,'error');}
-}
+            await new Promise(r => setTimeout(r, 1000));
 
-function showToast(msg,type){
-  const t=document.getElementById('toast');
-  t.className='toast '+type;
-  t.innerHTML=`<i class="fas fa-${type==='success'?'check-circle':'exclamation-circle'}"></i> ${msg}`;
-  t.classList.add('show');
-  setTimeout(()=>t.classList.remove('show'),3500);
-}
+            showToast('Reset link sent to your email', 'success');
+            showLogin();
 
-updatePreview();
-</script>
+            btn.disabled = false;
+            btn.innerHTML = '<span>Send Reset Link</span><i class="fas fa-paper-plane"></i>';
+        });
+
+        function socialLogin(provider) {
+            showToast(`${provider} login coming soon!`, 'warning');
+        }
+
+        // ==================== AUTH CHECK ====================
+        function checkAuth() {
+            const token = localStorage.getItem('token');
+            const user = localStorage.getItem('user');
+
+            if (token && user) {
+                state.token = token;
+                state.user = JSON.parse(user);
+                updateUserUI();
+                showDashboard();
+            } else {
+                showLogin();
+            }
+        }
+
+        function updateUserUI() {
+            if (!state.user) return;
+            
+            const initials = `${state.user.firstName?.[0] || ''}${state.user.lastName?.[0] || ''}`;
+            document.getElementById('userAvatar').textContent = initials;
+            document.getElementById('userName').textContent = `${state.user.firstName} ${state.user.lastName}`;
+        }
+
+        function logout() {
+            localStorage.removeItem('token');
+            localStorage.removeItem('user');
+            state.user = null;
+            state.token = null;
+            location.reload();
+        }
+
+        // ==================== FILE UPLOAD ====================
+        function setupDragAndDrop() {
+            ['icon', 'splash'].forEach(type => {
+                const zone = document.getElementById(`${type}Upload`);
+                
+                zone.addEventListener('dragover', (e) => {
+                    e.preventDefault();
+                    zone.classList.add('dragover');
+                });
+
+                zone.addEventListener('dragleave', () => {
+                    zone.classList.remove('dragover');
+                });
+
+                zone.addEventListener('drop', (e) => {
+                    e.preventDefault();
+                    zone.classList.remove('dragover');
+                    const file = e.dataTransfer.files[0];
+                    if (file) handleFile(file, type);
+                });
+            });
+        }
+
+        function handleFileSelect(event, type) {
+            const file = event.target.files[0];
+            if (file) handleFile(file, type);
+        }
+
+        function handleFile(file, type) {
+            const validTypes = ['image/png', 'image/jpeg', 'image/svg+xml'];
+            if (!validTypes.includes(file.type)) {
+                showToast('Please upload PNG, JPG, or SVG', 'error');
+                return;
+            }
+
+            state.files[type] = file;
+
+            const reader = new FileReader();
+            reader.onload = (e) => {
+                const preview = document.getElementById(`${type}Preview`);
+                const zone = document.getElementById(`${type}Upload`);
+                
+                preview.src = e.target.result;
+                zone.classList.add('has-file');
+            };
+            reader.readAsDataURL(file);
+
+            showToast(`${type === 'icon' ? 'Icon' : 'Splash screen'} uploaded`, 'success');
+        }
+
+        function removeFile(type) {
+            state.files[type] = null;
+            document.getElementById(`${type}Upload`).classList.remove('has-file');
+            document.getElementById(`${type}Input`).value = '';
+            showToast('File removed', 'warning');
+        }
+
+        // ==================== PLATFORM SELECTION ====================
+        function togglePlatform(element, platform) {
+            element.classList.toggle('active');
+            
+            if (element.classList.contains('active')) {
+                state.selectedPlatforms.push(platform);
+            } else {
+                state.selectedPlatforms = state.selectedPlatforms.filter(p => p !== platform);
+            }
+        }
+
+        // ==================== PERMISSION TOGGLE ====================
+        function togglePermission(element, permissionId) {
+            element.classList.toggle('active');
+            
+            if (element.classList.contains('active')) {
+                state.selectedPermissions.push(permissionId);
+            } else {
+                state.selectedPermissions = state.selectedPermissions.filter(p => p !== permissionId);
+            }
+        }
+
+        // ==================== BUILD PROCESS ====================
+        async function startBuild() {
+            const url = document.getElementById('websiteUrl').value;
+            const appName = document.getElementById('appName').value;
+
+            if (!url) {
+                showToast('Please enter a website URL', 'error');
+                return;
+            }
+
+            if (state.selectedPlatforms.length === 0) {
+                showToast('Please select at least one platform', 'error');
+                return;
+            }
+
+            const modal = document.getElementById('buildModal');
+            modal.classList.add('active');
+
+            // Simulate build process
+            const steps = [
+                { id: 'step1', progress: 15, delay: 1000 },
+                { id: 'step2', progress: 35, delay: 1500 },
+                { id: 'step3', progress: 70, delay: 2000 },
+                { id: 'step4', progress: 100, delay: 1500 }
+            ];
+
+            for (const step of steps) {
+                await new Promise(r => setTimeout(r, step.delay));
+                
+                document.getElementById('progressFill').style.width = step.progress + '%';
+                
+                steps.forEach((s, i) => {
+                    const el = document.getElementById(s.id);
+                    if (i <= steps.indexOf(step)) {
+                        el.classList.add('active');
+                    }
+                });
+            }
+
+            await new Promise(r => setTimeout(r, 500));
+
+            modal.classList.remove('active');
+            showToast('App built successfully! Check your downloads.', 'success');
+
+            // Reset form
+            document.getElementById('websiteUrl').value = '';
+            document.getElementById('appName').value = '';
+            document.getElementById('appDescription').value = '';
+            removeFile('icon');
+            removeFile('splash');
+            state.selectedPlatforms = [];
+            state.selectedPermissions = [];
+            document.querySelectorAll('.platform-card, .permission-item').forEach(el => {
+                el.classList.remove('active');
+            });
+        }
+
+        // ==================== SECTION NAVIGATION ====================
+        function showSection(section) {
+            // Update nav items
+            document.querySelectorAll('.nav-item').forEach(el => el.classList.remove('active'));
+            event.currentTarget.classList.add('active');
+
+            // Hide all sections
+            document.getElementById('builderSection').classList.add('hidden');
+            document.getElementById('appsSection').classList.add('hidden');
+            document.getElementById('profileSection').classList.add('hidden');
+
+            // Show selected
+            if (section === 'builder') {
+                document.getElementById('builderSection').classList.remove('hidden');
+            } else if (section === 'apps') {
+                document.getElementById('appsSection').classList.remove('hidden');
+            } else if (section === 'profile') {
+                document.getElementById('profileSection').classList.remove('hidden');
+            } else {
+                showToast(`${section} section coming soon!`, 'warning');
+                document.getElementById('builderSection').classList.remove('hidden');
+            }
+        }
+
+        function saveProfile() {
+            showToast('Profile saved!', 'success');
+        }
+
+        // ==================== TOAST NOTIFICATIONS ====================
+        function showToast(message, type = 'info') {
+            const container = document.getElementById('toastContainer');
+            const toast = document.createElement('div');
+            toast.className = `toast ${type}`;
+            
+            const icons = {
+                success: 'fa-check-circle',
+                error: 'fa-exclamation-circle',
+                warning: 'fa-exclamation-triangle',
+                info: 'fa-info-circle'
+            };
+
+            toast.innerHTML = `
+                <i class="fas ${icons[type]}"></i>
+                <span>${message}</span>
+            `;
+
+            container.appendChild(toast);
+
+            setTimeout(() => {
+                toast.style.animation = 'slideIn 0.3s ease reverse';
+                setTimeout(() => toast.remove(), 300);
+            }, 4000);
+        }
+
+        // Close modal on backdrop click
+        document.getElementById('buildModal').addEventListener('click', (e) => {
+            if (e.target === e.currentTarget) {
+                // Don't close during build
+            }
+        });
+    </script>
 </body>
   </html>
