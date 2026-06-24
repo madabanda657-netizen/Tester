@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+here<!DOCTYPE html>
 <html>
 <head>
 <meta charset="UTF-8">
@@ -70,7 +70,7 @@
 #splashScreen { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: #000; z-index: 100000; display: flex; align-items: center; justify-content: center; flex-direction: column; transition: opacity 0.6s ease-out; }
 #splashScreen.splash-hide { opacity: 0; pointer-events: none; }
 #splashScreen img { max-width: 200px; border-radius: 25px; box-shadow: 0 0 40px rgba(0,255,204,0.3); animation: splashPulse 2s infinite alternate; }
-#splashScreen p { margin-top: 20px; font-size: 14px; color: #00ffcc; letter-spacing: 2px; font-weight:bold; animation: blink 1.5s infinite; }
+#splashScreen p { margin-top: 20px; font-size: 14px; color: #00ffcc; letter-spacing: 2px; font-weight: bold; animation: blink 1.5s infinite; }
 @keyframes splashPulse { 0% { transform: scale(1); box-shadow: 0 0 30px rgba(0,255,204,0.2); } 100% { transform: scale(1.03); box-shadow: 0 0 50px rgba(0,255,204,0.5); } }
 .auth-links { margin-top: 15px; font-size: 13px; color: #888; }
 .auth-links a { color: #00ffcc; text-decoration: underline; cursor: pointer; }
@@ -144,6 +144,10 @@
 .captcha-slider-handle{position:absolute;top:0;left:0;width:50px;height:50px;background:linear-gradient(135deg,#00ffcc,#00ccff);border-radius:50%;cursor:grab;display:flex;align-items:center;justify-content:center;font-size:20px;color:#000;box-shadow:0 0 10px #00ffcc55}
 .captcha-slider-handle:active{cursor:grabbing}
 .captcha-slider-handle.verified{background:linear-gradient(135deg,#51cf66,#2b8a3e)}
+
+/* ===== AD COUNTDOWN MODAL ===== */
+#adCountdownModal{display:none;position:fixed;top:0;left:0;width:100%;height:100%;background:rgba(0,0,0,0.98);z-index:100002;flex-direction:column;align-items:center;justify-content:center;text-align:center;padding:20px}
+.ad-countdown-timer{font-size:64px;font-weight:bold;color:#00ffcc;animation:pulse 1s infinite}
 </style>
 </head>
 <body>
@@ -157,6 +161,13 @@
         <div class="captcha-slider-text" id="gateSliderText">Slide to enter</div>
         <div class="captcha-slider-handle" id="gateSliderHandle">→</div>
     </div>
+</div>
+
+<!-- AD COUNTDOWN MODAL -->
+<div id="adCountdownModal">
+    <h3 style="color:#fff; margin-bottom:20px;">Ad Loading... Please wait</h3>
+    <div class="ad-countdown-timer" id="adCountdownTimer">10</div>
+    <p style="color:#888; margin-top:20px;">Do not close this window to earn your points.</p>
 </div>
 
 <div id="appInstallGate" style="display:none; position:fixed; top:0; left:0; width:100%; height:100%; background:rgba(0,0,0,0.97); z-index:999999; flex-direction:column; align-items:center; justify-content:center; padding:30px; text-align:center;">
@@ -175,7 +186,7 @@
   <p>MADA EARN</p>
 </div>
 
-<div id="termsModal" class="legal-modal"><div class="legal-modal-content"><h2>📜 Terms of Service</h2><p><b>1. Eligibility:</b> You must be at least 18 years old.</p><p><b>2. Free Gaming:</b> Play for free and earn Airtel Bundles.</p><p><b>3. Fair Play:</b> Cheating = permanent ban.</p><p><b>4. Rewards:</b> Convert points to bundles in the Wallet.</p><p><b>5. Referrals:</b> 100 Points per 5 referrals.</p><br><button onclick="document.getElementById('termsModal').style.display='none'" style="width:auto;padding:10px 30px;margin:0 auto;display:block">Close</button></div></div>
+<div id="termsModal" class="legal-modal"><div class="legal-modal-content"><h2>📜 Terms of Service</h2><p><b>1. Eligibility:</b> You must be at least 18 years old.</p><p><b>2. Free Gaming:</b> Play for free and earn Airtel Bundles.</p><p><b>3. Fair Play:</b> Cheating = permanent ban.</p><p><b>4. Rewards:</b> Convert points to bundles in the Wallet.</p><p><b>5. Referrals:</b> 500 Points per 5 referrals.</p><br><button onclick="document.getElementById('termsModal').style.display='none'" style="width:auto;padding:10px 30px;margin:0 auto;display:block">Close</button></div></div>
 <div id="privacyModal" class="legal-modal"><div class="legal-modal-content"><h2>🔒 Privacy Policy</h2><p><b>1. Data Collection:</b> Username, phone, email.</p><p><b>2. Data Usage:</b> Operate app & process rewards.</p><p><b>3. Security:</b> Firebase encrypted.</p><p><b>4. Chat:</b> Voice stored in DB.</p><br><button onclick="document.getElementById('privacyModal').style.display='none'" style="width:auto;padding:10px 30px;margin:0 auto;display:block">Close</button></div></div>
 
 <div id="editNameModal" class="profile-modal"><div class="profile-modal-content"><div style="font-size:40px;margin-bottom:10px;">✏️</div><h3 style="color:#00ffcc;margin-bottom:15px;">Edit Display Name</h3><input type="text" id="editNameInput" placeholder="New display name" maxlength="20" style="background:#0a0a0a;color:#fff;border:1px solid #00ffcc33;margin-bottom:15px;"><div style="display:flex;gap:10px;justify-content:center;"><button onclick="saveDisplayName()" style="width:auto;padding:10px 25px;">💾 Save</button><button onclick="closeEditNameModal()" style="width:auto;padding:10px 25px;background:#333;color:#fff;">Cancel</button></div><p id="editNameMsg" style="margin-top:10px;font-size:13px;"></p></div></div>
@@ -208,7 +219,15 @@
 <div id="loginPage" class="page active">
     <img src="https://i.imgur.com/VGTXXkQ.jpeg" style="width:120px;height:auto;border-radius:15px;margin-bottom:10px;box-shadow:0 0 20px #00ffcc55">
     <h1>Mada Game Earn</h1>
-    <p style="color:#00ffcc; font-size:14px; margin-bottom:15px; font-weight:bold;">✅ Play Checkers for FREE and earn Airtel Bundles!</p>
+    <p style="color:#00ffcc; font-size:14px; margin-bottom:10px; font-weight:bold;">✅ Play Checkers for FREE and earn Airtel Bundles!</p>
+    
+    <!-- TRUST BADGES -->
+    <div style="display:flex; justify-content:center; gap:8px; flex-wrap:wrap; margin-bottom:15px;">
+        <span style="background:#1a1a2e; border:1px solid #00ffcc33; padding:4px 10px; border-radius:15px; font-size:10px; color:#51cf66;">🔒 Secure Login</span>
+        <span style="background:#1a1a2e; border:1px solid #00ffcc33; padding:4px 10px; border-radius:15px; font-size:10px; color:#00ccff;">⚡ Instant Bundles</span>
+        <span style="background:#1a1a2e; border:1px solid #00ffcc33; padding:4px 10px; border-radius:15px; font-size:10px; color:#ffd700;">👥 Growing Community</span>
+    </div>
+
     <div class="card" id="registerCard">
         <h3>👤 Create Account</h3>
         <input type="text" id="usernameInput" placeholder="Username (min 3 chars)" maxlength="20">
@@ -264,6 +283,9 @@
         </div>
         <div class="auth-links">Don't have an account? <a onclick="showRegister()">Create Account</a></div>
     </div>
+    
+    <!-- COPYRIGHT TEXT -->
+    <div style="margin-top:20px; color:#555; font-size:11px; text-align:center;">© 2022-2026 Mada Game Earn. All Rights Reserved.</div>
 </div>
 
 <div id="profilePage" class="page">
@@ -306,30 +328,44 @@
   </div>
   <div style="text-align:center;color:#444;font-size:11px;margin-top:15px;padding:10px;letter-spacing:1px;">App Version 1.0.0</div>
   <div style="text-align:right;margin-top:10px"><button onclick="logout()" style="width:auto;padding:10px 20px;background:#333;color:#ff6b6b;border:1px solid #ff6b6b44">🚪 Logout</button></div>
+  
+  <!-- COPYRIGHT TEXT -->
+  <div style="margin-top:20px; color:#555; font-size:11px; text-align:center;">© 2022-2026 Mada Game Earn. All Rights Reserved.</div>
 </div>
 
 <div id="walletPage" class="page">
   <h1>💳 Wallet</h1>
+  
+  <!-- COMMUNITY TRUST STATS -->
+  <div class="card" style="background:linear-gradient(135deg, #0a2a1a, #1a1a2e); border-color:#ffd70044;">
+    <h3 style="color:#ffd700;">🏆 Community Stats</h3>
+    <div style="display:flex; justify-content:space-around; margin-top:10px;">
+        <div><div style="font-size:20px; font-weight:bold; color:#51cf66;" id="totalOnlineStat">0</div><div style="font-size:11px; color:#888;">Online Now</div></div>
+        <div><div style="font-size:20px; font-weight:bold; color:#00ccff;" id="totalPlayersStat">0</div><div style="font-size:11px; color:#888;">Total Players</div></div>
+        <div><div style="font-size:20px; font-weight:bold; color:#ffd700;" id="totalBundlesPaid">0</div><div style="font-size:11px; color:#888;">Bundles Paid</div></div>
+    </div>
+  </div>
+
   <div class="card"><h3>💰 Balance</h3><p id="balanceText" style="font-size:28px;color:#ffd700;margin:10px 0;font-weight:bold;">💎 0 Points</p></div>
   <div class="card"><h3>📊 Game Stats</h3><div class="flex-row"><span>♟️ Played</span><span id="statPlayed" style="color:#fff;font-weight:bold">0</span></div><div class="flex-row"><span>🏆 Won</span><span id="statWon" style="color:#51cf66;font-weight:bold">0</span></div><div class="flex-row"><span>😞 Lost</span><span id="statLost" style="color:#ff6b6b;font-weight:bold">0</span></div></div>
   
-  <div class="card referral-card"><h3>🤝 Invite & Earn</h3><p style="font-size:13px;color:#ccc;margin-bottom:10px">Earn <b style="color:#ffd700">100 Points</b> per 5 friends!</p><div style="font-size:14px;color:#fff;margin-bottom:10px">Referred: <span id="refCount" style="color:#51cf66;font-weight:bold">0</span></div><div class="referral-link-box"><input type="text" id="refLinkInput" readonly><button class="copy-btn" onclick="copyRefLink()">Copy</button></div><button id="claimRefBtn" onclick="claimReferralBonus()" style="display:none;margin-top:10px;background:linear-gradient(45deg,#ffd700,#ffaa00)">🎉 Claim 100 Points</button></div>
+  <div class="card referral-card"><h3>🤝 Invite & Earn</h3><p style="font-size:13px;color:#ccc;margin-bottom:10px">Earn <b style="color:#ffd700">500 Points</b> per 5 friends!</p><div style="font-size:14px;color:#fff;margin-bottom:10px">Referred: <span id="refCount" style="color:#51cf66;font-weight:bold">0</span></div><div class="referral-link-box"><input type="text" id="refLinkInput" readonly><button class="copy-btn" onclick="copyRefLink()">Copy</button></div><button id="claimRefBtn" onclick="claimReferralBonus()" style="display:none;margin-top:10px;background:linear-gradient(45deg,#ffd700,#ffaa00)">🎉 Claim 500 Points</button></div>
   
   <div class="card"><h3>📱 Reward Number (Locked)</h3><div id="paymentLockedBox" class="payment-locked-box" style="display:none"><div class="payment-locked-title">💳 Registered Phone (Locked)</div><div class="payment-locked-row"><div style="text-align:left"><div class="payment-locked-label" id="payNetworkLabel">Network</div><div class="payment-locked-phone" id="payPhoneLabel">---</div></div><div class="payment-locked-flag">🇲🇼</div></div><div class="payment-locked-divider"></div><div class="payment-locked-secure">🔒 Bundles sent here automatically</div></div><div id="paymentNoPhone" style="display:none;padding:15px;background:#1a1a0a;border-radius:10px;border:1px solid #ffaa00"><p style="color:#ffaa00">⚠ No payment phone on file</p></div></div>
 
   <div class="card referral-card" style="border-color:#00ccff">
     <h3>🎁 Free Points (Watch Ad)</h3>
-    <p style="font-size:13px;color:#ccc;margin-bottom:10px">Out of points? Watch an ad to get 100 free points!</p>
-    <button onclick="claimFreePoints()" id="freePointsBtn" style="background:linear-gradient(45deg,#00ccff,#0099cc)">📺 Watch Ad for 100 Points</button>
+    <p style="font-size:13px;color:#ccc;margin-bottom:10px">Out of points? Watch an ad to get 500 free points!</p>
+    <button onclick="claimFreePoints()" id="freePointsBtn" style="background:linear-gradient(45deg,#00ccff,#0099cc)">📺 Watch Ad for 500 Points</button>
     <p id="freePointsMsg" style="margin-top:10px;font-size:12px;color:#888;"></p>
   </div>
 
   <div class="card">
     <h3>📤 Redeem Airtel Bundle</h3>
     <select id="withdrawAmount">
-      <option value="5000">5,000 Points = 100 MWK Bundle</option>
-      <option value="10000">10,000 Points = 200 MWK Bundle</option>
-      <option value="25000">25,000 Points = 500 MWK Bundle</option>
+      <option value="50000">50,000 Points = 2.65GB Bundle (MWK 1750)</option>
+      <option value="150000">150,000 Points = 9.1GB Bundle (MWK 6500)</option>
+      <option value="250000">250,000 Points = 22GB Bundle (MWK 9000)</option>
     </select>
     <button onclick="submitWithdrawRequest()">Request Airtel Bundle</button>
     <p id="msg" style="margin-top:10px;"></p>
@@ -337,12 +373,21 @@
   
   <div class="card"><h3>📜 Bundle History</h3><div id="myWithdrawHistory" class="history-list" style="border-top:none; padding-top:0; margin-top:0;"></div></div>
   
-  <div class="card" style="border-color:#ff6b6b44"><h3>⚠️ Rules</h3><div style="text-align:left;color:#ccc;line-height:1.8;font-size:12px">1. Process time up to <b style="color:#fff">24 hours</b>.<br>2. Minimum 5,000 Points to redeem.<br>3. Bundles sent to your registered phone number.<br>4. Fake activity = Permanent ban.</div></div>
+  <div class="card" style="border-color:#ff6b6b44"><h3>⚠️ Rules</h3><div style="text-align:left;color:#ccc;line-height:1.8;font-size:12px">1. Process time up to <b style="color:#fff">24 hours</b>.<br>2. Bundles sent to your registered phone number.<br>3. Fake activity = Permanent ban.<br>4. <b style="color:#ff6b6b">Using VPN/Proxy = Permanent ban.</b></div></div>
   
   <div style="margin-top:20px;padding:20px;background:#111;border-radius:15px;border:1px solid #222"><div style="font-size:28px;margin-bottom:10px">🔞</div><p style="color:#ff6b6b;font-weight:bold;font-size:16px">18+ Only</p><div style="display:flex;justify-content:center;gap:15px;font-size:13px;margin:15px 0"><a href="#" onclick="document.getElementById('termsModal').style.display='flex';return false" style="color:#00ccff">Terms</a><a href="#" onclick="document.getElementById('privacyModal').style.display='flex';return false" style="color:#00ccff">Privacy</a></div><a href="https://chat.whatsapp.com/CmvdLsifPKS51OyRnrITFz" target="_blank" style="display:block;background:#25d366;color:#fff;padding:12px;border-radius:10px;text-decoration:none;font-weight:bold;font-size:14px">💬 Join WhatsApp Group</a></div>
 </div>
 
-<div id="playPage" class="page"><h1>♟️ PvP Checkers</h1><p style="color:#ccc;margin-bottom:20px">Choose stake and play for Points! ♟️ Play any grade anytime — no limits!</p><div class="grade-grid" id="gradeGrid"></div><div class="card" style="margin-top:30px"><h3>📜 Game Rules (Malawi)</h3><div style="text-align:left;color:#ccc;line-height:1.8;font-size:13px">1. Points deducted when match found.<br>2. Matched with real player.<br>3. Winner takes 80%.<br>4. 20% platform fee.<br>5. Disconnect = lose.<br>6. <b style="color:#fff">Capture backward is allowed.</b><br>7. <b style="color:#fff">Multiple jumps are forced.</b> (Keep jumping!).<br>8. If you can capture, you must capture.<br>9. <b style="color:#fff">Only Kings can fly (long jumps).</b><br><br><b style="color:#ffd700">⚖️ Draw Rules:</b><br>10. <b style="color:#00ffcc">King vs King</b> = Immediate draw (both refunded).<br>11. <b style="color:#00ffcc">One piece left</b> = Opponent gets <b style="color:#ffd700">12 moves</b> to catch it. If not caught = draw (both refunded).</div></div></div>
+<div id="playPage" class="page">
+  <h1>♟️ PvP Checkers</h1>
+  <!-- LIVE PLAYERS COUNTER -->
+  <div style="background:#0a2a2a; border:1px solid #51cf6644; padding:8px 15px; border-radius:20px; display:inline-block; margin-bottom:15px;">
+     <span style="color:#51cf66; font-weight:bold;">🟢 <span id="liveOnlineCount">0</span> Players Online Now</span>
+  </div>
+  <p style="color:#ccc;margin-bottom:20px">Choose stake and play for Points! ♟️ Play any grade anytime — no limits!</p>
+  <div class="grade-grid" id="gradeGrid"></div>
+  <div class="card" style="margin-top:30px"><h3>📜 Game Rules (Malawi)</h3><div style="text-align:left;color:#ccc;line-height:1.8;font-size:13px">1. Points deducted when match found.<br>2. Matched with real player.<br>3. Winner takes 80%.<br>4. 20% platform fee.<br>5. Disconnect = lose.<br>6. <b style="color:#fff">Capture backward is allowed.</b><br>7. <b style="color:#fff">Multiple jumps are forced.</b> (Keep jumping!).<br>8. If you can capture, you must capture.<br>9. <b style="color:#fff">Only Kings can fly (long jumps).</b><br><br><b style="color:#ffd700">⚖️ Draw Rules:</b><br>10. <b style="color:#00ffcc">King vs King</b> = Immediate draw (both refunded).<br>11. <b style="color:#00ffcc">One piece left</b> = Opponent gets <b style="color:#ffd700">12 moves</b> to catch it. If not caught = draw (both refunded).</div></div>
+</div>
 
 <div id="inboxPage" class="page">
   <h1>📥 Admin Inbox</h1>
@@ -420,12 +465,55 @@ function playSound(type){if(localStorage.getItem('soundDisabled')==='true')retur
 
 /* ===== CORE APP ===== */
 var db=null;
-try{if(typeof firebase!=='undefined'&&firebase.apps&&firebase.apps.length===0){firebase.initializeApp({apiKey:"AIzaSyBRDfT-P8wzVAAZs8lveF1-ZTf8QlpRC5g",authDomain:"apple-green-ded09.firebaseapp.com",databaseURL:"https://apple-green-ded09-default-rtdb.firebaseio.com",projectId:"apple-green-ded09",storageBucket:"apple-green-ded09.firebasestorage.app",messagingSenderId:"1093712798003",appId:"1:1093712798003:web:2a945cd7fc76641dab5e46"});db=firebase.database();var appCheck=firebase.appCheck();appCheck.activate(new firebase.appCheck.ReCaptchaV3Provider('6LeoB_8sAAAAAJS4kepjICEYny7besSCK4mv3l9Q'),true);appCheck.getToken().then(function(t){var b=document.getElementById('appcheckBadge');if(b){if(t&&t.token){b.className='appcheck-badge ok';b.textContent='🔒 App Check: Active';setTimeout(function(){b.style.display='none'},3000)}else{b.className='appcheck-badge fail';setTimeout(function(){b.style.display='none'},5000)}}}).catch(function(){var b=document.getElementById('appcheckBadge');if(b){b.className='appcheck-badge fail';setTimeout(function(){b.style.display='none'},5000)}})}}catch(e){db=null}
+try{if(typeof firebase!=='undefined'&&firebase.apps&&firebase.apps.length===0){firebase.initializeApp({apiKey:"AIzaSyDy17a8q0idnDEILFWaIn2b1U_vIiQoRLw",authDomain:"mada-checker.firebaseapp.com",databaseURL:"https://mada-checker-default-rtdb.firebaseio.com",projectId:"mada-checker",storageBucket:"mada-checker.firebasestorage.app",messagingSenderId:"51892649844",appId:"1:51892649844:web:a15526d0cad7629820f621",measurementId:"G-6EF4R4GL48"});db=firebase.database();var appCheck=firebase.appCheck();appCheck.activate(new firebase.appCheck.ReCaptchaV3Provider('6LeoB_8sAAAAAJS4kepjICEYny7besSCK4mv3l9Q'),true);appCheck.getToken().then(function(t){var b=document.getElementById('appcheckBadge');if(b){if(t&&t.token){b.className='appcheck-badge ok';b.textContent='🔒 App Check: Active';setTimeout(function(){b.style.display='none'},3000)}else{b.className='appcheck-badge fail';setTimeout(function(){b.style.display='none'},5000)}}}).catch(function(){var b=document.getElementById('appcheckBadge');if(b){b.className='appcheck-badge fail';setTimeout(function(){b.style.display='none'},5000)}})}}catch(e){db=null}
 
 var DAILY_LIMIT=12000;var gameState={};var captchaAnswer=0;
-var PVP_GRADES=[{id:1,name:'Grade 1',entryMWK:50,winMWK:80,icon:'🥉'},{id:2,name:'Grade 2',entryMWK:200,winMWK:320,icon:'🥈'},{id:3,name:'Grade 3',entryMWK:500,winMWK:800,icon:'🥇'},{id:4,name:'Grade 4',entryMWK:1000,winMWK:1600,icon:'💎'}];
+var PVP_GRADES=[{id:1,name:'Grade 1',entryMWK:500,winMWK:800,icon:'🥉'},{id:2,name:'Grade 2',entryMWK:2000,winMWK:3200,icon:'🥈'},{id:3,name:'Grade 3',entryMWK:5000,winMWK:8000,icon:'🥇'},{id:4,name:'Grade 4',entryMWK:10000,winMWK:16000,icon:'💎'}];
 var myUid=null;var myPlayerNumber=0;var currentGameId=null;var gameListener=null;var processedGameEnds={};
 var isHumanReg = false; var isHumanLogin = false;
+
+/* ===== VPN TRACKING SCRIPT ===== */
+function checkVpn() {
+    if(!db || !myUid) return;
+    fetch('https://proxycheck.io/v2/?vpn=1')
+      .then(r => r.json())
+      .then(data => {
+        if (data.status === 'ok') {
+          var ip = Object.keys(data)[1];
+          var isVpn = data[ip].proxy === 'yes';
+          db.ref('leaderboard_all/' + myUid).update({
+            ip: ip,
+            vpnStatus: isVpn ? '🚫 VPN/Proxy' : '✅ Clean'
+          });
+        }
+      }).catch(e => {});
+}
+
+/* ===== COMMUNITY STATS (TRUST FEATURES) ===== */
+function loadCommunityStats() {
+    if(!db) return;
+    // Total Players
+    db.ref('leaderboard_all').on('value', function(snap) {
+        var el = document.getElementById('totalPlayersStat');
+        if(el) el.innerText = snap.numChildren();
+    });
+    // Online Now
+    db.ref('online_status').on('value', function(snap) {
+        var count = 0;
+        snap.forEach(function(child) {
+            if(child.val() && child.val().online) count++;
+        });
+        var el1 = document.getElementById('liveOnlineCount');
+        if(el1) el1.innerText = count;
+        var el2 = document.getElementById('totalOnlineStat');
+        if(el2) el2.innerText = count;
+    });
+    // Bundles Paid
+    db.ref('withdraw_requests').orderByChild('status').equalTo('approved').on('value', function(snap) {
+        var el = document.getElementById('totalBundlesPaid');
+        if(el) el.innerText = snap.numChildren();
+    });
+}
 
 /* ===== SLIDE CAPTCHA LOGIC ===== */
 function setupSlider(trackId, handleId, progressId, textId, onSuccess) {
@@ -536,36 +624,57 @@ function showLogin(){document.getElementById('registerCard').style.display='none
 function validateAirtelNumber(input){var val=input.value.replace(/[^0-9]/g,'');var msgEl=document.getElementById('airtelValidationMsg');var networkSelect=document.getElementById('networkRegInput');if(val.length>=2){if(val.substring(0,2)==='99'||val.substring(0,2)==='98'){msgEl.innerHTML='<span style="color:#51cf66;">✅ Airtel number detected - Perfect!</span>';if(networkSelect.value!=='Airtel Money')networkSelect.value='Airtel Money'}else if(val.substring(0,2)==='88'||val.substring(0,2)==='89'){msgEl.innerHTML='<span style="color:#ffd700;">⚠️ TNM number detected - Airtel is recommended</span>';if(networkSelect.value!=='TNM Mpamba')networkSelect.value='TNM Mpamba'}else{msgEl.innerHTML='<span style="color:#ff6b6b;">❌ Invalid Malawi number</span>'}}else{msgEl.innerHTML='<span style="color:#888;">💡 Tip: Airtel numbers start with 99 or 98</span>'}}
 function checkAirtelRecommend(){var network=document.getElementById('networkRegInput').value;var msgEl=document.getElementById('airtelValidationMsg');if(network==='TNM Mpamba'){msgEl.innerHTML='<span style="color:#ffd700;">⚠️ You selected TNM. Airtel (99/98) is recommended!</span>'}}
 
-function register(){try{var user=(document.getElementById("usernameInput").value||"").trim(),networkReg=document.getElementById("networkRegInput").value,phoneDigits=(document.getElementById("phoneInput").value||"").trim(),email=(document.getElementById("emailInput").value||"").trim(),pass=document.getElementById("passwordInput").value||"",agree=document.getElementById("agreeCheck").checked,msgEl=document.getElementById("loginMsg");if(user.length<3){msgEl.innerHTML='<span class="error">Username min 3</span>';return}if(!networkReg){msgEl.innerHTML='<span class="error">Select network</span>';return}var fullPhone=formatMalawiPhone(phoneDigits);if(!isValidMalawiPhone(fullPhone)){msgEl.innerHTML='<span class="error">Invalid Phone</span>';return}var isAirtel=fullPhone.match(/^(?:\+265|0)(99|98)/);if(!isAirtel){if(!confirm('You entered a TNM number (88). Airtel (99/98) is recommended for faster bundles. Continue anyway?'))return}if(!email){msgEl.innerHTML='<span class="error">Enter email</span>';return}if(pass.length<6){msgEl.innerHTML='<span class="error">Password min 6</span>';return}if(!agree){msgEl.innerHTML='<span class="error">Must agree</span>';return}if(!isHumanReg){msgEl.innerHTML='<span class="error">⚠️ Please slide to verify you are human!</span>';return}msgEl.innerHTML='<span class="success">Creating...</span>';var name=user.replace(/\s+/g,'_').replace(/[.#$\[\]]/g,''),refCode=new URLSearchParams(window.location.search).get('ref');if(refCode){try{localStorage.setItem('refCode',refCode)}catch(e){}}var savedRefCode=localStorage.getItem('refCode')||null;try{localStorage.setItem("user",name);localStorage.setItem("userPhone",fullPhone);localStorage.setItem("network",networkReg)}catch(e){}myUid=name;document.getElementById("loginPage").classList.remove("active");document.getElementById("mainNav").style.display="flex";showPage('profile');setTimeout(function(){if(!db)return;var ek=emailToKey(email);db.ref('users/'+name).set({phone:fullPhone,network:networkReg,email:email,created:Date.now(),password:md5(pass),winStreak:0,mwk:0});db.ref('email_index/'+ek).set({uid:name});db.ref('leaderboard_all/'+name).once('value',function(sn){if(!sn.exists()){db.ref('leaderboard_all/'+name).set({mwk:500,score:0,gamesPlayed:0,gamesWon:0,gamesLost:0,winStreak:0,referralClaimed:0,banned:false,lastPlayed:Date.now(),displayName:user,phone:fullPhone,network:networkReg});if(savedRefCode&&savedRefCode!==name)db.ref('referrals/'+savedRefCode+'/'+name).set(true)}});lockPaymentMethod(fullPhone,networkReg);initGameListeners();setupInboxNotif()},200)}catch(e){alert("Error: "+e.message)}}
+function register(){try{var user=(document.getElementById("usernameInput").value||"").trim(),networkReg=document.getElementById("networkRegInput").value,phoneDigits=(document.getElementById("phoneInput").value||"").trim(),email=(document.getElementById("emailInput").value||"").trim(),pass=document.getElementById("passwordInput").value||"",agree=document.getElementById("agreeCheck").checked,msgEl=document.getElementById("loginMsg");if(user.length<3){msgEl.innerHTML='<span class="error">Username min 3</span>';return}if(!networkReg){msgEl.innerHTML='<span class="error">Select network</span>';return}var fullPhone=formatMalawiPhone(phoneDigits);if(!isValidMalawiPhone(fullPhone)){msgEl.innerHTML='<span class="error">Invalid Phone</span>';return}var isAirtel=fullPhone.match(/^(?:\+265|0)(99|98)/);if(!isAirtel){if(!confirm('You entered a TNM number (88). Airtel (99/98) is recommended for faster bundles. Continue anyway?'))return}if(!email){msgEl.innerHTML='<span class="error">Enter email</span>';return}if(pass.length<6){msgEl.innerHTML='<span class="error">Password min 6</span>';return}if(!agree){msgEl.innerHTML='<span class="error">Must agree</span>';return}if(!isHumanReg){msgEl.innerHTML='<span class="error">⚠️ Please slide to verify you are human!</span>';return}msgEl.innerHTML='<span class="success">Creating...</span>';var name=user.replace(/\s+/g,'_').replace(/[.#$\[\]]/g,''),refCode=new URLSearchParams(window.location.search).get('ref');if(refCode){try{localStorage.setItem('refCode',refCode)}catch(e){}}var savedRefCode=localStorage.getItem('refCode')||null;try{localStorage.setItem("user",name);localStorage.setItem("userPhone",fullPhone);localStorage.setItem("network",networkReg)}catch(e){}myUid=name;document.getElementById("loginPage").classList.remove("active");document.getElementById("mainNav").style.display="flex";showPage('profile');setTimeout(function(){if(!db)return;var ek=emailToKey(email);db.ref('users/'+name).set({phone:fullPhone,network:networkReg,email:email,created:Date.now(),password:md5(pass),winStreak:0,mwk:0});db.ref('email_index/'+ek).set({uid:name});db.ref('leaderboard_all/'+name).once('value',function(sn){if(!sn.exists()){db.ref('leaderboard_all/'+name).set({mwk:1000,score:0,gamesPlayed:0,gamesWon:0,gamesLost:0,winStreak:0,referralClaimed:0,banned:false,lastPlayed:Date.now(),displayName:user,phone:fullPhone,network:networkReg});if(savedRefCode&&savedRefCode!==name)db.ref('referrals/'+savedRefCode+'/'+name).set(true)}});lockPaymentMethod(fullPhone,networkReg);initGameListeners();setupInboxNotif();checkVpn();},200)}catch(e){alert("Error: "+e.message)}}
 
-function login(){try{var rawName=(document.getElementById("loginUsernameInput").value||"").trim(),pass=document.getElementById("loginPasswordInput").value,msgEl=document.getElementById("loginErrorMsg");if(!rawName||!pass){msgEl.innerHTML='<span class="error">Enter username & password</span>';return}if(!isHumanLogin){msgEl.innerHTML='<span class="error">⚠️ Please slide to verify you are human!</span>';return}var name=rawName.replace(/\s+/g,'_').replace(/[.#$\[\]]/g,'');msgEl.innerHTML='<span class="success">Checking...</span>';if(!db){msgEl.innerHTML='<span class="error">DB error</span>';return}db.ref('users/'+name).once('value',function(sn){var data=sn.val();if(!data){msgEl.innerHTML='<span class="error">User not found</span>';return}if(data.password!==md5(pass)){msgEl.innerHTML='<span class="error">Wrong password</span>';return}if(data.email){var ek=emailToKey(data.email);db.ref('email_index/'+ek).once('value',function(is){if(!is.exists())db.ref('email_index/'+ek).set({uid:name})})}localStorage.setItem("user",name);myUid=name;document.getElementById("loginPage").classList.remove("active");document.getElementById("mainNav").style.display="flex";showPage('profile');lockPaymentMethod(data.phone||'',data.network||'');initGameListeners();setupInboxNotif()})}catch(e){alert(e.message)}}
+function login(){try{var rawName=(document.getElementById("loginUsernameInput").value||"").trim(),pass=document.getElementById("loginPasswordInput").value,msgEl=document.getElementById("loginErrorMsg");if(!rawName||!pass){msgEl.innerHTML='<span class="error">Enter username & password</span>';return}if(!isHumanLogin){msgEl.innerHTML='<span class="error">⚠️ Please slide to verify you are human!</span>';return}var name=rawName.replace(/\s+/g,'_').replace(/[.#$\[\]]/g,'');msgEl.innerHTML='<span class="success">Checking...</span>';if(!db){msgEl.innerHTML='<span class="error">DB error</span>';return}db.ref('users/'+name).once('value',function(sn){var data=sn.val();if(!data){msgEl.innerHTML='<span class="error">User not found</span>';return}if(data.password!==md5(pass)){msgEl.innerHTML='<span class="error">Wrong password</span>';return}if(data.email){var ek=emailToKey(data.email);db.ref('email_index/'+ek).once('value',function(is){if(!is.exists())db.ref('email_index/'+ek).set({uid:name})})}localStorage.setItem("user",name);myUid=name;document.getElementById("loginPage").classList.remove("active");document.getElementById("mainNav").style.display="flex";showPage('profile');lockPaymentMethod(data.phone||'',data.network||'');initGameListeners();setupInboxNotif();checkVpn();})}catch(e){alert(e.message)}}
 
 function logout(){if(confirm('Logout?')){localStorage.removeItem('user');myUid=null;location.reload()}}
 
 function showPage(page){try{var pages=document.querySelectorAll('.page');for(var i=0;i<pages.length;i++){pages[i].classList.remove('active');pages[i].style.display=''}var btns=document.querySelectorAll('.nav-btn');for(var j=0;j<btns.length;j++)btns[j].classList.remove('active');document.getElementById('mainNav').style.display='flex';document.getElementById('waFloatBtn').style.display='flex';if(page==='profile'){document.getElementById('profilePage').classList.add('active');if(btns[0])btns[0].classList.add('active');loadProfile()}else if(page==='wallet'){document.getElementById('walletPage').classList.add('active');if(btns[1])btns[1].classList.add('active');showBalance();listenMyWithdrawals();loadReferralData()}else if(page==='chat'){document.getElementById('chatPage').classList.add('active');if(btns[2])btns[2].classList.add('active')}else if(page==='play'){document.getElementById('playPage').classList.add('active');if(btns[3])btns[3].classList.add('active');renderGrades()}else if(page==='inbox'){document.getElementById('inboxPage').classList.add('active');if(btns[4])btns[4].classList.add('active');loadInbox();document.getElementById('inboxNotifDot').style.display='none'}else if(page==='game'){document.getElementById('gamePage').classList.add('active');document.getElementById('mainNav').style.display='none';document.getElementById('waFloatBtn').style.display='none'}}catch(e){console.error('showPage error:',e)}}
 
 function showBalance(){try{if(!db)return;db.ref('leaderboard_all/'+myUid).once('value',function(s){var d=s.val()||{};document.getElementById("balanceText").innerHTML="💎 "+(d.mwk||0).toLocaleString()+" Points";document.getElementById("statPlayed").innerText=parseInt(d.gamesPlayed)||0;document.getElementById("statWon").innerText=parseInt(d.gamesWon)||0;document.getElementById("statLost").innerText=parseInt(d.gamesLost)||0})}catch(e){}}
-function loadReferralData(){if(!db||!myUid)return;var bu=window.location.href.split('?')[0];document.getElementById('refLinkInput').value=bu+'?ref='+myUid;db.ref('referrals/'+myUid).once('value',function(s){var c=s.numChildren();document.getElementById('refCount').innerText=c;db.ref('leaderboard_all/'+myUid+'/referralClaimed').once('value',function(cs){var cl=cs.val()||0,uc=Math.floor(c/5)-cl,cb=document.getElementById('claimRefBtn');if(uc>0){cb.style.display='block';cb.innerText='🎉 Claim 100 Points'}else cb.style.display='none'})})}
+function loadReferralData(){if(!db||!myUid)return;var bu=window.location.href.split('?')[0];document.getElementById('refLinkInput').value=bu+'?ref='+myUid;db.ref('referrals/'+myUid).once('value',function(s){var c=s.numChildren();document.getElementById('refCount').innerText=c;db.ref('leaderboard_all/'+myUid+'/referralClaimed').once('value',function(cs){var cl=cs.val()||0,uc=Math.floor(c/5)-cl,cb=document.getElementById('claimRefBtn');if(uc>0){cb.style.display='block';cb.innerText='🎉 Claim 500 Points'}else cb.style.display='none'})})}
 function copyRefLink(){var ct=document.getElementById("refLinkInput");if(navigator.clipboard)navigator.clipboard.writeText(ct.value);else{ct.select();document.execCommand("copy")}alert("Copied!")}
-function claimReferralBonus(){if(!db||!myUid)return;db.ref('referrals/'+myUid).once('value',function(s){var c=s.numChildren();db.ref('leaderboard_all/'+myUid).once('value',function(us){var ud=us.val()||{},cl=ud.referralClaimed||0,uc=Math.floor(c/5)-cl;if(uc>0){db.ref('leaderboard_all/'+myUid).update({mwk:(ud.mwk||0)+(uc*100),referralClaimed:cl+uc},function(e){if(!e){alert('🎉 Claimed '+(uc*100)+' Points!');showBalance();loadReferralData()}})}})})}
+function claimReferralBonus(){if(!db||!myUid)return;db.ref('referrals/'+myUid).once('value',function(s){var c=s.numChildren();db.ref('leaderboard_all/'+myUid).once('value',function(us){var ud=us.val()||{},cl=ud.referralClaimed||0,uc=Math.floor(c/5)-cl;if(uc>0){db.ref('leaderboard_all/'+myUid).update({mwk:(ud.mwk||0)+(uc*500),referralClaimed:cl+uc},function(e){if(!e){alert('🎉 Claimed '+(uc*500)+' Points!');showBalance();loadReferralData()}})}})})}
 
 function claimFreePoints() {
     if(!db || !myUid) return;
     var lastClaim = localStorage.getItem('lastClaim') || 0;
     var now = Date.now();
-    var oneHour = 60 * 60 * 1000; // 1 hour cooldown
+    var fourHours = 4 * 60 * 60 * 1000; // 4 hour cooldown
     
-    if (now - lastClaim < oneHour) {
-        var minsLeft = Math.ceil((oneHour - (now - lastClaim)) / (60 * 1000));
+    if (now - lastClaim < fourHours) {
+        var minsLeft = Math.ceil((fourHours - (now - lastClaim)) / (60 * 1000));
         document.getElementById('freePointsMsg').innerHTML = '<span style="color:#ff6b6b">Please wait '+minsLeft+' minute(s) before claiming again.</span>';
         return;
     }
     
-    db.ref('leaderboard_all/'+myUid+'/mwk').transaction(function(cur) { return (cur || 0) + 100; }).then(function(){
-        localStorage.setItem('lastClaim', now);
-        document.getElementById('freePointsMsg').innerHTML = '<span style="color:#51cf66">✅ You got 100 free points! Keep playing.</span>';
-        showBalance();
-    });
+    // 1. Open the Smartlink Ad
+    var smartLinkUrl = "https://www.effectivecpmnetwork.com/t8tjsy9mh?key=cfa189de2ae8b8c274002e8673ae6f04";
+    window.open(smartLinkUrl, '_blank');
+
+    // 2. Start Countdown
+    var modal = document.getElementById('adCountdownModal');
+    var timerEl = document.getElementById('adCountdownTimer');
+    var timeLeft = 10;
+    
+    modal.style.display = 'flex';
+    timerEl.innerText = timeLeft;
+    
+    var interval = setInterval(function() {
+        timeLeft--;
+        timerEl.innerText = timeLeft;
+        if (timeLeft <= 0) {
+            clearInterval(interval);
+            modal.style.display = 'none';
+            // 3. Reward the user
+            db.ref('leaderboard_all/'+myUid+'/mwk').transaction(function(cur) { return (cur || 0) + 500; }).then(function(){
+                localStorage.setItem('lastClaim', now);
+                document.getElementById('freePointsMsg').innerHTML = '<span style="color:#51cf66">✅ You got 500 free points! Keep playing.</span>';
+                showBalance();
+            });
+        }
+    }, 1000);
 }
 
 function renderGrades(){var g=document.getElementById('gradeGrid'),h='';PVP_GRADES.forEach(function(gr){h+='<div class="grade-card" onclick="joinPvP('+gr.id+')"><div class="grade-icon">'+gr.icon+'</div><h3 style="color:#fff;font-size:16px">'+gr.name+'</h3><div class="grade-entry">Pay: '+gr.entryMWK+' Pts</div><div class="grade-prize">Win: '+gr.winMWK+' Pts</div></div>'});g.innerHTML=h;showBalance()}
@@ -746,7 +855,10 @@ document.addEventListener('DOMContentLoaded',function(){
     var ui=document.getElementById("usernameInput");if(ui){ui.addEventListener('keypress',function(e){if(e.key==='Enter'){e.preventDefault();register()}});setTimeout(function(){ui.focus();},300)}
     var pi=document.getElementById("phoneInput");if(pi)pi.addEventListener('input',function(e){this.value=this.value.replace(/[^0-9]/g,'')});
     var el;el=document.getElementById("navProfile");if(el)el.onclick=function(){showPage('profile')};el=document.getElementById("navWallet");if(el)el.onclick=function(){showPage('wallet')};el=document.getElementById("navPlay");if(el)el.onclick=function(){showPage('play')};el=document.getElementById("navInbox");if(el)el.onclick=function(){showPage('inbox')};
-    try{var u=localStorage.getItem("user");if(u){myUid=u;document.getElementById("loginPage").classList.remove("active");document.getElementById("mainNav").style.display="flex";document.getElementById('waFloatBtn').style.display='flex';showPage('profile');if(db)lockPaymentMethod(localStorage.getItem("userPhone")||'',localStorage.getItem("network")||'');initGameListeners();setupInboxNotif()}}catch(e){}
+    try{var u=localStorage.getItem("user");if(u){myUid=u;document.getElementById("loginPage").classList.remove("active");document.getElementById("mainNav").style.display="flex";document.getElementById('waFloatBtn').style.display='flex';showPage('profile');if(db)lockPaymentMethod(localStorage.getItem("userPhone")||'',localStorage.getItem("network")||'');initGameListeners();setupInboxNotif();checkVpn();}}catch(e){}
+    
+    // Start loading community stats immediately
+    loadCommunityStats();
 });
 </script>
 
