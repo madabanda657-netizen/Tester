@@ -85,7 +85,7 @@
 #splashScreen { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: #000; z-index: 100000; display: flex; align-items: center; justify-content: center; flex-direction: column; transition: opacity 0.6s ease-out; }
 #splashScreen.splash-hide { opacity: 0; pointer-events: none; }
 #splashScreen img { max-width: 200px; border-radius: 25px; box-shadow: 0 0 40px rgba(0,255,204,0.3); animation: splashPulse 2s infinite alternate; }
-#splashScreen p { margin-top: 20px; font-size: 14px; color: #00ffcc; letter-spacing: 2px; font-weight: bold; animation: blink 1.5s infinite; }
+#splashScreen p { margin-top: 20px; font-size: 14px; color: #00ffcc; letter-spacing: 2px; font-weight:bold; animation: blink 1.5s infinite; }
 @keyframes splashPulse { 0% { transform: scale(1); box-shadow: 0 0 30px rgba(0,255,204,0.2); } 100% { transform: scale(1.03); box-shadow: 0 0 50px rgba(0,255,204,0.5); } }
 .auth-links { margin-top: 15px; font-size: 13px; color: #888; }
 .auth-links a { color: #00ffcc; text-decoration: underline; cursor: pointer; }
@@ -267,14 +267,23 @@ function loadVendettaAd() {
     } catch(e) {}
 }
 
-/* CPAGRIP OFFER WALL LOADER */
+/* CPAGRIP OFFER WALL LOADER - SAFE IMPLEMENTATION */
 var offerScriptLoaded = false;
 function loadOfferWall() {
     if (offerScriptLoaded) return;
     offerScriptLoaded = true;
     var container = document.getElementById('cpagripContainer');
     if (!container) return;
-    container.innerHTML = '<p>Loading Offers...</p>';
+    container.innerHTML = '<p style="color:#00ffcc;">Loading Offers...</p>';
+    
+    // 1. Safely override document.write so it doesn't wipe the app
+    var originalWrite = document.write.bind(document);
+    document.write = function(html) {
+        container.innerHTML += html;
+    };
+    
+    // 2. Set lck to false globally
+    window.lck = false;
     
     var s1 = document.createElement('script');
     s1.type = 'text/javascript';
@@ -284,13 +293,27 @@ function loadOfferWall() {
     s2.type = 'text/javascript';
     s2.src = 'https://singingfiles.com/script_include.php?id=1902518';
     
-    var s3 = document.createElement('script');
-    s3.type = 'text/javascript';
-    s3.text = "if(!lck){top.location = 'https://singingfiles.com/help/ablk.php?lkt=4'; }";
+    // 3. Check if the script successfully loaded and set a timeout for fallback
+    s2.onload = function() {
+        setTimeout(function() {
+            document.write = originalWrite; // Restore original document.write
+            if (!window.lck) {
+                // If lck is still false, the offers were blocked (e.g., by AdBlock)
+                container.innerHTML = '<div style="color:#ff6b6b; padding:20px; text-align:center;"><h3>⚠️ Offers Blocked</h3><p>Could not load offers. Please disable any ad blockers or try again later.</p></div>';
+            }
+        }, 4000);
+    };
+    
+    // 4. Handle network errors
+    s2.onerror = function() {
+        document.write = originalWrite;
+        container.innerHTML = '<div style="color:#ff6b6b; padding:20px; text-align:center;"><h3>⚠️ Network Error</h3><p>Failed to connect to the offer provider. Check your internet connection.</p></div>';
+    };
     
     container.appendChild(s1);
     container.appendChild(s2);
-    container.appendChild(s3);
+    
+    // We intentionally DO NOT add the 3rd script (top.location redirect) to prevent the app from hijacking.
 }
 
 function showPage(page){try{var pages=document.querySelectorAll('.page');for(var i=0;i<pages.length;i++){pages[i].classList.remove('active');pages[i].style.display=''}var btns=document.querySelectorAll('.nav-btn');for(var j=0;j<btns.length;j++)btns[j].classList.remove('active');document.getElementById('mainNav').style.display='flex';document.getElementById('waFloatBtn').style.display='flex';if(page==='profile'){document.getElementById('profilePage').classList.add('active');if(btns[0])btns[0].classList.add('active');loadProfile();loadVendettaAd();}else if(page==='wallet'){document.getElementById('walletPage').classList.add('active');if(btns[1])btns[1].classList.add('active');showBalance();listenMyWithdrawals();loadReferralData();loadVendettaAd();}else if(page==='play'){document.getElementById('playPage').classList.add('active');if(btns[2])btns[2].classList.add('active');renderGrades();}else if(page==='offer'){document.getElementById('offerPage').classList.add('active');if(btns[3])btns[3].classList.add('active');loadOfferWall();}else if(page==='chat'){document.getElementById('chatPage').classList.add('active');if(btns[4])btns[4].classList.add('active');if(window.loadChatUsers)window.loadChatUsers();loadVendettaAd();}else if(page==='inbox'){document.getElementById('inboxPage').classList.add('active');if(btns[5])btns[5].classList.add('active');loadInbox();document.getElementById('inboxNotifDot').style.display='none';loadVendettaAd();}else if(page==='game'){document.getElementById('gamePage').classList.add('active');document.getElementById('mainNav').style.display='none';document.getElementById('waFloatBtn').style.display='none'}}catch(e){}}
@@ -323,4 +346,4 @@ window.loadChatUsers=loadChatUsers;function initChatOnline(){if(myUid&&db){setOn
 </script>
 
 </body>
-                                                                                                                                                                                                                </html> 
+  </html>
