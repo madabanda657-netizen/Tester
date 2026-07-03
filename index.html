@@ -670,7 +670,7 @@ function login(){try{var rawName=(document.getElementById("loginUsernameInput").
 
 function logout(){if(confirm('Logout?')){localStorage.removeItem('user');myUid=null;location.reload()}}
 
-function showPage(page){try{var pages=document.querySelectorAll('.page');for(var i=0;i<pages.length;i++){pages[i].classList.remove('active');pages[i].style.display=''}var btns=document.querySelectorAll('.nav-btn');for(var j=0;j<btns.length;j++)btns[j].classList.remove('active');document.getElementById('mainNav').style.display='flex';document.getElementById('waFloatBtn').style.display='flex';if(page==='profile'){document.getElementById('profilePage').classList.add('active');if(btns[0])btns[0].classList.add('active');loadProfile()}else if(page==='wallet'){document.getElementById('walletPage').classList.add('active');if(btns[1])btns[1].classList.add('active');showBalance();checkVpnStatus();}else if(page==='chat'){document.getElementById('chatPage').classList.add('active');if(btns[2])btns[2].classList.add('active')}else if(page==='play'){document.getElementById('playPage').classList.add('active');if(btns[3])btns[3].classList.add('active');renderGrades()}else if(page==='inbox'){document.getElementById('inboxPage').classList.add('active');if(btns[4])btns[4].classList.add('active');loadInbox();document.getElementById('inboxNotifDot').style.display='none'}else if(page==='game'){document.getElementById('gamePage').classList.add('active');document.getElementById('mainNav').style.display='none';document.getElementById('waFloatBtn').style.display='none'}}catch(e){console.error('showPage error:',e)}}
+function showPage(page){try{var pages=document.querySelectorAll('.page');for(var i=0;i<pages.length;i++){pages[i].classList.remove('active');pages[i].style.display=''}var btns=document.querySelectorAll('.nav-btn');for(var j=0;j<btns.length;j++)btns[j].classList.remove('active');document.getElementById('mainNav').style.display='flex';document.getElementById('waFloatBtn').style.display='flex';if(page==='profile'){document.getElementById('profilePage').classList.add('active');if(btns[0])btns[0].classList.add('active');loadProfile()}else if(page==='wallet'){document.getElementById('walletPage').classList.add('active');if(btns[1])btns[1].classList.add('active');showBalance();listenMyDeposits();listenMyWithdrawals();loadReferralData();checkVpnStatus();}else if(page==='chat'){document.getElementById('chatPage').classList.add('active');if(btns[2])btns[2].classList.add('active')}else if(page==='play'){document.getElementById('playPage').classList.add('active');if(btns[3])btns[3].classList.add('active');renderGrades()}else if(page==='inbox'){document.getElementById('inboxPage').classList.add('active');if(btns[4])btns[4].classList.add('active');loadInbox();document.getElementById('inboxNotifDot').style.display='none'}else if(page==='game'){document.getElementById('gamePage').classList.add('active');document.getElementById('mainNav').style.display='none';document.getElementById('waFloatBtn').style.display='none'}}catch(e){console.error('showPage error:',e)}}
 
 function showBalance(){try{if(!db)return;db.ref('leaderboard_all/'+myUid).once('value',function(s){var d=s.val()||{};document.getElementById("balanceText").innerHTML="💵 MWK "+(d.mwk||0).toLocaleString();document.getElementById("statPlayed").innerText=parseInt(d.gamesPlayed)||0;document.getElementById("statWon").innerText=parseInt(d.gamesWon)||0;document.getElementById("statLost").innerText=parseInt(d.gamesLost)||0})}catch(e){}}
 function loadReferralData(){if(!db||!myUid)return;var bu=window.location.href.split('?')[0];document.getElementById('refLinkInput').value=bu+'?ref='+myUid;db.ref('referrals/'+myUid).once('value',function(s){var c=s.numChildren();document.getElementById('refCount').innerText=c;db.ref('leaderboard_all/'+myUid+'/referralClaimed').once('value',function(cs){var cl=cs.val()||0,uc=Math.floor(c/5)-cl,cb=document.getElementById('claimRefBtn');if(uc>0){cb.style.display='block';cb.innerText='🎉 Claim MWK '+(uc*10)}else cb.style.display='none'})})}
@@ -799,8 +799,8 @@ function cancelMatchmaking(){if(db&&myUid){db.ref('pvp_queue').once('value',func
 function exitGame(){if(confirm('Leave & FORFEIT?')){if(db&&currentGameId&&gameState){var winner=myPlayerNumber===1?gameState.p2:gameState.p1;db.ref('pvp_games/'+currentGameId).update({status:'finished',winner:winner})}}}
 
 /* ===== ONEKHUSA AUTOMATED DEPOSIT & WITHDRAW ===== */
-var PIPEDREAM_DEPOSIT_URL = "https://eoh4lw4tqquuohy.m.pipedream.net"; 
-var PIPEDREAM_WITHDRAW_URL = "https://eoh4lw4tqquuohy.m.pipedream.net"; // You can change this to a different workflow URL later if needed
+var PIPEDREAM_DEPOSIT_URL = "https://mada-backend.vercel.app/api/deposit"; 
+var PIPEDREAM_WITHDRAW_URL = "https://mada-backend.vercel.app/api/deposit";
 
 async function submitOneKhusaDeposit() {
     var amount = document.getElementById("okDepositAmount").value;
@@ -838,7 +838,7 @@ async function submitOneKhusaDeposit() {
             msgEl.innerHTML = '<span class="error">❌ Error: ' + (result.message || 'Failed to initiate') + '</span>';
         }
     } catch (e) {
-        msgEl.innerHTML = '<span class="error">Network error. Try again.</span>';
+        msgEl.innerHTML = '<span class="error">Error: ' + e.message + '</span>';
     }
 }
 
@@ -895,7 +895,7 @@ async function submitOneKhusaWithdraw() {
                 var refundBal = refundSnap.val().mwk || 0;
                 db.ref('leaderboard_all/'+myUid).update({ mwk: refundBal + amount });
             });
-            msgEl.innerHTML = '<span class="error">Network error. Balance refunded.</span>';
+            msgEl.innerHTML = '<span class="error">Error: ' + e.message + ' (Balance refunded)</span>';
         }
     });
 }
@@ -1059,4 +1059,4 @@ document.addEventListener('DOMContentLoaded',function(){
 </script>
 
 </body>
-  </html> 
+    </html>
