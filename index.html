@@ -67,7 +67,7 @@
 #splashScreen { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: #000; z-index: 100000; display: flex; align-items: center; justify-content: center; flex-direction: column; transition: opacity 0.6s ease-out; }
 #splashScreen.splash-hide { opacity: 0; pointer-events: none; }
 #splashScreen img { max-width: 200px; border-radius: 25px; box-shadow: 0 0 40px rgba(0,255,204,0.3); animation: splashPulse 2s infinite alternate; }
-#splashScreen p { margin-top: 20px; font-size: 14px; color: #00ffcc; letter-spacing: 2px; font-weight: bold; animation: blink 1.5s infinite; }
+#splashScreen p { margin-top: 20px; font-size: 14px; color: #00ffcc; letter-spacing: 2px; font-weight:bold; animation: blink 1.5s infinite; }
 @keyframes splashPulse { 0% { transform: scale(1); box-shadow: 0 0 30px rgba(0,255,204,0.2); } 100% { transform: scale(1.03); box-shadow: 0 0 50px rgba(0,255,204,0.5); } }
 .deposit-rules { text-align: left; background: #1a1a0a; border: 1px dashed #ffd700; padding: 15px; border-radius: 10px; margin-bottom: 15px; }
 .deposit-step { margin-bottom: 10px; padding-left: 25px; position: relative; font-size: 13px; color: #ddd; line-height: 1.4; }
@@ -369,12 +369,12 @@
     
     <div class="card"><h3>📱 Withdrawal Method</h3><div id="paymentLockedBox" class="payment-locked-box" style="display:none"><div class="payment-locked-title">💳 Registered Phone (Locked)</div><div class="payment-locked-row"><div style="text-align:left"><div class="payment-locked-label" id="payNetworkLabel">Network</div><div class="payment-locked-phone" id="payPhoneLabel">---</div></div><div class="payment-locked-flag">🇲🇼</div></div><div class="payment-locked-divider"></div><div class="payment-locked-secure">🔒 Withdrawals sent here automatically</div></div><div id="paymentNoPhone" style="display:none;padding:15px;background:#1a1a0a;border-radius:10px;border:1px solid #ffaa00"><p style="color:#ffaa00">⚠ No payment phone on file</p></div></div>
 
-    <!-- ===== AUTOMATED ONEKHUSA DEPOSIT ===== -->
+    <!-- ===== AUTOMATED PAYCHANGU DEPOSIT ===== -->
     <div class="card">
         <h3>💰 Deposit via Mobile Money</h3>
         <div style="background:#0a1a0a; padding:15px; border-radius:10px; border:1px solid #51cf6644; margin-bottom:15px; text-align:left;">
             <p style="color:#51cf66; font-weight:bold; font-size:14px; margin-bottom:5px;">✅ Automated Deposit</p>
-            <p style="color:#ccc; font-size:12px;">Select amount, enter your Airtel/TNM number, and click Pay Now. You will receive a prompt on your phone to enter your PIN. Your balance updates instantly after payment!</p>
+            <p style="color:#ccc; font-size:12px;">Select amount and click Pay Now. You will be redirected to a secure PayChangu page to enter your phone number and PIN. Your balance updates instantly after payment!</p>
         </div>
         
         <label style="float:left; font-size:12px; color:#888; margin-bottom:5px;">Amount (MWK)</label>
@@ -386,17 +386,11 @@
             <option value="10000">MWK 10,000</option>
         </select>
 
-        <label style="float:left; font-size:12px; color:#888; margin-bottom:5px;">Phone Number</label>
-        <div class="phone-input-group">
-            <span class="phone-prefix">🇲🇼 +265</span>
-            <input type="tel" id="okDepositPhone" placeholder="99XXXXXXX or 88XXXXXXX" maxlength="9" inputmode="numeric">
-        </div>
-
         <button onclick="submitOneKhusaDeposit()" style="background: linear-gradient(45deg,#00ffcc,#00ccff); margin-top:15px;">⚡ Pay Now</button>
         <p id="okDepositMsg" style="margin-top:10px; font-size:13px;"></p>
     </div>
 
-    <!-- ===== AUTOMATED ONEKHUSA WITHDRAW ===== -->
+    <!-- ===== AUTOMATED PAYCHANGU WITHDRAW ===== -->
     <div class="card">
         <h3>💸 Withdraw to Mobile Money</h3>
         <p style="font-size:12px; color:#ccc; margin-bottom:10px;">Funds will be sent instantly to your registered phone number.</p>
@@ -798,42 +792,34 @@ function endPvPGame(g){if(!currentGameId)return;if(processedGameEnds[currentGame
 function cancelMatchmaking(){if(db&&myUid){db.ref('pvp_queue').once('value',function(s){s.forEach(function(gs){if(gs.val()&&gs.val()[myUid]){var gid=gs.key;db.ref('pvp_queue/'+gid+'/'+myUid).remove()}})})}document.getElementById('searchingOverlay').style.display='none'}
 function exitGame(){if(confirm('Leave & FORFEIT?')){if(db&&currentGameId&&gameState){var winner=myPlayerNumber===1?gameState.p2:gameState.p1;db.ref('pvp_games/'+currentGameId).update({status:'finished',winner:winner})}}}
 
-/* ===== ONEKHUSA AUTOMATED DEPOSIT & WITHDRAW ===== */
+/* ===== PAYCHANGU AUTOMATED DEPOSIT & WITHDRAW ===== */
 var PIPEDREAM_DEPOSIT_URL = "https://mada-backend.vercel.app/api/deposit"; 
 var PIPEDREAM_WITHDRAW_URL = "https://mada-backend.vercel.app/api/withdraw";
 
 async function submitOneKhusaDeposit() {
     var amount = document.getElementById("okDepositAmount").value;
-    var phoneDigits = document.getElementById("okDepositPhone").value.replace(/[^0-9]/g, '');
     var msgEl = document.getElementById("okDepositMsg");
     
     if(!myUid){ alert("Please login first."); return; }
-    if(phoneDigits.length !== 9) {
-        msgEl.innerHTML = '<span class="error">Enter a valid 9-digit phone number.</span>';
-        return;
-    }
     
-    var fullPhone = "265" + phoneDigits;
-    
-    msgEl.innerHTML = '<span class="success">⏳ Sending payment prompt to your phone...</span>';
+    msgEl.innerHTML = '<span class="success">⏳ Generating secure payment link...</span>';
     
     try {
         var response = await fetch(PIPEDREAM_DEPOSIT_URL, {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({
-                action: "deposit",
                 uid: myUid,
-                amount: amount,
-                phone: fullPhone
+                amount: amount
             })
         });
         
         var result = await response.json();
         
-        if(result.success) {
-            msgEl.innerHTML = '<span class="success" style="color:#51cf66;">✅ Prompt sent! Check your phone to enter your PIN.</span>';
-            setTimeout(() => { showBalance(); }, 5000);
+        if(result.success && result.checkout_url) {
+            msgEl.innerHTML = '<span class="success" style="color:#51cf66;">✅ Redirecting to PayChangu...</span>';
+            // Redirect the user to the PayChangu payment link
+            window.location.href = result.checkout_url;
         } else {
             msgEl.innerHTML = '<span class="error">❌ Error: ' + (result.message || 'Failed to initiate') + '</span>';
         }
