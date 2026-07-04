@@ -163,9 +163,9 @@
 .ticker-item{font-size:12px;color:#ccc;display:flex;align-items:center;gap:6px}
 .ticker-item span{color:#51cf66;font-weight:bold}
 .copyright-text{text-align:center;color:#444;font-size:11px;margin-top:20px;padding:10px;letter-spacing:1px}
-.paychangu-footer { margin-top: 20px; display: flex; align-items: center; justify-content: center; gap: 8px; opacity: 0.9; }
-.paychangu-footer span { font-size: 11px; color: #888; font-weight: bold; }
-.paychangu-footer img { height: 24px; width: auto; vertical-align: middle; }
+.pawapay-footer { margin-top: 20px; display: flex; align-items: center; justify-content: center; gap: 8px; opacity: 0.9; }
+.pawapay-footer span { font-size: 11px; color: #888; font-weight: bold; }
+.pawapay-footer img { height: 24px; width: auto; vertical-align: middle; }
 </style>
 </head>
 <body>
@@ -207,7 +207,7 @@
 <div id="deleteAccountModal" class="profile-modal"><div class="profile-modal-content" style="border-color:#ff6b6b44;"><div style="font-size:50px;margin-bottom:10px;">⚠️</div><h3 style="color:#ff6b6b;margin-bottom:15px;">Delete Account</h3><p style="color:#ccc;font-size:13px;margin-bottom:15px;line-height:1.5;">This action <b style="color:#ff6b6b">cannot be undone</b>. All your data, balance, and history will be permanently deleted.</p><p style="color:#888;font-size:12px;margin-bottom:10px;">Type <b style="color:#ff6b6b">DELETE</b> to confirm:</p><input type="text" id="deleteConfirmInput" placeholder='Type "DELETE" to confirm' style="background:#0a0a0a;color:#ff6b6b;border:1px solid #ff6b6b44;margin-bottom:15px;text-align:center;"><div style="display:flex;gap:10px;justify-content:center;"><button onclick="confirmDeleteAccount()" style="width:auto;padding:10px 25px;background:linear-gradient(45deg,#ff6b6b,#c92a2a);color:#fff;">🗑️ Delete Forever</button><button onclick="closeDeleteAccountModal()" style="width:auto;padding:10px 25px;background:#333;color:#fff;">Cancel</button></div><p id="deleteAccountMsg" style="margin-top:10px;font-size:13px;"></p></div></div>
 
 <div id="searchingOverlay" class="searching-overlay"><div class="search-spinner"></div><h2 style="color:#00ffcc">Finding Opponent...</h2><p id="searchGradeText" style="color:#ccc;margin-top:10px"></p><button onclick="cancelMatchmaking()" style="margin-top:30px;width:auto;padding:12px 30px;background:#ff6b6b;color:#fff">Cancel</button></div>
-<a href="https://chat.whatsapp.com/CmvdLsifPKS51OyRnrITFz" target="_blank" id="waFloatBtn" class="wa-float" title="Join WhatsApp Group"><svg viewBox="0 0 24 24"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c 0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg></a>
+<a href="https://chat.whatsapp.com/CmvdLsifPKS51OyRnrITFz" target="_blank" id="waFloatBtn" class="wa-float" title="Join WhatsApp Group"><svg viewBox="0 0 24 24"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg></a>
 
 <div id="imageViewerModal"><div class="iv-top-bar"><span id="ivTitle" style="color:#fff;font-weight:bold;font-size:14px">📷 Photo</span><div style="display:flex;gap:8px"><button onclick="saveImageFromViewer()" style="width:auto;padding:8px 16px;background:#51cf66;color:#000;font-weight:bold;border-radius:8px;font-size:13px">💾 Save</button><button onclick="closeImageViewer()" style="width:auto;padding:8px 16px;background:#ff6b6b;color:#fff;border-radius:8px;font-size:13px">✕ Close</button></div></div><div class="iv-img-wrap"><img id="imageViewerImg" src="" alt="Photo"></div></div>
 
@@ -257,10 +257,10 @@
         <p id="loginMsg" style="margin-top:10px;"></p>
         <div class="auth-links">Already have an account? <a onclick="showLogin()">Login here</a></div>
         
-        <!-- POWERED BY PAYCHANGU -->
-        <div class="paychangu-footer">
+        <!-- POWERED BY PAWAPAY -->
+        <div class="pawapay-footer">
             <span>POWERED BY</span>
-            <img src="https://z-cdn-media.chatglm.cn/files/85002b5a-e6b3-4447-930a-9c3e69b7edfa.png?auth_key=1883098514-64f61552f91d43beadffbee51a658533-0-932a079c01403ac57480870a222e9b28" alt="PayChangu">
+            <img src="https://z-cdn-media.chatglm.cn/files/b981754c-b2fe-4bec-af7a-2015cce2a603.png?auth_key=1883174405-19871fa005004f25a189aaa68de083be-0-8870afc5134757c7e3246ce0f5434783" alt="PawaPay">
         </div>
     </div>
     <div class="card" id="loginCard" style="display:none;">
@@ -289,10 +289,10 @@
         </div>
         <div class="auth-links">Don't have an account? <a onclick="showRegister()">Create Account</a></div>
         
-        <!-- POWERED BY PAYCHANGU -->
-        <div class="paychangu-footer">
+        <!-- POWERED BY PAWAPAY -->
+        <div class="pawapay-footer">
             <span>POWERED BY</span>
-            <img src="https://z-cdn-media.chatglm.cn/files/85002b5a-e6b3-4447-930a-9c3e69b7edfa.png?auth_key=1883098514-64f61552f91d43beadffbee51a658533-0-932a079c01403ac57480870a222e9b28" alt="PayChangu">
+            <img src="https://z-cdn-media.chatglm.cn/files/b981754c-b2fe-4bec-af7a-2015cce2a603.png?auth_key=1883174405-19871fa005004f25a189aaa68de083be-0-8870afc5134757c7e3246ce0f5434783" alt="PawaPay">
         </div>
     </div>
     
@@ -373,10 +373,10 @@
   <!-- COPYRIGHT PROFILE -->
   <div class="copyright-text">© All rights reserved 2022-2026</div>
   
-  <!-- POWERED BY PAYCHANGU -->
-  <div class="paychangu-footer">
+  <!-- POWERED BY PAWAPAY -->
+  <div class="pawapay-footer">
       <span>POWERED BY</span>
-      <img src="https://z-cdn-media.chatglm.cn/files/85002b5a-e6b3-4447-930a-9c3e69b7edfa.png?auth_key=1883098514-64f61552f91d43beadffbee51a658533-0-932a079c01403ac57480870a222e9b28" alt="PayChangu">
+      <img src="https://z-cdn-media.chatglm.cn/files/b981754c-b2fe-4bec-af7a-2015cce2a603.png?auth_key=1883174405-19871fa005004f25a189aaa68de083be-0-8870afc5134757c7e3246ce0f5434783" alt="PawaPay">
   </div>
   
   <div style="text-align:right;margin-top:10px"><button onclick="logout()" style="width:auto;padding:10px 20px;background:#333;color:#ff6b6b;border:1px solid #ff6b6b44">🚪 Logout</button></div>
@@ -390,12 +390,12 @@
     
     <div class="card"><h3>📱 Withdrawal Method</h3><div id="paymentLockedBox" class="payment-locked-box" style="display:none"><div class="payment-locked-title">💳 Registered Phone (Locked)</div><div class="payment-locked-row"><div style="text-align:left"><div class="payment-locked-label" id="payNetworkLabel">Network</div><div class="payment-locked-phone" id="payPhoneLabel">---</div></div><div class="payment-locked-flag">🇲🇼</div></div><div class="payment-locked-divider"></div><div class="payment-locked-secure">🔒 Withdrawals sent here automatically</div></div><div id="paymentNoPhone" style="display:none;padding:15px;background:#1a1a0a;border-radius:10px;border:1px solid #ffaa00"><p style="color:#ffaa00">⚠ No payment phone on file</p></div></div>
 
-    <!-- ===== AUTOMATED PAYCHANGU DEPOSIT ===== -->
+    <!-- ===== AUTOMATED PAWAPAY DEPOSIT ===== -->
     <div class="card">
         <h3>💰 Deposit via Mobile Money</h3>
         <div style="background:#0a1a0a; padding:15px; border-radius:10px; border:1px solid #51cf6644; margin-bottom:15px; text-align:left;">
             <p style="color:#51cf66; font-weight:bold; font-size:14px; margin-bottom:5px;">✅ Automated Deposit</p>
-            <p style="color:#ccc; font-size:12px;">Select amount and click Pay Now. You will be redirected to a secure PayChangu page to enter your phone number and PIN. Your balance updates instantly after payment!</p>
+            <p style="color:#ccc; font-size:12px;">Select amount, enter your Airtel/TNM number, and click Pay Now. You will receive a prompt on your phone to enter your PIN. Your balance updates instantly after payment!</p>
         </div>
         
         <label style="float:left; font-size:12px; color:#888; margin-bottom:5px;">Amount (MWK)</label>
@@ -412,11 +412,17 @@
             <option value="50000">MWK 50,000</option>
         </select>
 
+        <label style="float:left; font-size:12px; color:#888; margin-bottom:5px;">Phone Number</label>
+        <div class="phone-input-group">
+            <span class="phone-prefix">🇲🇼 +265</span>
+            <input type="tel" id="okDepositPhone" placeholder="99XXXXXXX or 88XXXXXXX" maxlength="9" inputmode="numeric">
+        </div>
+
         <button onclick="submitOneKhusaDeposit()" style="background: linear-gradient(45deg,#00ffcc,#00ccff); margin-top:15px;">⚡ Pay Now</button>
         <p id="okDepositMsg" style="margin-top:10px; font-size:13px;"></p>
     </div>
 
-    <!-- ===== AUTOMATED PAYCHANGU WITHDRAW ===== -->
+    <!-- ===== AUTOMATED PAWAPAY WITHDRAW ===== -->
     <div class="card">
         <h3>💸 Withdraw to Mobile Money</h3>
         <p style="font-size:12px; color:#ccc; margin-bottom:10px;">Funds will be sent instantly to your registered phone number.</p>
@@ -439,10 +445,10 @@
     <div class="card" style="border-color:#ff6b6b44"><h3>⚠️ Rules</h3><div style="text-align:left;color:#ccc;line-height:1.8;font-size:12px">1. Process time up to <b style="color:#fff">3 hours</b> (usually instant).<br>2. Min withdrawal 50 MWK.<br>3. Withdrawals sent to your registered phone number.<br>4. Fake activity = Permanent ban.<br>5. <b style="color:#ff6b6b">VPN usage = Permanent ban.</b></div></div>
     <div style="margin-top:20px;padding:20px;background:#111;border-radius:15px;border:1px solid #222"><div style="font-size:28px;margin-bottom:10px">🔞</div><p style="color:#ff6b6b;font-weight:bold;font-size:16px">18+ Only</p><div style="display:flex;justify-content:center;gap:15px;font-size:13px;margin:15px 0"><a href="#" onclick="document.getElementById('termsModal').style.display='flex';return false" style="color:#00ccff">Terms</a><a href="#" onclick="document.getElementById('privacyModal').style.display='flex';return false" style="color:#00ccff">Privacy</a></div><a href="https://chat.whatsapp.com/CmvdLsifPKS51OyRnrITFz" target="_blank" style="display:block;background:#25d366;color:#fff;padding:12px;border-radius:10px;text-decoration:none;font-weight:bold;font-size:14px">💬 Join WhatsApp Group</a></div>
     
-    <!-- POWERED BY PAYCHANGU -->
-    <div class="paychangu-footer">
+    <!-- POWERED BY PAWAPAY -->
+    <div class="pawapay-footer">
         <span>POWERED BY</span>
-        <img src="https://z-cdn-media.chatglm.cn/files/85002b5a-e6b3-4447-930a-9c3e69b7edfa.png?auth_key=1883098514-64f61552f91d43beadffbee51a658533-0-932a079c01403ac57480870a222e9b28" alt="PayChangu">
+        <img src="https://z-cdn-media.chatglm.cn/files/b981754c-b2fe-4bec-af7a-2015cce2a603.png?auth_key=1883174405-19871fa005004f25a189aaa68de083be-0-8870afc5134757c7e3246ce0f5434783" alt="PawaPay">
     </div>
 </div>
 
@@ -858,17 +864,24 @@ function endPvPGame(g){if(!currentGameId)return;if(processedGameEnds[currentGame
 function cancelMatchmaking(){if(db&&myUid){db.ref('pvp_queue').once('value',function(s){s.forEach(function(gs){if(gs.val()&&gs.val()[myUid]){var gid=gs.key;db.ref('pvp_queue/'+gid+'/'+myUid).remove()}})})}document.getElementById('searchingOverlay').style.display='none'}
 function exitGame(){if(confirm('Leave & FORFEIT?')){if(db&&currentGameId&&gameState){var winner=myPlayerNumber===1?gameState.p2:gameState.p1;db.ref('pvp_games/'+currentGameId).update({status:'finished',winner:winner})}}}
 
-/* ===== PAYCHANGU AUTOMATED DEPOSIT & WITHDRAW ===== */
+/* ===== PAWAPAY AUTOMATED DEPOSIT & WITHDRAW ===== */
 var PIPEDREAM_DEPOSIT_URL = "https://mada-backend.vercel.app/api/deposit"; 
 var PIPEDREAM_WITHDRAW_URL = "https://mada-backend.vercel.app/api/withdraw";
 
 async function submitOneKhusaDeposit() {
     var amount = document.getElementById("okDepositAmount").value;
+    var phoneDigits = document.getElementById("okDepositPhone").value.replace(/[^0-9]/g, '');
     var msgEl = document.getElementById("okDepositMsg");
     
     if(!myUid){ alert("Please login first."); return; }
+    if(phoneDigits.length !== 9) {
+        msgEl.innerHTML = '<span class="error">Enter a valid 9-digit phone number.</span>';
+        return;
+    }
     
-    msgEl.innerHTML = '<span class="success">⏳ Generating secure payment link...</span>';
+    var fullPhone = "265" + phoneDigits;
+    
+    msgEl.innerHTML = '<span class="success">⏳ Sending payment prompt to your phone...</span>';
     
     try {
         var response = await fetch(PIPEDREAM_DEPOSIT_URL, {
@@ -876,16 +889,16 @@ async function submitOneKhusaDeposit() {
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({
                 uid: myUid,
-                amount: amount
+                amount: amount,
+                phone: fullPhone
             })
         });
         
         var result = await response.json();
         
-        if(result.success && result.checkout_url) {
-            msgEl.innerHTML = '<span class="success" style="color:#51cf66;">✅ Redirecting to PayChangu...</span>';
-            // Redirect the user to the PayChangu payment link
-            window.location.href = result.checkout_url;
+        if(result.success) {
+            msgEl.innerHTML = '<span class="success" style="color:#51cf66;">✅ Prompt sent! Check your phone to enter your PIN.</span>';
+            setTimeout(() => { showBalance(); }, 5000);
         } else {
             msgEl.innerHTML = '<span class="error">❌ Error: ' + (result.message || 'Failed to initiate') + '</span>';
         }
@@ -1111,4 +1124,4 @@ document.addEventListener('DOMContentLoaded',function(){
 </script>
 
 </body>
-                                                                                                                                            </html>
+    </html>
