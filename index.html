@@ -66,7 +66,7 @@
 .profile-pic-container:hover .profile-pic-upload-overlay { opacity: 1; }
 #splashScreen { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: #000; z-index: 100000; display: flex; align-items: center; justify-content: center; flex-direction: column; transition: opacity 0.6s ease-out; }
 #splashScreen.splash-hide { opacity: 0; pointer-events: none; }
-#splashScreen img { max-width: 200px; border-radius: 25px; box-shadow:0 0 40px rgba(0,255,204,0.3); animation: splashPulse 2s infinite alternate; }
+#splashScreen img { max-width: 200px; border-radius: 25px; box-shadow: 0 0 40px rgba(0,255,204,0.3); animation: splashPulse 2s infinite alternate; }
 #splashScreen p { margin-top: 20px; font-size: 14px; color: #00ffcc; letter-spacing: 2px; font-weight: bold; animation: blink 1.5s infinite; }
 @keyframes splashPulse { 0% { transform: scale(1); box-shadow: 0 0 30px rgba(0,255,204,0.2); } 100% { transform: scale(1.03); box-shadow: 0 0 50px rgba(0,255,204,0.5); } }
 .deposit-rules { text-align: left; background: #1a1a0a; border: 1px dashed #ffd700; padding: 15px; border-radius: 10px; margin-bottom: 15px; }
@@ -455,7 +455,7 @@
     </div>
 
     <div class="card" style="border-color:#ff6b6b44"><h3>⚠️ Rules</h3><div style="text-align:left;color:#ccc;line-height:1.8;font-size:12px">1. Process time up to <b style="color:#fff">3 hours</b> (usually instant).<br>2. Min withdrawal 50 MWK.<br>3. Withdrawals sent to your registered phone number.<br>4. Fake activity = Permanent ban.<br>5. <b style="color:#ff6b6b">VPN usage = Permanent ban.</b></div></div>
-    <div style="margin-top:20px;padding:20px;background:#111;border-radius:15px;border:1px solid #222"><div style="font-size:28px;margin-bottom:10px">🔞</div><p style="color:#ff6b6b;font-weight:bold;font-size:16px">18+ Only</p><div style="display:flex;justify-content:center;gap:15px;font-size:13px;margin:15px 0"><a href="#" onclick="document.getElementById('termsModal').style.display='flex';return false" style="color:#00ccff">Terms</a><a href="#" onclick="document.getElementById('privacyModal').style.display='flex';return false" style="color:#00cc4f">Privacy</a></div><a href="https://chat.whatsapp.com/CmvdLsifPKS51OyRnrITFz" target="_blank" style="display:block;background:#25d366;color:#fff;padding:12px;border-radius:10px;text-decoration:none;font-weight:bold;font-size:14px">💬 Join WhatsApp Group</a></div>
+    <div style="margin-top:20px;padding:20px;background:#111;border-radius:15px;border:1px solid #222"><div style="font-size:28px;margin-bottom:10px">🔞</div><p style="color:#ff6b6b;font-weight:bold;font-size:16px">18+ Only</p><div style="display:flex;justify-content:center;gap:15px;font-size:13px;margin:15px 0"><a href="#" onclick="document.getElementById('termsModal').style.display='flex';return false" style="color:#00cc4f">Terms</a><a href="#" onclick="document.getElementById('privacyModal').style.display='flex';return false" style="color:#00cc4f">Privacy</a></div><a href="https://chat.whatsapp.com/CmvdLsifPKS51OyRnrITFz" target="_blank" style="display:block;background:#25d366;color:#fff;padding:12px;border-radius:10px;text-decoration:none;font-weight:bold;font-size:14px">💬 Join WhatsApp Group</a></div>
     
     <!-- POWERED BY PAYCHANGU -->
     <div class="paychangu-footer">
@@ -813,10 +813,14 @@ function renderGrades(){var g=document.getElementById('gradeGrid'),h='';PVP_GRAD
 
 function joinPvP(gid){if(!db||!myUid){alert('Login first');return}var gr=PVP_GRADES.find(function(g){return g.id===gid});if(!gr)return;db.ref('leaderboard_all/'+myUid+'/mwk').once('value',function(s){var b=s.val()||0;if(b<gr.entryMWK){alert('Not enough balance! Need MWK '+gr.entryMWK);return}document.getElementById('searchGradeText').innerText=gr.name+' - MWK '+gr.entryMWK;document.getElementById('searchingOverlay').style.display='flex';var queueRef=db.ref('pvp_queue/'+gid+'/'+myUid);queueRef.set({timestamp:Date.now(),entryMWK:gr.entryMWK});queueRef.onDisconnect().remove();
     
-    // BOT FALLBACK: Wait 15 seconds. If no human found, play against computer.
+    // BOT FALLBACK: Wait 15 seconds. If no human found, ask to play computer.
     botMatchTimeout = setTimeout(function() {
         if (document.getElementById('searchingOverlay').style.display === 'flex') {
-            createBotGame(gid, gr);
+            if (confirm("⚠️ No online players found!\n\nWould you like to play against the Computer (Pro+) instead?")) {
+                createBotGame(gid, gr);
+            } else {
+                cancelMatchmaking();
+            }
         }
     }, 15000);
     
@@ -876,7 +880,7 @@ function initGameListeners(){if(!db||!myUid||gameListenersSetup)return;gameListe
 function handleGameUpdate(s){if(!myUid)return;s.forEach(function(c){var g=c.val();if(!g)return;if(g.p1!==myUid&&g.p2!==myUid)return;if(g.status==='playing'){if(currentGameId!==c.key){currentGameId=c.key;myPlayerNumber=g.p1===myUid?1:2;document.getElementById('searchingOverlay').style.display='none';showPage('game');startGameListener(c.key)}}else if(g.status==='finished'&&currentGameId===c.key){endPvPGame(g)}})}
 function startGameListener(gid){if(gameListener)db.ref('pvp_games/'+gameListener).off();gameListener=gid;db.ref('pvp_games/'+gid).on('value',function(s){var g=s.val();if(!g)return;gameState=g;renderPvPBoard();if(g.status==='finished'&&currentGameId===gid){endPvPGame(g)}})}
 
-function renderPvPBoard(){var be=document.getElementById('checkersBoard'),h='';document.getElementById('p1Name').innerText='🔴 '+(gameState.p1===myUid?'You':gameState.p1);var p2NameText = gameState.p2===myUid?'You':gameState.p2;if(gameState.p2 === 'Mada_Bot') p2NameText = '🤖 Computer (Pro)';document.getElementById('p2Name').innerText='⚫ '+p2NameText;document.getElementById('gameStake').innerText=gameState.entryMWK+' MWK';document.getElementById('gamePrize').innerText=gameState.winMWK+' MWK';var imt=gameState.turn===myPlayerNumber;var isMultiJump=imt&&gameState.selected&&gameState.validMoves&&gameState.validMoves.length>0;document.getElementById('turnIndicator').innerText=isMultiJump?'⚡ Must Jump!':(imt?'🎯 Your Turn!':'⏳ Opponent');document.getElementById('turnIndicator').style.color=isMultiJump?'#ffd700':(imt?'#51cf66':'#ff6b6b');var db2=document.getElementById('drawCounterBar'),dt=gameState.drawTargetPlayer||0,dc=gameState.drawCounter||0;if(dt>0&&dc>0){db2.style.display='block';db2.innerText='⏱️ Draw in '+(12-dc)+' moves'}else db2.style.display='none';var b=gameState.board.slice();var sel=gameState.selected||null,vm=gameState.validMoves||[];for(var i=0;i<64;i++){var displayR=Math.floor(i/8),displayC=i%8;var boardR=myPlayerNumber===2?7-displayR:displayR;var boardC=myPlayerNumber===2?7-displayC:displayC;var boardIdx=boardR*8+boardC;var isDark=(displayR+displayC)%2===1;var p=b[boardIdx];var sc=sel&&sel[0]===boardR&&sel[1]===boardC?'selected':'';var mc=vm.some(function(m){return m[0]===boardR&&m[1]===boardC})?'valid-move':'';h+='<div class="square '+(isDark?'dark':'light')+' '+sc+' '+mc+'" onclick="clickPvPSquare('+displayR+','+displayC+')">';if(p!==0)h+='<div class="piece '+(p>0?'p1':'p2')+' '+(Math.abs(p)===2?'king':'')+'"></div>';h+='</div>'}be.innerHTML=h;
+function renderPvPBoard(){var be=document.getElementById('checkersBoard'),h='';document.getElementById('p1Name').innerText='🔴 '+(gameState.p1===myUid?'You':gameState.p1);var p2NameText = gameState.p2===myUid?'You':gameState.p2;if(gameState.p2 === 'Mada_Bot') p2NameText = '🤖 Computer (Pro+)';document.getElementById('p2Name').innerText='⚫ '+p2NameText;document.getElementById('gameStake').innerText=gameState.entryMWK+' MWK';document.getElementById('gamePrize').innerText=gameState.winMWK+' MWK';var imt=gameState.turn===myPlayerNumber;var isMultiJump=imt&&gameState.selected&&gameState.validMoves&&gameState.validMoves.length>0;document.getElementById('turnIndicator').innerText=isMultiJump?'⚡ Must Jump!':(imt?'🎯 Your Turn!':'⏳ Opponent');document.getElementById('turnIndicator').style.color=isMultiJump?'#ffd700':(imt?'#51cf66':'#ff6b6b');var db2=document.getElementById('drawCounterBar'),dt=gameState.drawTargetPlayer||0,dc=gameState.drawCounter||0;if(dt>0&&dc>0){db2.style.display='block';db2.innerText='⏱️ Draw in '+(12-dc)+' moves'}else db2.style.display='none';var b=gameState.board.slice();var sel=gameState.selected||null,vm=gameState.validMoves||[];for(var i=0;i<64;i++){var displayR=Math.floor(i/8),displayC=i%8;var boardR=myPlayerNumber===2?7-displayR:displayR;var boardC=myPlayerNumber===2?7-displayC:displayC;var boardIdx=boardR*8+boardC;var isDark=(displayR+displayC)%2===1;var p=b[boardIdx];var sc=sel&&sel[0]===boardR&&sel[1]===boardC?'selected':'';var mc=vm.some(function(m){return m[0]===boardR&&m[1]===boardC})?'valid-move':'';h+='<div class="square '+(isDark?'dark':'light')+' '+sc+' '+mc+'" onclick="clickPvPSquare('+displayR+','+displayC+')">';if(p!==0)h+='<div class="piece '+(p>0?'p1':'p2')+' '+(Math.abs(p)===2?'king':'')+'"></div>';h+='</div>'}be.innerHTML=h;
 
     // Trigger Bot Move if it's Bot's turn
     if (gameState.p2 === 'Mada_Bot' && gameState.turn === 2 && gameState.status === 'playing') {
@@ -987,7 +991,7 @@ function makePvPMove(fR,fC,tR,tC){
     db.ref('pvp_games/'+currentGameId).update(u);
 }
 
-/* ===== PRO HARD BOT AI (Minimax with Alpha-Beta Pruning & Positional Eval) ===== */
+/* ===== PRO PLUS+ BOT AI (Minimax Depth 8 & Advanced Eval) ===== */
 function getAllValidMovesForAI(b, pl) {
     var s = pl === 1 ? 1 : -1;
     var captures = [];
@@ -1041,22 +1045,32 @@ function evaluateBoard(b) {
         var r = Math.floor(i / 8);
         var c = i % 8;
         
-        var pieceVal = Math.abs(p) === 2 ? 40 : 10;
+        var pieceVal = 0;
         var posVal = 0;
         
-        // Center control
-        if (c >= 2 && c <= 5 && r >= 2 && r <= 5) posVal += 2;
-        
-        // Advancement (closer to kinging)
-        if (p === 1) posVal += (7 - r); 
-        if (p === -1) posVal += r;      
-        
-        // Back row defense (prevent opponent from kinging)
-        if (p === 1 && r === 7) posVal += 4;
-        if (p === -1 && r === 0) posVal += 4;
-        
-        if (p > 0) score += (pieceVal + posVal);
-        if (p < 0) score -= (pieceVal + posVal);
+        if (p === 1) { // P1 Man
+            pieceVal = 100;
+            posVal = (7 - r) * 2; // closer to king row
+            if (r === 7) posVal += 20; // back row defense
+            if (c >= 2 && c <= 5 && r >= 2 && r <= 5) posVal += 5; // center control
+            if (r === 0) posVal += 50; // about to king
+            score += (pieceVal + posVal);
+        } else if (p === -1) { // P2 Man
+            pieceVal = -100;
+            posVal = r * 2; // closer to king row
+            if (r === 0) posVal -= 20; // back row defense
+            if (c >= 2 && c <= 5 && r >= 2 && r <= 5) posVal -= 5; // center control
+            if (r === 7) posVal -= 50; // about to king
+            score += (pieceVal + posVal);
+        } else if (p === 2) { // P1 King
+            pieceVal = 300;
+            if (c >= 2 && c <= 5 && r >= 2 && r <= 5) posVal += 10;
+            score += (pieceVal + posVal);
+        } else if (p === -2) { // P2 King
+            pieceVal = -300;
+            if (c >= 2 && c <= 5 && r >= 2 && r <= 5) posVal -= 10;
+            score += (pieceVal + posVal);
+        }
     }
     return score;
 }
@@ -1095,7 +1109,7 @@ function minimax(b, depth, alpha, beta, isMaximizing) {
 function botMakeMove() {
     if(!gameState || gameState.turn !== 2 || gameState.p2 !== 'Mada_Bot') return;
     var board = gameState.board.slice();
-    var bestMoves = [];
+    var bestMove = null;
     var bestScore = Infinity;
     var moves = [];
     
@@ -1107,22 +1121,17 @@ function botMakeMove() {
 
     if (moves.length === 0) return;
     if (moves.length === 1) {
-        bestMoves = [moves[0]];
+        bestMove = moves[0];
     } else {
         for(var i = 0; i < moves.length; i++) {
             var newBoard = applyMoveToBoard(board, moves[i]);
-            var score = minimax(newBoard, 6, -Infinity, Infinity, true); // Depth 6 is Expert Level
+            var score = minimax(newBoard, 8, -Infinity, Infinity, true); // Depth 8 is Pro Plus+
             if(score < bestScore) {
                 bestScore = score;
-                bestMoves = [moves[i]];
-            } else if (score === bestScore) {
-                bestMoves.push(moves[i]);
+                bestMove = moves[i];
             }
         }
     }
-    
-    // Pick a random move from the best moves to vary gameplay
-    var bestMove = bestMoves[Math.floor(Math.random() * bestMoves.length)];
 
     if(bestMove) {
         makePvPMove(bestMove.from[0], bestMove.from[1], bestMove.to[0], bestMove.to[1]);
