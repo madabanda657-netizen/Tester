@@ -992,7 +992,7 @@ function makePvPMove(fR,fC,tR,tC){
 var transpositionTable = new Map();
 var TT_SIZE_LIMIT = 200000;
 var MAX_DEPTH = 18; // Increased Depth to 18
-var TIME_LIMIT = 3500; // 3.5 seconds of intense calculation
+var TIME_LIMIT = 1500; // 1.5 seconds of intense calculation (prevents freezing)
 var killerMoves = [];
 var historyTable = {};
 
@@ -1381,57 +1381,23 @@ function botMakeMove() {
         var board = gameState.board.slice();
         var bestMove = null;
         
-        // Handle Forced Multi-Jumps Directly (Prevents hanging)
+        // Use iterativeDeepening for both normal moves AND forced multi-jumps to respect TIME_LIMIT
         if (gameState.selected && gameState.validMoves && gameState.validMoves.length > 0) {
-            var fR = gameState.selected[0], fC = gameState.selected[1];
-            var availableCaptures = getCapturesForPiece(board, fR, fC, 2);
-            
-            var bestScore = Infinity;
-            
-            for (var i = 0; i < availableCaptures.length; i++) {
-                var cap = availableCaptures[i];
-                // Verify this capture leads to a valid destination
-                var isValidDest = false;
-                for (var j = 0; j < gameState.validMoves.length; j++) {
-                    if (cap.to[0] === gameState.validMoves[j][0] && cap.to[1] === gameState.validMoves[j][1]) {
-                        isValidDest = true;
-                        break;
-                    }
-                }
-                
-                if (isValidDest) {
-                    var newB = applyMoveToBoard(board, cap);
-                    var score = minimax(newB, MAX_DEPTH - 1, -Infinity, Infinity, true, 0);
-                    if (score < bestScore) {
-                        bestScore = score;
-                        bestMove = cap;
-                    }
-                }
-            }
-            
-            // If AI found a move, execute it. Otherwise, fallback to first valid jump.
-            if (bestMove) {
-                makePvPMove(bestMove.from[0], bestMove.from[1], bestMove.to[0], bestMove.to[1]);
-            } else if (availableCaptures.length > 0) {
-                makePvPMove(fR, fC, availableCaptures[0].to[0], availableCaptures[0].to[1]);
-            } else {
-                makePvPMove(fR, fC, gameState.validMoves[0][0], gameState.validMoves[0][1]);
-            }
+            bestMove = iterativeDeepening(board, MAX_DEPTH, TIME_LIMIT, gameState.selected[0], gameState.selected[1]);
         } else {
-            // Normal Move Calculation
             bestMove = iterativeDeepening(board, MAX_DEPTH, TIME_LIMIT, -1, -1);
-            
-            if(bestMove) {
-                var firstTo = bestMove.path ? bestMove.path[1] : bestMove.to;
-                makePvPMove(bestMove.from[0], bestMove.from[1], firstTo[0], firstTo[1]);
-            } else {
-                // Emergency Fallback
-                var moves = getAllValidMovesForAI(board, 2);
-                if (moves.length > 0) {
-                    var m = moves[0];
-                    var firstTo = m.path ? m.path[1] : m.to;
-                    makePvPMove(m.from[0], m.from[1], firstTo[0], firstTo[1]);
-                }
+        }
+
+        if(bestMove) {
+            var firstTo = bestMove.path ? bestMove.path[1] : bestMove.to;
+            makePvPMove(bestMove.from[0], bestMove.from[1], firstTo[0], firstTo[1]);
+        } else {
+            // Emergency Fallback
+            var moves = getAllValidMovesForAI(board, 2);
+            if (moves.length > 0) {
+                var m = moves[0];
+                var firstTo = m.path ? m.path[1] : m.to;
+                makePvPMove(m.from[0], m.from[1], firstTo[0], firstTo[1]);
             }
         }
     } catch (e) {
@@ -1719,4 +1685,4 @@ document.addEventListener('DOMContentLoaded',function(){
 </script>
 
 </body>
-                                                  </html>
+    </html>
