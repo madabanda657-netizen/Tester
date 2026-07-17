@@ -887,7 +887,7 @@ function renderPvPBoard(){var be=document.getElementById('checkersBoard'),h='';d
 
 function clickPvPSquare(r,c){if(gameState.turn!==myPlayerNumber)return;if(!db||!currentGameId)return;if(myPlayerNumber===2){r=7-r;c=7-c}var b=gameState.board,cv=b[r*8+c],sel=gameState.selected,vm=gameState.validMoves||[];if(sel&&vm.some(function(m){return m[0]===r&&m[1]===c})){makePvPMove(sel[0],sel[1],r,c);return}if((myPlayerNumber===1&&cv>0)||(myPlayerNumber===2&&cv<0)){var pl=myPlayerNumber;var allMoves=getAllCaptures(b,pl);var mustCapture=allMoves.length>0;var pieceMoves=getValidMovesForPiece(b,r,c,pl);var filteredMoves=[];for(var i=0;i<pieceMoves.length;i++){if(mustCapture&&pieceMoves[i].captured.length===0)continue;filteredMoves.push(pieceMoves[i].to)}if(filteredMoves.length>0)db.ref('pvp_games/'+currentGameId).update({selected:[r,c],validMoves:filteredMoves});else db.ref('pvp_games/'+currentGameId).update({selected:null,validMoves:[]})}else{db.ref('pvp_games/'+currentGameId).update({selected:null,validMoves:[]})}}
 
-function getCapturesForPiece(b,r,c,pl){var s=pl===1?1:-1;var p=b[r*8+c];if(Math.sign(p)!==s)return[];var caps=[],isKing=Math.abs(p)===2,dirs=[-1,1],dcs=[-1,1];for(var d=0;d<dirs.length;d++){for(var dc=0;dc<2;dc++){if(isKing){var dist=1,enm=null;while(true){var nr=r+dist*dirs[d],nc=c+dist*dcs[dc];if(nr<0||nr>=8||nc<0||nc>=8)break;if(b[nr*8+nc]!==0){if(Math.sign(b[nr*8+nc])===(-s)&&!enm)enm=[nr,nc];else break}else if(enm){caps.push({from:[r,c],to:[nr,nc],captured:enm})}dist++}}else{var mr=r+dirs[d],mc=c+dcs[dc],jr=r+2*dirs[d],jc=c+2*dcs[dc];if(jr>=0&&jr<8&&jc>=0&&jc<8&&b[mr*8+mc]!==0&&Math.sign(b[mr*8+mc])===(-s)&&b[jr*8+jc]===0){caps.push({from:[r,c],to:[jr,jc],captured:[[mr,mc]]})}}}}return caps}
+function getCapturesForPiece(b,r,c,pl){var s=pl===1?1:-1;var p=b[r*8+c];if(Math.sign(p)!==s)return[];var caps=[],isKing=Math.abs(p)===2,dirs=[-1,1],dcs=[-1,1];for(var d=0;d<dirs.length;d++){for(var dc=0;dc<2;dc++){if(isKing){var dist=1,enm=null;while(true){var nr=r+dist*dirs[d],nc=c+dist*dcs[dc];if(nr<0||nr>=8||nc<0||nc>=8)break;if(b[nr*8+nc]!==0){if(Math.sign(b[nr*8+nc])===(-s)&&!enm)enm=[nr,nc];else break}else if(enm){caps.push({from:[r,c],to:[nr,nc],captured:[enm]})}dist++}}else{var mr=r+dirs[d],mc=c+dcs[dc],jr=r+2*dirs[d],jc=c+2*dcs[dc];if(jr>=0&&jr<8&&jc>=0&&jc<8&&b[mr*8+mc]!==0&&Math.sign(b[mr*8+mc])===(-s)&&b[jr*8+jc]===0){caps.push({from:[r,c],to:[jr,jc],captured:[[mr,mc]]})}}}}return caps}
 function getAllCaptures(b,pl){var s=pl===1?1:-1;var caps=[];for(var r=0;r<8;r++){for(var c=0;c<8;c++){if(Math.sign(b[r*8+c])===s){var pc=getCapturesForPiece(b,r,c,pl);for(var i=0;i<pc.length;i++)caps.push(pc[i])}}}return caps}
 function getSimpleMovesForPiece(b,r,c,pl){var s=pl===1?1:-1;var p=b[r*8+c];if(Math.sign(p)!==s)return[];var mvs=[],isKing=Math.abs(p)===2,dirs=isKing?[-1,1]:(pl===1?[-1]:[1]),dcs=[-1,1];for(var d=0;d<dirs.length;d++){for(var dc=0;dc<2;dc++){if(isKing){var dist=1;while(true){var nr=r+dist*dirs[d],nc=c+dist*dcs[dc];if(nr<0||nr>=8||nc<0||nc>=8)break;if(b[nr*8+nc]!==0)break;mvs.push({from:[r,c],to:[nr,nc],captured:[]});dist++}}else{var nr=r+dirs[d],nc=c+dcs[dc];if(nr>=0&&nr<8&&nc>=0&&nc<8&&b[nr*8+nc]===0)mvs.push({from:[r,c],to:[nr,nc],captured:[]})}}}return mvs}
 function getValidMovesForPiece(b,r,c,pl){if(getAllCaptures(b,pl).length>0)return getCapturesForPiece(b,r,c,pl);return getSimpleMovesForPiece(b,r,c,pl)}
@@ -1001,10 +1001,63 @@ setInterval(function() {
     }
 }, 30000);
 
+function applyMoveToBoard(b, move) {
+    var newB = b.slice();
+    var fR = move.from[0], fC = move.from[1];
+    var tR = move.to[0], tC = move.to[1];
+    var p = newB[fR * 8 + fC];
+    newB[fR * 8 + fC] = 0;
+    newB[tR * 8 + tC] = p;
+    
+    if (move.captured && move.captured.length > 0) {
+        for (var i = 0; i < move.captured.length; i++) {
+            var cap = move.captured[i];
+            newB[cap[0] * 8 + cap[1]] = 0;
+        }
+    }
+    
+    if (p === 1 && tR === 0) newB[tR * 8 + tC] = 2;
+    if (p === -1 && tR === 7) newB[tR * 8 + tC] = -2;
+    
+    return newB;
+}
+
+function expandMove(move, b, pl, results) {
+    var newB = applyMoveToBoard(b, move);
+    var tR = move.to[0], tC = move.to[1];
+    var p = newB[tR * 8 + tC];
+    
+    var wasPromoted = false;
+    if (pl === 1 && move.to[0] === 0 && p === 2) wasPromoted = true;
+    if (pl === 2 && move.to[0] === 7 && p === -2) wasPromoted = true;
+    
+    if (wasPromoted) {
+        results.push(move);
+        return;
+    }
+    
+    var nextCaptures = getCapturesForPiece(newB, tR, tC, pl);
+    
+    if (nextCaptures.length === 0) {
+        results.push(move);
+    } else {
+        for (var i = 0; i < nextCaptures.length; i++) {
+            var nc = nextCaptures[i];
+            var combinedMove = {
+                from: move.from,
+                to: nc.to,
+                captured: move.captured.concat(nc.captured),
+                path: (move.path || [move.from]).concat([nc.to])
+            };
+            expandMove(combinedMove, newB, pl, results);
+        }
+    }
+}
+
 function getAllValidMovesForAI(b, pl) {
     var s = pl === 1 ? 1 : -1;
     var captures = [];
-    var moves = [];
+    var simpleMoves = [];
     
     for (var r = 0; r < 8; r++) {
         for (var c = 0; c < 8; c++) {
@@ -1016,27 +1069,54 @@ function getAllValidMovesForAI(b, pl) {
     }
     
     if (captures.length > 0) {
-        captures.sort(function(a, b) {
-            return (b.captured ? b.captured.length : 0) - (a.captured ? a.captured.length : 0);
+        var expanded = [];
+        for (var i = 0; i < captures.length; i++) {
+            expandMove(captures[i], b, pl, expanded);
+        }
+        expanded.sort(function(a, b) {
+            return b.captured.length - a.captured.length;
         });
-        return captures;
+        return expanded;
     }
     
     for (var r = 0; r < 8; r++) {
         for (var c = 0; c < 8; c++) {
             if (Math.sign(b[r * 8 + c]) === s) {
-                moves = moves.concat(getSimpleMovesForPiece(b, r, c, pl));
+                simpleMoves = simpleMoves.concat(getSimpleMovesForPiece(b, r, c, pl));
             }
         }
     }
     
-    moves.sort(function(a, b) {
+    simpleMoves.sort(function(a, b) {
         var scoreA = moveOrderingScore(b, a.to, pl);
         var scoreB = moveOrderingScore(b, b.to, pl);
         return scoreB - scoreA;
     });
     
-    return moves;
+    return simpleMoves;
+}
+
+function getAllCapturesForAI(b, pl) {
+    var s = pl === 1 ? 1 : -1;
+    var captures = [];
+    for (var r = 0; r < 8; r++) {
+        for (var c = 0; c < 8; c++) {
+            if (Math.sign(b[r * 8 + c]) === s) {
+                var pc = getCapturesForPiece(b, r, c, pl);
+                captures = captures.concat(pc);
+            }
+        }
+    }
+    
+    var expanded = [];
+    for (var i = 0; i < captures.length; i++) {
+        expandMove(captures[i], b, pl, expanded);
+    }
+    
+    expanded.sort(function(a, b) {
+        return b.captured.length - a.captured.length;
+    });
+    return expanded;
 }
 
 function moveOrderingScore(b, to, pl) {
@@ -1163,23 +1243,6 @@ function quiescenceSearch(b, alpha, beta, isMaximizing, depth) {
     return isMaximizing ? alpha : beta;
 }
 
-function getAllCapturesForAI(b, pl) {
-    var s = pl === 1 ? 1 : -1;
-    var caps = [];
-    for (var r = 0; r < 8; r++) {
-        for (var c = 0; c < 8; c++) {
-            if (Math.sign(b[r * 8 + c]) === s) {
-                var pc = getCapturesForPiece(b, r, c, pl);
-                caps = caps.concat(pc);
-            }
-        }
-    }
-    caps.sort(function(a, b) {
-        return (b.captured ? b.captured.length : 0) - (a.captured ? a.captured.length : 0);
-    });
-    return caps;
-}
-
 function minimax(b, depth, alpha, beta, isMaximizing, ply) {
     nodesSearched++;
     
@@ -1249,18 +1312,31 @@ function minimax(b, depth, alpha, beta, isMaximizing, ply) {
     return bestScore;
 }
 
-function iterativeDeepening(b, maxDepth, timeLimit) {
+function iterativeDeepening(b, maxDepth, timeLimit, forcedR, forcedC) {
     var startTime = Date.now();
     var bestMove = null;
     var bestScore = -Infinity;
+    
+    var moves;
+    if (forcedR >= 0) {
+        var captures = getCapturesForPiece(b, forcedR, forcedC, 2);
+        var expanded = [];
+        for (var i = 0; i < captures.length; i++) {
+            expandMove(captures[i], b, 2, expanded);
+        }
+        moves = expanded;
+        if (moves.length === 0) return null;
+    } else {
+        moves = getAllValidMovesForAI(b, 2);
+        if (moves.length === 0) return null;
+    }
+    
+    if (moves.length === 1) return moves[0];
     
     for (var depth = 1; depth <= maxDepth; depth++) {
         nodesSearched = 0;
         var currentBest = null;
         var currentScore = -Infinity;
-        
-        var moves = getAllValidMovesForAI(b, 2);
-        if (moves.length === 0) return null;
         
         for (var i = 0; i < moves.length; i++) {
             if (Date.now() - startTime > timeLimit) {
@@ -1292,26 +1368,17 @@ function botMakeMove() {
     if (!gameState || gameState.turn !== 2 || gameState.p2 !== 'Mada_Bot') return;
     
     var board = gameState.board.slice();
-    var moves = [];
+    var bestMove = null;
     
     if (gameState.selected) {
-        moves = getCapturesForPiece(board, gameState.selected[0], gameState.selected[1], 2);
+        bestMove = iterativeDeepening(board, MAX_DEPTH, TIME_LIMIT, gameState.selected[0], gameState.selected[1]);
     } else {
-        moves = getAllValidMovesForAI(board, 2);
-    }
-
-    if (moves.length === 0) return;
-    
-    var bestMove;
-    
-    if (moves.length > 1) {
-        bestMove = iterativeDeepening(board, MAX_DEPTH, TIME_LIMIT);
-    } else {
-        bestMove = moves[0];
+        bestMove = iterativeDeepening(board, MAX_DEPTH, TIME_LIMIT, -1, -1);
     }
 
     if(bestMove) {
-        makePvPMove(bestMove.from[0], bestMove.from[1], bestMove.to[0], bestMove.to[1]);
+        var firstTo = bestMove.path ? bestMove.path[1] : bestMove.to;
+        makePvPMove(bestMove.from[0], bestMove.from[1], firstTo[0], firstTo[1]);
     }
 }
 
@@ -1583,5 +1650,4 @@ document.addEventListener('DOMContentLoaded',function(){
 </script>
 
 </body>
-</html>
-  
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                     </html>
