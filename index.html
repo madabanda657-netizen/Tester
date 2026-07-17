@@ -988,12 +988,13 @@ function makePvPMove(fR,fC,tR,tC){
     db.ref('pvp_games/'+currentGameId).update(u);
 }
 
-/* ===== UNBEATEN PRO MAX BOT AI (Depth 14 & Advanced Eval) ===== */
+/* ===== UNBEATABLE PRO MAX BOT AI (Advanced Engine) ===== */
 var transpositionTable = new Map();
-var TT_SIZE_LIMIT = 50000;
-var nodesSearched = 0;
-var MAX_DEPTH = 14; 
-var TIME_LIMIT = 5000; 
+var TT_SIZE_LIMIT = 100000;
+var MAX_DEPTH = 15; 
+var TIME_LIMIT = 2500; // 2.5 seconds of intense calculation
+var killerMoves = [];
+var historyTable = {};
 
 setInterval(function() {
     if (transpositionTable.size > TT_SIZE_LIMIT) {
@@ -1073,8 +1074,8 @@ function getAllValidMovesForAI(b, pl) {
         for (var i = 0; i < captures.length; i++) {
             expandMove(captures[i], b, pl, expanded);
         }
-        expanded.sort(function(a, b) {
-            return b.captured.length - a.captured.length;
+        expanded.sort(function(a, b2) {
+            return b2.captured.length - a.captured.length;
         });
         return expanded;
     }
@@ -1087,10 +1088,8 @@ function getAllValidMovesForAI(b, pl) {
         }
     }
     
-    simpleMoves.sort(function(a, b) {
-        var scoreA = moveOrderingScore(b, a.to, pl);
-        var scoreB = moveOrderingScore(b, b.to, pl);
-        return scoreB - scoreA;
+    simpleMoves.sort(function(a, b2) {
+        return scoreMove(b2, pl, 0, null) - scoreMove(a, pl, 0, null);
     });
     
     return simpleMoves;
@@ -1113,17 +1112,27 @@ function getAllCapturesForAI(b, pl) {
         expandMove(captures[i], b, pl, expanded);
     }
     
-    expanded.sort(function(a, b) {
-        return b.captured.length - a.captured.length;
+    expanded.sort(function(a, b2) {
+        return b2.captured.length - a.captured.length;
     });
     return expanded;
 }
 
-function moveOrderingScore(b, to, pl) {
+function scoreMove(move, pl, depth, ttMove) {
+    if (ttMove && move.from[0] === ttMove.from[0] && move.from[1] === ttMove.from[1] && move.to[0] === ttMove.to[0] && move.to[1] === ttMove.to[1]) return 1000000;
+    if (move.captured && move.captured.length > 0) return 900000 + move.captured.length * 1000;
+    
+    if (depth < killerMoves.length && killerMoves[depth]) {
+        for (var i=0; i<killerMoves[depth].length; i++) {
+            var km = killerMoves[depth][i];
+            if (km && move.from[0] === km.from[0] && move.from[1] === km.from[1] && move.to[0] === km.to[0] && move.to[1] === km.to[1]) return 800000;
+        }
+    }
+    
     var score = 0;
-    if (to[1] >= 2 && to[1] <= 5) score += 10;
-    if (pl === 2 && to[0] > 3) score += 15;
-    if (pl === 2 && to[0] >= 6) score += 20;
+    if (move.to[1] >= 2 && move.to[1] <= 5) score += 10;
+    if (pl === 2 && move.to[0] > 3) score += 15;
+    if (pl === 2 && move.to[0] >= 6) score += 20;
     return score;
 }
 
@@ -1136,13 +1145,10 @@ function boardHash(b) {
     return hash;
 }
 
-function evaluateBoard(b) {
+function evaluateBoard(b, turn) {
     var score = 0;
     var p1Pieces = 0, p2Pieces = 0;
     var p1Kings = 0, p2Kings = 0;
-    var p1BackRow = 0, p2BackRow = 0;
-    var p1Center = 0, p2Center = 0;
-    var p1Advancing = 0, p2Advancing = 0;
     
     for (var i = 0; i < 64; i++) {
         var p = b[i];
@@ -1151,34 +1157,15 @@ function evaluateBoard(b) {
         var c = i % 8;
         
         var isKing = Math.abs(p) === 2;
-        var pieceVal = isKing ? 300 : 100;
+        var pieceVal = isKing ? 450 : 100;
         
         var posBonus = 0;
-        
-        if (c >= 2 && c <= 5 && r >= 2 && r <= 5) {
-            posBonus += 15;
-        }
-        
-        if (p === 1 && r === 7) {
-            posBonus += 25;
-            p1BackRow++;
-        }
-        if (p === -1 && r === 0) {
-            posBonus += 25;
-            p2BackRow++;
-        }
-        
-        if (p === 1) {
-            posBonus += (7 - r) * 3;
-            p1Advancing += (7 - r);
-        } else if (p === -1) {
-            posBonus += r * 3;
-            p2Advancing += r;
-        }
-        
-        if (c === 0 || c === 7) {
-            posBonus -= 5;
-        }
+        if (c >= 2 && c <= 5 && r >= 2 && r <= 5) posBonus += 12;
+        if (p === 1 && r === 7) posBonus += 40;
+        if (p === -1 && r === 0) posBonus += 40;
+        if (p === 1) posBonus += (7 - r) * 4;
+        else if (p === -1) posBonus += r * 4;
+        if (c === 0 || c === 7) posBonus -= 8;
         
         if (p > 0) {
             score += pieceVal + posBonus;
@@ -1191,29 +1178,43 @@ function evaluateBoard(b) {
         }
     }
     
-    var totalPieces = p1Pieces + p2Pieces;
-    var isEndgame = totalPieces <= 8;
-    
-    if (isEndgame) {
-        if (p1Kings > p2Kings) score += (p1Kings - p2Kings) * 50;
-        if (p2Kings > p1Kings) score -= (p2Kings - p1Kings) * 50;
-        
-        if (p1Pieces === 1 && p1Kings === 1 && p2Pieces === 1 && p2Kings === 1) {
-            score = score * 0.3;
-        }
-    }
-    
     var p1Moves = getAllValidMovesForAI(b, 1).length;
     var p2Moves = getAllValidMovesForAI(b, 2).length;
-    score += (p1Moves - p2Moves) * 5;
+    score += (p1Moves - p2Moves) * 4;
+    score += turn === 1 ? 6 : -6;
+    
+    // Endgame Cornering Logic
+    var totalPieces = p1Pieces + p2Pieces;
+    if (totalPieces <= 6) {
+        if (p1Kings > p2Kings) {
+            for (var i = 0; i < 64; i++) {
+                if (b[i] < 0) {
+                    var r = Math.floor(i / 8);
+                    var c = i % 8;
+                    var distToCenter = Math.abs(r - 3.5) + Math.abs(c - 3.5);
+                    score += distToCenter * 5; 
+                }
+            }
+        } else if (p2Kings > p1Kings) {
+            for (var i = 0; i < 64; i++) {
+                if (b[i] > 0) {
+                    var r = Math.floor(i / 8);
+                    var c = i % 8;
+                    var distToCenter = Math.abs(r - 3.5) + Math.abs(c - 3.5);
+                    score -= distToCenter * 5; 
+                }
+            }
+        }
+    }
     
     return score;
 }
 
 function quiescenceSearch(b, alpha, beta, isMaximizing, depth) {
-    if (depth <= -4) return evaluateBoard(b);
+    var player = isMaximizing ? 1 : 2;
+    var standPat = evaluateBoard(b, player);
+    if (depth <= -8) return standPat;
     
-    var standPat = evaluateBoard(b);
     if (isMaximizing) {
         if (standPat >= beta) return beta;
         if (alpha < standPat) alpha = standPat;
@@ -1222,10 +1223,10 @@ function quiescenceSearch(b, alpha, beta, isMaximizing, depth) {
         if (beta > standPat) beta = standPat;
     }
     
-    var player = isMaximizing ? 1 : 2;
     var moves = getAllCapturesForAI(b, player);
-    
     if (moves.length === 0) return standPat;
+    
+    moves.sort(function(a, b2) { return b2.captured.length - a.captured.length; });
     
     for (var i = 0; i < moves.length; i++) {
         var newB = applyMoveToBoard(b, moves[i]);
@@ -1244,30 +1245,24 @@ function quiescenceSearch(b, alpha, beta, isMaximizing, depth) {
 }
 
 function minimax(b, depth, alpha, beta, isMaximizing, ply) {
-    nodesSearched++;
-    
     var hash = boardHash(b);
     var ttEntry = transpositionTable.get(hash);
+    var ttMove = null;
     if (ttEntry && ttEntry.depth >= depth) {
         if (ttEntry.flag === 'exact') return ttEntry.score;
         if (ttEntry.flag === 'lowerbound' && ttEntry.score >= beta) return ttEntry.score;
         if (ttEntry.flag === 'upperbound' && ttEntry.score <= alpha) return ttEntry.score;
+        ttMove = ttEntry.move;
     }
     
     var player = isMaximizing ? 1 : 2;
     var moves = getAllValidMovesForAI(b, player);
     
-    if (moves.length === 0) {
-        return isMaximizing ? -10000 + ply : 10000 - ply;
-    }
+    if (moves.length === 0) return isMaximizing ? -100000 + ply : 100000 - ply;
     
-    var p1Count = 0, p2Count = 0;
-    for (var i = 0; i < 64; i++) {
-        if (b[i] > 0) p1Count++;
-        if (b[i] < 0) p2Count++;
-    }
-    if (p1Count === 0) return -10000 + ply;
-    if (p2Count === 0) return 10000 - ply;
+    moves.sort(function(a, b2) {
+        return scoreMove(b2, player, depth, ttMove) - scoreMove(a, player, depth, ttMove);
+    });
     
     if (depth <= 0) {
         return quiescenceSearch(b, alpha, beta, isMaximizing, 0);
@@ -1295,19 +1290,25 @@ function minimax(b, depth, alpha, beta, isMaximizing, ply) {
             beta = Math.min(beta, score);
         }
         
-        if (beta <= alpha) break;
+        if (beta <= alpha) {
+            if (depth < killerMoves.length) {
+                if (!killerMoves[depth]) killerMoves[depth] = [];
+                if (killerMoves[depth].length < 2) {
+                    killerMoves[depth].push(moves[i]);
+                } else {
+                    killerMoves[depth][0] = killerMoves[depth][1];
+                    killerMoves[depth][1] = moves[i];
+                }
+            }
+            break;
+        }
     }
     
     var flag = 'exact';
     if (bestScore <= oldAlpha) flag = 'upperbound';
     else if (bestScore >= beta) flag = 'lowerbound';
     
-    transpositionTable.set(hash, {
-        score: bestScore,
-        depth: depth,
-        flag: flag,
-        move: bestMove
-    });
+    transpositionTable.set(hash, { score: bestScore, depth: depth, flag: flag, move: bestMove });
     
     return bestScore;
 }
@@ -1315,50 +1316,55 @@ function minimax(b, depth, alpha, beta, isMaximizing, ply) {
 function iterativeDeepening(b, maxDepth, timeLimit, forcedR, forcedC) {
     var startTime = Date.now();
     var bestMove = null;
-    var bestScore = -Infinity;
     
     var moves;
     if (forcedR >= 0) {
         var captures = getCapturesForPiece(b, forcedR, forcedC, 2);
         var expanded = [];
-        for (var i = 0; i < captures.length; i++) {
-            expandMove(captures[i], b, 2, expanded);
-        }
+        for (var i = 0; i < captures.length; i++) expandMove(captures[i], b, 2, expanded);
         moves = expanded;
-        if (moves.length === 0) return null;
     } else {
         moves = getAllValidMovesForAI(b, 2);
-        if (moves.length === 0) return null;
     }
     
+    if (moves.length === 0) return null;
     if (moves.length === 1) return moves[0];
     
+    moves.sort(function(a, b2) { return scoreMove(b2, 2, 0, null) - scoreMove(a, 2, 0, null); });
+    
     for (var depth = 1; depth <= maxDepth; depth++) {
-        nodesSearched = 0;
+        killerMoves = []; // Reset killers per depth
         var currentBest = null;
-        var currentScore = -Infinity;
+        var currentScore = Infinity; 
+        var alpha = -Infinity;
+        var beta = Infinity;
+        var stopSearch = false;
+        
+        if (bestMove) {
+            var idx = moves.indexOf(bestMove);
+            if (idx > 0) { moves.splice(idx, 1); moves.unshift(bestMove); }
+        }
         
         for (var i = 0; i < moves.length; i++) {
-            if (Date.now() - startTime > timeLimit) {
-                return bestMove;
-            }
+            if (Date.now() - startTime > timeLimit) { stopSearch = true; break; }
             
             var newB = applyMoveToBoard(b, moves[i]);
-            var score = minimax(newB, depth - 1, -Infinity, Infinity, false, 0);
+            var score = minimax(newB, depth - 1, alpha, beta, true, 0);
             
-            if (score > currentScore) {
+            if (score < currentScore) {
                 currentScore = score;
                 currentBest = moves[i];
             }
+            beta = Math.min(beta, score); 
+            if (alpha >= beta) break;
         }
         
-        bestScore = currentScore;
-        bestMove = currentBest;
-        
-        if (bestScore > 9000) break;
-        
-        var elapsed = Date.now() - startTime;
-        if (elapsed > timeLimit * 0.7) break;
+        if (!stopSearch) {
+            bestMove = currentBest;
+            if (currentScore < -90000 || currentScore > 90000) break;
+        } else {
+            break;
+        }
     }
     
     return bestMove;
@@ -1650,4 +1656,4 @@ document.addEventListener('DOMContentLoaded',function(){
 </script>
 
 </body>
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                     </html>
+    </html>
