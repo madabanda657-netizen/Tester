@@ -988,11 +988,11 @@ function makePvPMove(fR,fC,tR,tC){
     db.ref('pvp_games/'+currentGameId).update(u);
 }
 
-/* ===== UNBEATABLE PRO MAX BOT AI (Advanced Engine) ===== */
+/* ===== UNBEATABLE PRO MAX BOT AI (Advanced Engine Depth 18) ===== */
 var transpositionTable = new Map();
-var TT_SIZE_LIMIT = 100000;
-var MAX_DEPTH = 15; 
-var TIME_LIMIT = 2500; // 2.5 seconds of intense calculation
+var TT_SIZE_LIMIT = 200000;
+var MAX_DEPTH = 18; // Increased Depth to 18
+var TIME_LIMIT = 3500; // 3.5 seconds of intense calculation
 var killerMoves = [];
 var historyTable = {};
 
@@ -1180,7 +1180,7 @@ function evaluateBoard(b, turn) {
     
     var p1Moves = getAllValidMovesForAI(b, 1).length;
     var p2Moves = getAllValidMovesForAI(b, 2).length;
-    score += (p1Moves - p2Moves) * 4;
+    score += (p1Moves - p2Moves) * 6; // Increased mobility weight to set traps
     score += turn === 1 ? 6 : -6;
     
     // Endgame Cornering Logic
@@ -1213,7 +1213,7 @@ function evaluateBoard(b, turn) {
 function quiescenceSearch(b, alpha, beta, isMaximizing, depth) {
     var player = isMaximizing ? 1 : 2;
     var standPat = evaluateBoard(b, player);
-    if (depth <= -8) return standPat;
+    if (depth <= -12) return standPat; // Deepened Quiescence to never miss captures
     
     if (isMaximizing) {
         if (standPat >= beta) return beta;
@@ -1328,6 +1328,9 @@ function iterativeDeepening(b, maxDepth, timeLimit, forcedR, forcedC) {
     }
     
     if (moves.length === 0) return null;
+    
+    // GUARANTEE a move is always played to prevent hanging
+    var fallbackMove = moves[0];
     if (moves.length === 1) return moves[0];
     
     moves.sort(function(a, b2) { return scoreMove(b2, 2, 0, null) - scoreMove(a, 2, 0, null); });
@@ -1359,32 +1362,92 @@ function iterativeDeepening(b, maxDepth, timeLimit, forcedR, forcedC) {
             if (alpha >= beta) break;
         }
         
-        if (!stopSearch) {
+        if (!stopSearch && currentBest) {
             bestMove = currentBest;
+            fallbackMove = currentBest; // Update fallback to the best known move
             if (currentScore < -90000 || currentScore > 90000) break;
         } else {
             break;
         }
     }
     
-    return bestMove;
+    return bestMove || fallbackMove;
 }
 
 function botMakeMove() {
     if (!gameState || gameState.turn !== 2 || gameState.p2 !== 'Mada_Bot') return;
     
-    var board = gameState.board.slice();
-    var bestMove = null;
-    
-    if (gameState.selected) {
-        bestMove = iterativeDeepening(board, MAX_DEPTH, TIME_LIMIT, gameState.selected[0], gameState.selected[1]);
-    } else {
-        bestMove = iterativeDeepening(board, MAX_DEPTH, TIME_LIMIT, -1, -1);
-    }
-
-    if(bestMove) {
-        var firstTo = bestMove.path ? bestMove.path[1] : bestMove.to;
-        makePvPMove(bestMove.from[0], bestMove.from[1], firstTo[0], firstTo[1]);
+    try {
+        var board = gameState.board.slice();
+        var bestMove = null;
+        
+        // Handle Forced Multi-Jumps Directly (Prevents hanging)
+        if (gameState.selected && gameState.validMoves && gameState.validMoves.length > 0) {
+            var fR = gameState.selected[0], fC = gameState.selected[1];
+            var availableCaptures = getCapturesForPiece(board, fR, fC, 2);
+            
+            var bestScore = Infinity;
+            
+            for (var i = 0; i < availableCaptures.length; i++) {
+                var cap = availableCaptures[i];
+                // Verify this capture leads to a valid destination
+                var isValidDest = false;
+                for (var j = 0; j < gameState.validMoves.length; j++) {
+                    if (cap.to[0] === gameState.validMoves[j][0] && cap.to[1] === gameState.validMoves[j][1]) {
+                        isValidDest = true;
+                        break;
+                    }
+                }
+                
+                if (isValidDest) {
+                    var newB = applyMoveToBoard(board, cap);
+                    var score = minimax(newB, MAX_DEPTH - 1, -Infinity, Infinity, true, 0);
+                    if (score < bestScore) {
+                        bestScore = score;
+                        bestMove = cap;
+                    }
+                }
+            }
+            
+            // If AI found a move, execute it. Otherwise, fallback to first valid jump.
+            if (bestMove) {
+                makePvPMove(bestMove.from[0], bestMove.from[1], bestMove.to[0], bestMove.to[1]);
+            } else if (availableCaptures.length > 0) {
+                makePvPMove(fR, fC, availableCaptures[0].to[0], availableCaptures[0].to[1]);
+            } else {
+                makePvPMove(fR, fC, gameState.validMoves[0][0], gameState.validMoves[0][1]);
+            }
+        } else {
+            // Normal Move Calculation
+            bestMove = iterativeDeepening(board, MAX_DEPTH, TIME_LIMIT, -1, -1);
+            
+            if(bestMove) {
+                var firstTo = bestMove.path ? bestMove.path[1] : bestMove.to;
+                makePvPMove(bestMove.from[0], bestMove.from[1], firstTo[0], firstTo[1]);
+            } else {
+                // Emergency Fallback
+                var moves = getAllValidMovesForAI(board, 2);
+                if (moves.length > 0) {
+                    var m = moves[0];
+                    var firstTo = m.path ? m.path[1] : m.to;
+                    makePvPMove(m.from[0], m.from[1], firstTo[0], firstTo[1]);
+                }
+            }
+        }
+    } catch (e) {
+        console.error("AI Error:", e);
+        // Absolute Emergency Fallback to prevent game freeze
+        var board = gameState.board.slice();
+        if (gameState.selected && gameState.validMoves && gameState.validMoves.length > 0) {
+            makePvPMove(gameState.selected[0], gameState.selected[1], gameState.validMoves[0][0], gameState.validMoves[0][1]);
+        } else {
+            var moves = getAllValidMovesForAI(board, 2);
+            if (moves.length > 0) {
+                var m = moves[0];
+                var firstTo = m.path ? m.path[1] : m.to;
+                makePvPMove(m.from[0], m.from[1], firstTo[0], firstTo[1]);
+            }
+        }
     }
 }
 
@@ -1656,4 +1719,4 @@ document.addEventListener('DOMContentLoaded',function(){
 </script>
 
 </body>
-    </html>
+                                                  </html>
