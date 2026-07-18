@@ -957,7 +957,7 @@ function getCapturesForPiece(b,r,c,pl){
     var p=b[r*8+c];
     if(Math.sign(p)!==s)return[];
     var caps=[],isKing=Math.abs(p)===2;
-    var dirs=isKing?[-1,1]:[-1,1],dcs=[-1,1]; 
+    var dirs=isKing?[-1,1]:[-1,1],dcs=[-1,1]; // Men can capture backward
     for(var d=0;d<dirs.length;d++){
         for(var dc=0;dc<2;dc++){
             if(isKing){
@@ -1033,23 +1033,14 @@ function makePvPMove(fR,fC,tR,tC){
 
     if(wasCapture){
         var dR=Math.sign(tR-fR),dC=Math.sign(tC-fC);
-        if(Math.abs(p)===2){
-            var ir=fR+dR,ic=fC+dC;
-            while(ir!==tR||ic!==tC){
-                var val = b[ir*8+ic];
-                // Explicitly check if it's an enemy piece before removing
-                if(val !== 0 && ((pl === 1 && val < 0) || (pl === 2 && val > 0))) {
-                    b[ir*8+ic]=0;
-                }
-                ir+=dR;ic+=dC;
-            }
-        } else {
-            var capIdx = (fR+dR)*8+(fC+dC);
-            var val = b[capIdx];
+        var ir=fR+dR,ic=fC+dC;
+        while(ir!==tR||ic!==tC){
+            var val = b[ir*8+ic];
             // Explicitly check if it's an enemy piece before removing
             if(val !== 0 && ((pl === 1 && val < 0) || (pl === 2 && val > 0))) {
-                b[capIdx]=0;
+                b[ir*8+ic]=0;
             }
+            ir+=dR;ic+=dC;
         }
         playSound('capture');
     } else {
@@ -1062,7 +1053,11 @@ function makePvPMove(fR,fC,tR,tC){
 
     var u={board:b,selected:null,validMoves:[]};
     if(wasCapture&&!promoted){
-        var nc=getCapturesForPiece(b,tR,tC,pl);
+        var nc=getCapturesForPiece(b,tR,tC,pl).filter(function(m){
+            // FIX: Prevent reversing back to the exact square we just came from
+            if(m.to[0] === fR && m.to[1] === fC) return false;
+            return true;
+        });
         if(nc.length>0){
             u.turn=pl;u.selected=[tR,tC];u.validMoves=nc.map(function(m){return m.to});
             db.ref('pvp_games/'+currentGameId).update(u);
@@ -1172,6 +1167,16 @@ function expandMove(move, b, pl, results) {
                 if (alreadyCaptured) break;
             }
             if (alreadyCaptured) continue;
+            
+            // FIX: Prevent reversing back to a square already visited in this turn
+            var alreadyVisited = false;
+            for (var j = 0; j < move.path.length; j++) {
+                if (move.path[j][0] === nc.to[0] && move.path[j][1] === nc.to[1]) {
+                    alreadyVisited = true;
+                    break;
+                }
+            }
+            if (alreadyVisited) continue;
             
             var newB = b.slice();
             var p = newB[tR * 8 + tC];
