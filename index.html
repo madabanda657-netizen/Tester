@@ -1146,6 +1146,7 @@ function applyMoveToBoard(b, move) {
 }
 
 function expandMove(move, b, pl, results) {
+    if (results.length > 50) return; // Cap at 50 paths to prevent UI freeze
     var tR = move.to[0], tC = move.to[1];
     var nextCaptures = getCapturesForPiece(b, tR, tC, pl);
     
@@ -1153,6 +1154,7 @@ function expandMove(move, b, pl, results) {
         results.push(move);
     } else {
         for (var i = 0; i < nextCaptures.length; i++) {
+            if (results.length > 50) break;
             var nc = nextCaptures[i];
             
             var alreadyCaptured = false;
@@ -1213,6 +1215,7 @@ function getAllValidMovesForAI(b, pl) {
     if (captures.length > 0) {
         var expanded = [];
         for (var i = 0; i < captures.length; i++) {
+            if (expanded.length > 50) break; // Cap at 50
             var initialMove = captures[i];
             var initialBoard = applyMoveToBoard(b, initialMove);
             var wasPromoted = false;
@@ -1261,6 +1264,7 @@ function getAllCapturesForAI(b, pl) {
     
     var expanded = [];
     for (var i = 0; i < captures.length; i++) {
+        if (expanded.length > 50) break; // Cap at 50
         var initialMove = captures[i];
         var initialBoard = applyMoveToBoard(b, initialMove);
         var wasPromoted = false;
@@ -1544,6 +1548,7 @@ function botMakeMove() {
             var captures = getCapturesForPiece(board, fR, fC, 2);
             var expanded = [];
             for (var i = 0; i < captures.length; i++) {
+                if (expanded.length > 50) break; // Cap at 50 to prevent freeze
                 var initialMove = captures[i];
                 var initialBoard = applyMoveToBoard(board, initialMove);
                 var wasPromoted = false;
@@ -1597,16 +1602,32 @@ function botMakeMove() {
         }
     } catch (e) {
         console.error("AI Error:", e);
-        var board = gameState.board.slice();
-        if (gameState.selected && gameState.validMoves && gameState.validMoves.length > 0) {
-            makePvPMove(gameState.selected[0], gameState.selected[1], gameState.validMoves[0][0], gameState.validMoves[0][1]);
-        } else {
-            var moves = getAllValidMovesForAI(board, 2);
-            if (moves.length > 0) {
-                var m = moves[0];
-                var firstTo = m.path ? m.path[1] : m.to;
-                makePvPMove(m.from[0], m.from[1], firstTo[0], firstTo[1]);
+        // BULLETPROOF SAFETY NET: If AI fails, just make a valid move instantly to prevent freezing
+        try {
+            if (gameState.selected && gameState.validMoves && gameState.validMoves.length > 0) {
+                makePvPMove(gameState.selected[0], gameState.selected[1], gameState.validMoves[0][0], gameState.validMoves[0][1]);
+            } else {
+                var board = gameState.board.slice();
+                var moved = false;
+                for (var r=0; r<8 && !moved; r++) {
+                    for (var c=0; c<8 && !moved; c++) {
+                        if (board[r*8+c] < 0) {
+                            var simpleMoves = getSimpleMovesForPiece(board, r, c, 2);
+                            if (simpleMoves.length > 0) {
+                                makePvPMove(r, c, simpleMoves[0].to[0], simpleMoves[0].to[1]);
+                                moved = true;
+                            }
+                            var caps = getCapturesForPiece(board, r, c, 2);
+                            if (caps.length > 0) {
+                                makePvPMove(r, c, caps[0].to[0], caps[0].to[1]);
+                                moved = true;
+                            }
+                        }
+                    }
+                }
             }
+        } catch (e2) {
+            console.error("AI Fallback Error:", e2);
         }
     }
 }
