@@ -71,7 +71,7 @@
 @keyframes splashPulse { 0% { transform: scale(1); box-shadow: 0 0 30px rgba(0,255,204,0.2); } 100% { transform: scale(1.03); box-shadow: 0 0 50px rgba(0,255,204,0.5); } }
 .deposit-rules { text-align: left; background: #1a1a0a; border: 1px dashed #ffd700; padding: 15px; border-radius: 10px; margin-bottom: 15px; }
 .deposit-step { margin-bottom: 10px; padding-left: 25px; position: relative; font-size: 13px; color: #ddd; line-height: 1.4; }
-.deposit-step::before { content: attr(data-num); position: absolute; left: 0; top: 0; background: #ffd700; color: #000; width: 18px; height: 18px; borderRadius: 50%; font-size: 11px; font-weight: bold; display: flex; align-items: center; justify-content: center; }
+.deposit-step::before { content: attr(data-num); position: absolute; left: 0; top: 0; background: #ffd700; color: #000; width: 18px; height: 18px; border-radius: 50%; font-size: 11px; font-weight: bold; display: flex; align-items: center; justify-content: center; }
 .deposit-warning { color: #ff6b6b; font-weight: bold; font-size: 12px; margin-top: 10px; display: block; }
 .auth-links { margin-top: 15px; font-size: 13px; color: #888; }
 .auth-links a { color: #00ffcc; text-decoration: underline; cursor: pointer; }
@@ -597,7 +597,6 @@ var db=null;
 try{if(typeof firebase!=='undefined'&&firebase.apps&&firebase.apps.length===0){firebase.initializeApp({apiKey:"AIzaSyBRDfT-P8wzVAAZs8lveF1-ZTf8QlpRC5g",authDomain:"apple-green-ded09.firebaseapp.com",databaseURL:"https://apple-green-ded09-default-rtdb.firebaseio.com",projectId:"apple-green-ded09",storageBucket:"apple-green-ded09.firebasestorage.app",messagingSenderId:"1093712798003",appId:"1:1093712798003:web:2a945cd7fc76641dab5e46"});db=firebase.database();var appCheck=firebase.appCheck();appCheck.activate(new firebase.appCheck.ReCaptchaV3Provider('6LeoB_8sAAAAAJS4kepjICEYny7besSCK4mv3l9Q'),true);appCheck.getToken().then(function(t){var b=document.getElementById('appcheckBadge');if(b){if(t&&t.token){b.className='appcheck-badge ok';b.textContent='🔒 App Check: Active';setTimeout(function(){b.style.display='none'},3000)}else{b.className='appcheck-badge fail';setTimeout(function(){b.style.display='none'},5000)}}}).catch(function(){var b=document.getElementById('appcheckBadge');if(b){b.className='appcheck-badge fail';setTimeout(function(){b.style.display='none'},5000)}})}}catch(e){db=null}
 
 var DAILY_LIMIT=12000;var gameState={};var captchaAnswer=0;
-// Updated Safe Stakes Plan (Max 500 MWK)
 var PVP_GRADES=[{id:1,name:'Grade 1',entryMWK:50,winMWK:80,icon:'🥉'},{id:2,name:'Grade 2',entryMWK:200,winMWK:320,icon:'🥈'},{id:3,name:'Grade 3',entryMWK:300,winMWK:480,icon:'🥇'},{id:4,name:'Grade 4',entryMWK:500,winMWK:800,icon:'💎'}];
 var myUid=null;var myPlayerNumber=0;var currentGameId=null;var gameListener=null;var processedGameEnds={};
 var isHumanReg = false; var isHumanLogin = false;
@@ -794,11 +793,11 @@ function showBalance(){
     document.getElementById("statLost").innerText=parseInt(d.gamesLost)||0;
   });
 }
-function loadReferralData(){if(!db||!myUid)return;var bu=window.location.href.split('?')[0];document.getElementById('refLinkInput').value=bu+'?ref='+myUid;db.ref('referrals/'+myUid).once('value',function(s){var c=s.numChildren();document.getElementById('refCount').innerText=c;db.ref('leaderboard_all/'+myUid+'/referralClaimed').once('value',function(cs){var cl=cs.val()||0,uc=Math.floor(c/5)-cl,cb=document.getElementById('claimRefBtn');if(uc>0){cb.style.display='block';cb.innerText='🎉 Claim MWK '+(uc*10)}else cb.style.display='none'}})})}
+function loadReferralData(){if(!db||!myUid)return;var bu=window.location.href.split('?')[0];document.getElementById('refLinkInput').value=bu+'?ref='+myUid;db.ref('referrals/'+myUid).once('value',function(s){var c=s.numChildren();document.getElementById('refCount').innerText=c;db.ref('leaderboard_all/'+myUid+'/referralClaimed').once('value',function(cs){var cl=cs.val()||0,uc=Math.floor(c/5)-cl,cb=document.getElementById('claimRefBtn');if(uc>0){cb.style.display='block';cb.innerText='🎉 Claim MWK '+(uc*10)}else cb.style.display='none'})})}
 function copyRefLink(){var ct=document.getElementById("refLinkInput");if(navigator.clipboard)navigator.clipboard.writeText(ct.value);else{ct.select();document.execCommand("copy")}alert("Copied!")}
 function claimReferralBonus(){if(!db||!myUid)return;db.ref('referrals/'+myUid).once('value',function(s){var c=s.numChildren();db.ref('leaderboard_all/'+myUid).once('value',function(us){var ud=us.val()||{},cl=ud.referralClaimed||0,uc=Math.floor(c/5)-cl;if(uc>0){db.ref('leaderboard_all/'+myUid).update({mwk:(ud.mwk||0)+(uc*10),referralClaimed:cl+uc},function(e){if(!e){alert('🎉 Claimed MWK '+(uc*10)+'!');showBalance();loadReferralData()}})}})})}
 
-function renderGrades(){var g=document.getElementById('gradeGrid'),h='';PVP_GRADES.forEach(function(gr){h+='<div class="grade-card" onclick="joinPvP('+gr.id+')"><div class="grade-icon">'+gr.icon+'</div><h3 style="color:#fff;font-size:16px">'+gr.name+'</div><div class="grade-entry">Pay: MWK '+gr.entryMWK+'</div><div class="grade-prize">Win: MWK '+gr.winMWK+'</div></div>'});g.innerHTML=h;showBalance();
+function renderGrades(){var g=document.getElementById('gradeGrid'),h='';PVP_GRADES.forEach(function(gr){h+='<div class="grade-card" onclick="joinPvP('+gr.id+')"><div class="grade-icon">'+gr.icon+'</div><h3 style="color:#fff;font-size:16px">'+gr.name+'</h3><div class="grade-entry">Pay: MWK '+gr.entryMWK+'</div><div class="grade-prize">Win: MWK '+gr.winMWK+'</div></div>'});g.innerHTML=h;showBalance();
 
     if(db){
         db.ref('online_status').orderByChild('online').equalTo(true).on('value',function(snap){
@@ -992,10 +991,9 @@ function makePvPMove(fR,fC,tR,tC){
 /* ===== UNBEATABLE PRO MAX BOT AI (Advanced Engine Depth 18) ===== */
 var transpositionTable = new Map();
 var TT_SIZE_LIMIT = 200000;
-var MAX_DEPTH = 18; // Increased Depth to 18
-var TIME_LIMIT = 1500; // 1.5 seconds of intense calculation (prevents freezing)
+var MAX_DEPTH = 18; 
+var TIME_LIMIT = 1500; 
 var killerMoves = [];
-var historyTable = {};
 
 setInterval(function() {
     if (transpositionTable.size > TT_SIZE_LIMIT) {
@@ -1025,34 +1023,41 @@ function applyMoveToBoard(b, move) {
 }
 
 function expandMove(move, b, pl, results) {
-    var newB = applyMoveToBoard(b, move);
     var tR = move.to[0], tC = move.to[1];
-    var p = newB[tR * 8 + tC];
     
-    var wasPromoted = false;
-    if (pl === 1 && move.to[0] === 0 && p === 2) wasPromoted = true;
-    if (pl === 2 && move.to[0] === 7 && p === -2) wasPromoted = true;
-    
-    if (wasPromoted) {
-        results.push(move);
-        return;
-    }
-    
-    var nextCaptures = getCapturesForPiece(newB, tR, tC, pl);
+    var nextCaptures = getCapturesForPiece(b, tR, tC, pl);
     
     if (nextCaptures.length === 0) {
         results.push(move);
     } else {
         for (var i = 0; i < nextCaptures.length; i++) {
             var nc = nextCaptures[i];
+            
+            var newB = b.slice();
+            var p = newB[tR * 8 + tC];
+            newB[tR * 8 + tC] = 0;
+            newB[nc.to[0] * 8 + nc.to[1]] = p;
+            for (var j = 0; j < nc.captured.length; j++) {
+                var cap = nc.captured[j];
+                newB[cap[0] * 8 + cap[1]] = 0;
+            }
+            
+            var wasPromoted = false;
+            if (pl === 1 && nc.to[0] === 0 && p === 1) { newB[nc.to[0] * 8 + nc.to[1]] = 2; wasPromoted = true; }
+            if (pl === 2 && nc.to[0] === 7 && p === -1) { newB[nc.to[0] * 8 + nc.to[1]] = -2; wasPromoted = true; }
+            
             var combinedMove = {
                 from: move.from,
                 to: nc.to,
                 captured: move.captured.concat(nc.captured),
-                // FIX: Correctly build the path including the first landing spot
-                path: (move.path || [move.from, move.to]).concat([nc.to])
+                path: (move.path || [move.from]).concat([nc.to])
             };
-            expandMove(combinedMove, newB, pl, results);
+            
+            if (wasPromoted) {
+                results.push(combinedMove);
+            } else {
+                expandMove(combinedMove, newB, pl, results);
+            }
         }
     }
 }
@@ -1074,7 +1079,19 @@ function getAllValidMovesForAI(b, pl) {
     if (captures.length > 0) {
         var expanded = [];
         for (var i = 0; i < captures.length; i++) {
-            expandMove(captures[i], b, pl, expanded);
+            var initialMove = captures[i];
+            var initialBoard = applyMoveToBoard(b, initialMove);
+            
+            var wasPromoted = false;
+            var p = b[initialMove.from[0] * 8 + initialMove.from[1]];
+            if (pl === 1 && initialMove.to[0] === 0 && p === 1) wasPromoted = true;
+            if (pl === 2 && initialMove.to[0] === 7 && p === -1) wasPromoted = true;
+            
+            if (wasPromoted) {
+                expanded.push(initialMove);
+            } else {
+                expandMove(initialMove, initialBoard, pl, expanded);
+            }
         }
         expanded.sort(function(a, b2) {
             return b2.captured.length - a.captured.length;
@@ -1111,7 +1128,19 @@ function getAllCapturesForAI(b, pl) {
     
     var expanded = [];
     for (var i = 0; i < captures.length; i++) {
-        expandMove(captures[i], b, pl, expanded);
+        var initialMove = captures[i];
+        var initialBoard = applyMoveToBoard(b, initialMove);
+        
+        var wasPromoted = false;
+        var p = b[initialMove.from[0] * 8 + initialMove.from[1]];
+        if (pl === 1 && initialMove.to[0] === 0 && p === 1) wasPromoted = true;
+        if (pl === 2 && initialMove.to[0] === 7 && p === -1) wasPromoted = true;
+        
+        if (wasPromoted) {
+            expanded.push(initialMove);
+        } else {
+            expandMove(initialMove, initialBoard, pl, expanded);
+        }
     }
     
     expanded.sort(function(a, b2) {
@@ -1182,7 +1211,6 @@ function evaluateBoard(b, turn) {
     
     score += turn === 1 ? 6 : -6;
     
-    // Endgame Cornering Logic
     var totalPieces = p1Pieces + p2Pieces;
     if (totalPieces <= 6) {
         if (p1Kings > p2Kings) {
@@ -1212,7 +1240,7 @@ function evaluateBoard(b, turn) {
 function quiescenceSearch(b, alpha, beta, isMaximizing, depth) {
     var player = isMaximizing ? 1 : 2;
     var standPat = evaluateBoard(b, player);
-    if (depth <= -12) return standPat; // Deepened Quiescence to never miss captures
+    if (depth <= -12) return standPat;
     
     if (isMaximizing) {
         if (standPat >= beta) return beta;
@@ -1259,339 +1287,347 @@ function minimax(b, depth, alpha, beta, isMaximizing, ply) {
     
     if (moves.length === 0) return isMaximizing ? -100000 + ply : 100000 - ply;
     
-           moves.sort(function(a, b2) {
-            return scoreMove(b2, player, depth, ttMove) - scoreMove(a, player, depth, ttMove);
-        });
+    moves.sort(function(a, b2) {
+        return scoreMove(b2, player, depth, ttMove) - scoreMove(a, player, depth, ttMove);
+    });
+    
+    if (depth <= 0) {
+        return quiescenceSearch(b, alpha, beta, isMaximizing, 0);
+    }
+    
+    var bestScore = isMaximizing ? -Infinity : Infinity;
+    var bestMove = null;
+    var oldAlpha = alpha;
+    
+    for (var i = 0; i < moves.length; i++) {
+        var newB = applyMoveToBoard(b, moves[i]);
+        var score = minimax(newB, depth - 1, alpha, beta, !isMaximizing, ply + 1);
         
-        if (depth <= 0) {
-            return quiescenceSearch(b, alpha, beta, isMaximizing, 0);
+        if (isMaximizing) {
+            if (score > bestScore) {
+                bestScore = score;
+                bestMove = moves[i];
+            }
+            alpha = Math.max(alpha, score);
+        } else {
+            if (score < bestScore) {
+                bestScore = score;
+                bestMove = moves[i];
+            }
+            beta = Math.min(beta, score);
         }
         
-        var bestScore = isMaximizing ? -Infinity : Infinity;
-        var bestMove = null;
-        var oldAlpha = alpha;
+        if (beta <= alpha) {
+            if (depth < killerMoves.length) {
+                if (!killerMoves[depth]) killerMoves[depth] = [];
+                if (killerMoves[depth].length < 2) {
+                    killerMoves[depth].push(moves[i]);
+                } else {
+                    killerMoves[depth][0] = killerMoves[depth][1];
+                    killerMoves[depth][1] = moves[i];
+                }
+            }
+            break;
+        }
+    }
+    
+    var flag = 'exact';
+    if (bestScore <= oldAlpha) flag = 'upperbound';
+    else if (bestScore >= beta) flag = 'lowerbound';
+    
+    transpositionTable.set(hash, { score: bestScore, depth: depth, flag: flag, move: bestMove });
+    
+    return bestScore;
+}
+
+function iterativeDeepening(b, maxDepth, timeLimit, forcedR, forcedC) {
+    var startTime = Date.now();
+    var bestMove = null;
+    
+    var moves;
+    if (forcedR >= 0) {
+        var captures = getCapturesForPiece(b, forcedR, forcedC, 2);
+        var expanded = [];
+        for (var i = 0; i < captures.length; i++) expandMove(captures[i], b, 2, expanded);
+        moves = expanded;
+    } else {
+        moves = getAllValidMovesForAI(b, 2);
+    }
+    
+    if (moves.length === 0) return null;
+    
+    var fallbackMove = moves[0];
+    if (moves.length === 1) return moves[0];
+    
+    moves.sort(function(a, b2) { return scoreMove(b2, 2, 0, null) - scoreMove(a, 2, 0, null); });
+    
+    for (var depth = 1; depth <= maxDepth; depth++) {
+        killerMoves = [];
+        var currentBest = null;
+        var currentScore = Infinity; 
+        var alpha = -Infinity;
+        var beta = Infinity;
+        var stopSearch = false;
+        
+        if (bestMove) {
+            var idx = moves.indexOf(bestMove);
+            if (idx > 0) { moves.splice(idx, 1); moves.unshift(bestMove); }
+        }
         
         for (var i = 0; i < moves.length; i++) {
+            if (Date.now() - startTime > timeLimit) { stopSearch = true; break; }
+            
             var newB = applyMoveToBoard(b, moves[i]);
-            var score = minimax(newB, depth - 1, alpha, beta, !isMaximizing, ply + 1);
+            var score = minimax(newB, depth - 1, alpha, beta, true, 0);
             
-            if (isMaximizing) {
-                if (score > bestScore) {
-                    bestScore = score;
-                    bestMove = moves[i];
-                }
-                alpha = Math.max(alpha, score);
-            } else {
-                if (score < bestScore) {
-                    bestScore = score;
-                    bestMove = moves[i];
-                }
-                beta = Math.min(beta, score);
+            if (score < currentScore) {
+                currentScore = score;
+                currentBest = moves[i];
             }
-            
-            if (beta <= alpha) {
-                if (depth < killerMoves.length) {
-                    if (!killerMoves[depth]) killerMoves[depth] = [];
-                    if (killerMoves[depth].length < 2) {
-                        killerMoves[depth].push(moves[i]);
-                    } else {
-                        killerMoves[depth][0] = killerMoves[depth][1];
-                        killerMoves[depth][1] = moves[i];
-                    }
-                }
-                break;
-            }
+            beta = Math.min(beta, score); 
+            if (alpha >= beta) break;
         }
         
-        var flag = 'exact';
-        if (bestScore <= oldAlpha) flag = 'upperbound';
-        else if (bestScore >= beta) flag = 'lowerbound';
-        
-        transpositionTable.set(hash, { score: bestScore, depth: depth, flag: flag, move: bestMove });
-        
-        return bestScore;
+        if (!stopSearch && currentBest) {
+            bestMove = currentBest;
+            fallbackMove = currentBest;
+            if (currentScore < -90000 || currentScore > 90000) break;
+        } else {
+            break;
+        }
     }
+    
+    return bestMove || fallbackMove;
+}
 
-    function iterativeDeepening(b, maxDepth, timeLimit, forcedR, forcedC) {
-        var startTime = Date.now();
+function botMakeMove() {
+    if (!gameState || gameState.turn !== 2 || gameState.p2 !== 'Mada_Bot') return;
+    
+    try {
+        var board = gameState.board.slice();
         var bestMove = null;
         
-        var moves;
-        if (forcedR >= 0) {
-            var captures = getCapturesForPiece(b, forcedR, forcedC, 2);
+        if (gameState.selected && gameState.validMoves && gameState.validMoves.length > 0) {
+            var fR = gameState.selected[0], fC = gameState.selected[1];
+            var captures = getCapturesForPiece(board, fR, fC, 2);
             var expanded = [];
-            for (var i = 0; i < captures.length; i++) expandMove(captures[i], b, 2, expanded);
-            moves = expanded;
-        } else {
-            moves = getAllValidMovesForAI(b, 2);
-        }
-        
-        if (moves.length === 0) return null;
-        
-        // GUARANTEE a move is always played to prevent hanging
-        var fallbackMove = moves[0];
-        if (moves.length === 1) return moves[0];
-        
-        moves.sort(function(a, b2) { return scoreMove(b2, 2, 0, null) - scoreMove(a, 2, 0, null); });
-        
-        for (var depth = 1; depth <= maxDepth; depth++) {
-            killerMoves = []; // Reset killers per depth
-            var currentBest = null;
-            var currentScore = Infinity; 
-            var alpha = -Infinity;
-            var beta = Infinity;
-            var stopSearch = false;
-            
-            if (bestMove) {
-                var idx = moves.indexOf(bestMove);
-                if (idx > 0) { moves.splice(idx, 1); moves.unshift(bestMove); }
-            }
-            
-            for (var i = 0; i < moves.length; i++) {
-                if (Date.now() - startTime > timeLimit) { stopSearch = true; break; }
+            for (var i = 0; i < captures.length; i++) {
+                var initialMove = captures[i];
+                var initialBoard = applyMoveToBoard(board, initialMove);
                 
-                var newB = applyMoveToBoard(b, moves[i]);
-                var score = minimax(newB, depth - 1, alpha, beta, true, 0);
+                var wasPromoted = false;
+                var p = board[fR * 8 + fC];
+                if (initialMove.to[0] === 7 && p === -1) wasPromoted = true;
                 
-                if (score < currentScore) {
-                    currentScore = score;
-                    currentBest = moves[i];
+                if (wasPromoted) {
+                    expanded.push(initialMove);
+                } else {
+                    expandMove(initialMove, initialBoard, 2, expanded);
                 }
-                beta = Math.min(beta, score); 
-                if (alpha >= beta) break;
             }
             
-            if (!stopSearch && currentBest) {
-                bestMove = currentBest;
-                fallbackMove = currentBest; // Update fallback to the best known move
-                if (currentScore < -90000 || currentScore > 90000) break;
-            } else {
-                break;
-            }
-        }
-        
-        return bestMove || fallbackMove;
-    }
-
-    function botMakeMove() {
-        if (!gameState || gameState.turn !== 2 || gameState.p2 !== 'Mada_Bot') return;
-        
-        try {
-            var board = gameState.board.slice();
-            var bestMove = null;
-            
-            // Handle Forced Multi-Jumps INSTANTLY (Prevents freezing)
-            if (gameState.selected && gameState.validMoves && gameState.validMoves.length > 0) {
-                var fR = gameState.selected[0], fC = gameState.selected[1];
-                var captures = getCapturesForPiece(board, fR, fC, 2);
-                var expanded = [];
-                for (var i = 0; i < captures.length; i++) expandMove(captures[i], board, 2, expanded);
-                
-                var validExpanded = [];
-                for (var i = 0; i < expanded.length; i++) {
-                    var firstTo = expanded[i].path ? expanded[i].path[1] : expanded[i].to;
-                    for (var j = 0; j < gameState.validMoves.length; j++) {
-                        if (firstTo[0] === gameState.validMoves[j][0] && firstTo[1] === gameState.validMoves[j][1]) {
-                            validExpanded.push(expanded[i]);
-                            break;
-                        }
+            var validExpanded = [];
+            for (var i = 0; i < expanded.length; i++) {
+                var firstTo = expanded[i].path ? expanded[i].path[1] : expanded[i].to;
+                for (var j = 0; j < gameState.validMoves.length; j++) {
+                    if (firstTo[0] === gameState.validMoves[j][0] && firstTo[1] === gameState.validMoves[j][1]) {
+                        validExpanded.push(expanded[i]);
+                        break;
                     }
                 }
-                
-                if (validExpanded.length > 0) {
-                    // Sort by most captures, then by advancement (AI is player 2, prefers larger rows to reach row 7)
-                    validExpanded.sort(function(a, b) {
-                        if (b.captured.length !== a.captured.length) return b.captured.length - a.captured.length;
-                        return b.to[0] - a.to[0]; // Fixed: AI prefers moving downwards to become a King
-                    });
-                    bestMove = validExpanded[0];
-                } else {
-                    // Fallback to the exact valid move provided by game state
-                    bestMove = { from: [fR, fC], to: gameState.validMoves[0] };
-                }
-                
-                var firstTo = bestMove.path ? bestMove.path[1] : bestMove.to;
-                makePvPMove(bestMove.from[0], bestMove.from[1], firstTo[0], firstTo[1]);
-                return;
             }
             
-            // Normal Move Calculation (Deep Search)
-            bestMove = iterativeDeepening(board, MAX_DEPTH, TIME_LIMIT, -1, -1);
-            
-            if (bestMove) {
-                var firstTo = bestMove.path ? bestMove.path[1] : bestMove.to;
-                makePvPMove(bestMove.from[0], bestMove.from[1], firstTo[0], firstTo[1]);
+            if (validExpanded.length > 0) {
+                validExpanded.sort(function(a, b) {
+                    if (b.captured.length !== a.captured.length) return b.captured.length - a.captured.length;
+                    return a.to[0] - b.to[0]; 
+                });
+                bestMove = validExpanded[0];
             } else {
-                var moves = getAllValidMovesForAI(board, 2);
-                if (moves.length > 0) {
-                    var m = moves[0];
-                    var firstTo = m.path ? m.path[1] : m.to;
-                    makePvPMove(m.from[0], m.from[1], firstTo[0], firstTo[1]);
-                }
+                bestMove = { from: [fR, fC], to: gameState.validMoves[0] };
             }
-        } catch (e) {
-            console.error("AI Error:", e);
-            var board = gameState.board.slice();
-            if (gameState.selected && gameState.validMoves && gameState.validMoves.length > 0) {
-                makePvPMove(gameState.selected[0], gameState.selected[1], gameState.validMoves[0][0], gameState.validMoves[0][1]);
-            } else {
-                var moves = getAllValidMovesForAI(board, 2);
-                if (moves.length > 0) {
-                    var m = moves[0];
-                    var firstTo = m.path ? m.path[1] : m.to;
-                    makePvPMove(m.from[0], m.from[1], firstTo[0], firstTo[1]);
-                }
-            }
-        }
-    }
-
-    function endPvPGame(g){if(!currentGameId)return;if(processedGameEnds[currentGameId]){currentGameId=null;gameState={};gameListener=null;myPlayerNumber=0;showPage('profile');return}processedGameEnds[currentGameId]=true;var endedGameId=currentGameId;currentGameId=null;gameState={};if(gameListener){db.ref('pvp_games/'+gameListener).off()}gameListener=null;myPlayerNumber=0;var isDraw=g.winner==='draw';var isWin=!isDraw&&g.winner===myUid;if(isDraw)playSound('move');else if(isWin)playSound('win');else playSound('lose');db.ref('leaderboard_all/'+myUid).once('value',function(s){var d=s.val()||{},u={};var opponent=g.p1===myUid?g.p2:g.p1;if(isDraw){u.mwk=(d.mwk||0)+(g.entryMWK||0);u.gamesPlayed=(parseInt(d.gamesPlayed)||0)+1;u.winStreak=0;db.ref('match_history/'+myUid).push({opponent:opponent,result:'draw',amount:g.entryMWK,gradeId:g.gradeId,timestamp:Date.now()});db.ref('leaderboard_all/'+myUid).update(u,function(){alert('🤝 DRAW! MWK '+(g.entryMWK||0)+' refunded.');showPage('profile')})}else{u.gamesPlayed=(parseInt(d.gamesPlayed)||0)+1;u.gamesWon=(parseInt(d.gamesWon)||0)+(isWin?1:0);u.gamesLost=(parseInt(d.gamesLost)||0)+(isWin?0:1);u.winStreak=isWin?((d.winStreak||0)+1):0;if(isWin)u.mwk=(d.mwk||0)+(g.winMWK||0);db.ref('match_history/'+myUid).push({opponent:opponent,result:isWin?'win':'loss',amount:isWin?g.winMWK:g.entryMWK,gradeId:g.gradeId,timestamp:Date.now()});db.ref('leaderboard_all/'+myUid).update(u,function(){alert(isWin?'🎉 YOU WIN! +MWK '+(g.winMWK||0):'😞 You Lost! MWK '+(g.entryMWK||0));showPage('profile')})}});var now=Date.now();processedGameEnds[endedGameId]=now;Object.keys(processedGameEnds).forEach(function(k){if(typeof processedGameEnds[k]==='number'&&now-processedGameEnds[k]>300000){delete processedGameEnds[k]}});setTimeout(function(){if(db)db.ref('pvp_games/'+endedGameId).remove()},5000)}
-
-    function cancelMatchmaking(){if(botMatchTimeout){clearTimeout(botMatchTimeout);botMatchTimeout=null;}if(db&&myUid){db.ref('pvp_queue').once('value',function(s){s.forEach(function(gs){if(gs.val()&&gs.val()[myUid]){var gid=gs.key;db.ref('pvp_queue/'+gid+'/'+myUid).remove()}})})}document.getElementById('searchingOverlay').style.display='none'}
-    function exitGame(){if(confirm('Leave & FORFEIT?')){if(db&&currentGameId&&gameState){var winner=myPlayerNumber===1?gameState.p2:gameState.p1;db.ref('pvp_games/'+currentGameId).update({status:'finished',winner:winner})}}}
-
-    /* ===== PAYCHANGU AUTOMATED DEPOSIT & WITHDRAW ===== */
-    var PIPEDREAM_DEPOSIT_URL = "https://mada-backend.vercel.app/api/deposit"; 
-    var PIPEDREAM_WITHDRAW_URL = "https://mada-backend.vercel.app/api/withdraw";
-
-    async function submitOneKhusaDeposit() {
-        var amount = document.getElementById("okDepositAmount").value;
-        var msgEl = document.getElementById("okDepositMsg");
-        
-        if(!myUid){ alert("Please login first."); return; }
-        
-        msgEl.innerHTML = '<span class="success">⏳ Generating secure payment link...</span>';
-        
-        try {
-            var response = await fetch(PIPEDREAM_DEPOSIT_URL, {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({
-                    uid: myUid,
-                    amount: amount
-                })
-            });
             
-            var result = await response.json();
-            
-            if(result.success && result.checkout_url) {
-                msgEl.innerHTML = '<span class="success" style="color:#51cf66;">✅ Redirecting to PayChangu...</span>';
-                window.location.href = result.checkout_url;
-            } else {
-                msgEl.innerHTML = '<span class="error">❌ Error: ' + (result.message || 'Failed to initiate') + '</span>';
-            }
-        } catch (e) {
-            msgEl.innerHTML = '<span class="error">Error: ' + e.message + '</span>';
-        }
-    }
-
-    async function submitOneKhusaWithdraw() {
-        if(!db || !myUid) return;
-        var amount = parseInt(document.getElementById("withdrawAmount").value);
-        var msgEl = document.getElementById("withdrawMsg");
-        
-        if(amount > 50000) {
-            msgEl.innerHTML = '<span class="error">⚠️ Maximum withdrawal is 50,000 MWK per request.</span>';
+            var firstTo = bestMove.path ? bestMove.path[1] : bestMove.to;
+            makePvPMove(bestMove.from[0], bestMove.from[1], firstTo[0], firstTo[1]);
             return;
         }
         
-        msgEl.innerHTML = '<span class="success">⏳ Processing withdrawal...</span>';
-
-        try {
-            var response = await fetch(PIPEDREAM_WITHDRAW_URL, {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({
-                    action: "withdraw",
-                    uid: myUid,
-                    amount: amount,
-                    secret: mySecret
-                })
-            });
-            
-            var result = await response.json();
-            if(result.success) {
-                msgEl.innerHTML = '<span class="success" style="color:#51cf66;">✅ ' + result.message + '</span>';
-                showBalance(); 
-            } else {
-                msgEl.innerHTML = '<span class="error">❌ Error: ' + (result.message || 'Failed') + '</span>';
-                showBalance(); 
+        bestMove = iterativeDeepening(board, MAX_DEPTH, TIME_LIMIT, -1, -1);
+        
+        if (bestMove) {
+            var firstTo = bestMove.path ? bestMove.path[1] : bestMove.to;
+            makePvPMove(bestMove.from[0], bestMove.from[1], firstTo[0], firstTo[1]);
+        } else {
+            var moves = getAllValidMovesForAI(board, 2);
+            if (moves.length > 0) {
+                var m = moves[0];
+                var firstTo = m.path ? m.path[1] : m.to;
+                makePvPMove(m.from[0], m.from[1], firstTo[0], firstTo[1]);
             }
-        } catch (e) {
-            msgEl.innerHTML = '<span class="error">Error: ' + e.message + '</span>';
-            showBalance();
+        }
+    } catch (e) {
+        console.error("AI Error:", e);
+        var board = gameState.board.slice();
+        if (gameState.selected && gameState.validMoves && gameState.validMoves.length > 0) {
+            makePvPMove(gameState.selected[0], gameState.selected[1], gameState.validMoves[0][0], gameState.validMoves[0][1]);
+        } else {
+            var moves = getAllValidMovesForAI(board, 2);
+            if (moves.length > 0) {
+                var m = moves[0];
+                var firstTo = m.path ? m.path[1] : m.to;
+                makePvPMove(m.from[0], m.from[1], firstTo[0], firstTo[1]);
+            }
         }
     }
+}
 
-    function listenMyDeposits(){
-      if(!db||!myUid) return;
-      db.ref('deposit_requests').orderByChild('uid').equalTo(myUid).on('value', function(s){
-        var h = '<div style="font-size:14px;color:#888;margin-bottom:8px">Deposit History</div>';
-        if(!s.exists()){
-          h += '<div style="text-align:center;color:#555;font-size:12px;padding:10px;">No deposits yet</div>';
+function endPvPGame(g){if(!currentGameId)return;if(processedGameEnds[currentGameId]){currentGameId=null;gameState={};gameListener=null;myPlayerNumber=0;showPage('profile');return}processedGameEnds[currentGameId]=true;var endedGameId=currentGameId;currentGameId=null;gameState={};if(gameListener){db.ref('pvp_games/'+gameListener).off()}gameListener=null;myPlayerNumber=0;var isDraw=g.winner==='draw';var isWin=!isDraw&&g.winner===myUid;if(isDraw)playSound('move');else if(isWin)playSound('win');else playSound('lose');db.ref('leaderboard_all/'+myUid).once('value',function(s){var d=s.val()||{},u={};var opponent=g.p1===myUid?g.p2:g.p1;if(isDraw){u.mwk=(d.mwk||0)+(g.entryMWK||0);u.gamesPlayed=(parseInt(d.gamesPlayed)||0)+1;u.winStreak=0;db.ref('match_history/'+myUid).push({opponent:opponent,result:'draw',amount:g.entryMWK,gradeId:g.gradeId,timestamp:Date.now()});db.ref('leaderboard_all/'+myUid).update(u,function(){alert('🤝 DRAW! MWK '+(g.entryMWK||0)+' refunded.');showPage('profile')})}else{u.gamesPlayed=(parseInt(d.gamesPlayed)||0)+1;u.gamesWon=(parseInt(d.gamesWon)||0)+(isWin?1:0);u.gamesLost=(parseInt(d.gamesLost)||0)+(isWin?0:1);u.winStreak=isWin?((d.winStreak||0)+1):0;if(isWin)u.mwk=(d.mwk||0)+(g.winMWK||0);db.ref('match_history/'+myUid).push({opponent:opponent,result:isWin?'win':'loss',amount:isWin?g.winMWK:g.entryMWK,gradeId:g.gradeId,timestamp:Date.now()});db.ref('leaderboard_all/'+myUid).update(u,function(){alert(isWin?'🎉 YOU WIN! +MWK '+(g.winMWK||0):'😞 You Lost! MWK '+(g.entryMWK||0));showPage('profile')})}});var now=Date.now();processedGameEnds[endedGameId]=now;Object.keys(processedGameEnds).forEach(function(k){if(typeof processedGameEnds[k]==='number'&&now-processedGameEnds[k]>300000){delete processedGameEnds[k]}});setTimeout(function(){if(db)db.ref('pvp_games/'+endedGameId).remove()},5000)}
+
+function cancelMatchmaking(){if(botMatchTimeout){clearTimeout(botMatchTimeout);botMatchTimeout=null;}if(db&&myUid){db.ref('pvp_queue').once('value',function(s){s.forEach(function(gs){if(gs.val()&&gs.val()[myUid]){var gid=gs.key;db.ref('pvp_queue/'+gid+'/'+myUid).remove()}})})}document.getElementById('searchingOverlay').style.display='none'}
+function exitGame(){if(confirm('Leave & FORFEIT?')){if(db&&currentGameId&&gameState){var winner=myPlayerNumber===1?gameState.p2:gameState.p1;db.ref('pvp_games/'+currentGameId).update({status:'finished',winner:winner})}}}
+
+/* ===== PAYCHANGU AUTOMATED DEPOSIT & WITHDRAW ===== */
+var PIPEDREAM_DEPOSIT_URL = "https://mada-backend.vercel.app/api/deposit"; 
+var PIPEDREAM_WITHDRAW_URL = "https://mada-backend.vercel.app/api/withdraw";
+
+async function submitOneKhusaDeposit() {
+    var amount = document.getElementById("okDepositAmount").value;
+    var msgEl = document.getElementById("okDepositMsg");
+    
+    if(!myUid){ alert("Please login first."); return; }
+    
+    msgEl.innerHTML = '<span class="success">⏳ Generating secure payment link...</span>';
+    
+    try {
+        var response = await fetch(PIPEDREAM_DEPOSIT_URL, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({
+                uid: myUid,
+                amount: amount
+            })
+        });
+        
+        var result = await response.json();
+        
+        if(result.success && result.checkout_url) {
+            msgEl.innerHTML = '<span class="success" style="color:#51cf66;">✅ Redirecting to PayChangu...</span>';
+            window.location.href = result.checkout_url;
         } else {
-          s.forEach(function(c){
-            var r = c.val();
-            h += '<div class="history-item"><div><span style="color:#fff">MWK '+r.amountMWK+'</span><br><span style="color:#555;font-size:10px">'+new Date(r.timestamp).toLocaleDateString()+' • '+(r.txId||'')+'</span></div><span class="history-status-'+r.status+'">'+r.status+'</span></div>';
-          });
+            msgEl.innerHTML = '<span class="error">❌ Error: ' + (result.message || 'Failed to initiate') + '</span>';
         }
-        var el = document.getElementById('myDepositHistory');
-        if(el) el.innerHTML = h;
+    } catch (e) {
+        msgEl.innerHTML = '<span class="error">Error: ' + e.message + '</span>';
+    }
+}
+
+async function submitOneKhusaWithdraw() {
+    if(!db || !myUid) return;
+    var amount = parseInt(document.getElementById("withdrawAmount").value);
+    var msgEl = document.getElementById("withdrawMsg");
+    
+    if(amount > 50000) {
+        msgEl.innerHTML = '<span class="error">⚠️ Maximum withdrawal is 50,000 MWK per request.</span>';
+        return;
+    }
+    
+    msgEl.innerHTML = '<span class="success">⏳ Processing withdrawal...</span>';
+
+    try {
+        var response = await fetch(PIPEDREAM_WITHDRAW_URL, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({
+                action: "withdraw",
+                uid: myUid,
+                amount: amount,
+                secret: mySecret
+            })
+        });
+        
+        var result = await response.json();
+        if(result.success) {
+            msgEl.innerHTML = '<span class="success" style="color:#51cf66;">✅ ' + result.message + '</span>';
+            showBalance(); 
+        } else {
+            msgEl.innerHTML = '<span class="error">❌ Error: ' + (result.message || 'Failed') + '</span>';
+            showBalance(); 
+        }
+    } catch (e) {
+        msgEl.innerHTML = '<span class="error">Error: ' + e.message + '</span>';
+        showBalance();
+    }
+}
+
+function listenMyDeposits(){
+  if(!db||!myUid) return;
+  db.ref('deposit_requests').orderByChild('uid').equalTo(myUid).on('value', function(s){
+    var h = '<div style="font-size:14px;color:#888;margin-bottom:8px">Deposit History</div>';
+    if(!s.exists()){
+      h += '<div style="text-align:center;color:#555;font-size:12px;padding:10px;">No deposits yet</div>';
+    } else {
+      s.forEach(function(c){
+        var r = c.val();
+        h += '<div class="history-item"><div><span style="color:#fff">MWK '+r.amountMWK+'</span><br><span style="color:#555;font-size:10px">'+new Date(r.timestamp).toLocaleDateString()+' • '+(r.txId||'')+'</span></div><span class="history-status-'+r.status+'">'+r.status+'</span></div>';
       });
     }
+    var el = document.getElementById('myDepositHistory');
+    if(el) el.innerHTML = h;
+  });
+}
 
-    function listenMyWithdrawals(){
-      if(!db||!myUid) return;
-      db.ref('withdraw_requests').orderByChild('uid').equalTo(myUid).on('value', function(s){
-        var h = '<div style="font-size:14px;color:#888;margin-bottom:8px">Withdrawal History</div>';
-        if(!s.exists()){
-          h += '<div style="text-align:center;color:#555;font-size:12px;padding:10px;">No withdrawals yet</div>';
-        } else {
-          s.forEach(function(c){
-            var r = c.val();
-            var statusClass = r.status === 'pending' ? 'history-status-pending' : (r.status === 'approved' || r.status === 'sent') ? 'history-status-sent' : (r.status === 'declined' || r.status === 'failed') ? 'history-status-declined' : 'history-status-'+r.status;
-            h += '<div class="history-item"><div><span style="color:#fff">MWK '+r.amountMWK+'</span><br><span style="color:#555;font-size:10px">'+new Date(r.timestamp).toLocaleDateString()+'</span></div><span class="'+statusClass+'">'+r.status+'</span></div>';
-          });
-        }
-        var el = document.getElementById('myWithdrawHistory');
-        if(el) el.innerHTML = h;
+function listenMyWithdrawals(){
+  if(!db||!myUid) return;
+  db.ref('withdraw_requests').orderByChild('uid').equalTo(myUid).on('value', function(s){
+    var h = '<div style="font-size:14px;color:#888;margin-bottom:8px">Withdrawal History</div>';
+    if(!s.exists()){
+      h += '<div style="text-align:center;color:#555;font-size:12px;padding:10px;">No withdrawals yet</div>';
+    } else {
+      s.forEach(function(c){
+        var r = c.val();
+        var statusClass = r.status === 'pending' ? 'history-status-pending' : (r.status === 'approved' || r.status === 'sent') ? 'history-status-sent' : (r.status === 'declined' || r.status === 'failed') ? 'history-status-declined' : 'history-status-'+r.status;
+        h += '<div class="history-item"><div><span style="color:#fff">MWK '+r.amountMWK+'</span><br><span style="color:#555;font-size:10px">'+new Date(r.timestamp).toLocaleDateString()+'</span></div><span class="'+statusClass+'">'+r.status+'</span></div>';
       });
     }
+    var el = document.getElementById('myWithdrawHistory');
+    if(el) el.innerHTML = h;
+  });
+}
 
-    var inboxFileData=null,inboxFileName=null;var inboxMessagesCache={};
-    function loadInbox(){if(!db||!myUid)return;db.ref('admin_inbox/'+myUid+'/messages').orderByChild('timestamp').on('value',function(s){var h='';inboxMessagesCache={};s.forEach(function(c){var m=c.val(),im=m.from==='user',ch='';inboxMessagesCache[c.key]=m;if(m.image)ch+='<img src="'+m.image+'" class="inbox-img" onclick="openImageViewer(this.src)">';if(m.image)ch+='<button onclick="saveInboxPhoto(\''+c.key+'\')" class="inbox-action-btn inbox-save-btn">💾 Save Photo</button>';if(m.fileData)ch+='<a href="'+m.fileData+'" download="'+(m.fileName||'file')+'" class="inbox-file">📎 '+(m.fileName||'File')+'</a>';if(m.text)ch+='<div style="color:#fff;font-size:14px;white-space:pre-wrap;">'+escapeHtml(m.text)+'</div>';h+='<div class="inbox-item" id="inbox-msg-'+c.key+'" style="'+(im?'text-align:right;background:#0a2a3a;':'text-align:left;background:#1a1a2e;')+'">';h+=ch;h+='<div class="inbox-meta"><span>'+(im?'You':'Admin')+'</span><span>'+new Date(m.timestamp).toLocaleTimeString([],{hour:'2-digit',minute:'2-digit'})+'</span></div>';h+='<div class="inbox-actions-row"><button onclick="deleteInboxMsg(\''+c.key+'\')" class="inbox-action-btn inbox-delete-btn">🗑️ Delete</button></div>';h+='</div>'});document.getElementById('inboxMessages').innerHTML=h||'<div style="text-align:center;color:#555;padding:20px;">No messages yet</div>';document.getElementById('inboxMessages').scrollTop=99999})}
-    function deleteInboxMsg(msgKey){if(!db||!myUid||!msgKey)return;if(!confirm('Delete this message?'))return;var msgEl=document.getElementById('inbox-msg-'+msgKey);if(msgEl)msgEl.classList.add('deleting');db.ref('admin_inbox/'+myUid+'/messages/'+msgKey).remove(function(err){if(err){alert('Failed to delete message.');if(msgEl)msgEl.classList.remove('deleting')}})}
-    function saveInboxPhoto(msgKey){var msg=inboxMessagesCache[msgKey];if(!msg||!msg.image){alert('No photo found to save.');return}try{var a=document.createElement('a');a.href=msg.image;a.download='inbox_photo_'+Date.now()+'.jpg';a.style.display='none';document.body.appendChild(a);a.click();setTimeout(function(){document.body.removeChild(a)},500)}catch(e){openImageViewer(msg.image);alert('Tap 💾 Save in the viewer to download the photo.')}}
-    window.handleInboxFileUpload=function(e){var f=e.target.files&&e.target.files[0];if(!f)return;var im=f.type.startsWith('image/'),r=new FileReader();r.onload=function(ev){if(im){var img=new Image();img.onload=function(){var c=document.createElement('canvas'),w=600,h=600,iw=img.width,ih=img.height;if(iw>w){ih*=w/iw;iw=w}if(ih>h){iw*=h/ih;ih=h}c.width=Math.round(iw);c.height=Math.round(ih);c.getContext('2d').drawImage(img,0,0,c.width,c.height);inboxFileData=c.toDataURL('image/jpeg',0.5);inboxFileName=f.name;document.getElementById('inboxFilePreview').style.display='block';document.getElementById('inboxFileName').innerText='📷 '+f.name};img.src=ev.target.result}else{if(f.size>1048576){alert("Max 1MB.");e.target.value='';return}inboxFileData=ev.target.result;inboxFileName=f.name;document.getElementById('inboxFilePreview').style.display='block';document.getElementById('inboxFileName').innerText='📎 '+f.name}};r.readAsDataURL(f)};
-    window.clearInboxFile=function(){inboxFileData=null;inboxFileName=null;document.getElementById('inboxFilePreview').style.display='none';document.getElementById('inboxFileInput').value=''};
-    window.sendInboxMsg=function(){if(!db||!myUid)return;var i=document.getElementById('inboxMsgInput');var t=(i.value||'').trim();if(!t&&!inboxFileData)return;var md={from:'user',text:t,timestamp:Date.now()};if(inboxFileData){if(inboxFileData.includes('image/'))md.image=inboxFileData;else{md.fileData=inboxFileData;md.fileName=inboxFileName}}db.ref('admin_inbox/'+myUid+'/messages').push(md,function(e){if(!e){i.value='';window.clearInboxFile()}})};
-    function setupInboxNotif(){if(!db||!myUid)return;db.ref('admin_inbox/'+myUid+'/messages').orderByChild('timestamp').limitToLast(1).on('value',function(s){s.forEach(function(c){if(c.val().from==='admin'){var ip=document.getElementById('inboxPage');if(ip&&!ip.classList.contains('active')){var d=document.getElementById('inboxNotifDot');if(d)d.style.display='inline-block'}}})})}
+var inboxFileData=null,inboxFileName=null;var inboxMessagesCache={};
+function loadInbox(){if(!db||!myUid)return;db.ref('admin_inbox/'+myUid+'/messages').orderByChild('timestamp').on('value',function(s){var h='';inboxMessagesCache={};s.forEach(function(c){var m=c.val(),im=m.from==='user',ch='';inboxMessagesCache[c.key]=m;if(m.image)ch+='<img src="'+m.image+'" class="inbox-img" onclick="openImageViewer(this.src)">';if(m.image)ch+='<button onclick="saveInboxPhoto(\''+c.key+'\')" class="inbox-action-btn inbox-save-btn">💾 Save Photo</button>';if(m.fileData)ch+='<a href="'+m.fileData+'" download="'+(m.fileName||'file')+'" class="inbox-file">📎 '+(m.fileName||'File')+'</a>';if(m.text)ch+='<div style="color:#fff;font-size:14px;white-space:pre-wrap;">'+escapeHtml(m.text)+'</div>';h+='<div class="inbox-item" id="inbox-msg-'+c.key+'" style="'+(im?'text-align:right;background:#0a2a3a;':'text-align:left;background:#1a1a2e;')+'">';h+=ch;h+='<div class="inbox-meta"><span>'+(im?'You':'Admin')+'</span><span>'+new Date(m.timestamp).toLocaleTimeString([],{hour:'2-digit',minute:'2-digit'})+'</span></div>';h+='<div class="inbox-actions-row"><button onclick="deleteInboxMsg(\''+c.key+'\')" class="inbox-action-btn inbox-delete-btn">🗑️ Delete</button></div>';h+='</div>'});document.getElementById('inboxMessages').innerHTML=h||'<div style="text-align:center;color:#555;padding:20px;">No messages yet</div>';document.getElementById('inboxMessages').scrollTop=99999})}
+function deleteInboxMsg(msgKey){if(!db||!myUid||!msgKey)return;if(!confirm('Delete this message?'))return;var msgEl=document.getElementById('inbox-msg-'+msgKey);if(msgEl)msgEl.classList.add('deleting');db.ref('admin_inbox/'+myUid+'/messages/'+msgKey).remove(function(err){if(err){alert('Failed to delete message.');if(msgEl)msgEl.classList.remove('deleting')}})}
+function saveInboxPhoto(msgKey){var msg=inboxMessagesCache[msgKey];if(!msg||!msg.image){alert('No photo found to save.');return}try{var a=document.createElement('a');a.href=msg.image;a.download='inbox_photo_'+Date.now()+'.jpg';a.style.display='none';document.body.appendChild(a);a.click();setTimeout(function(){document.body.removeChild(a)},500)}catch(e){openImageViewer(msg.image);alert('Tap 💾 Save in the viewer to download the photo.')}}
+window.handleInboxFileUpload=function(e){var f=e.target.files&&e.target.files[0];if(!f)return;var im=f.type.startsWith('image/'),r=new FileReader();r.onload=function(ev){if(im){var img=new Image();img.onload=function(){var c=document.createElement('canvas'),w=600,h=600,iw=img.width,ih=img.height;if(iw>w){ih*=w/iw;iw=w}if(ih>h){iw*=h/ih;ih=h}c.width=Math.round(iw);c.height=Math.round(ih);c.getContext('2d').drawImage(img,0,0,c.width,c.height);inboxFileData=c.toDataURL('image/jpeg',0.5);inboxFileName=f.name;document.getElementById('inboxFilePreview').style.display='block';document.getElementById('inboxFileName').innerText='📷 '+f.name};img.src=ev.target.result}else{if(f.size>1048576){alert("Max 1MB.");e.target.value='';return}inboxFileData=ev.target.result;inboxFileName=f.name;document.getElementById('inboxFilePreview').style.display='block';document.getElementById('inboxFileName').innerText='📎 '+f.name}};r.readAsDataURL(f)};
+window.clearInboxFile=function(){inboxFileData=null;inboxFileName=null;document.getElementById('inboxFilePreview').style.display='none';document.getElementById('inboxFileInput').value=''};
+window.sendInboxMsg=function(){if(!db||!myUid)return;var i=document.getElementById('inboxMsgInput');var t=(i.value||'').trim();if(!t&&!inboxFileData)return;var md={from:'user',text:t,timestamp:Date.now()};if(inboxFileData){if(inboxFileData.includes('image/'))md.image=inboxFileData;else{md.fileData=inboxFileData;md.fileName=inboxFileName}}db.ref('admin_inbox/'+myUid+'/messages').push(md,function(e){if(!e){i.value='';window.clearInboxFile()}})};
+function setupInboxNotif(){if(!db||!myUid)return;db.ref('admin_inbox/'+myUid+'/messages').orderByChild('timestamp').limitToLast(1).on('value',function(s){s.forEach(function(c){if(c.val().from==='admin'){var ip=document.getElementById('inboxPage');if(ip&&!ip.classList.contains('active')){var d=document.getElementById('inboxNotifDot');if(d)d.style.display='inline-block'}}})})}
 
-    document.addEventListener('DOMContentLoaded',function(){
-        setupSlider('gateSliderTrack', 'gateSliderHandle', 'gateSliderProgress', 'gateSliderText', function() {
-            var gate = document.getElementById('appGate');
-            setTimeout(function() {
-                gate.style.transition = 'opacity 0.5s';
-                gate.style.opacity = '0';
-                setTimeout(function() { gate.style.display = 'none'; }, 500);
-            }, 500);
-        });
-        setupSlider('regSliderTrack', 'regSliderHandle', 'regSliderProgress', 'regSliderText', function() {
-            isHumanReg = true;
-        });
-        setupSlider('loginSliderTrack', 'loginSliderHandle', 'loginSliderProgress', 'loginSliderText', function() {
-            isHumanLogin = true;
-        });
-
-        setTimeout(function(){var sp=document.getElementById('splashScreen');if(sp){sp.classList.add('splash-hide');setTimeout(function(){sp.style.display='none'},700)}},2500);
-        var lsb=document.getElementById("loginSubmitBtn");if(lsb)lsb.addEventListener('click',function(e){e.preventDefault();login()});
-        var lui=document.getElementById("loginUsernameInput");if(lui)lui.addEventListener('keypress',function(e){if(e.key==='Enter'){e.preventDefault();login()}});
-        var lb=document.getElementById("loginBtn");if(lb)lb.addEventListener('click',function(e){e.preventDefault();register()});
-        var ui=document.getElementById("usernameInput");if(ui){ui.addEventListener('keypress',function(e){if(e.key==='Enter'){e.preventDefault();register()}});setTimeout(function(){ui.focus();},300)}
-        var pi=document.getElementById("phoneInput");if(pi)pi.addEventListener('input',function(e){this.value=this.value.replace(/[^0-9]/g,'')});
-        var el;el=document.getElementById("navProfile");if(el)el.onclick=function(){showPage('profile')};el=document.getElementById("navWallet");if(el)el.onclick=function(){showPage('wallet')};el=document.getElementById("navPlay");if(el)el.onclick=function(){showPage('play')};el=document.getElementById("navInbox");if(el)el.onclick=function(){showPage('inbox')}; el=document.getElementById("navFaq");if(el)el.onclick=function(){showPage('faq')};
-        try{var u=localStorage.getItem("user");if(u){myUid=u;mySecret=localStorage.getItem('secret');checkBanStatus();document.getElementById("loginPage").classList.remove("active");document.getElementById("mainNav").style.display="flex";document.getElementById('waFloatBtn').style.display='flex';showPage('profile');if(db)lockPaymentMethod(localStorage.getItem("userPhone")||'',localStorage.getItem("network")||'');initGameListeners();setupInboxNotif()}}catch(e){}
+document.addEventListener('DOMContentLoaded',function(){
+    setupSlider('gateSliderTrack', 'gateSliderHandle', 'gateSliderProgress', 'gateSliderText', function() {
+        var gate = document.getElementById('appGate');
+        setTimeout(function() {
+            gate.style.transition = 'opacity 0.5s';
+            gate.style.opacity = '0';
+            setTimeout(function() { gate.style.display = 'none'; }, 500);
+        }, 500);
     });
+    setupSlider('regSliderTrack', 'regSliderHandle', 'regSliderProgress', 'regSliderText', function() {
+        isHumanReg = true;
+    });
+    setupSlider('loginSliderTrack', 'loginSliderHandle', 'loginSliderProgress', 'loginSliderText', function() {
+        isHumanLogin = true;
+    });
+
+    setTimeout(function(){var sp=document.getElementById('splashScreen');if(sp){sp.classList.add('splash-hide');setTimeout(function(){sp.style.display='none'},700)}},2500);
+    var lsb=document.getElementById("loginSubmitBtn");if(lsb)lsb.addEventListener('click',function(e){e.preventDefault();login()});
+    var lui=document.getElementById("loginUsernameInput");if(lui)lui.addEventListener('keypress',function(e){if(e.key==='Enter'){e.preventDefault();login()}});
+    var lb=document.getElementById("loginBtn");if(lb)lb.addEventListener('click',function(e){e.preventDefault();register()});
+    var ui=document.getElementById("usernameInput");if(ui){ui.addEventListener('keypress',function(e){if(e.key==='Enter'){e.preventDefault();register()}});setTimeout(function(){ui.focus();},300)}
+    var pi=document.getElementById("phoneInput");if(pi)pi.addEventListener('input',function(e){this.value=this.value.replace(/[^0-9]/g,'')});
+    var el;el=document.getElementById("navProfile");if(el)el.onclick=function(){showPage('profile')};el=document.getElementById("navWallet");if(el)el.onclick=function(){showPage('wallet')};el=document.getElementById("navPlay");if(el)el.onclick=function(){showPage('play')};el=document.getElementById("navInbox");if(el)el.onclick=function(){showPage('inbox')}; el=document.getElementById("navFaq");if(el)el.onclick=function(){showPage('faq')};
+    try{var u=localStorage.getItem("user");if(u){myUid=u;mySecret=localStorage.getItem('secret');checkBanStatus();document.getElementById("loginPage").classList.remove("active");document.getElementById("mainNav").style.display="flex";document.getElementById('waFloatBtn').style.display='flex';showPage('profile');if(db)lockPaymentMethod(localStorage.getItem("userPhone")||'',localStorage.getItem("network")||'');initGameListeners();setupInboxNotif()}}catch(e){}
+});
 </script>
 
 <!-- ===== CHAT & VOICE SYSTEM ===== -->
@@ -1713,5 +1749,4 @@ function minimax(b, depth, alpha, beta, isMaximizing, ply) {
 </script>
 
 </body>
-</html>
- 
+    </html> 
