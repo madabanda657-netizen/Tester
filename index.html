@@ -869,11 +869,66 @@ function createBotGame(gid, gr) {
     });
 }
 
-if(db){db.ref('pvp_queue').on('value',function(s){if(!myUid)return;s.forEach(function(gs){var gid=gs.key,pl=[];gs.forEach(function(ps){pl.push(ps.key)});if(pl.length>=2&&(pl.indexOf(myUid)>=0)){var sorted=pl.slice().sort();var p1=sorted[0],p2=sorted[1];var gameId='game_'+gid+'_'+p1+'_'+p2+'_'+Date.now();var gd=PVP_GRADES.find(function(g){return g.id===parseInt(gid)});var entryMWK=gd.entryMWK;if(myUid!==p1)return;
-    
-    if (botMatchTimeout) { clearTimeout(botMatchTimeout); botMatchTimeout = null; }
-    
-    db.ref('pvp_queue/'+gid+'/'+p1).remove();db.ref('pvp_queue/'+gid+'/'+p2).remove();db.ref('leaderboard_all/'+p1+'/mwk').once('value',function(s1){var b1=s1.val()||0;if(b1<entryMWK){db.ref('pvp_queue/'+gid+'/'+p2).set({timestamp:Date.now(),entryMWK:entryMWK});if(myUid===p1){alert('❌ Not enough balance! Match cancelled.');document.getElementById('searchingOverlay').style.display='none'}return}db.ref('leaderboard_all/'+p1).update({mwk:b1-entryMWK},function(e1){if(e1){db.ref('pvp_queue/'+gid+'/'+p2).set({timestamp:Date.now(),entryMWK:entryMWK});return}db.ref('leaderboard_all/'+p2+'/mwk').once('value',function(s2){var b2=s2.val()||0;if(b2<entryMWK){db.ref('leaderboard_all/'+p1+'/mwk').once('value',function(s1b){db.ref('leaderboard_all/'+p1).update({mwk:(s1b.val()||0)+entryMWK})});db.ref('pvp_queue/'+gid+'/'+p1).set({timestamp:Date.now(),entryMWK:entryMWK});return}db.ref('leaderboard_all/'+p2).update({mwk:b2-entryMWK},function(e2){if(e2){db.ref('leaderboard_all/'+p1+'/mwk').once('value',function(s1b){db.ref('leaderboard_all/'+p1).update({mwk:(s1b.val()||0)+entryMWK})});db.ref('pvp_queue/'+gid+'/'+p1).set({timestamp:Date.now(),entryMWK:entryMWK});return}var ib=[];for(var r=0;r<8;r++){for(var c=0;c<8;c++){ib.push((r+c)%2&&r<3?-1:(r+c)%2&&r>4?1:0)}}db.ref('pvp_games/'+gameId).transaction(function(data){if(data===null||(data&&data.status==='finished')){return{p1:p1,p2:p2,gradeId:gid,winMWK:gd.winMWK,entryMWK:entryMWK,board:ib,turn:1,status:'playing',winner:null,created:Date.now(),drawCounter:0,drawTargetPlayer:0}}return data})})})})})}})})}
+if(db){
+    db.ref('pvp_queue').on('value', function(s) {
+        if(!myUid) return;
+        s.forEach(function(gs) {
+            var gid = gs.key, pl = [];
+            gs.forEach(function(ps) { pl.push(ps.key) });
+            if(pl.length >= 2 && (pl.indexOf(myUid) >= 0)) {
+                var sorted = pl.slice().sort();
+                var p1 = sorted[0], p2 = sorted[1];
+                var gameId = 'game_' + gid + '_' + p1 + '_' + p2 + '_' + Date.now();
+                var gd = PVP_GRADES.find(function(g) { return g.id === parseInt(gid) });
+                var entryMWK = gd.entryMWK;
+                if(myUid !== p1) return;
+                
+                if (botMatchTimeout) { clearTimeout(botMatchTimeout); botMatchTimeout = null; }
+                
+                db.ref('pvp_queue/' + gid + '/' + p1).remove();
+                db.ref('pvp_queue/' + gid + '/' + p2).remove();
+                db.ref('leaderboard_all/' + p1 + '/mwk').once('value', function(s1) {
+                    var b1 = s1.val() || 0;
+                    if(b1 < entryMWK) {
+                        db.ref('pvp_queue/' + gid + '/' + p2).set({timestamp: Date.now(), entryMWK: entryMWK});
+                        if(myUid === p1) { alert('❌ Not enough balance! Match cancelled.'); document.getElementById('searchingOverlay').style.display = 'none' }
+                        return;
+                    }
+                    db.ref('leaderboard_all/' + p1).update({mwk: b1 - entryMWK}, function(e1) {
+                        if(e1) { db.ref('pvp_queue/' + gid + '/' + p2).set({timestamp: Date.now(), entryMWK: entryMWK}); return; }
+                        db.ref('leaderboard_all/' + p2 + '/mwk').once('value', function(s2) {
+                            var b2 = s2.val() || 0;
+                            if(b2 < entryMWK) {
+                                db.ref('leaderboard_all/' + p1 + '/mwk').once('value', function(s1b) { db.ref('leaderboard_all/' + p1).update({mwk: (s1b.val() || 0) + entryMWK}) });
+                                db.ref('pvp_queue/' + gid + '/' + p1).set({timestamp: Date.now(), entryMWK: entryMWK});
+                                return;
+                            }
+                            db.ref('leaderboard_all/' + p2).update({mwk: b2 - entryMWK}, function(e2) {
+                                if(e2) { 
+                                    db.ref('leaderboard_all/' + p1 + '/mwk').once('value', function(s1b) { db.ref('leaderboard_all/' + p1).update({mwk: (s1b.val() || 0) + entryMWK}) }); 
+                                    db.ref('pvp_queue/' + gid + '/' + p1).set({timestamp: Date.now(), entryMWK: entryMWK}); 
+                                    return; 
+                                }
+                                var ib = [];
+                                for(var r = 0; r < 8; r++) { 
+                                    for(var c = 0; c < 8; c++) { 
+                                        ib.push((r + c) % 2 && r < 3 ? -1 : (r + c) % 2 && r > 4 ? 1 : 0) 
+                                    } 
+                                }
+                                db.ref('pvp_games/' + gameId).transaction(function(data) {
+                                    if(data === null || (data && data.status === 'finished')) {
+                                        return {p1: p1, p2: p2, gradeId: gid, winMWK: gd.winMWK, entryMWK: entryMWK, board: ib, turn: 1, status: 'playing', winner: null, created: Date.now(), drawCounter: 0, drawTargetPlayer: 0}
+                                    }
+                                    return data;
+                                });
+                            });
+                        });
+                    });
+                });
+            }
+        });
+    });
+}
 
 var gameListenersSetup=false;
 function initGameListeners(){if(!db||!myUid||gameListenersSetup)return;gameListenersSetup=true;db.ref('pvp_games').orderByChild('p1').equalTo(myUid).on('value',handleGameUpdate);db.ref('pvp_games').orderByChild('p2').equalTo(myUid).on('value',handleGameUpdate)}
@@ -897,9 +952,62 @@ function renderPvPBoard(){
 
 function clickPvPSquare(r,c){if(gameState.turn!==myPlayerNumber)return;if(!db||!currentGameId)return;if(myPlayerNumber===2){r=7-r;c=7-c}var b=gameState.board,cv=b[r*8+c],sel=gameState.selected,vm=gameState.validMoves||[];if(sel&&vm.some(function(m){return m[0]===r&&m[1]===c})){makePvPMove(sel[0],sel[1],r,c);return}if((myPlayerNumber===1&&cv>0)||(myPlayerNumber===2&&cv<0)){var pl=myPlayerNumber;var allMoves=getAllCaptures(b,pl);var mustCapture=allMoves.length>0;var pieceMoves=getValidMovesForPiece(b,r,c,pl);var filteredMoves=[];for(var i=0;i<pieceMoves.length;i++){if(mustCapture&&pieceMoves[i].captured.length===0)continue;filteredMoves.push(pieceMoves[i].to)}if(filteredMoves.length>0)db.ref('pvp_games/'+currentGameId).update({selected:[r,c],validMoves:filteredMoves});else db.ref('pvp_games/'+currentGameId).update({selected:null,validMoves:[]})}else{db.ref('pvp_games/'+currentGameId).update({selected:null,validMoves:[]})}}
 
-function getCapturesForPiece(b,r,c,pl){var s=pl===1?1:-1;var p=b[r*8+c];if(Math.sign(p)!==s)return[];var caps=[],isKing=Math.abs(p)===2,dirs=[-1,1],dcs=[-1,1];for(var d=0;d<dirs.length;d++){for(var dc=0;dc<2;dc++){if(isKing){var dist=1,enm=null;while(true){var nr=r+dist*dirs[d],nc=c+dist*dcs[dc];if(nr<0||nr>=8||nc<0||nc>=8)break;if(b[nr*8+nc]!==0){if(Math.sign(b[nr*8+nc])===(-s)&&!enm)enm=[nr,nc];else break}else if(enm){caps.push({from:[r,c],to:[nr,nc],captured:[enm]})}dist++}}else{var mr=r+dirs[d],mc=c+dcs[dc],jr=r+2*dirs[d],jc=c+2*dcs[dc];if(jr>=0&&jr<8&&jc>=0&&jc<8&&b[mr*8+mc]!==0&&Math.sign(b[mr*8+mc])===(-s)&&b[jr*8+jc]===0){caps.push({from:[r,c],to:[jr,jc],captured:[[mr,mc]]})}}}}return caps}
+function getCapturesForPiece(b,r,c,pl){
+    var s=pl===1?1:-1;
+    var p=b[r*8+c];
+    if(Math.sign(p)!==s)return[];
+    var caps=[],isKing=Math.abs(p)===2;
+    var dirs=isKing?[-1,1]:[-1,1],dcs=[-1,1]; 
+    for(var d=0;d<dirs.length;d++){
+        for(var dc=0;dc<2;dc++){
+            if(isKing){
+                var dist=1,enm=null;
+                while(true){
+                    var nr=r+dist*dirs[d],nc=c+dist*dcs[dc];
+                    if(nr<0||nr>=8||nc<0||nc>=8)break;
+                    if(b[nr*8+nc]!==0){
+                        if(Math.sign(b[nr*8+nc])===(-s)&&!enm)enm=[nr,nc];
+                        else break;
+                    }else if(enm){
+                        caps.push({from:[r,c],to:[nr,nc],captured:[enm]});
+                    }
+                    dist++;
+                }
+            } else {
+                var mr=r+dirs[d],mc=c+dcs[dc],jr=r+2*dirs[d],jc=c+2*dcs[dc];
+                if(jr>=0&&jr<8&&jc>=0&&jc<8&&b[mr*8+mc]!==0&&Math.sign(b[mr*8+mc])===(-s)&&b[jr*8+jc]===0){
+                    caps.push({from:[r,c],to:[jr,jc],captured:[[mr,mc]]});
+                }
+            }
+        }
+    }
+    return caps;
+}
 function getAllCaptures(b,pl){var s=pl===1?1:-1;var caps=[];for(var r=0;r<8;r++){for(var c=0;c<8;c++){if(Math.sign(b[r*8+c])===s){var pc=getCapturesForPiece(b,r,c,pl);for(var i=0;i<pc.length;i++)caps.push(pc[i])}}}return caps}
-function getSimpleMovesForPiece(b,r,c,pl){var s=pl===1?1:-1;var p=b[r*8+c];if(Math.sign(p)!==s)return[];var mvs=[],isKing=Math.abs(p)===2,dirs=isKing?[-1,1]:(pl===1?[-1]:[1]),dcs=[-1,1];for(var d=0;d<dirs.length;d++){for(var dc=0;dc<2;dc++){if(isKing){var dist=1;while(true){var nr=r+dist*dirs[d],nc=c+dist*dcs[dc];if(nr<0||nr>=8||nc<0||nc>=8)break;if(b[nr*8+nc]!==0)break;mvs.push({from:[r,c],to:[nr,nc],captured:[]});dist++}}else{var nr=r+dirs[d],nc=c+dcs[dc];if(nr>=0&&nr<8&&nc>=0&&nc<8&&b[nr*8+nc]===0)mvs.push({from:[r,c],to:[nr,nc],captured:[]})}}}return mvs}
+function getSimpleMovesForPiece(b,r,c,pl){
+    var s=pl===1?1:-1;
+    var p=b[r*8+c];
+    if(Math.sign(p)!==s)return[];
+    var mvs=[],isKing=Math.abs(p)===2,dirs=isKing?[-1,1]:(pl===1?[-1]:[1]),dcs=[-1,1]; 
+    for(var d=0;d<dirs.length;d++){
+        for(var dc=0;dc<2;dc++){
+            if(isKing){
+                var dist=1;
+                while(true){
+                    var nr=r+dist*dirs[d],nc=c+dist*dcs[dc];
+                    if(nr<0||nr>=8||nc<0||nc>=8)break;
+                    if(b[nr*8+nc]!==0)break;
+                    mvs.push({from:[r,c],to:[nr,nc],captured:[]});
+                    dist++;
+                }
+            }else{
+                var nr=r+dirs[d],nc=c+dcs[dc];
+                if(nr>=0&&nr<8&&nc>=0&&nc<8&&b[nr*8+nc]===0)mvs.push({from:[r,c],to:[nr,nc],captured:[]})
+            }
+        }
+    }
+    return mvs;
+}
 function getValidMovesForPiece(b,r,c,pl){if(getAllCaptures(b,pl).length>0)return getCapturesForPiece(b,r,c,pl);return getSimpleMovesForPiece(b,r,c,pl)}
 
 function makePvPMove(fR,fC,tR,tC){
@@ -928,11 +1036,16 @@ function makePvPMove(fR,fC,tR,tC){
         if(Math.abs(p)===2){
             var ir=fR+dR,ic=fC+dC;
             while(ir!==tR||ic!==tC){
-                if(b[ir*8+ic]!==0)b[ir*8+ic]=0;
+                if(b[ir*8+ic]!==0 && Math.sign(b[ir*8+ic]) !== Math.sign(p)){
+                    b[ir*8+ic]=0;
+                }
                 ir+=dR;ic+=dC;
             }
         } else {
-            b[(fR+dR)*8+(fC+dC)]=0;
+            var capIdx = (fR+dR)*8+(fC+dC);
+            if(b[capIdx] !== 0 && Math.sign(b[capIdx]) !== Math.sign(p)) {
+                b[capIdx]=0;
+            }
         }
         playSound('capture');
     } else {
@@ -1041,6 +1154,19 @@ function expandMove(move, b, pl, results) {
     } else {
         for (var i = 0; i < nextCaptures.length; i++) {
             var nc = nextCaptures[i];
+            
+            var alreadyCaptured = false;
+            for (var j = 0; j < move.captured.length; j++) {
+                for (var k = 0; k < nc.captured.length; k++) {
+                    if (move.captured[j][0] === nc.captured[k][0] && move.captured[j][1] === nc.captured[k][1]) {
+                        alreadyCaptured = true;
+                        break;
+                    }
+                }
+                if (alreadyCaptured) break;
+            }
+            if (alreadyCaptured) continue;
+            
             var newB = b.slice();
             var p = newB[tR * 8 + tC];
             newB[tR * 8 + tC] = 0;
