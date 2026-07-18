@@ -602,6 +602,8 @@ var myUid=null;var myPlayerNumber=0;var currentGameId=null;var gameListener=null
 var isHumanReg = false; var isHumanLogin = false;
 var mySecret = null; 
 var botMatchTimeout = null; 
+var botThinking = false;
+var lastBoardStr = "";
 
 /* ===== VPN DETECTION & BAN SYSTEM ===== */
 async function checkVpnStatus() {
@@ -769,7 +771,7 @@ function login(){try{var rawName=(document.getElementById("loginUsernameInput").
 
 function logout(){if(confirm('Logout?')){localStorage.removeItem('user');localStorage.removeItem('secret');myUid=null;location.reload()}}
 
-function showPage(page){try{var pages=document.querySelectorAll('.page');for(var i=0;i<pages.length;i++){pages[i].classList.remove('active');pages[i].style.display=''}var btns=document.querySelectorAll('.nav-btn');for(var j=0;j<btns.length;j++)btns[j].classList.remove('active');document.getElementById('mainNav').style.display='flex';document.getElementById('waFloatBtn').style.display='flex';if(page==='profile'){document.getElementById('profilePage').classList.add('active');if(btns[0])btns[0].classList.add('active');loadProfile()}else if(page==='wallet'){document.getElementById('walletPage').classList.add('active');if(btns[1])btns[1].classList.add('active');showBalance();listenMyDeposits();listenMyWithdrawals();loadReferralData();checkVpnStatus();}else if(page==='chat'){document.getElementById('chatPage').classList.add('active');if(btns[2])btns[2].classList.add('active')}else if(page==='play'){document.getElementById('playPage').classList.add('active');if(btns[3])btns[3].classList.add('active');renderGrades()}else if(page==='inbox'){document.getElementById('inboxPage').classList.add('active');if(btns[4])btns[4].classList.add('active');loadInbox();document.getElementById('inboxNotifDot').style.display='none'}else if(page==='faq'){document.getElementById('faqPage').classList.add('active');if(btns[5])btns[5].classList.add('active')}else if(page==='game'){document.getElementById('gamePage').classList.add('active');document.getElementById('mainNav').style.display='none';document.getElementById('waFloatBtn').style.display='none'}}catch(e){console.error('showPage error:',e)}}
+function showPage(page){try{var pages=document.querySelectorAll('.page');for(var i=0;i<pages.length;i++){pages[i].classList.remove('active');pages[i].style.display=''}var btns=document.querySelectorAll('.nav-btn');for(var j=0;j<btns.length;j++)btns[j].classList.remove('active');document.getElementById('mainNav').style.display='flex';document.getElementById('waFloatBtn').style.display='flex';if(page==='profile'){document.getElementById('profilePage').classList.add('active');if(btns[0])btns[0].classList.add('active');loadProfile();}else if(page==='wallet'){document.getElementById('walletPage').classList.add('active');if(btns[1])btns[1].classList.add('active');showBalance();listenMyDeposits();listenMyWithdrawals();loadReferralData();checkVpnStatus();}else if(page==='chat'){document.getElementById('chatPage').classList.add('active');if(btns[2])btns[2].classList.add('active');}else if(page==='play'){document.getElementById('playPage').classList.add('active');if(btns[3])btns[3].classList.add('active');renderGrades();}else if(page==='inbox'){document.getElementById('inboxPage').classList.add('active');if(btns[4])btns[4].classList.add('active');loadInbox();document.getElementById('inboxNotifDot').style.display='none';}else if(page==='faq'){document.getElementById('faqPage').classList.add('active');if(btns[5])btns[5].classList.add('active');}else if(page==='game'){document.getElementById('gamePage').classList.add('active');document.getElementById('mainNav').style.display='none';document.getElementById('waFloatBtn').style.display='none';}}catch(e){console.error('showPage error:',e)}}
 
 function toggleFaq(element) {
     var item = element.parentElement;
@@ -878,9 +880,17 @@ function initGameListeners(){if(!db||!myUid||gameListenersSetup)return;gameListe
 function handleGameUpdate(s){if(!myUid)return;s.forEach(function(c){var g=c.val();if(!g)return;if(g.p1!==myUid&&g.p2!==myUid)return;if(g.status==='playing'){if(currentGameId!==c.key){currentGameId=c.key;myPlayerNumber=g.p1===myUid?1:2;document.getElementById('searchingOverlay').style.display='none';showPage('game');startGameListener(c.key)}}else if(g.status==='finished'&&currentGameId===c.key){endPvPGame(g)}})}
 function startGameListener(gid){if(gameListener)db.ref('pvp_games/'+gameListener).off();gameListener=gid;db.ref('pvp_games/'+gid).on('value',function(s){var g=s.val();if(!g)return;gameState=g;renderPvPBoard();if(g.status==='finished'&&currentGameId===gid){endPvPGame(g)}})}
 
-function renderPvPBoard(){var be=document.getElementById('checkersBoard'),h='';document.getElementById('p1Name').innerText='🔴 '+(gameState.p1===myUid?'You':gameState.p1);var p2NameText = gameState.p2===myUid?'You':gameState.p2;if(gameState.p2 === 'Mada_Bot') p2NameText = '🤖 Computer (Pro+)';document.getElementById('p2Name').innerText='⚫ '+p2NameText;document.getElementById('gameStake').innerText=gameState.entryMWK+' MWK';document.getElementById('gamePrize').innerText=gameState.winMWK+' MWK';var imt=gameState.turn===myPlayerNumber;var isMultiJump=imt&&gameState.selected&&gameState.validMoves&&gameState.validMoves.length>0;document.getElementById('turnIndicator').innerText=isMultiJump?'⚡ Must Jump!':(imt?'🎯 Your Turn!':'⏳ Opponent');document.getElementById('turnIndicator').style.color=isMultiJump?'#ffd700':(imt?'#51cf66':'#ff6b6b');var db2=document.getElementById('drawCounterBar'),dt=gameState.drawTargetPlayer||0,dc=gameState.drawCounter||0;if(dt>0&&dc>0){db2.style.display='block';db2.innerText='⏱️ Draw in '+(12-dc)+' moves'}else db2.style.display='none';var b=gameState.board.slice();var sel=gameState.selected||null,vm=gameState.validMoves||[];for(var i=0;i<64;i++){var displayR=Math.floor(i/8),displayC=i%8;var boardR=myPlayerNumber===2?7-displayR:displayR;var boardC=myPlayerNumber===2?7-displayC:displayC;var boardIdx=boardR*8+boardC;var isDark=(displayR+displayC)%2===1;var p=b[boardIdx];var sc=sel&&sel[0]===boardR&&sel[1]===boardC?'selected':'';var mc=vm.some(function(m){return m[0]===boardR&&m[1]===boardC})?'valid-move':'';h+='<div class="square '+(isDark?'dark':'light')+' '+sc+' '+mc+'" onclick="clickPvPSquare('+displayR+','+displayC+')">';if(p!==0)h+='<div class="piece '+(p>0?'p1':'p2')+' '+(Math.abs(p)===2?'king':'')+'"></div>';h+='</div>'}be.innerHTML=h;
+function renderPvPBoard(){
+    var currentStr = JSON.stringify(gameState.board) + gameState.turn + (gameState.selected ? gameState.selected[0]+''+gameState.selected[1] : '');
+    if (currentStr !== lastBoardStr) {
+        botThinking = false;
+        lastBoardStr = currentStr;
+    }
+    
+    var be=document.getElementById('checkersBoard'),h='';document.getElementById('p1Name').innerText='🔴 '+(gameState.p1===myUid?'You':gameState.p1);var p2NameText = gameState.p2===myUid?'You':gameState.p2;if(gameState.p2 === 'Mada_Bot') p2NameText = '🤖 Computer (Pro+)';document.getElementById('p2Name').innerText='⚫ '+p2NameText;document.getElementById('gameStake').innerText=gameState.entryMWK+' MWK';document.getElementById('gamePrize').innerText=gameState.winMWK+' MWK';var imt=gameState.turn===myPlayerNumber;var isMultiJump=imt&&gameState.selected&&gameState.validMoves&&gameState.validMoves.length>0;document.getElementById('turnIndicator').innerText=isMultiJump?'⚡ Must Jump!':(imt?'🎯 Your Turn!':'⏳ Opponent');document.getElementById('turnIndicator').style.color=isMultiJump?'#ffd700':(imt?'#51cf66':'#ff6b6b');var db2=document.getElementById('drawCounterBar'),dt=gameState.drawTargetPlayer||0,dc=gameState.drawCounter||0;if(dt>0&&dc>0){db2.style.display='block';db2.innerText='⏱️ Draw in '+(12-dc)+' moves'}else db2.style.display='none';var b=gameState.board.slice();var sel=gameState.selected||null,vm=gameState.validMoves||[];for(var i=0;i<64;i++){var displayR=Math.floor(i/8),displayC=i%8;var boardR=myPlayerNumber===2?7-displayR:displayR;var boardC=myPlayerNumber===2?7-displayC:displayC;var boardIdx=boardR*8+boardC;var isDark=(displayR+displayC)%2===1;var p=b[boardIdx];var sc=sel&&sel[0]===boardR&&sel[1]===boardC?'selected':'';var mc=vm.some(function(m){return m[0]===boardR&&m[1]===boardC})?'valid-move':'';h+='<div class="square '+(isDark?'dark':'light')+' '+sc+' '+mc+'" onclick="clickPvPSquare('+displayR+','+displayC+')">';if(p!==0)h+='<div class="piece '+(p>0?'p1':'p2')+' '+(Math.abs(p)===2?'king':'')+'"></div>';h+='</div>'}be.innerHTML=h;
 
-    if (gameState.p2 === 'Mada_Bot' && gameState.turn === 2 && gameState.status === 'playing') {
+    if (gameState.p2 === 'Mada_Bot' && gameState.turn === 2 && gameState.status === 'playing' && !botThinking) {
+        botThinking = true;
         setTimeout(botMakeMove, 1000);
     }
 }
@@ -1024,7 +1034,6 @@ function applyMoveToBoard(b, move) {
 
 function expandMove(move, b, pl, results) {
     var tR = move.to[0], tC = move.to[1];
-    
     var nextCaptures = getCapturesForPiece(b, tR, tC, pl);
     
     if (nextCaptures.length === 0) {
@@ -1032,7 +1041,6 @@ function expandMove(move, b, pl, results) {
     } else {
         for (var i = 0; i < nextCaptures.length; i++) {
             var nc = nextCaptures[i];
-            
             var newB = b.slice();
             var p = newB[tR * 8 + tC];
             newB[tR * 8 + tC] = 0;
@@ -1081,7 +1089,6 @@ function getAllValidMovesForAI(b, pl) {
         for (var i = 0; i < captures.length; i++) {
             var initialMove = captures[i];
             var initialBoard = applyMoveToBoard(b, initialMove);
-            
             var wasPromoted = false;
             var p = b[initialMove.from[0] * 8 + initialMove.from[1]];
             if (pl === 1 && initialMove.to[0] === 0 && p === 1) wasPromoted = true;
@@ -1130,7 +1137,6 @@ function getAllCapturesForAI(b, pl) {
     for (var i = 0; i < captures.length; i++) {
         var initialMove = captures[i];
         var initialBoard = applyMoveToBoard(b, initialMove);
-        
         var wasPromoted = false;
         var p = b[initialMove.from[0] * 8 + initialMove.from[1]];
         if (pl === 1 && initialMove.to[0] === 0 && p === 1) wasPromoted = true;
@@ -1414,11 +1420,9 @@ function botMakeMove() {
             for (var i = 0; i < captures.length; i++) {
                 var initialMove = captures[i];
                 var initialBoard = applyMoveToBoard(board, initialMove);
-                
                 var wasPromoted = false;
                 var p = board[fR * 8 + fC];
                 if (initialMove.to[0] === 7 && p === -1) wasPromoted = true;
-                
                 if (wasPromoted) {
                     expanded.push(initialMove);
                 } else {
@@ -1749,4 +1753,4 @@ document.addEventListener('DOMContentLoaded',function(){
 </script>
 
 </body>
-    </html> 
+    </html>
