@@ -14,7 +14,7 @@
 <script src="https://js.median.dev/median.js"></script>
 
 <style>
-*{box-sizing:border-box;margin:0;padding:0}body{font-family:Arial,sans-serif;background:#000;color:#fff;text-align:center;overflow-x:hidden}.container{padding:20px;max-width:600px;margin:0 auto;padding-bottom:80px}.card{background:#111;padding:20px;margin:15px 0;border-radius:15px;box-shadow:0 0 20px #00ffcc55;border:1px solid #00ffcc33}input,select,button{padding:12px;margin:8px 0;border-radius:10px;border:none;width:100%;font-size:16px}button{background:linear-gradient(45deg,#00ffcc,#00ccff);font-weight:bold;color:#000;cursor:pointer}h1{color:#00ffcc;margin-bottom:10px;font-size:28px}h3{color:#00ccff;margin-bottom:10px}.success{color:#51cf66}.error{color:#ff6b6b}.nav{position:fixed;bottom:0;left:0;right:0;background:#111;display:none;justify-content:space-around;padding:10px 0 12px;box-shadow:0 -2px 10px #00ffcc44;z-index:100}.nav-btn{background:transparent;border:1px solid transparent;color:#888;padding:6px 2px;margin:0;width:auto;font-size:10px;display:flex;flex-direction:column;align-items:center;gap:3px}.nav-btn .nav-icon{font-size:18px}.nav-btn.active{color:#00ffcc;border-color:transparent;text-shadow:0 0 10px #00ffcc}.page{display:none}.page.active{display:block}.flex-row{display:flex;justify-content:space-between;align-items:center;margin-bottom:8px;font-size:14px;color:#ccc}
+*{box-sizing:border-box;margin:0;padding:0}body{font-family:Arial,sans-serif;background:#000;color:#fff;text-align:center;overflow-x:hidden}.container{padding:20px;max-width:600px;margin:0 auto;padding-bottom:80px}.card{background:#111;padding:20px;margin:15px 0;border-radius:15px;box-shadow:0 0 20px #00ffcc55;border:1px solid #00ffcc33}input,select,button{padding:12px;margin:8px 0;border-radius:10px;border:none;width:100%;font-size:16px}button{background:linear-gradient(45deg,#00ffcc,#00ccff);font-weight:bold;color:#000;cursor:pointer}h1{color:#00ffcc;margin-bottom:10px;font-size:28px}h3{color:#00ccff;margin-bottom:10px}.success{color:#51cf66}.error{color:#ff6b6b}.nav{position:fixed;bottom:0;left:0;right:0;background:#111;display:none;justify-content:space-around;padding:10px 0 12px;box-shadow:0 -2px 10px #00ffcc44;z-index:100}.nav-btn{background:transparent;border:1px solid transparent;color:#888;padding:6px 2px;margin:0;width:auto;font-size:10px;display:flex;flex-direction:column;align-items:center;gap:3px}.nav-btn.nav-icon{font-size:18px}.nav-btn.active{color:#00ffcc;border-color:transparent;text-shadow:0 0 10px #00ffcc}.page{display:none}.page.active{display:block}.flex-row{display:flex;justify-content:space-between;align-items:center;margin-bottom:8px;font-size:14px;color:#ccc}
 @keyframes coinDrop { 0% { transform: scale(1); } 50% { transform: scale(1.2); color: #ffd700; } 100% { transform: scale(1); } }
 .coin-update { animation: coinDrop 0.5s ease; }
 .phone-input-group{display:flex;gap:0;margin:8px 0}.phone-prefix{background:linear-gradient(135deg,#ff0000,#cc0000);color:#fff;padding:12px;border-radius:10px 0 0 10px;font-size:16px;font-weight:bold;white-space:nowrap;display:flex;align-items:center;border:1px solid #ff000055;border-right:none;min-width:60px;justify-content:center}.phone-input-group input{border-radius:0 10px 10px 0!important;margin:0!important}
@@ -22,21 +22,16 @@
 .referral-card{background:linear-gradient(135deg,#1a1a2e,#0a2a1a);border:2px solid #ffd700}.referral-link-box{display:flex;gap:8px;margin-top:12px}.referral-link-box input{flex:1;background:#0a0a0a;color:#00ffcc;border:1px solid #ffd700;padding:10px;border-radius:8px;font-size:13px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}.copy-btn{width:auto!important;padding:10px 16px!important;background:linear-gradient(45deg,#ffd700,#ffaa00)!important;color:#000!important;font-weight:bold;border-radius:8px!important;cursor:pointer;border:none!important;margin:0!important}
 .grade-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:15px;margin:20px 0}.grade-card{background:linear-gradient(135deg,#1a1a2e,#16213e);padding:20px;border-radius:15px;cursor:pointer;border:2px solid #00ffcc33;transition:transform 0.2s;position:relative}.grade-card:hover{transform:translateY(-3px);border-color:#00ffcc}.grade-icon{font-size:40px;margin-bottom:10px}.grade-entry{color:#ff6b6b;font-weight:bold;font-size:18px}.grade-prize{color:#51cf66;font-weight:bold;font-size:16px;margin-top:5px}.grade-fee{color:#888;font-size:11px;margin-top:8px}
 .pvp-board-container{margin:20px auto;max-width:360px}.pvp-info-bar{display:flex;justify-content:space-between;align-items:center;padding:10px;background:#111;border-radius:10px;margin:10px 0;border:1px solid #00ffcc33}.pvp-player{font-weight:bold;font-size:14px}.pvp-turn{color:#ffd700;font-weight:bold;font-size:12px;animation:pulse 1.5s infinite}@keyframes pulse{0%,100%{opacity:1}50%{opacity:0.5}}
-
-/* ===== TRADITIONAL CHECKERS BOARD STYLING ===== */
 .checkers-board{display:grid;grid-template-columns:repeat(8,1fr);border:8px solid #3b2612;border-radius:6px;overflow:hidden;aspect-ratio:1;box-shadow:0 10px 25px rgba(0,0,0,0.8), inset 0 0 15px rgba(0,0,0,0.5)}
 .square{aspect-ratio:1;display:flex;align-items:center;justify-content:center;cursor:pointer;position:relative}
 .square.dark{background:#8B4513;box-shadow:inset 0 0 10px rgba(0,0,0,0.3)}
 .square.light{background:#F5DEB3;box-shadow:inset 0 0 10px rgba(139,69,19,0.1)}
 .square.selected{outline:4px solid #ffd700;outline-offset:-4px;z-index:2;box-shadow:inset 0 0 15px rgba(255,215,0,0.5)}
 .square.valid-move::after{content:'';position:absolute;width:35%;height:35%;background:rgba(0,0,0,0.4);border-radius:50%;box-shadow:0 0 8px rgba(255,255,255,0.2)}
-
-/* 3D Physical Pieces */
 .piece{width:75%;height:75%;border-radius:50%;border:2px solid #222;display:flex;align-items:center;justify-content:center;font-size:22px;color:#ffd700;z-index:1;box-shadow:0 4px 6px rgba(0,0,0,0.6), inset 0 -4px 8px rgba(0,0,0,0.4), inset 0 4px 8px rgba(255,255,255,0.2)}
 .piece.p1{background:radial-gradient(circle at 30% 30%, #e74c3c, #922b21)}
 .piece.p2{background:radial-gradient(circle at 30% 30%, #2c3e50, #000000)}
 .piece.king::after{content:'♔';filter:drop-shadow(0px 2px 2px rgba(0,0,0,0.8))}
-
 .draw-counter-bar{display:none;padding:8px 12px;background:#1a1a0a;border-radius:8px;margin:8px 0;border:1px solid #ffd70044;text-align:center;font-size:14px;color:#ffd700;font-weight:bold;animation:pulse 1.5s infinite}
 .searching-overlay{position:fixed;top:0;left:0;width:100%;height:100%;background:rgba(0,0,0,0.9);z-index:9999;display:none;align-items:center;justify-content:center;flex-direction:column}.search-spinner{width:60px;height:60px;border:6px solid #333;border-top:6px solid #00ffcc;border-radius:50%;animation:spin 1s linear infinite;margin-bottom:20px}@keyframes spin{0%{transform:rotate(0)}100%{transform:rotate(360deg)}}
 .chat-user-row{transition:background 0.2s;cursor:pointer}.chat-user-row:hover{background:#1a1a1a!important}.chat-avatar{position:relative;width:44px;height:44px;background:linear-gradient(135deg,#1a1a2e,#0a2a2a);border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:18px;color:#00ffcc;flex-shrink:0;font-weight:bold}.chat-online-dot{position:absolute;bottom:2px;right:2px;width:12px;height:12px;border-radius:50%;background:#555;border:2px solid #111;transition:background 0.3s}.chat-online-dot.on{background:#51cf66;box-shadow:0 0 6px #51cf66}.chat-unread-badge{display:none;min-width:20px;height:20px;border-radius:10px;background:#ff6b6b;color:#fff;font-size:10px;font-weight:bold;align-items:center;justify-content:center;padding:0 6px;flex-shrink:0}
@@ -63,7 +58,7 @@
 .profile-pic-container { position: relative; width: 120px; height: 120px; border-radius: 50%; overflow: hidden; cursor: pointer; border: 3px solid #00ffcc; box-shadow: 0 0 15px #00ffcc55; margin: 0 auto; background: #1a1a2e; }
 .profile-pic { width: 100%; height: 100%; object-fit: cover; }
 .profile-pic-upload-overlay { position: absolute; bottom: 0; left: 0; width: 100%; background: rgba(0,0,0,0.6); color: #fff; text-align: center; font-size: 14px; padding: 8px 0; transition: opacity 0.3s; opacity: 0; }
-.profile-pic-container:hover .profile-pic-upload-overlay { opacity: 1; }
+.profile-pic-container:hover.profile-pic-upload-overlay { opacity: 1; }
 #splashScreen { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: #000; z-index: 100000; display: flex; align-items: center; justify-content: center; flex-direction: column; transition: opacity 0.6s ease-out; }
 #splashScreen.splash-hide { opacity: 0; pointer-events: none; }
 #splashScreen img { max-width: 200px; border-radius: 25px; box-shadow: 0 0 40px rgba(0,255,204,0.3); animation: splashPulse 2s infinite alternate; }
@@ -82,28 +77,28 @@
 .forgot-section { display: none; margin-top: 15px; padding: 15px; background: #1a1a0a; border-radius: 10px; border: 1px solid #ff922b44; text-align: left; }
 .forgot-section h4 { color: #ff922b; margin-bottom: 10px; font-size: 14px; text-align: center; }
 .forgot-section input { background: #0a0a0a; color: #fff; border: 1px solid #ff922b33; }
-.forgot-section .forgot-back { color: #888; font-size: 12px; cursor: pointer; text-align: center; margin-top: 10px; }
-.forgot-section .forgot-back:hover { color: #fff; }
+.forgot-section.forgot-back { color: #888; font-size: 12px; cursor: pointer; text-align: center; margin-top: 10px; }
+.forgot-section.forgot-back:hover { color: #fff; }
 .new-password-box { display: none; margin-top: 12px; padding: 12px; background: #0a2a0a; border: 1px solid #51cf66; border-radius: 8px; text-align: center; }
-.new-password-box .new-pass-value { font-size: 24px; font-weight: bold; color: #51cf66; letter-spacing: 2px; margin: 8px 0; word-break: break-all; }
+.new-password-box.new-pass-value { font-size: 24px; font-weight: bold; color: #51cf66; letter-spacing: 2px; margin: 8px 0; word-break: break-all; }
 .appcheck-badge { position: fixed; top: 8px; right: 8px; font-size: 10px; padding: 3px 8px; border-radius: 6px; z-index: 99999; font-weight: bold; display: none; }
 .appcheck-badge.ok { background: #0a3a0a; color: #51cf66; border: 1px solid #51cf6644; display: block; }
 .appcheck-badge.fail { background: #3a0a0a; color: #ff6b6b; border: 1px solid #ff6b6b44; display: block; }
-#chatConvPage.active { position: fixed !important; top: 0; left: 0; right: 0; bottom: 0; display: flex !important; flex-direction: column; background: #000; z-index: 50; padding: 10px; max-width: 100%; margin: 0; overflow: hidden; }
+#chatConvPage.active { position: fixed!important; top: 0; left: 0; right: 0; bottom: 0; display: flex!important; flex-direction: column; background: #000; z-index: 50; padding: 10px; max-width: 100%; margin: 0; overflow: hidden; }
 .chat-messages-box { flex: 1; min-height: 0; overflow-y: auto; padding: 12px 8px; background: #050508; border-radius: 12px; border: 1px solid #1a1a1a; width: 100%; -webkit-overflow-scrolling: touch; }
 .chat-back-btn{width:auto;padding:8px 14px;background:#1a1a1a;color:#00ffcc;border:1px solid #00ffcc44;border-radius:10px;cursor:pointer;font-size:14px;flex-shrink:0;margin:0}
 #imageViewerModal { display: none; position: fixed; top: 0; left: 0; right: 0; bottom: 0; background: rgba(0,0,0,0.97); z-index: 10002; flex-direction: column; align-items: center; justify-content: center; padding: 10px; }
-#imageViewerModal .iv-top-bar { position: absolute; top: 0; left: 0; right: 0; display: flex; justify-content:space-between; align-items: center; padding: 12px 15px; background: linear-gradient(180deg, rgba(0,0,0,0.8), transparent); z-index: 3; }
-#imageViewerModal .iv-img-wrap { flex: 1; display: flex; align-items:center; justify-content: center; width: 100%; min-height: 0; overflow: auto; -webkit-overflow-scrolling: touch; }
+#imageViewerModal.iv-top-bar { position: absolute; top: 0; left: 0; right: 0; display: flex; justify-content:space-between; align-items: center; padding: 12px 15px; background: linear-gradient(180deg, rgba(0,0,0,0.8), transparent); z-index: 3; }
+#imageViewerModal.iv-img-wrap { flex: 1; display: flex; align-items:center; justify-content: center; width: 100%; min-height: 0; overflow: auto; -webkit-overflow-scrolling: touch; }
 #imageViewerModal img { max-width: 100%; max-height: 80vh; object-fit: contain; border-radius: 8px; user-select: none; -webkit-user-select: none; }
 .airtel-banner { background: linear-gradient(135deg, #006400 0%, #008000 100%); padding: 12px; border-radius: 10px 10px 0 0; margin-top: 8px; display: flex; align-items: center; gap: 8px; color: #fff; font-weight: bold; }
 .airtel-banner span:first-child { font-size: 24px; }
 .inbox-actions-row { display: flex; gap: 6px; margin-top: 4px; justify-content: flex-end; }
-.inbox-action-btn { font-size: 11px !important; padding: 4px 10px !important; border-radius: 6px !important; border: none !important; cursor: pointer !important; font-weight: bold !important; width: auto !important; margin: 0 !important; display: inline-flex !important; align-items: center !important; gap: 3px !important; transition: opacity 0.2s, transform 0.15s !important; }
+.inbox-action-btn { font-size: 11px!important; padding: 4px 10px!important; border-radius: 6px!important; border: none!important; cursor: pointer!important; font-weight: bold!important; width: auto!important; margin: 0!important; display: inline-flex!important; align-items: center!important; gap: 3px!important; transition: opacity 0.2s, transform 0.15s!important; }
 .inbox-action-btn:active { transform: scale(0.95); }
-.inbox-delete-btn { background: linear-gradient(135deg, #ff6b6b, #c92a2a) !important; color: #fff !important; }
+.inbox-delete-btn { background: linear-gradient(135deg, #ff6b6b, #c92a2a)!important; color: #fff!important; }
 .inbox-delete-btn:hover { opacity: 0.85; }
-.inbox-save-btn { background: linear-gradient(135deg, #51cf66, #2b8a3e) !important; color: #fff !important; }
+.inbox-save-btn { background: linear-gradient(135deg, #51cf66, #2b8a3e)!important; color: #fff!important; }
 .inbox-save-btn:hover { opacity: 0.85; }
 .inbox-item.deleting { opacity: 0.4; pointer-events: none; transition: opacity 0.3s; }
 .profile-action-item{display:flex;justify-content:space-between;align-items:center;padding:14px 12px;border-bottom:1px solid #1a1a1a;cursor:pointer;transition:background 0.2s;border-radius:8px}
@@ -111,7 +106,7 @@
 .profile-action-item:active{background:#0a2a2a}
 .profile-action-item:last-child{border-bottom:none}
 .profile-action-arrow{color:#555;font-size:18px;transition:transform 0.2s}
-.profile-action-item:hover .profile-action-arrow{color:#00ffcc;transform:translateX(3px)}
+.profile-action-item:hover.profile-action-arrow{color:#00ffcc;transform:translateX(3px)}
 .toggle-switch{position:relative;display:inline-block;width:50px;height:26px;flex-shrink:0}
 .toggle-switch input{opacity:0;width:0;height:0}
 .toggle-slider{position:absolute;cursor:pointer;top:0;left:0;right:0;bottom:0;background:#333;border-radius:26px;transition:0.3s}
@@ -137,16 +132,12 @@
 .rank-silver{background:linear-gradient(135deg,#c0c0c0,#888);color:#000}
 .rank-bronze{background:linear-gradient(135deg,#cd7f32,#a0522d);color:#fff}
 .rank-default{background:#1a1a2e;color:#00ffcc;border:1px solid #00ffcc33}
-
-/* ===== HUMAN VERIFICATION SLIDER ===== */
 .captcha-slider-container{width:100%;height:50px;background:#1a1a1a;border:1px solid #333;border-radius:25px;position:relative;overflow:hidden;margin:15px 0;user-select:none;touch-action:none}
 .captcha-slider-track{position:absolute;top:0;left:0;height:100%;width:0;background:rgba(0,255,204,0.1);border-radius:25px}
 .captcha-slider-text{position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);color:#555;font-size:12px;font-weight:bold;pointer-events:none;transition:opacity 0.3s}
 .captcha-slider-handle{position:absolute;top:0;left:0;width:50px;height:50px;background:linear-gradient(135deg,#00ffcc,#00ccff);border-radius:50%;cursor:grab;display:flex;align-items:center;justify-content:center;font-size:20px;color:#000;box-shadow:0 0 10px #00ffcc55}
 .captcha-slider-handle:active{cursor:grabbing}
 .captcha-slider-handle.verified{background:linear-gradient(135deg,#51cf66,#2b8a3e)}
-
-/* ===== TRUST & LEGIT UI ===== */
 .payout-banner{background:linear-gradient(135deg,#0a2a0a,#0d3d0d);border:1px solid #51cf6644;border-radius:12px;padding:15px;margin:15px 0;text-align:center}
 .payout-amount{font-size:26px;font-weight:900;color:#51cf66;text-shadow:0 0 10px #51cf6644}
 .payout-label{font-size:11px;color:#888;text-transform:uppercase;letter-spacing:1px;margin-top:5px}
@@ -166,21 +157,18 @@
 .paychangu-footer { margin-top: 20px; display: flex; align-items: center; justify-content: center; gap: 8px; opacity: 0.9; }
 .paychangu-footer span { font-size: 11px; color: #888; font-weight: bold; }
 .paychangu-footer img { height: 24px; width: auto; vertical-align: middle; }
-
-/* ===== FAQ PAGE STYLING ===== */
 .faq-item{background:#111;border:1px solid #00ffcc33;border-radius:10px;margin:10px 0;overflow:hidden}
 .faq-question{padding:15px;display:flex;justify-content:space-between;align-items:center;cursor:pointer;font-weight:bold;color:#00ffcc;font-size:15px;transition:background 0.2s}
 .faq-question:hover{background:#1a1a1a}
 .faq-answer{padding:0 15px;max-height:0;overflow:hidden;transition:max-height 0.3s ease, padding 0.3s ease;color:#ccc;font-size:13px;line-height:1.5;text-align:left}
-.faq-item.active .faq-answer{padding:0 15px 15px 15px;max-height:300px}
-.faq-item.active .faq-question{border-bottom:1px solid #00ffcc33}
+.faq-item.active.faq-answer{padding:0 15px 15px 15px;max-height:300px}
+.faq-item.active.faq-question{border-bottom:1px solid #00ffcc33}
 .faq-arrow{transition:transform 0.3s}
-.faq-item.active .faq-arrow{transform:rotate(180deg)}
+.faq-item.active.faq-arrow{transform:rotate(180deg)}
 </style>
 </head>
 <body>
 
-<!-- APP OPEN HUMAN GATE -->
 <div id="appGate" style="position:fixed; top:0; left:0; width:100%; height:100%; background:#000; z-index:100001; display:flex; align-items:center; justify-content:center; flex-direction:column; padding:20px; box-sizing:border-box;">
     <img src="https://i.imgur.com/VGTXXkQ.jpeg" style="width:80px; border-radius:15px; margin-bottom:20px;">
     <h3 style="color:#00ffcc; margin-bottom:20px;">Verify you are human</h3>
@@ -210,14 +198,14 @@
 <div id="termsModal" class="legal-modal"><div class="legal-modal-content"><h2>📜 Terms of Service</h2><p><b>1. Eligibility:</b> You must be at least 18 years old.</p><p><b>2. Real Money Gaming:</b> Play at your own risk.</p><p><b>3. Deposits:</b> Use registered username as reference.</p><p><b>4. Withdrawals:</b> Processed within 3 hours.</p><p><b>5. Fair Play:</b> Cheating = permanent ban.</p><p><b>6. Platform Fee:</b> 20% fee on winnings.</p><p><b>7. Referrals:</b> MWK 10 per 5 referrals.</p><br><button onclick="document.getElementById('termsModal').style.display='none'" style="width:auto;padding:10px 30px;margin:0 auto;display:block">Close</button></div></div>
 <div id="privacyModal" class="legal-modal"><div class="legal-modal-content"><h2>🔒 Privacy Policy</h2><p><b>1. Data Collection:</b> Username, phone, email.</p><p><b>2. Data Usage:</b> Operate app & process transactions.</p><p><b>3. Security:</b> Firebase encrypted.</p><p><b>4. Chat:</b> Voice stored in DB.</p><br><button onclick="document.getElementById('privacyModal').style.display='none'" style="width:auto;padding:10px 30px;margin:0 auto;display:block">Close</button></div></div>
 
-<div id="editNameModal" class="profile-modal"><div class="profile-modal-content"><div style="font-size:40px;margin-bottom:10px;">✏️</div><h3 style="color:#00ffcc;margin-bottom:15px;">Edit Display Name</h3><input type="text" id="editNameInput" placeholder="New display name" maxlength="20" style="background:#0a0a0a;color:#fff;border:1px solid #00ffcc33;margin-bottom:15px;"><div style="display:flex;gap:10px;justify-content:center;"><button onclick="saveDisplayName()" style="width:auto;padding:10px 25px;">💾 Save</button><button onclick="closeEditNameModal()" style="width:auto;padding:10px 25px;background:#333;color:#fff;">Cancel</button></div><p id="editNameMsg" style="margin-top:10px;font-size:13px;"></p></div></div>
+<div id="editNameModal" class="profile-modal"><div class="profile-modal-content"><div style="font-size:40px;margin-bottom:10px;">✏</div><h3 style="color:#00ffcc;margin-bottom:15px;">Edit Display Name</h3><input type="text" id="editNameInput" placeholder="New display name" maxlength="20" style="background:#0a0a0a;color:#fff;border:1px solid #00ffcc33;margin-bottom:15px;"><div style="display:flex;gap:10px;justify-content:center;"><button onclick="saveDisplayName()" style="width:auto;padding:10px 25px;">💾 Save</button><button onclick="closeEditNameModal()" style="width:auto;padding:10px 25px;background:#333;color:#fff;">Cancel</button></div><p id="editNameMsg" style="margin-top:10px;font-size:13px;"></p></div></div>
 
-<div id="changePasswordModal" class="profile-modal"><div class="profile-modal-content"><div style="font-size:40px;margin-bottom:10px;">🔑</div><h3 style="color:#00ffcc;margin-bottom:15px;">Change Password</h3><div class="input-wrapper" style="margin-bottom:8px;"><input type="password" id="oldPasswordInput" placeholder="Current Password"><span class="toggle-password" onclick="togglePassword('oldPasswordInput', this)">👁️</span></div><div class="input-wrapper" style="margin-bottom:8px;"><input type="password" id="newPasswordInput" placeholder="New Password (min 6 chars)"><span class="toggle-password" onclick="togglePassword('newPasswordInput', this)">👁️</span></div><div class="input-wrapper" style="margin-bottom:15px;"><input type="password" id="confirmPasswordInput" placeholder="Confirm New Password"><span class="toggle-password" onclick="togglePassword('confirmPasswordInput', this)">👁️</span></div><div style="display:flex;gap:10px;justify-content:center;"><button onclick="changePassword()" style="width:auto;padding:10px 25px;">🔑 Change</button><button onclick="closeChangePasswordModal()" style="width:auto;padding:10px 25px;background:#333;color:#fff;">Cancel</button></div><p id="changePasswordMsg" style="margin-top:10px;font-size:13px;"></p></div></div>
+<div id="changePasswordModal" class="profile-modal"><div class="profile-modal-content"><div style="font-size:40px;margin-bottom:10px;">🔑</div><h3 style="color:#00ffcc;margin-bottom:15px;">Change Password</h3><div class="input-wrapper" style="margin-bottom:8px;"><input type="password" id="oldPasswordInput" placeholder="Current Password"><span class="toggle-password" onclick="togglePassword('oldPasswordInput', this)">👁</span></div><div class="input-wrapper" style="margin-bottom:8px;"><input type="password" id="newPasswordInput" placeholder="New Password (min 6 chars)"><span class="toggle-password" onclick="togglePassword('newPasswordInput', this)">👁</span></div><div class="input-wrapper" style="margin-bottom:15px;"><input type="password" id="confirmPasswordInput" placeholder="Confirm New Password"><span class="toggle-password" onclick="togglePassword('confirmPasswordInput', this)">👁</span></div><div style="display:flex;gap:10px;justify-content:center;"><button onclick="changePassword()" style="width:auto;padding:10px 25px;">🔑 Change</button><button onclick="closeChangePasswordModal()" style="width:auto;padding:10px 25px;background:#333;color:#fff;">Cancel</button></div><p id="changePasswordMsg" style="margin-top:10px;font-size:13px;"></p></div></div>
 
-<div id="deleteAccountModal" class="profile-modal"><div class="profile-modal-content" style="border-color:#ff6b6b44;"><div style="font-size:50px;margin-bottom:10px;">⚠️</div><h3 style="color:#ff6b6b;margin-bottom:15px;">Delete Account</h3><p style="color:#ccc;font-size:13px;margin-bottom:15px;line-height:1.5;">This action <b style="color:#ff6b6b">cannot be undone</b>. All your data, balance, and history will be permanently deleted.</p><p style="color:#888;font-size:12px;margin-bottom:10px;">Type <b style="color:#ff6b6b">DELETE</b> to confirm:</p><input type="text" id="deleteConfirmInput" placeholder='Type "DELETE" to confirm' style="background:#0a0a0a;color:#ff6b6b;border:1px solid #ff6b6b44;margin-bottom:15px;text-align:center;"><div style="display:flex;gap:10px;justify-content:center;"><button onclick="confirmDeleteAccount()" style="width:auto;padding:10px 25px;background:linear-gradient(45deg,#ff6b6b,#c92a2a);color:#fff;">🗑️ Delete Forever</button><button onclick="closeDeleteAccountModal()" style="width:auto;padding:10px 25px;background:#333;color:#fff;">Cancel</button></div><p id="deleteAccountMsg" style="margin-top:10px;font-size:13px;"></p></div></div>
+<div id="deleteAccountModal" class="profile-modal"><div class="profile-modal-content" style="border-color:#ff6b6b44;"><div style="font-size:50px;margin-bottom:10px;">⚠</div><h3 style="color:#ff6b6b;margin-bottom:15px;">Delete Account</h3><p style="color:#ccc;font-size:13px;margin-bottom:15px;line-height:1.5;">This action <b style="color:#ff6b6b">cannot be undone</b>. All your data, balance, and history will be permanently deleted.</p><p style="color:#888;font-size:12px;margin-bottom:10px;">Type <b style="color:#ff6b6b">DELETE</b> to confirm:</p><input type="text" id="deleteConfirmInput" placeholder='Type "DELETE" to confirm' style="background:#0a0a0a;color:#ff6b6b;border:1px solid #ff6b6b44;margin-bottom:15px;text-align:center;"><div style="display:flex;gap:10px;justify-content:center;"><button onclick="confirmDeleteAccount()" style="width:auto;padding:10px 25px;background:linear-gradient(45deg,#ff6b6b,#c92a2a);color:#fff;">🗑 Delete Forever</button><button onclick="closeDeleteAccountModal()" style="width:auto;padding:10px 25px;background:#333;color:#fff;">Cancel</button></div><p id="deleteAccountMsg" style="margin-top:10px;font-size:13px;"></p></div></div>
 
 <div id="searchingOverlay" class="searching-overlay"><div class="search-spinner"></div><h2 style="color:#00ffcc">Finding Opponent...</h2><p id="searchGradeText" style="color:#ccc;margin-top:10px"></p><button onclick="cancelMatchmaking()" style="margin-top:30px;width:auto;padding:12px 30px;background:#ff6b6b;color:#fff">Cancel</button></div>
-<a href="https://chat.whatsapp.com/CmvdLsifPKS51OyRnrITFz" target="_blank" id="waFloatBtn" class="wa-float" title="Join WhatsApp Group"><svg viewBox="0 0 24 24"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547,4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg></a>
+<a href="https://chat.whatsapp.com/CmvdLsifPKS51OyRnrITFz" target="_blank" id="waFloatBtn" class="wa-float" title="Join WhatsApp Group"><svg viewBox="0 0 24 24"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0.16 5.335.157 11.892c0 2.096.547,4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 0 00-3.48-8.413z"/></svg></a>
 
 <div id="imageViewerModal"><div class="iv-top-bar"><span id="ivTitle" style="color:#fff;font-weight:bold;font-size:14px">📷 Photo</span><div style="display:flex;gap:8px"><button onclick="saveImageFromViewer()" style="width:auto;padding:8px 16px;background:#51cf66;color:#000;font-weight:bold;border-radius:8px;font-size:13px">💾 Save</button><button onclick="closeImageViewer()" style="width:auto;padding:8px 16px;background:#ff6b6b;color:#fff;border-radius:8px;font-size:13px">✕ Close</button></div></div><div class="iv-img-wrap"><img id="imageViewerImg" src="" alt="Photo"></div></div>
 
@@ -226,8 +214,7 @@
     <img src="https://i.imgur.com/VGTXXkQ.jpeg" style="width:120px;height:auto;border-radius:15px;margin-bottom:10px;box-shadow:0 0 20px #00ffcc55">
     <h1>Mada Game Earn</h1>
     <p style="color:#00ffcc; font-size:14px; margin-bottom:15px; font-weight:bold;">✅ Legit app for earning real money by playing draught with friends!</p>
-    
-    <!-- TRUST ELEMENTS -->
+
     <div class="payout-banner">
         <div class="payout-amount">MWK 450,000+</div>
         <div class="payout-label">Total Paid Out to Players</div>
@@ -237,7 +224,7 @@
         <div class="trust-badge" style="color:#00ccff;border-color:#00ccff44">⚡ Instant Payouts</div>
         <div class="trust-badge" style="color:#ffd700;border-color:#ffd70044">🔒 Secure & Fair</div>
     </div>
-    
+
     <div class="card" id="registerCard">
         <h3>👤 Create Account</h3>
         <input type="text" id="usernameInput" placeholder="Username (min 3 chars)" maxlength="20">
@@ -253,10 +240,9 @@
         </div>
         <div id="airtelValidationMsg" style="font-size:12px; margin-top:5px; text-align:left; padding-left:5px;"><span style="color:#888;">💡 Tip: Airtel (99/98) or TNM (88/89)</span></div>
         <input type="email" id="emailInput" placeholder="📧 Email (Required for Password Reset)">
-        <div class="input-wrapper"><input type="password" id="passwordInput" placeholder="Password (min 6 chars)"><span class="toggle-password" onclick="togglePassword('passwordInput', this)">👁️</span></div>
+        <div class="input-wrapper"><input type="password" id="passwordInput" placeholder="Password (min 6 chars)"><span class="toggle-password" onclick="togglePassword('passwordInput', this)">👁</span></div>
         <div style="text-align:left;margin:10px 0;font-size:13px"><label><input type="checkbox" id="agreeCheck" style="width:auto;margin-right:8px">I am 18+ & agree to <a href="#" onclick="document.getElementById('termsModal').style.display='flex';return false" style="color:#00ffcc">Terms</a></label></div>
-        
-        <!-- REGISTER CAPTCHA -->
+
         <div class="captcha-slider-container" id="regSliderTrack">
             <div class="captcha-slider-track" id="regSliderProgress"></div>
             <div class="captcha-slider-text" id="regSliderText">Slide to verify you are human</div>
@@ -266,8 +252,7 @@
         <button id="loginBtn" type="button">Create Account & Play</button>
         <p id="loginMsg" style="margin-top:10px;"></p>
         <div class="auth-links">Already have an account? <a onclick="showLogin()">Login here</a></div>
-        
-        <!-- POWERED BY PAYCHANGU -->
+
         <div class="paychangu-footer">
             <span>POWERED BY</span>
             <img src="https://z-cdn-media.chatglm.cn/files/35d66da9-00f7-4401-a850-27d563de9c61.png?auth_key=1883501909-a012dbd7a77e4d4caa3b033d5019e93f-0-ae3f5a776eed45a6c9fef0c7283c8f28" alt="PayChangu">
@@ -276,9 +261,8 @@
     <div class="card" id="loginCard" style="display:none;">
         <h3>👤 Login</h3>
         <input type="text" id="loginUsernameInput" placeholder="Username">
-        <div class="input-wrapper"><input type="password" id="loginPasswordInput" placeholder="Password"><span class="toggle-password" onclick="togglePassword('loginPasswordInput', this)">👁️</span></div>
-        
-        <!-- LOGIN CAPTCHA -->
+        <div class="input-wrapper"><input type="password" id="loginPasswordInput" placeholder="Password"><span class="toggle-password" onclick="togglePassword('loginPasswordInput', this)">👁</span></div>
+
         <div class="captcha-slider-container" id="loginSliderTrack">
             <div class="captcha-slider-track" id="loginSliderProgress"></div>
             <div class="captcha-slider-text" id="loginSliderText">Slide to verify you are human</div>
@@ -298,25 +282,22 @@
             <div class="forgot-back" onclick="hideForgotSection()">← Back to Login</div>
         </div>
         <div class="auth-links">Don't have an account? <a onclick="showRegister()">Create Account</a></div>
-        
-        <!-- POWERED BY PAYCHANGU -->
+
         <div class="paychangu-footer">
             <span>POWERED BY</span>
             <img src="https://z-cdn-media.chatglm.cn/files/35d66da9-00f7-4401-a850-27d563de9c61.png?auth_key=1883501909-a012dbd7a77e4d4caa3b033d5019e93f-0-ae3f5a776eed45a6c9fef0c7283c8f28" alt="PayChangu">
         </div>
     </div>
-    
-    <!-- HOW TO EARN -->
+
     <div class="card" style="background:linear-gradient(135deg,#0a1a1a,#0a1a2e);">
         <h3>🏆 How to Earn Money</h3>
         <div class="how-to-earn">
-            <div class="hte-step"><div class="hte-icon">♟️</div><div class="hte-title">Play & Win</div><div class="hte-desc">Beat opponents in PvP Checkers</div></div>
+            <div class="hte-step"><div class="hte-icon">♟</div><div class="hte-title">Play & Win</div><div class="hte-desc">Beat opponents in PvP Checkers</div></div>
             <div class="hte-step"><div class="hte-icon">💰</div><div class="hte-title">Build Balance</div><div class="hte-desc">Winnings added instantly to wallet</div></div>
             <div class="hte-step"><div class="hte-icon">📱</div><div class="hte-title">Withdraw</div><div class="hte-desc">Cash sent to your Airtel/TNM</div></div>
         </div>
     </div>
-    
-    <!-- LIVE TICKER -->
+
     <div class="ticker-container">
         <div class="ticker-track">
             <div class="ticker-item">✅ <span>Sarah_MW</span> withdrew MWK 2,000</div>
@@ -326,7 +307,6 @@
             <div class="ticker-item">✅ <span>ProGamer</span> withdrew MWK 5,000</div>
             <div class="ticker-item">✅ <span>Thoko_M</span> withdrew MWK 320</div>
             <div class="ticker-item">✅ <span>James_B</span> withdrew MWK 1,000</div>
-            <!-- Duplicate for seamless infinite loop -->
             <div class="ticker-item">✅ <span>Sarah_MW</span> withdrew MWK 2,000</div>
             <div class="ticker-item">✅ <span>Gift123</span> withdrew MWK 500</div>
             <div class="ticker-item">✅ <span>CheckersKing</span> withdrew MWK 10,000</div>
@@ -336,15 +316,14 @@
             <div class="ticker-item">✅ <span>James_B</span> withdrew MWK 1,000</div>
         </div>
     </div>
-    
-    <!-- COPYRIGHT -->
+
     <div class="copyright-text">© All rights reserved 2022-2026</div>
 </div>
 
 <div id="profilePage" class="page">
   <h1>👤 My Profile</h1>
   <div class="card" style="display:flex;flex-direction:column;align-items:center;gap:15px;">
-     <div class="profile-pic-container" onclick="viewProfilePhoto()"><img id="profilePicImg" src="https://via.placeholder.com/100/111/00ffcc?text=U" class="profile-pic"><div class="profile-pic-upload-overlay">👁️ View</div></div>
+     <div class="profile-pic-container" onclick="viewProfilePhoto()"><img id="profilePicImg" src="https://via.placeholder.com/100/111/00ffcc?text=U" class="profile-pic"><div class="profile-pic-upload-overlay">👁 View</div></div>
      <div style="display:flex;gap:10px;flex-wrap:wrap;justify-content:center;">
         <button onclick="document.getElementById('profilePicInput').click()" style="width:auto;padding:8px 16px;font-size:13px;background:linear-gradient(45deg,#00ffcc,#00ccff);">📷 Update Photo</button>
         <button onclick="viewProfilePhoto()" style="width:auto;padding:8px 16px;font-size:13px;background:#1a1a2e;color:#00ffcc;border:1px solid #00ffcc33;">🔍 View Photo</button>
@@ -366,48 +345,45 @@
         <div class="stat-box"><div class="stat-highlight" style="color:#ffd700" id="profileWinStreak">0</div><div class="stat-label">🔥 Win Streak</div></div>
         <div class="stat-box"><div id="profileRankBox">-</div><div class="stat-label">🥉🥈🥇 Rank</div></div>
      </div>
-     <div class="flex-row" style="margin-top:8px;"><span>🛡️ Verification</span><span id="profileVerification"><span class="verification-badge unverified">❌ Unverified</span></span></div>
+     <div class="flex-row" style="margin-top:8px;"><span>🛡 Verification</span><span id="profileVerification"><span class="verification-badge unverified">❌ Unverified</span></span></div>
   </div>
   <div class="card" style="text-align:left;padding:10px 0;">
-     <h3 style="text-align:center;margin-bottom:10px;padding:0 12px;">⚙️ Settings</h3>
-     <div class="profile-action-item" onclick="showEditDisplayName()"><span style="color:#ccc;font-size:14px;">✏️ Edit Display Name</span><span class="profile-action-arrow">›</span></div>
+     <h3 style="text-align:center;margin-bottom:10px;padding:0 12px;">⚙ Settings</h3>
+     <div class="profile-action-item" onclick="showEditDisplayName()"><span style="color:#ccc;font-size:14px;">✏ Edit Display Name</span><span class="profile-action-arrow">›</span></div>
      <div class="profile-action-item" onclick="showChangePassword()"><span style="color:#ccc;font-size:14px;">🔑 Change Password</span><span class="profile-action-arrow">›</span></div>
      <div class="profile-action-item" style="cursor:default;"><span style="color:#ccc;font-size:14px;">🔊 Sound</span><label class="toggle-switch"><input type="checkbox" id="soundToggle" checked onchange="toggleSoundSetting()"><span class="toggle-slider"></span></label></div>
-     <div class="profile-action-item" onclick="showDeleteAccount()" style="border-bottom:none;"><span style="color:#ff6b6b;font-size:14px;">🗑️ Delete Account</span><span class="profile-action-arrow" style="color:#ff6b6b;">›</span></div>
+     <div class="profile-action-item" onclick="showDeleteAccount()" style="border-bottom:none;"><span style="color:#ff6b6b;font-size:14px;">🗑 Delete Account</span><span class="profile-action-arrow" style="color:#ff6b6b;">›</span></div>
   </div>
   <div class="card" style="text-align:left;">
-     <h3 style="text-align:center;margin-bottom:15px;">🏟️ Recent Matches</h3>
+     <h3 style="text-align:center;margin-bottom:15px;">🏟 Recent Matches</h3>
      <div id="recentMatchesList" style="max-height:250px;overflow-y:auto;"><div style="text-align:center;color:#555;font-size:12px;padding:10px;">No matches yet</div></div>
   </div>
-  
-  <!-- COPYRIGHT PROFILE -->
+
   <div class="copyright-text">© All rights reserved 2022-2026</div>
-  
-  <!-- POWERED BY PAYCHANGU -->
+
   <div class="paychangu-footer">
       <span>POWERED BY</span>
       <img src="https://z-cdn-media.chatglm.cn/files/35d66da9-00f7-4401-a850-27d563de9c61.png?auth_key=1883501909-a012dbd7a77e4d4caa3b033d5019e93f-0-ae3f5a776eed45a6c9fef0c7283c8f28" alt="PayChangu">
   </div>
-  
+
   <div style="text-align:right;margin-top:10px"><button onclick="logout()" style="width:auto;padding:10px 20px;background:#333;color:#ff6b6b;border:1px solid #ff6b6b44">🚪 Logout</button></div>
 </div>
 
 <div id="walletPage" class="page">
     <h1>💳 Wallet</h1>
     <div class="card"><h3>💰 Balance</h3><p id="balanceText" style="font-size:28px;color:#ffd700;margin:10px 0;font-weight:bold;">💵 MWK 0</p></div>
-    <div class="card"><h3>📊 Game Stats</h3><div class="flex-row"><span>♟️ Played</span><span id="statPlayed" style="color:#fff;font-weight:bold">0</span></div><div class="flex-row"><span>🏆 Won</span><span id="statWon" style="color:#51cf66;font-weight:bold">0</span></div><div class="flex-row"><span>😞 Lost</span><span id="statLost" style="color:#ff6b6b;font-weight:bold">0</span></div></div>
+    <div class="card"><h3>📊 Game Stats</h3><div class="flex-row"><span>♟ Played</span><span id="statPlayed" style="color:#fff;font-weight:bold">0</span></div><div class="flex-row"><span>🏆 Won</span><span id="statWon" style="color:#51cf66;font-weight:bold">0</span></div><div class="flex-row"><span>😞 Lost</span><span id="statLost" style="color:#ff6b6b;font-weight:bold">0</span></div></div>
     <div class="card referral-card"><h3>🤝 Invite & Earn</h3><p style="font-size:13px;color:#ccc;margin-bottom:10px">Earn <b style="color:#ffd700">MWK 10</b> per 5 friends!</p><div style="font-size:14px;color:#fff;margin-bottom:10px">Referred: <span id="refCount" style="color:#51cf66;font-weight:bold">0</span></div><div class="referral-link-box"><input type="text" id="refLinkInput" readonly><button class="copy-btn" onclick="copyRefLink()">Copy</button></div><button id="claimRefBtn" onclick="claimReferralBonus()" style="display:none;margin-top:10px;background:linear-gradient(45deg,#ffd700,#ffaa00)">🎉 Claim MWK 10</button></div>
-    
+
     <div class="card"><h3>📱 Withdrawal Method</h3><div id="paymentLockedBox" class="payment-locked-box" style="display:none"><div class="payment-locked-title">💳 Registered Phone (Locked)</div><div class="payment-locked-row"><div style="text-align:left"><div class="payment-locked-label" id="payNetworkLabel">Network</div><div class="payment-locked-phone" id="payPhoneLabel">---</div></div><div class="payment-locked-flag">🇲🇼</div></div><div class="payment-locked-divider"></div><div class="payment-locked-secure">🔒 Withdrawals sent here automatically</div></div><div id="paymentNoPhone" style="display:none;padding:15px;background:#1a1a0a;border-radius:10px;border:1px solid #ffaa00"><p style="color:#ffaa00">⚠ No payment phone on file</p></div></div>
 
-    <!-- ===== AUTOMATED PAYCHANGU DEPOSIT ===== -->
     <div class="card">
         <h3>💰 Deposit via Mobile Money</h3>
         <div style="background:#0a1a0a; padding:15px; border-radius:10px; border:1px solid #51cf6644; margin-bottom:15px; text-align:left;">
             <p style="color:#51cf66; font-weight:bold; font-size:14px; margin-bottom:5px;">✅ Automated Deposit</p>
             <p style="color:#ccc; font-size:12px;">Select amount and click Pay Now. You will be redirected to a secure PayChangu page to enter your phone number and PIN. Your balance updates instantly after payment!</p>
         </div>
-        
+
         <label style="float:left; font-size:12px; color:#888; margin-bottom:5px;">Amount (MWK)</label>
         <select id="okDepositAmount" style="margin-bottom: 15px;">
             <option value="50">MWK 50</option>
@@ -426,7 +402,6 @@
         <p id="okDepositMsg" style="margin-top:10px; font-size:13px;"></p>
     </div>
 
-    <!-- ===== AUTOMATED PAYCHANGU WITHDRAW ===== -->
     <div class="card">
         <h3>💸 Withdraw to Mobile Money</h3>
         <p style="font-size:12px; color:#ccc; margin-bottom:10px;">Funds will be sent instantly to your registered phone number.</p>
@@ -445,8 +420,7 @@
         <button onclick="submitOneKhusaWithdraw()" style="background: linear-gradient(45deg,#ffd700,#ffaa00);">💸 Request Instant Withdrawal</button>
         <p id="withdrawMsg" style="margin-top:10px; font-size:13px;"></p>
     </div>
-    
-    <!-- ===== TRANSACTION HISTORY ===== -->
+
     <div class="card">
         <h3>📜 Transaction History</h3>
         <div id="myDepositHistory" class="history-list"><div style="text-align:center;color:#555;font-size:12px;padding:10px;">Loading deposits...</div></div>
@@ -454,10 +428,9 @@
         <div id="myWithdrawHistory" class="history-list"><div style="text-align:center;color:#555;font-size:12px;padding:10px;">Loading withdrawals...</div></div>
     </div>
 
-    <div class="card" style="border-color:#ff6b6b44"><h3>⚠️ Rules</h3><div style="text-align:left;color:#ccc;line-height:1.8;font-size:12px">1. Process time up to <b style="color:#fff">3 hours</b> (usually instant).<br>2. Min withdrawal 50 MWK.<br>3. Withdrawals sent to your registered phone number.<br>4. Fake activity = Permanent ban.<br>5. <b style="color:#ff6b6b">VPN usage = Permanent ban.</b></div></div>
+    <div class="card" style="border-color:#ff6b6b44"><h3>⚠ Rules</h3><div style="text-align:left;color:#ccc;line-height:1.8;font-size:12px">1. Process time up to <b style="color:#fff">3 hours</b> (usually instant).<br>2. Min withdrawal 50 MWK.<br>3. Withdrawals sent to your registered phone number.<br>4. Fake activity = Permanent ban.<br>5. <b style="color:#ff6b6b">VPN usage = Permanent ban.</b></div></div>
     <div style="margin-top:20px;padding:20px;background:#111;border-radius:15px;border:1px solid #222"><div style="font-size:28px;margin-bottom:10px">🔞</div><p style="color:#ff6b6b;font-weight:bold;font-size:16px">18+ Only</p><div style="display:flex;justify-content:center;gap:15px;font-size:13px;margin:15px 0"><a href="#" onclick="document.getElementById('termsModal').style.display='flex';return false" style="color:#00cc4f">Terms</a><a href="#" onclick="document.getElementById('privacyModal').style.display='flex';return false" style="color:#00cc4f">Privacy</a></div><a href="https://chat.whatsapp.com/CmvdLsifPKS51OyRnrITFz" target="_blank" style="display:block;background:#25d366;color:#fff;padding:12px;border-radius:10px;text-decoration:none;font-weight:bold;font-size:14px">💬 Join WhatsApp Group</a></div>
-    
-    <!-- POWERED BY PAYCHANGU -->
+
     <div class="paychangu-footer">
         <span>POWERED BY</span>
         <img src="https://z-cdn-media.chatglm.cn/files/35d66da9-00f7-4401-a850-27d563de9c61.png?auth_key=1883501909-a012dbd7a77e4d4caa3b033d5019e93f-0-ae3f5a776eed45a6c9fef0c7283c8f28" alt="PayChangu">
@@ -465,10 +438,9 @@
 </div>
 
 <div id="playPage" class="page">
-    <h1>♟️ PvP Checkers</h1>
-    <p style="color:#ccc;margin-bottom:20px">Choose stake and play for real money! ♟️ Play any grade anytime — no limits!</p>
-    
-    <!-- ONLINE PLAYERS CARD -->
+    <h1>♟ PvP Checkers</h1>
+    <p style="color:#ccc;margin-bottom:20px">Choose stake and play for real money! ♟ Play any grade anytime — no limits!</p>
+
     <div class="card" style="background:linear-gradient(135deg,#0a2a2a,#1a1a2e); border:1px solid #00ffcc44; display:flex; justify-content:space-around; align-items:center; padding:15px 10px; margin-bottom:20px;">
         <div style="text-align:center; flex:1;">
             <div style="font-size:28px; font-weight:900; color:#51cf66; text-shadow: 0 0 10px #51cf6644;" id="onlinePlayersCount">0</div>
@@ -480,9 +452,9 @@
             <div style="font-size:11px; color:#aaa; text-transform:uppercase; letter-spacing:1px; margin-top:5px;">👥 Total Players</div>
         </div>
     </div>
-    
+
     <div class="grade-grid" id="gradeGrid"></div>
-    <div class="card" style="margin-top:30px"><h3>📜 Game Rules (Malawi)</h3><div style="text-align:left;color:#ccc;line-height:1.8;font-size:13px">1. Fee deducted when match found.<br>2. Matched with real player or Computer.<br>3. Winner takes 80%.<br>4. 20% platform fee.<br>5. Disconnect = lose.<br>6. <b style="color:#fff">Capture backward is allowed.</b><br>7. <b style="color:#fff">Multiple jumps are forced.</b> (Keep jumping!).<br>8. If you can capture, you must capture.<br>9. <b style="color:#fff">Only Kings can fly (long jumps).</b><br><br><b style="color:#ffd700">⚖️ Draw Rules:</b><br>10. <b style="color:#00ffcc">King vs King</b> = Immediate draw (both refunded).<br>11. <b style="color:#00ffcc">One piece left</b> = Opponent gets <b style="color:#ffd700">12 moves</b> to catch it. If not caught = draw (both refunded).</div></div>
+    <div class="card" style="margin-top:30px"><h3>📜 Game Rules (Malawi)</h3><div style="text-align:left;color:#ccc;line-height:1.8;font-size:13px">1. Fee deducted when match found.<br>2. Matched with real player or Computer.<br>3. Winner takes 80%.<br>4. 20% platform fee.<br>5. Disconnect = lose.<br>6. <b style="color:#fff">Capture backward is allowed.</b><br>7. <b style="color:#fff">Multiple jumps are forced.</b> (Keep jumping!).<br>8. If you can capture, you must capture.<br>9. <b style="color:#fff">Only Kings can fly (long jumps).</b><br><br><b style="color:#ffd700">⚖ Draw Rules:</b><br>10. <b style="color:#00ffcc">King vs King</b> = Immediate draw (both refunded).<br>11. <b style="color:#00ffcc">One piece left</b> = Opponent gets <b style="color:#ffd700">12 moves</b> to catch it. If not caught = draw (both refunded).</div></div>
 </div>
 
 <div id="inboxPage" class="page">
@@ -499,43 +471,42 @@
   </div>
 </div>
 
-<!-- ===== FAQ PAGE ===== -->
 <div id="faqPage" class="page">
   <h1>❓ FAQ</h1>
   <p style="color:#ccc; font-size:13px; margin-bottom:20px;">Frequently Asked Questions</p>
-  
+
   <div class="card" style="text-align:left; padding:10px;">
     <div class="faq-item">
       <div class="faq-question" onclick="toggleFaq(this)">How do I deposit money? <span class="faq-arrow">▼</span></div>
       <div class="faq-answer">Go to the Wallet page, select "Deposit via Mobile Money", enter the amount, and click Pay Now. You will be redirected to a secure PayChangu page to enter your phone number and PIN. Your balance updates instantly after payment!</div>
     </div>
-    
+
     <div class="faq-item">
       <div class="faq-question" onclick="toggleFaq(this)">How long do withdrawals take? <span class="faq-arrow">▼</span></div>
       <div class="faq-answer">Withdrawals are processed automatically to your registered phone number. Usually, it is instant, but it can take up to 3 hours during high traffic. Minimum withdrawal is MWK 50.</div>
     </div>
-    
+
     <div class="faq-item">
       <div class="faq-question" onclick="toggleFaq(this)">What happens if I disconnect during a game? <span class="faq-arrow">▼</span></div>
       <div class="faq-answer">If you disconnect or leave a checkers match before it finishes, you automatically forfeit the game and lose your entry fee. Please ensure you have a stable internet connection before starting a PvP match.</div>
     </div>
-    
+
     <div class="faq-item">
       <div class="faq-question" onclick="toggleFaq(this)">How much is the platform fee? <span class="faq-arrow">▼</span></div>
       <div class="faq-answer">Mada Game Earn takes a 20% platform fee on all winnings. For example, if the entry fee is MWK 50, the total pot is MWK 100. The winner receives MWK 80.</div>
     </div>
-    
+
     <div class="faq-item">
       <div class="faq-question" onclick="toggleFaq(this)">Why was my account banned? <span class="faq-arrow">▼</span></div>
       <div class="faq-answer">Accounts are permanently banned for violating fair play policies. This includes using a VPN, Proxy, or any datacenter IP to manipulate the game or location.</div>
     </div>
-    
+
     <div class="faq-item">
       <div class="faq-question" onclick="toggleFaq(this)">How does the referral system work? <span class="faq-arrow">▼</span></div>
       <div class="faq-answer">Go to your Wallet, copy your referral link, and share it with friends. For every 5 friends who join using your link, you can claim MWK 10 for free!</div>
     </div>
   </div>
-  
+
   <div class="copyright-text">© All rights reserved 2022-2026</div>
 </div>
 
@@ -548,7 +519,7 @@
       <div class="pvp-player" style="color:#ccc" id="p2Name">P2</div>
     </div>
     <div class="checkers-board" id="checkersBoard"></div>
-    <div id="drawCounterBar" class="draw-counter-bar">⏱️ Draw in <span id="drawMovesLeft">12</span> moves</div>
+    <div id="drawCounterBar" class="draw-counter-bar">⏱ Draw in <span id="drawMovesLeft">12</span> moves</div>
     <div class="pvp-info-bar" style="margin-top:10px;background:#0a0a0a">
       <div style="font-size:12px;color:#888">Stake: <span id="gameStake" style="color:#ffd700">0</span></div>
       <div style="font-size:12px;color:#888">Prize: <span id="gamePrize" style="color:#51cf66">0</span></div>
@@ -563,7 +534,7 @@
     <button class="chat-back-btn" onclick="backToChatList()">←</button>
     <div class="chat-conv-avatar" id="chatConvAvatar">?</div>
     <div style="flex:1;text-align:left"><div id="chatConvName" style="font-weight:bold;font-size:15px;color:#fff"></div><div id="chatConvStatus" style="font-size:11px;color:#888"></div></div>
-    <button class="chat-clear-btn" onclick="clearChat()">🗑️</button>
+    <button class="chat-clear-btn" onclick="clearChat()">🗑</button>
   </div>
   <div id="chatMessages" class="chat-messages-box"></div>
   <div id="replyPreview" class="chat-reply-preview-box"><div style="display:flex;justify-content:space-between;align-items:center;gap:8px"><div style="flex:1;min-width:0"><div style="font-size:10px;color:#00ffcc;margin-bottom:2px" id="replyPreviewLabel">Replying to</div><div id="replyPreviewText" style="font-size:12px;color:#ccc;overflow:hidden;text-overflow:ellipsis;white-space:nowrap"></div></div><button onclick="cancelReply()" style="width:auto;padding:4px 10px;background:transparent;color:#ff6b6b;font-size:16px;margin:0;cursor:pointer;border:none">✕</button></div></div>
@@ -576,45 +547,35 @@
   <button class="nav-btn active" id="navProfile"><span class="nav-icon">👤</span>Profile</button>
   <button class="nav-btn" id="navWallet"><span class="nav-icon">💳</span>Wallet</button>
   <button class="nav-btn" id="navChat"><span class="nav-icon">💬</span>Chat</button>
-  <button class="nav-btn" id="navPlay"><span class="nav-icon">♟️</span>Play</button>
+  <button class="nav-btn" id="navPlay"><span class="nav-icon">♟</span>Play</button>
   <button class="nav-btn" id="navInbox"><span class="nav-icon">📥</span>Inbox <span id="inboxNotifDot" class="notification-dot" style="display:none;"></span></button>
   <button class="nav-btn" id="navFaq"><span class="nav-icon">❓</span>FAQ</button>
 </div>
 
 <script>
-/* ===== SAFE IMAGE VIEWER ===== */
 function openImageViewer(src){document.getElementById('imageViewerImg').src=src;document.getElementById('imageViewerModal').style.display='flex'}
 function closeImageViewer(){document.getElementById('imageViewerModal').style.display='none';document.getElementById('imageViewerImg').src=''}
 function saveImageFromViewer(){try{var src=document.getElementById('imageViewerImg').src;if(!src)return;var a=document.createElement('a');a.href=src;a.download='mada_photo_'+Date.now()+'.jpg';a.style.display='none';document.body.appendChild(a);a.click();setTimeout(function(){document.body.removeChild(a)},500);alert('💾 Image saved!')}catch(e){alert('Tap and hold the image to save.')}}
-
-/* ===== SOUND EFFECTS ENGINE ===== */
 var audioCtx=null;
 function getAudioCtx(){if(!audioCtx)audioCtx=new(window.AudioContext||window.webkitAudioContext)();return audioCtx}
 function playSound(type){if(localStorage.getItem('soundDisabled')==='true')return;try{var ctx=getAudioCtx();if(ctx.state==='suspended')ctx.resume();var osc=ctx.createOscillator();var gain=ctx.createGain();osc.connect(gain);gain.connect(ctx.destination);gain.gain.value=0.2;if(type==='move'){osc.frequency.value=400;osc.type='sine';gain.gain.exponentialRampToValueAtTime(0.01,ctx.currentTime+0.1);osc.start(ctx.currentTime);osc.stop(ctx.currentTime+0.1)}else if(type==='capture'){osc.frequency.value=200;osc.type='square';gain.gain.exponentialRampToValueAtTime(0.01,ctx.currentTime+0.2);osc.start(ctx.currentTime);osc.stop(ctx.currentTime+0.2)}else if(type==='win'){osc.frequency.value=523.25;osc.type='sine';osc.start(ctx.currentTime);osc.stop(ctx.currentTime+0.15);var o2=ctx.createOscillator();var g2=ctx.createGain();o2.connect(g2);g2.connect(ctx.destination);g2.gain.value=0.2;o2.frequency.value=659.25;o2.type='sine';o2.start(ctx.currentTime+0.15);o2.stop(ctx.currentTime+0.3);var o3=ctx.createOscillator();var g3=ctx.createGain();o3.connect(g3);g3.connect(ctx.destination);g3.gain.value=0.2;o3.frequency.value=783.99;o3.type='sine';o3.start(ctx.currentTime+0.3);o3.stop(ctx.currentTime+0.5)}else if(type==='lose'){osc.frequency.value=400;osc.type='sawtooth';gain.gain.exponentialRampToValueAtTime(0.01,ctx.currentTime+0.5);osc.frequency.exponentialRampToValueAtTime(100,ctx.currentTime+0.5);osc.start(ctx.currentTime);osc.stop(ctx.currentTime+0.5)}}catch(e){}}
-
-/* ===== CORE APP ===== */
 var db=null;
 try{if(typeof firebase!=='undefined'&&firebase.apps&&firebase.apps.length===0){firebase.initializeApp({apiKey:"AIzaSyBRDfT-P8wzVAAZs8lveF1-ZTf8QlpRC5g",authDomain:"apple-green-ded09.firebaseapp.com",databaseURL:"https://apple-green-ded09-default-rtdb.firebaseio.com",projectId:"apple-green-ded09",storageBucket:"apple-green-ded09.firebasestorage.app",messagingSenderId:"1093712798003",appId:"1:1093712798003:web:2a945cd7fc76641dab5e46"});db=firebase.database();var appCheck=firebase.appCheck();appCheck.activate(new firebase.appCheck.ReCaptchaV3Provider('6LeoB_8sAAAAAJS4kepjICEYny7besSCK4mv3l9Q'),true);appCheck.getToken().then(function(t){var b=document.getElementById('appcheckBadge');if(b){if(t&&t.token){b.className='appcheck-badge ok';b.textContent='🔒 App Check: Active';setTimeout(function(){b.style.display='none'},3000)}else{b.className='appcheck-badge fail';setTimeout(function(){b.style.display='none'},5000)}}}).catch(function(){var b=document.getElementById('appcheckBadge');if(b){b.className='appcheck-badge fail';setTimeout(function(){b.style.display='none'},5000)}})}}catch(e){db=null}
-
 var DAILY_LIMIT=12000;var gameState={};var captchaAnswer=0;
 var PVP_GRADES=[{id:1,name:'Grade 1',entryMWK:50,winMWK:80,icon:'🥉'},{id:2,name:'Grade 2',entryMWK:200,winMWK:320,icon:'🥈'},{id:3,name:'Grade 3',entryMWK:300,winMWK:480,icon:'🥇'},{id:4,name:'Grade 4',entryMWK:500,winMWK:800,icon:'💎'}];
 var myUid=null;var myPlayerNumber=0;var currentGameId=null;var gameListener=null;var processedGameEnds={};
 var isHumanReg = false; var isHumanLogin = false;
-var mySecret = null; 
-var botMatchTimeout = null; 
+var mySecret = null;
+var botMatchTimeout = null;
 var botThinking = false;
 var lastBoardStr = "";
-
-/* ===== VPN DETECTION & BAN SYSTEM ===== */
 async function checkVpnStatus() {
-    if (!myUid || !db) return;
-    if (sessionStorage.getItem('vpnChecked')) return; 
+    if (!myUid ||!db) return;
+    if (sessionStorage.getItem('vpnChecked')) return;
     sessionStorage.setItem('vpnChecked', 'true');
-
     try {
         const res = await fetch('https://ipapi.co/json/');
         const data = await res.json();
-
         if (data && data.ip) {
             let isVpn = false;
             if (data.security && (data.security.is_vpn || data.security.is_proxy || data.security.is_tor)) {
@@ -632,52 +593,45 @@ async function checkVpnStatus() {
                 country: data.country_name || 'Unknown',
                 timestamp: Date.now()
             });
-
             if (isVpn) {
                 db.ref('leaderboard_all/' + myUid).update({ banned: true });
                 db.ref('users/' + myUid).update({ banned: true });
-                alert('⚠️ Access Denied: VPN, Proxy, or Datacenter IP detected.\n\nYour account has been permanently banned for violating our fair play policies.');
-                logout(); 
+                alert('⚠ Access Denied: VPN, Proxy, or Datacenter IP detected.\n\nYour account has been permanently banned for violating our fair play policies.');
+                logout();
             }
         }
     } catch (e) {
         console.error('VPN Check Error:', e);
     }
 }
-
 function checkBanStatus() {
-    if (!myUid || !db) return;
+    if (!myUid ||!db) return;
     db.ref('leaderboard_all/' + myUid + '/banned').on('value', function(snap) {
         if (snap.val() === true) {
-            alert('⚠️ Your account has been permanently banned for violating our policies (e.g., using a VPN).');
+            alert('⚠ Your account has been permanently banned for violating our policies (e.g., using a VPN).');
             logout();
         }
     });
 }
-
-/* ===== SLIDE CAPTCHA LOGIC ===== */
 function setupSlider(trackId, handleId, progressId, textId, onSuccess) {
   var track = document.getElementById(trackId);
   var handle = document.getElementById(handleId);
   var progress = document.getElementById(progressId);
   var text = document.getElementById(textId);
-  if(!track || !handle) return;
-
+  if(!track ||!handle) return;
   var isSliding = false;
   var startX = 0;
   var lastX = 0;
-
   function start(e) {
     isSliding = true;
-    startX = e.touches ? e.touches[0].clientX : e.clientX;
+    startX = e.touches? e.touches[0].clientX : e.clientX;
     handle.style.cursor = 'grabbing';
     e.preventDefault();
   }
-
   function move(e) {
     if (!isSliding) return;
     e.preventDefault();
-    var x = e.touches ? e.touches[0].clientX : e.clientX;
+    var x = e.touches? e.touches[0].clientX : e.clientX;
     var trackWidth = track.offsetWidth - handle.offsetWidth;
     var currentX = x - startX;
     if (currentX < 0) currentX = 0;
@@ -687,13 +641,11 @@ function setupSlider(trackId, handleId, progressId, textId, onSuccess) {
     progress.style.width = (currentX + handle.offsetWidth) + 'px';
     text.style.opacity = 1 - (currentX / trackWidth);
   }
-
   function end() {
     if (!isSliding) return;
     isSliding = false;
     handle.style.cursor = 'grab';
     var trackWidth = track.offsetWidth - handle.offsetWidth;
-
     if (lastX >= trackWidth - 5) {
       handle.innerHTML = '✓';
       handle.classList.add('verified');
@@ -715,7 +667,6 @@ function setupSlider(trackId, handleId, progressId, textId, onSuccess) {
       }, 300);
     }
   }
-
   handle.addEventListener('mousedown', start);
   handle.addEventListener('touchstart', start, {passive: false});
   document.addEventListener('mousemove', move);
@@ -723,36 +674,27 @@ function setupSlider(trackId, handleId, progressId, textId, onSuccess) {
   document.addEventListener('mouseup', end);
   document.addEventListener('touchend', end);
 }
-
 function escapeHtml(t){if(!t)return'';var d=document.createElement('div');d.textContent=t;return d.innerHTML}
 function formatMalawiPhone(i){var d=i.replace(/[^0-9]/g,'');if(d.length===9&&/^(99|98|88|89)/.test(d))return'+265'+d;if(d.length===10&&/^0(99|98|88|89)/.test(d))return'+265'+d.substring(1);if(d.length===12&&/^265(99|98|88|89)/.test(d))return'+'+d;return d}
 function isValidMalawiPhone(p){return/^(\+265|0)(99|98|88|89)[0-9]{7}$/.test(p)}
 function emailToKey(e){if(!e)return'';return e.toLowerCase().trim().replace(/\./g,'_dot_').replace(/#/g,'_hash_').replace(/\$/g,'_dollar_').replace(/\[/g,'_lb_').replace(/\]/g,'_rb_').replace(/\//g,'_slash_')}
 function lockPaymentMethod(p,n){var l=document.getElementById('paymentLockedBox'),np=document.getElementById('paymentNoPhone'),pl=document.getElementById('payPhoneLabel'),nl=document.getElementById('payNetworkLabel');if(p&&n){if(l)l.style.display='block';if(np)np.style.display='none';if(pl)pl.innerText=p;if(nl)nl.innerText=n}else{if(l)l.style.display='none';if(np)np.style.display='block'}}
 function loadProfile(){if(!db||!myUid)return;db.ref('users/'+myUid).once('value',function(s){var d=s.val()||{};document.getElementById('profilePhone').innerText=d.phone||'N/A';document.getElementById('profileNetwork').innerText=d.network||'N/A';document.getElementById('profileEmail').innerText=d.email||'N/A';document.getElementById('profileUsername').innerText=myUid});db.ref('leaderboard_all/'+myUid).once('value',function(s){var d=s.val()||{};document.getElementById('profileDisplayName').innerText=d.displayName||myUid;var i=document.getElementById('profilePicImg');if(d.profilePic)i.src=d.profilePic;else i.src='https://via.placeholder.com/100/111/00ffcc?text='+(d.displayName||myUid)[0].toUpperCase()});db.ref('leaderboard_all/'+myUid+'/profilePic').on('value',function(s){var p=s.val();if(p)document.getElementById('profilePicImg').src=p});loadProfileStats();loadRecentMatches();var soundToggle=document.getElementById('soundToggle');if(soundToggle)soundToggle.checked=localStorage.getItem('soundDisabled')!=='true'}
-
 function loadProfileStats(){if(!db||!myUid)return;db.ref('leaderboard_all/'+myUid).once('value',function(s){var d=s.val()||{};var played=parseInt(d.gamesPlayed)||0;var won=parseInt(d.gamesWon)||0;var winRate=played>0?Math.round((won/played)*100):0;var winStreak=d.winStreak||0;document.getElementById('profileWinRate').innerText=winRate+'%';document.getElementById('profileWinStreak').innerText=winStreak;db.ref('leaderboard_all').once('value',function(allSnap){var users=[];allSnap.forEach(function(child){var ud=child.val()||{};users.push({uid:child.key,wins:parseInt(ud.gamesWon)||0,streak:ud.winStreak||0})});users.sort(function(a,b){return b.wins-a.wins||b.streak-a.streak});var rank=-1;for(var i=0;i<users.length;i++){if(users[i].uid===myUid){rank=i+1;break}}var rankBox=document.getElementById('profileRankBox');if(rank>0){var rankClass=rank===1?'rank-gold':(rank===2?'rank-silver':(rank===3?'rank-bronze':'rank-default'));var rankEmoji=rank===1?'🥇':(rank===2?'🥈':(rank===3?'🥉':'🏅'));rankBox.innerHTML='<span class="rank-badge '+rankClass+'" style="font-size:16px;">'+rankEmoji+' #'+rank+'</span>'}else{rankBox.innerHTML='<span style="color:#555;font-size:16px;">#-</span>'}});db.ref('users/'+myUid).once('value',function(us){var ud=us.val()||{};var verEl=document.getElementById('profileVerification');if(ud.email&&ud.phone){verEl.innerHTML='<span class="verification-badge verified">✅ Verified</span>'}else{verEl.innerHTML='<span class="verification-badge unverified">❌ Unverified</span>'}})})}
-
 function loadRecentMatches(){if(!db||!myUid)return;db.ref('match_history/'+myUid).orderByChild('timestamp').limitToLast(10).once('value',function(s){var el=document.getElementById('recentMatchesList');if(!s.exists()){el.innerHTML='<div style="text-align:center;color:#555;font-size:12px;padding:10px;">No matches yet</div>';return}var matches=[];s.forEach(function(c){matches.push(c.val())});matches.reverse();var html='';matches.forEach(function(m){var resultClass=m.result==='win'?'match-result-win':(m.result==='loss'?'match-result-loss':'match-result-draw');var resultText=m.result==='win'?'🏆 WIN':(m.result==='loss'?'😞 LOSS':'🤝 DRAW');var amtColor=m.result==='win'?'#51cf66':(m.result==='loss'?'#ff6b6b':'#ffd700');var amountText=m.result==='win'?'+MWK '+m.amount:(m.result==='loss'?'-MWK '+m.amount:'Refunded');html+='<div class="recent-match-item">';html+='<div style="text-align:left"><span style="color:#ccc;font-size:13px">vs '+escapeHtml(m.opponent||'?')+'</span><br><span style="color:#555;font-size:10px">'+new Date(m.timestamp).toLocaleDateString()+' '+new Date(m.timestamp).toLocaleTimeString([],{hour:'2-digit',minute:'2-digit'})+'</span></div>';html+='<div style="text-align:right"><span class="'+resultClass+'">'+resultText+'</span><br><span style="font-size:11px;color:'+amtColor+'">'+amountText+'</span></div>';html+='</div>'});el.innerHTML=html})}
-
 function showEditDisplayName(){document.getElementById('editNameModal').style.display='flex';var currentName=document.getElementById('profileDisplayName').innerText;document.getElementById('editNameInput').value=currentName;document.getElementById('editNameMsg').innerHTML=''}
 function closeEditNameModal(){document.getElementById('editNameModal').style.display='none'}
 function saveDisplayName(){var newName=(document.getElementById('editNameInput').value||'').trim();var msgEl=document.getElementById('editNameMsg');if(!newName||newName.length<2){msgEl.innerHTML='<span class="error">Name must be at least 2 characters</span>';return}if(!db||!myUid){msgEl.innerHTML='<span class="error">Error</span>';return}msgEl.innerHTML='<span class="success">Saving...</span>';db.ref('leaderboard_all/'+myUid+'/displayName').set(newName,function(err){if(err){msgEl.innerHTML='<span class="error">Failed: '+err.message+'</span>'}else{document.getElementById('profileDisplayName').innerText=newName;msgEl.innerHTML='<span class="success">✅ Display name updated!</span>';setTimeout(closeEditNameModal,1000)}})}
-
 function showChangePassword(){document.getElementById('changePasswordModal').style.display='flex';document.getElementById('oldPasswordInput').value='';document.getElementById('newPasswordInput').value='';document.getElementById('confirmPasswordInput').value='';document.getElementById('changePasswordMsg').innerHTML=''}
 function closeChangePasswordModal(){document.getElementById('changePasswordModal').style.display='none'}
 function changePassword(){var oldPass=document.getElementById('oldPasswordInput').value||'';var newPass=document.getElementById('newPasswordInput').value||'';var confirmPass=document.getElementById('confirmPasswordInput').value||'';var msgEl=document.getElementById('changePasswordMsg');if(!oldPass){msgEl.innerHTML='<span class="error">Enter current password</span>';return}if(newPass.length<6){msgEl.innerHTML='<span class="error">New password min 6 chars</span>';return}if(newPass!==confirmPass){msgEl.innerHTML='<span class="error">Passwords don\'t match</span>';return}if(!db||!myUid){msgEl.innerHTML='<span class="error">Error</span>';return}msgEl.innerHTML='<span class="success">Checking...</span>';db.ref('users/'+myUid+'/password').once('value',function(s){var storedHash=s.val();if(storedHash!==md5(oldPass)){msgEl.innerHTML='<span class="error">❌ Current password is wrong</span>';return}db.ref('users/'+myUid+'/password').set(md5(newPass),function(err){if(err){msgEl.innerHTML='<span class="error">Failed: '+err.message+'</span>'}else{msgEl.innerHTML='<span class="success">✅ Password changed!</span>';setTimeout(closeChangePasswordModal,1000)}})})}
-
 function toggleSoundSetting(){var toggle=document.getElementById('soundToggle');if(toggle.checked){localStorage.removeItem('soundDisabled')}else{localStorage.setItem('soundDisabled','true')}}
-
 function showDeleteAccount(){document.getElementById('deleteAccountModal').style.display='flex';document.getElementById('deleteConfirmInput').value='';document.getElementById('deleteAccountMsg').innerHTML=''}
 function closeDeleteAccountModal(){document.getElementById('deleteAccountModal').style.display='none'}
 function confirmDeleteAccount(){var confirmText=(document.getElementById('deleteConfirmInput').value||'').trim();var msgEl=document.getElementById('deleteAccountMsg');if(confirmText!=='DELETE'){msgEl.innerHTML='<span class="error">Type DELETE to confirm</span>';return}if(!db||!myUid){msgEl.innerHTML='<span class="error">Error</span>';return}msgEl.innerHTML='<span class="error">Deleting account...</span>';db.ref('users/'+myUid).once('value',function(userSnap){var userData=userSnap.val()||{};var email=userData.email;db.ref('users/'+myUid).remove();db.ref('leaderboard_all/'+myUid).remove();db.ref('match_history/'+myUid).remove();db.ref('online_status/'+myUid).remove();db.ref('admin_inbox/'+myUid).remove();if(email){var ek=emailToKey(email);db.ref('email_index/'+ek).remove()}db.ref('referrals').once('value',function(refSnap){refSnap.forEach(function(r){if(r.val()&&r.val()[myUid]){db.ref('referrals/'+r.key+'/'+myUid).remove()}})});db.ref('password_resets/'+myUid).remove();localStorage.removeItem('user');localStorage.removeItem('secret');myUid=null;alert('Account deleted. Goodbye!');location.reload()})}
-
 function viewProfilePhoto(){var img=document.getElementById('profilePicImg');if(img&&img.src&&img.src.indexOf('placeholder')===-1){openImageViewer(img.src)}else{alert('📷 No profile photo yet. Tap "Update Photo" to add one!')}}
-
 function handleProfilePicUpload(e){var f=e.target.files&&e.target.files[0];if(!f||!db||!myUid)return;var r=new FileReader();r.onload=function(ev){var img=new Image();img.onload=function(){var c=document.createElement('canvas');var w=300,h=300,iw=img.width,ih=img.height;if(iw>w){ih*=w/iw;iw=w}if(ih>h){iw*=h/ih;ih=h}c.width=Math.round(iw);c.height=Math.round(ih);c.getContext('2d').drawImage(img,0,0,c.width,c.height);db.ref('leaderboard_all/'+myUid+'/profilePic').set(c.toDataURL('image/jpeg',0.6),function(err){if(err)alert('Upload failed: '+err.message)})};img.src=ev.target.result};r.readAsDataURL(f);e.target.value=''}
-function togglePassword(id,el){var x=document.getElementById(id);if(!x)return;if(x.type==="password"){x.type="text";if(el)el.textContent='🙈'}else{x.type="password";if(el)el.textContent='👁️'}}
+function togglePassword(id,el){var x=document.getElementById(id);if(!x)return;if(x.type==="password"){x.type="text";if(el)el.textContent='🙈'}else{x.type="password";if(el)el.textContent='👁'}}
 function showForgotSection(){document.getElementById('forgotLinkRow').style.display='none';document.getElementById('forgotSection').style.display='block';document.getElementById('forgotMsg').innerHTML='';document.getElementById('newPasswordBox').style.display='none';document.getElementById('forgotEmailInput').value=''}
 function hideForgotSection(){document.getElementById('forgotSection').style.display='none';document.getElementById('forgotLinkRow').style.display='block';document.getElementById('forgotMsg').innerHTML='';document.getElementById('newPasswordBox').style.display='none'}
 function resetPassword(){var email=(document.getElementById('forgotEmailInput').value||'').trim(),msgEl=document.getElementById('forgotMsg'),resetBtn=document.getElementById('resetBtn');if(!email||!email.includes('@')){msgEl.innerHTML='<span class="error">Enter a valid email.</span>';return}if(!db){msgEl.innerHTML='<span class="error">DB error.</span>';return}resetBtn.disabled=true;resetBtn.innerText='Searching...';msgEl.innerHTML='<span class="success">Looking up...</span>';var ek=emailToKey(email);db.ref('email_index/'+ek).once('value').then(function(is){if(is.val()&&is.val().uid){performPasswordReset(is.val().uid,email,msgEl,resetBtn)}else{db.ref('users').once('value').then(function(sn){var fu=null;sn.forEach(function(c){if(c.val().email&&c.val().email.toLowerCase()===email.toLowerCase())fu=c.key});if(fu){db.ref('email_index/'+ek).set({uid:fu});performPasswordReset(fu,email,msgEl,resetBtn)}else{msgEl.innerHTML='<span class="error">❌ No account found.</span>';resetBtn.disabled=false;resetBtn.innerText='Reset Password'}})}}).catch(function(){msgEl.innerHTML='<span class="error">Error</span>';resetBtn.disabled=false;resetBtn.innerText='Reset Password'})}
@@ -761,27 +703,20 @@ function showNewPasswordOnScreen(np,msgEl,resetBtn){msgEl.innerHTML='<span class
 function copyNewPassword(){var p=document.getElementById('newPassDisplay').textContent;if(navigator.clipboard)navigator.clipboard.writeText(p).then(function(){alert('Copied! ✅')});else{var t=document.createElement('input');t.value=p;document.body.appendChild(t);t.select();document.execCommand('copy');document.body.removeChild(t);alert('Copied! ✅')}}
 function showRegister(){document.getElementById('registerCard').style.display='block';document.getElementById('loginCard').style.display='none'}
 function showLogin(){document.getElementById('registerCard').style.display='none';document.getElementById('loginCard').style.display='block';hideForgotSection()}
-
 function validateAirtelNumber(input){var val=input.value.replace(/[^0-9]/g,'');var msgEl=document.getElementById('airtelValidationMsg');var networkSelect=document.getElementById('networkRegInput');if(val.length>=2){if(val.substring(0,2)==='99'||val.substring(0,2)==='98'){msgEl.innerHTML='<span style="color:#51cf66;">✅ Airtel number detected</span>';if(networkSelect.value!=='Airtel Money')networkSelect.value='Airtel Money'}else if(val.substring(0,2)==='88'||val.substring(0,2)==='89'){msgEl.innerHTML='<span style="color:#51cf66;">✅ TNM number detected</span>';if(networkSelect.value!=='TNM Mpamba')networkSelect.value='TNM Mpamba'}else{msgEl.innerHTML='<span style="color:#ff6b6b;">❌ Invalid Malawi number</span>'}}else{msgEl.innerHTML='<span style="color:#888;">💡 Tip: Airtel (99/98) or TNM (88/89)</span>'}}
 function checkAirtelRecommend(){var network=document.getElementById('networkRegInput').value;var msgEl=document.getElementById('airtelValidationMsg');if(network==='Airtel Money'){msgEl.innerHTML='<span style="color:#888;">💡 Tip: Airtel starts with 99 or 98</span>'}else if(network==='TNM Mpamba'){msgEl.innerHTML='<span style="color:#888;">💡 Tip: TNM starts with 88 or 89</span>'}else{msgEl.innerHTML='<span style="color:#888;">💡 Tip: Airtel (99/98) or TNM (88/89)</span>'}}
-
-function register(){try{var user=(document.getElementById("usernameInput").value||"").trim(),networkReg=document.getElementById("networkRegInput").value,phoneDigits=(document.getElementById("phoneInput").value||"").trim(),email=(document.getElementById("emailInput").value||"").trim(),pass=document.getElementById("passwordInput").value||"",agree=document.getElementById("agreeCheck").checked,msgEl=document.getElementById("loginMsg");if(user.length<3){msgEl.innerHTML='<span class="error">Username min 3</span>';return}if(!networkReg){msgEl.innerHTML='<span class="error">Select network</span>';return}var fullPhone=formatMalawiPhone(phoneDigits);if(!isValidMalawiPhone(fullPhone)){msgEl.innerHTML='<span class="error">Invalid Phone</span>';return}if(!email){msgEl.innerHTML='<span class="error">Enter email</span>';return}if(pass.length<6){msgEl.innerHTML='<span class="error">Password min 6</span>';return}if(!agree){msgEl.innerHTML='<span class="error">Must agree</span>';return}if(!isHumanReg){msgEl.innerHTML='<span class="error">⚠️ Please slide to verify you are human!</span>';return}msgEl.innerHTML='<span class="success">Creating...</span>';var name=user.replace(/\s+/g,'_').replace(/[.#$\[\]]/g,''),refCode=new URLSearchParams(window.location.search).get('ref');if(refCode){try{localStorage.setItem('refCode',refCode)}catch(e){}}var savedRefCode=localStorage.getItem('refCode')||null;try{localStorage.setItem("user",name);localStorage.setItem("userPhone",fullPhone);localStorage.setItem("network",networkReg)}catch(e){}myUid=name;checkBanStatus();document.getElementById("loginPage").classList.remove("active");document.getElementById("mainNav").style.display="flex";showPage('profile');setTimeout(function(){if(!db)return;var ek=emailToKey(email);mySecret = Math.random().toString(36).substring(2) + Date.now().toString(36);localStorage.setItem('secret', mySecret);db.ref('users/'+name).set({phone:fullPhone,network:networkReg,email:email,created:Date.now(),password:md5(pass),winStreak:0,mwk:0,secret:mySecret});db.ref('email_index/'+ek).set({uid:name});db.ref('leaderboard_all/'+name).once('value',function(sn){if(!sn.exists()){db.ref('leaderboard_all/'+name).set({mwk:0,score:0,gamesPlayed:0,gamesWon:0,gamesLost:0,winStreak:0,referralClaimed:0,banned:false,lastPlayed:Date.now(),displayName:user,phone:fullPhone,network:networkReg});if(savedRefCode&&savedRefCode!==name)db.ref('referrals/'+savedRefCode+'/'+name).set(true)}});lockPaymentMethod(fullPhone,networkReg);initGameListeners();setupInboxNotif()},200)}catch(e){alert("Error: "+e.message)}}
-
-function login(){try{var rawName=(document.getElementById("loginUsernameInput").value||"").trim(),pass=document.getElementById("loginPasswordInput").value,msgEl=document.getElementById("loginErrorMsg");if(!rawName||!pass){msgEl.innerHTML='<span class="error">Enter username & password</span>';return}if(!isHumanLogin){msgEl.innerHTML='<span class="error">⚠️ Please slide to verify you are human!</span>';return}var name=rawName.replace(/\s+/g,'_').replace(/[.#$\[\]]/g,'');msgEl.innerHTML='<span class="success">Checking...</span>';if(!db){msgEl.innerHTML='<span class="error">DB error</span>';return}db.ref('users/'+name).once('value',function(sn){var data=sn.val();if(!data){msgEl.innerHTML='<span class="error">User not found</span>';return}if(data.password!==md5(pass)){msgEl.innerHTML='<span class="error">Wrong password</span>';return}if(data.email){var ek=emailToKey(data.email);db.ref('email_index/'+ek).once('value',function(is){if(!is.exists())db.ref('email_index/'+ek).set({uid:name})})}localStorage.setItem("user",name);myUid=name;checkBanStatus();document.getElementById("loginPage").classList.remove("active");document.getElementById("mainNav").style.display="flex";showPage('profile');lockPaymentMethod(data.phone||'',data.network||'');if(data.secret){mySecret = data.secret;} else {mySecret = Math.random().toString(36).substring(2) + Date.now().toString(36);db.ref('users/'+name+'/secret').set(mySecret);}localStorage.setItem('secret', mySecret);initGameListeners();setupInboxNotif()})}catch(e){alert(e.message)}}
-
+function register(){try{var user=(document.getElementById("usernameInput").value||"").trim(),networkReg=document.getElementById("networkRegInput").value,phoneDigits=(document.getElementById("phoneInput").value||"").trim(),email=(document.getElementById("emailInput").value||"").trim(),pass=document.getElementById("passwordInput").value||"",agree=document.getElementById("agreeCheck").checked,msgEl=document.getElementById("loginMsg");if(user.length<3){msgEl.innerHTML='<span class="error">Username min 3</span>';return}if(!networkReg){msgEl.innerHTML='<span class="error">Select network</span>';return}var fullPhone=formatMalawiPhone(phoneDigits);if(!isValidMalawiPhone(fullPhone)){msgEl.innerHTML='<span class="error">Invalid Phone</span>';return}if(!email){msgEl.innerHTML='<span class="error">Enter email</span>';return}if(pass.length<6){msgEl.innerHTML='<span class="error">Password min 6</span>';return}if(!agree){msgEl.innerHTML='<span class="error">Must agree</span>';return}if(!isHumanReg){msgEl.innerHTML='<span class="error">⚠ Please slide to verify you are human!</span>';return}msgEl.innerHTML='<span class="success">Creating...</span>';var name=user.replace(/\s+/g,'_').replace(/[.#$\[\]]/g,''),refCode=new URLSearchParams(window.location.search).get('ref');if(refCode){try{localStorage.setItem('refCode',refCode)}catch(e){}}var savedRefCode=localStorage.getItem('refCode')||null;try{localStorage.setItem("user",name);localStorage.setItem("userPhone",fullPhone);localStorage.setItem("network",networkReg)}catch(e){}myUid=name;checkBanStatus();document.getElementById("loginPage").classList.remove("active");document.getElementById("mainNav").style.display="flex";showPage('profile');setTimeout(function(){if(!db)return;var ek=emailToKey(email);mySecret = Math.random().toString(36).substring(2) + Date.now().toString(36);localStorage.setItem('secret', mySecret);db.ref('users/'+name).set({phone:fullPhone,network:networkReg,email:email,created:Date.now(),password:md5(pass),winStreak:0,mwk:0,secret:mySecret});db.ref('email_index/'+ek).set({uid:name});db.ref('leaderboard_all/'+name).once('value',function(sn){if(!sn.exists()){db.ref('leaderboard_all/'+name).set({mwk:0,score:0,gamesPlayed:0,gamesWon:0,gamesLost:0,winStreak:0,referralClaimed:0,banned:false,lastPlayed:Date.now(),displayName:user,phone:fullPhone,network:networkReg});if(savedRefCode&&savedRefCode!==name)db.ref('referrals/'+savedRefCode+'/'+name).set(true)}});lockPaymentMethod(fullPhone,networkReg);initGameListeners();setupInboxNotif()},200)}catch(e){alert("Error: "+e.message)}}
+function login(){try{var rawName=(document.getElementById("loginUsernameInput").value||"").trim(),pass=document.getElementById("loginPasswordInput").value,msgEl=document.getElementById("loginErrorMsg");if(!rawName||!pass){msgEl.innerHTML='<span class="error">Enter username & password</span>';return}if(!isHumanLogin){msgEl.innerHTML='<span class="error">⚠ Please slide to verify you are human!</span>';return}var name=rawName.replace(/\s+/g,'_').replace(/[.#$\[\]]/g,'');msgEl.innerHTML='<span class="success">Checking...</span>';if(!db){msgEl.innerHTML='<span class="error">DB error</span>';return}db.ref('users/'+name).once('value',function(sn){var data=sn.val();if(!data){msgEl.innerHTML='<span class="error">User not found</span>';return}if(data.password!==md5(pass)){msgEl.innerHTML='<span class="error">Wrong password</span>';return}if(data.email){var ek=emailToKey(data.email);db.ref('email_index/'+ek).once('value',function(is){if(!is.exists())db.ref('email_index/'+ek).set({uid:name})})}localStorage.setItem("user",name);myUid=name;checkBanStatus();document.getElementById("loginPage").classList.remove("active");document.getElementById("mainNav").style.display="flex";showPage('profile');lockPaymentMethod(data.phone||'',data.network||'');if(data.secret){mySecret = data.secret;} else {mySecret = Math.random().toString(36).substring(2) + Date.now().toString(36);db.ref('users/'+name+'/secret').set(mySecret);}localStorage.setItem('secret', mySecret);initGameListeners();setupInboxNotif()})}catch(e){alert(e.message)}}
 function logout(){if(confirm('Logout?')){localStorage.removeItem('user');localStorage.removeItem('secret');myUid=null;location.reload()}}
-
 function showPage(page){try{var pages=document.querySelectorAll('.page');for(var i=0;i<pages.length;i++){pages[i].classList.remove('active');pages[i].style.display=''}var btns=document.querySelectorAll('.nav-btn');for(var j=0;j<btns.length;j++)btns[j].classList.remove('active');document.getElementById('mainNav').style.display='flex';document.getElementById('waFloatBtn').style.display='flex';if(page==='profile'){document.getElementById('profilePage').classList.add('active');if(btns[0])btns[0].classList.add('active');loadProfile();}else if(page==='wallet'){document.getElementById('walletPage').classList.add('active');if(btns[1])btns[1].classList.add('active');showBalance();listenMyDeposits();listenMyWithdrawals();loadReferralData();checkVpnStatus();}else if(page==='chat'){document.getElementById('chatPage').classList.add('active');if(btns[2])btns[2].classList.add('active');}else if(page==='play'){document.getElementById('playPage').classList.add('active');if(btns[3])btns[3].classList.add('active');renderGrades();}else if(page==='inbox'){document.getElementById('inboxPage').classList.add('active');if(btns[4])btns[4].classList.add('active');loadInbox();document.getElementById('inboxNotifDot').style.display='none';}else if(page==='faq'){document.getElementById('faqPage').classList.add('active');if(btns[5])btns[5].classList.add('active');}else if(page==='game'){document.getElementById('gamePage').classList.add('active');document.getElementById('mainNav').style.display='none';document.getElementById('waFloatBtn').style.display='none';}}catch(e){console.error('showPage error:',e)}}
-
 function toggleFaq(element) {
     var item = element.parentElement;
     var allItems = document.querySelectorAll('.faq-item');
     allItems.forEach(function(i) {
-        if (i !== item) i.classList.remove('active');
+        if (i!== item) i.classList.remove('active');
     });
     item.classList.toggle('active');
 }
-
 function showBalance(){
   if(!db||!myUid) return;
   db.ref('leaderboard_all/'+myUid+'/mwk').on('value', s=>{
@@ -798,9 +733,7 @@ function showBalance(){
 function loadReferralData(){if(!db||!myUid)return;var bu=window.location.href.split('?')[0];document.getElementById('refLinkInput').value=bu+'?ref='+myUid;db.ref('referrals/'+myUid).once('value',function(s){var c=s.numChildren();document.getElementById('refCount').innerText=c;db.ref('leaderboard_all/'+myUid+'/referralClaimed').once('value',function(cs){var cl=cs.val()||0,uc=Math.floor(c/5)-cl,cb=document.getElementById('claimRefBtn');if(uc>0){cb.style.display='block';cb.innerText='🎉 Claim MWK '+(uc*10)}else cb.style.display='none'})})}
 function copyRefLink(){var ct=document.getElementById("refLinkInput");if(navigator.clipboard)navigator.clipboard.writeText(ct.value);else{ct.select();document.execCommand("copy")}alert("Copied!")}
 function claimReferralBonus(){if(!db||!myUid)return;db.ref('referrals/'+myUid).once('value',function(s){var c=s.numChildren();db.ref('leaderboard_all/'+myUid).once('value',function(us){var ud=us.val()||{},cl=ud.referralClaimed||0,uc=Math.floor(c/5)-cl;if(uc>0){db.ref('leaderboard_all/'+myUid).update({mwk:(ud.mwk||0)+(uc*10),referralClaimed:cl+uc},function(e){if(!e){alert('🎉 Claimed MWK '+(uc*10)+'!');showBalance();loadReferralData()}})}})})}
-
 function renderGrades(){var g=document.getElementById('gradeGrid'),h='';PVP_GRADES.forEach(function(gr){h+='<div class="grade-card" onclick="joinPvP('+gr.id+')"><div class="grade-icon">'+gr.icon+'</div><h3 style="color:#fff;font-size:16px">'+gr.name+'</h3><div class="grade-entry">Pay: MWK '+gr.entryMWK+'</div><div class="grade-prize">Win: MWK '+gr.winMWK+'</div></div>'});g.innerHTML=h;showBalance();
-
     if(db){
         db.ref('online_status').orderByChild('online').equalTo(true).on('value',function(snap){
             var el=document.getElementById('onlinePlayersCount');
@@ -812,25 +745,20 @@ function renderGrades(){var g=document.getElementById('gradeGrid'),h='';PVP_GRAD
         });
     }
 }
-
 function joinPvP(gid){if(!db||!myUid){alert('Login first');return}var gr=PVP_GRADES.find(function(g){return g.id===gid});if(!gr)return;db.ref('leaderboard_all/'+myUid+'/mwk').once('value',function(s){var b=s.val()||0;if(b<gr.entryMWK){alert('Not enough balance! Need MWK '+gr.entryMWK);return}document.getElementById('searchGradeText').innerText=gr.name+' - MWK '+gr.entryMWK;document.getElementById('searchingOverlay').style.display='flex';var queueRef=db.ref('pvp_queue/'+gid+'/'+myUid);queueRef.set({timestamp:Date.now(),entryMWK:gr.entryMWK});queueRef.onDisconnect().remove();
-    
     botMatchTimeout = setTimeout(function() {
         if (document.getElementById('searchingOverlay').style.display === 'flex') {
-            if (confirm("⚠️ No online players found!\n\nWould you like to play against the Computer (Pro+) instead?")) {
+            if (confirm("⚠ No online players found!\n\nWould you like to play against the Computer (Pro+) instead?")) {
                 createBotGame(gid, gr);
             } else {
                 cancelMatchmaking();
             }
         }
     }, 15000);
-    
     })}
-
 function createBotGame(gid, gr) {
     db.ref('pvp_queue/'+gid+'/'+myUid).remove();
     document.getElementById('searchingOverlay').style.display='none';
-    
     db.ref('leaderboard_all/'+myUid+'/mwk').once('value', function(s) {
         var b = s.val() || 0;
         if (b < gr.entryMWK) {
@@ -843,7 +771,7 @@ function createBotGame(gid, gr) {
             var ib = [];
             for (var r=0; r<8; r++) {
                 for (var c=0; c<8; c++) {
-                    ib.push((r+c)%2 && r<3 ? -1 : (r+c)%2 && r>4 ? 1 : 0);
+                    ib.push((r+c)%2 && r<3? -1 : (r+c)%2 && r>4? 1 : 0);
                 }
             }
             db.ref('pvp_games/'+gameId).transaction(function(data) {
@@ -868,7 +796,6 @@ function createBotGame(gid, gr) {
         });
     });
 }
-
 if(db){
     db.ref('pvp_queue').on('value', function(s) {
         if(!myUid) return;
@@ -881,10 +808,8 @@ if(db){
                 var gameId = 'game_' + gid + '_' + p1 + '_' + p2 + '_' + Date.now();
                 var gd = PVP_GRADES.find(function(g) { return g.id === parseInt(gid) });
                 var entryMWK = gd.entryMWK;
-                if(myUid !== p1) return;
-                
+                if(myUid!== p1) return;
                 if (botMatchTimeout) { clearTimeout(botMatchTimeout); botMatchTimeout = null; }
-                
                 db.ref('pvp_queue/' + gid + '/' + p1).remove();
                 db.ref('pvp_queue/' + gid + '/' + p2).remove();
                 db.ref('leaderboard_all/' + p1 + '/mwk').once('value', function(s1) {
@@ -904,1146 +829,4 @@ if(db){
                                 return;
                             }
                             db.ref('leaderboard_all/' + p2).update({mwk: b2 - entryMWK}, function(e2) {
-                                if(e2) { 
-                                    db.ref('leaderboard_all/' + p1 + '/mwk').once('value', function(s1b) { db.ref('leaderboard_all/' + p1).update({mwk: (s1b.val() || 0) + entryMWK}) }); 
-                                    db.ref('pvp_queue/' + gid + '/' + p1).set({timestamp: Date.now(), entryMWK: entryMWK}); 
-                                    return; 
-                                }
-                                var ib = [];
-                                for(var r = 0; r < 8; r++) { 
-                                    for(var c = 0; c < 8; c++) { 
-                                        ib.push((r + c) % 2 && r < 3 ? -1 : (r + c) % 2 && r > 4 ? 1 : 0) 
-                                    } 
-                                }
-                                db.ref('pvp_games/' + gameId).transaction(function(data) {
-                                    if(data === null || (data && data.status === 'finished')) {
-                                        return {p1: p1, p2: p2, gradeId: gid, winMWK: gd.winMWK, entryMWK: entryMWK, board: ib, turn: 1, status: 'playing', winner: null, created: Date.now(), drawCounter: 0, drawTargetPlayer: 0}
-                                    }
-                                    return data;
-                                });
-                            });
-                        });
-                    });
-                });
-            }
-        });
-    });
-}
-
-var gameListenersSetup=false;
-function initGameListeners(){if(!db||!myUid||gameListenersSetup)return;gameListenersSetup=true;db.ref('pvp_games').orderByChild('p1').equalTo(myUid).on('value',handleGameUpdate);db.ref('pvp_games').orderByChild('p2').equalTo(myUid).on('value',handleGameUpdate)}
-function handleGameUpdate(s){if(!myUid)return;s.forEach(function(c){var g=c.val();if(!g)return;if(g.p1!==myUid&&g.p2!==myUid)return;if(g.status==='playing'){if(currentGameId!==c.key){currentGameId=c.key;myPlayerNumber=g.p1===myUid?1:2;document.getElementById('searchingOverlay').style.display='none';showPage('game');startGameListener(c.key)}}else if(g.status==='finished'&&currentGameId===c.key){endPvPGame(g)}})}
-function startGameListener(gid){if(gameListener)db.ref('pvp_games/'+gameListener).off();gameListener=gid;db.ref('pvp_games/'+gid).on('value',function(s){var g=s.val();if(!g)return;gameState=g;renderPvPBoard();if(g.status==='finished'&&currentGameId===gid){endPvPGame(g)}})}
-
-function renderPvPBoard(){
-    var currentStr = JSON.stringify(gameState.board) + gameState.turn + (gameState.selected ? gameState.selected[0]+''+gameState.selected[1] : '');
-    if (currentStr !== lastBoardStr) {
-        botThinking = false;
-        lastBoardStr = currentStr;
-    }
-    
-    var be=document.getElementById('checkersBoard'),h='';document.getElementById('p1Name').innerText='🔴 '+(gameState.p1===myUid?'You':gameState.p1);var p2NameText = gameState.p2===myUid?'You':gameState.p2;if(gameState.p2 === 'Mada_Bot') p2NameText = '🤖 Computer (Pro+)';document.getElementById('p2Name').innerText='⚫ '+p2NameText;document.getElementById('gameStake').innerText=gameState.entryMWK+' MWK';document.getElementById('gamePrize').innerText=gameState.winMWK+' MWK';var imt=gameState.turn===myPlayerNumber;var isMultiJump=imt&&gameState.selected&&gameState.validMoves&&gameState.validMoves.length>0;document.getElementById('turnIndicator').innerText=isMultiJump?'⚡ Must Jump!':(imt?'🎯 Your Turn!':'⏳ Opponent');document.getElementById('turnIndicator').style.color=isMultiJump?'#ffd700':(imt?'#51cf66':'#ff6b6b');var db2=document.getElementById('drawCounterBar'),dt=gameState.drawTargetPlayer||0,dc=gameState.drawCounter||0;if(dt>0&&dc>0){db2.style.display='block';db2.innerText='⏱️ Draw in '+(12-dc)+' moves'}else db2.style.display='none';var b=gameState.board.slice();var sel=gameState.selected||null,vm=gameState.validMoves||[];for(var i=0;i<64;i++){var displayR=Math.floor(i/8),displayC=i%8;var boardR=myPlayerNumber===2?7-displayR:displayR;var boardC=myPlayerNumber===2?7-displayC:displayC;var boardIdx=boardR*8+boardC;var isDark=(displayR+displayC)%2===1;var p=b[boardIdx];var sc=sel&&sel[0]===boardR&&sel[1]===boardC?'selected':'';var mc=vm.some(function(m){return m[0]===boardR&&m[1]===boardC})?'valid-move':'';h+='<div class="square '+(isDark?'dark':'light')+' '+sc+' '+mc+'" onclick="clickPvPSquare('+displayR+','+displayC+')">';if(p!==0)h+='<div class="piece '+(p>0?'p1':'p2')+' '+(Math.abs(p)===2?'king':'')+'"></div>';h+='</div>'}be.innerHTML=h;
-
-    if (gameState.p2 === 'Mada_Bot' && gameState.turn === 2 && gameState.status === 'playing' && !botThinking) {
-        botThinking = true;
-        setTimeout(botMakeMove, 1000);
-    }
-}
-
-function clickPvPSquare(r,c){if(gameState.turn!==myPlayerNumber)return;if(!db||!currentGameId)return;if(myPlayerNumber===2){r=7-r;c=7-c}var b=gameState.board,cv=b[r*8+c],sel=gameState.selected,vm=gameState.validMoves||[];if(sel&&vm.some(function(m){return m[0]===r&&m[1]===c})){makePvPMove(sel[0],sel[1],r,c);return}if((myPlayerNumber===1&&cv>0)||(myPlayerNumber===2&&cv<0)){var pl=myPlayerNumber;var allMoves=getAllCaptures(b,pl);var mustCapture=allMoves.length>0;var pieceMoves=getValidMovesForPiece(b,r,c,pl);var filteredMoves=[];for(var i=0;i<pieceMoves.length;i++){if(mustCapture&&pieceMoves[i].captured.length===0)continue;filteredMoves.push(pieceMoves[i].to)}if(filteredMoves.length>0)db.ref('pvp_games/'+currentGameId).update({selected:[r,c],validMoves:filteredMoves});else db.ref('pvp_games/'+currentGameId).update({selected:null,validMoves:[]})}else{db.ref('pvp_games/'+currentGameId).update({selected:null,validMoves:[]})}}
-
-function getCapturesForPiece(b,r,c,pl){
-    var s=pl===1?1:-1;
-    var p=b[r*8+c];
-    if(Math.sign(p)!==s)return[];
-    var caps=[],isKing=Math.abs(p)===2;
-    var dirs=isKing?[-1,1]:[-1,1],dcs=[-1,1]; // Men can capture backward
-    for(var d=0;d<dirs.length;d++){
-        for(var dc=0;dc<2;dc++){
-            if(isKing){
-                var dist=1,enm=null;
-                while(true){
-                    var nr=r+dist*dirs[d],nc=c+dist*dcs[dc];
-                    if(nr<0||nr>=8||nc<0||nc>=8)break;
-                    if(b[nr*8+nc]!==0){
-                        if(Math.sign(b[nr*8+nc])===(-s)&&!enm)enm=[nr,nc];
-                        else break;
-                    }else if(enm){
-                        caps.push({from:[r,c],to:[nr,nc],captured:[enm]});
-                    }
-                    dist++;
-                }
-            } else {
-                var mr=r+dirs[d],mc=c+dcs[dc],jr=r+2*dirs[d],jc=c+2*dcs[dc];
-                if(jr>=0&&jr<8&&jc>=0&&jc<8&&b[mr*8+mc]!==0&&Math.sign(b[mr*8+mc])===(-s)&&b[jr*8+jc]===0){
-                    caps.push({from:[r,c],to:[jr,jc],captured:[[mr,mc]]});
-                }
-            }
-        }
-    }
-    return caps;
-}
-function getAllCaptures(b,pl){var s=pl===1?1:-1;var caps=[];for(var r=0;r<8;r++){for(var c=0;c<8;c++){if(Math.sign(b[r*8+c])===s){var pc=getCapturesForPiece(b,r,c,pl);for(var i=0;i<pc.length;i++)caps.push(pc[i])}}}return caps}
-function getSimpleMovesForPiece(b,r,c,pl){
-    var s=pl===1?1:-1;
-    var p=b[r*8+c];
-    if(Math.sign(p)!==s)return[];
-    var mvs=[],isKing=Math.abs(p)===2,dirs=isKing?[-1,1]:(pl===1?[-1]:[1]),dcs=[-1,1]; 
-    for(var d=0;d<dirs.length;d++){
-        for(var dc=0;dc<2;dc++){
-            if(isKing){
-                var dist=1;
-                while(true){
-                    var nr=r+dist*dirs[d],nc=c+dist*dcs[dc];
-                    if(nr<0||nr>=8||nc<0||nc>=8)break;
-                    if(b[nr*8+nc]!==0)break;
-                    mvs.push({from:[r,c],to:[nr,nc],captured:[]});
-                    dist++;
-                }
-            }else{
-                var nr=r+dirs[d],nc=c+dcs[dc];
-                if(nr>=0&&nr<8&&nc>=0&&nc<8&&b[nr*8+nc]===0)mvs.push({from:[r,c],to:[nr,nc],captured:[]})
-            }
-        }
-    }
-    return mvs;
-}
-function getValidMovesForPiece(b,r,c,pl){if(getAllCaptures(b,pl).length>0)return getCapturesForPiece(b,r,c,pl);return getSimpleMovesForPiece(b,r,c,pl)}
-
-function makePvPMove(fR,fC,tR,tC){
-    if(!gameState||!gameState.board||!currentGameId||!db)return;
-    var b=gameState.board.slice();
-    var p=b[fR*8+fC];
-    var pl=(p>0)?1:2;
-    if(pl!==myPlayerNumber&&!(gameState.p2==='Mada_Bot'&&pl===2))return;
-    b[tR*8+tC]=p;
-    b[fR*8+fC]=0;
-    
-    var wasCapture=false;
-    if(Math.abs(p)===2){ 
-        var dRk=Math.sign(tR-fR),dCk=Math.sign(tC-fC);
-        var chkR=fR+dRk,chkC=fC+dCk;
-        while(chkR!==tR||chkC!==tC){
-            if(b[chkR*8+chkC]!==0){wasCapture=true;break}
-            chkR+=dRk;chkC+=dCk;
-        }
-    } else {
-        wasCapture=Math.abs(tR-fR)>1;
-    }
-
-    if(wasCapture){
-        var dR=Math.sign(tR-fR),dC=Math.sign(tC-fC);
-        var ir=fR+dR,ic=fC+dC;
-        while(ir!==tR||ic!==tC){
-            var val = b[ir*8+ic];
-            // Explicitly check if it's an enemy piece before removing
-            if(val !== 0 && ((pl === 1 && val < 0) || (pl === 2 && val > 0))) {
-                b[ir*8+ic]=0;
-            }
-            ir+=dR;ic+=dC;
-        }
-        playSound('capture');
-    } else {
-        playSound('move');
-    }
-
-    var promoted=false;
-    if(tR===0&&p===1){b[tR*8+tC]=2;promoted=true}
-    if(tR===7&&p===-1){b[tR*8+tC]=-2;promoted=true}
-
-    var u={board:b,selected:null,validMoves:[]};
-    if(wasCapture&&!promoted){
-        var nc=getCapturesForPiece(b,tR,tC,pl).filter(function(m){
-            // FIX: Prevent reversing back to the exact square we just came from
-            if(m.to[0] === fR && m.to[1] === fC) return false;
-            return true;
-        });
-        if(nc.length>0){
-            u.turn=pl;u.selected=[tR,tC];u.validMoves=nc.map(function(m){return m.to});
-            db.ref('pvp_games/'+currentGameId).update(u);
-            return;
-        }
-    }
-
-    var np=pl===1?2:1;
-    u.turn=np;
-    var p1c=0,p2c=0,p1k=0,p2k=0;
-    for(var i=0;i<64;i++){
-        if(b[i]>0){p1c++;if(b[i]===2)p1k++}
-        if(b[i]<0){p2c++;if(b[i]===-2)p2k++}
-    }
-    var p1Id=gameState.p1;
-    var p2Id=gameState.p2;
-    if(p1c===0){u.status='finished';u.winner=p2Id}
-    else if(p2c===0){u.status='finished';u.winner=p1Id}
-    else{
-        var nhm=false;
-        for(var i=0;i<64;i++){
-            var np2=b[i];
-            if((np===1&&np2>0)||(np===2&&np2<0)){
-                if(getValidMovesForPiece(b,Math.floor(i/8),i%8,np).length>0){nhm=true;break}
-            }
-        }
-        if(!nhm){u.status='finished';u.winner=(pl===1?p1Id:p2Id)}
-    }
-
-    if(u.status!=='finished'){
-        if(p1c===1&&p1k===1&&p2c===1&&p2k===1){u.status='finished';u.winner='draw'}
-    }
-
-    if(u.status!=='finished'){
-        var lp=0;
-        if(p1c===1&&p2c>=1)lp=1;
-        if(p2c===1&&p1c>=1)lp=2;
-        if(p1c===1&&p2c===1)lp=1;
-        var cdt=gameState.drawTargetPlayer||0;
-        var cdc=gameState.drawCounter||0;
-        if(lp>0){
-            if(cdt===0){u.drawTargetPlayer=lp;u.drawCounter=1}
-            else if(cdt===lp){u.drawCounter=cdc+1;u.drawTargetPlayer=lp;if(u.drawCounter>=12){u.status='finished';u.winner='draw'}}
-            else{u.drawTargetPlayer=lp;u.drawCounter=1}
-        } else {
-            u.drawTargetPlayer=0;u.drawCounter=0;
-        }
-    }
-
-    db.ref('pvp_games/'+currentGameId).update(u);
-}
-
-/* ===== UNBEATABLE PRO MAX BOT AI (Advanced Engine Depth 20) ===== */
-var transpositionTable = new Map();
-var TT_SIZE_LIMIT = 200000;
-var MAX_DEPTH = 20; 
-var TIME_LIMIT = 2000; 
-var killerMoves = [];
-var historyHeuristic = {};
-
-setInterval(function() {
-    if (transpositionTable.size > TT_SIZE_LIMIT) {
-        transpositionTable.clear();
-    }
-}, 30000);
-
-function applyMoveToBoard(b, move) {
-    var newB = b.slice();
-    var fR = move.from[0], fC = move.from[1];
-    var tR = move.to[0], tC = move.to[1];
-    var p = newB[fR * 8 + fC];
-    newB[fR * 8 + fC] = 0;
-    newB[tR * 8 + tC] = p;
-    
-    if (move.captured && move.captured.length > 0) {
-        for (var i = 0; i < move.captured.length; i++) {
-            var cap = move.captured[i];
-            newB[cap[0] * 8 + cap[1]] = 0;
-        }
-    }
-    
-    if (p === 1 && tR === 0) newB[tR * 8 + tC] = 2;
-    if (p === -1 && tR === 7) newB[tR * 8 + tC] = -2;
-    
-    return newB;
-}
-
-function expandMove(move, b, pl, results) {
-    if (results.length > 50) return;
-    var tR = move.to[0], tC = move.to[1];
-    var nextCaptures = getCapturesForPiece(b, tR, tC, pl);
-    
-    if (nextCaptures.length === 0) {
-        results.push(move);
-    } else {
-        for (var i = 0; i < nextCaptures.length; i++) {
-            if (results.length > 50) break;
-            var nc = nextCaptures[i];
-            
-            var alreadyCaptured = false;
-            for (var j = 0; j < move.captured.length; j++) {
-                for (var k = 0; k < nc.captured.length; k++) {
-                    if (move.captured[j][0] === nc.captured[k][0] && move.captured[j][1] === nc.captured[k][1]) {
-                        alreadyCaptured = true;
-                        break;
-                    }
-                }
-                if (alreadyCaptured) break;
-            }
-            if (alreadyCaptured) continue;
-            
-            var alreadyVisited = false;
-            for (var j = 0; j < move.path.length; j++) {
-                if (move.path[j][0] === nc.to[0] && move.path[j][1] === nc.to[1]) {
-                    alreadyVisited = true;
-                    break;
-                }
-            }
-            if (alreadyVisited) continue;
-            
-            var newB = b.slice();
-            var p = newB[tR * 8 + tC];
-            newB[tR * 8 + tC] = 0;
-            newB[nc.to[0] * 8 + nc.to[1]] = p;
-            for (var j = 0; j < nc.captured.length; j++) {
-                var cap = nc.captured[j];
-                newB[cap[0] * 8 + cap[1]] = 0;
-            }
-            
-            var wasPromoted = false;
-            if (pl === 1 && nc.to[0] === 0 && p === 1) { newB[nc.to[0] * 8 + nc.to[1]] = 2; wasPromoted = true; }
-            if (pl === 2 && nc.to[0] === 7 && p === -1) { newB[nc.to[0] * 8 + nc.to[1]] = -2; wasPromoted = true; }
-            
-            var combinedMove = {
-                from: move.from,
-                to: nc.to,
-                captured: move.captured.concat(nc.captured),
-                path: (move.path || [move.from]).concat([nc.to])
-            };
-            
-            if (wasPromoted) {
-                results.push(combinedMove);
-            } else {
-                expandMove(combinedMove, newB, pl, results);
-            }
-        }
-    }
-}
-
-function getAllValidMovesForAI(b, pl) {
-    var s = pl === 1 ? 1 : -1;
-    var captures = [];
-    var simpleMoves = [];
-    
-    for (var r = 0; r < 8; r++) {
-        for (var c = 0; c < 8; c++) {
-            if (Math.sign(b[r * 8 + c]) === s) {
-                var pc = getCapturesForPiece(b, r, c, pl);
-                captures = captures.concat(pc);
-            }
-        }
-    }
-    
-    if (captures.length > 0) {
-        var expanded = [];
-        for (var i = 0; i < captures.length; i++) {
-            if (expanded.length > 50) break;
-            var initialMove = captures[i];
-            var initialBoard = applyMoveToBoard(b, initialMove);
-            var wasPromoted = false;
-            var p = b[initialMove.from[0] * 8 + initialMove.from[1]];
-            if (pl === 1 && initialMove.to[0] === 0 && p === 1) wasPromoted = true;
-            if (pl === 2 && initialMove.to[0] === 7 && p === -1) wasPromoted = true;
-            
-            if (wasPromoted) {
-                expanded.push(initialMove);
-            } else {
-                expandMove(initialMove, initialBoard, pl, expanded);
-            }
-        }
-        expanded.sort(function(a, b2) {
-            return b2.captured.length - a.captured.length;
-        });
-        return expanded;
-    }
-    
-    for (var r = 0; r < 8; r++) {
-        for (var c = 0; c < 8; c++) {
-            if (Math.sign(b[r * 8 + c]) === s) {
-                simpleMoves = simpleMoves.concat(getSimpleMovesForPiece(b, r, c, pl));
-            }
-        }
-    }
-    
-    simpleMoves.sort(function(a, b2) {
-        return scoreMove(b2, pl, 0, null) - scoreMove(a, pl, 0, null);
-    });
-    
-    return simpleMoves;
-}
-
-function getAllCapturesForAI(b, pl) {
-    var s = pl === 1 ? 1 : -1;
-    var captures = [];
-    for (var r = 0; r < 8; r++) {
-        for (var c = 0; c < 8; c++) {
-            if (Math.sign(b[r * 8 + c]) === s) {
-                var pc = getCapturesForPiece(b, r, c, pl);
-                captures = captures.concat(pc);
-            }
-        }
-    }
-    
-    var expanded = [];
-    for (var i = 0; i < captures.length; i++) {
-        if (expanded.length > 50) break;
-        var initialMove = captures[i];
-        var initialBoard = applyMoveToBoard(b, initialMove);
-        var wasPromoted = false;
-        var p = b[initialMove.from[0] * 8 + initialMove.from[1]];
-        if (pl === 1 && initialMove.to[0] === 0 && p === 1) wasPromoted = true;
-        if (pl === 2 && initialMove.to[0] === 7 && p === -1) wasPromoted = true;
-        
-        if (wasPromoted) {
-            expanded.push(initialMove);
-        } else {
-            expandMove(initialMove, initialBoard, pl, expanded);
-        }
-    }
-    
-    expanded.sort(function(a, b2) {
-        return b2.captured.length - a.captured.length;
-    });
-    return expanded;
-}
-
-function scoreMove(move, pl, depth, ttMove) {
-    var score = 0;
-    
-    if (ttMove && move.from[0] === ttMove.from[0] && move.from[1] === ttMove.from[1] 
-        && move.to[0] === ttMove.to[0] && move.to[1] === ttMove.to[1]) {
-        return 10000000;
-    }
-    
-    if (move.captured && move.captured.length > 0) {
-        return 900000 + move.captured.length * 1000;
-    }
-    
-    if (depth < killerMoves.length && killerMoves[depth]) {
-        for (var i=0; i<killerMoves[depth].length; i++) {
-            var km = killerMoves[depth][i];
-            if (km && move.from[0] === km.from[0] && move.from[1] === km.from[1] 
-                && move.to[0] === km.to[0] && move.to[1] === km.to[1]) {
-                return 800000;
-            }
-        }
-    }
-    
-    var histKey = move.from[0] + ',' + move.from[1] + ',' + move.to[0] + ',' + move.to[1];
-    if (historyHeuristic[histKey]) {
-        score += Math.min(historyHeuristic[histKey] * 100, 50000);
-    }
-    
-    if (move.to[1] >= 2 && move.to[1] <= 5) score += 10;
-    if (pl === 2 && move.to[0] > 3) score += 15;
-    if (pl === 2 && move.to[0] >= 6) score += 20;
-    
-    return score;
-}
-
-function updateHistory(move, depth) {
-    var histKey = move.from[0] + ',' + move.from[1] + ',' + move.to[0] + ',' + move.to[1];
-    if (!historyHeuristic[histKey]) historyHeuristic[histKey] = 0;
-    historyHeuristic[histKey] += depth * depth;
-}
-
-function boardHash(b) {
-    var hash = 0;
-    for (var i = 0; i < 64; i++) {
-        hash = ((hash << 5) - hash) + b[i];
-        hash = hash & hash;
-    }
-    return hash;
-}
-
-function countMobility(b, r, c, pl) {
-    var moves = getValidMovesForPiece(b, r, c, pl);
-    return moves.length;
-}
-
-function countAllMoves(b, pl) {
-    var count = 0;
-    var s = pl === 1 ? 1 : -1;
-    for (var i = 0; i < 64; i++) {
-        if (Math.sign(b[i]) === s) {
-            count += getValidMovesForPiece(b, Math.floor(i/8), i%8, pl).length;
-        }
-    }
-    return count;
-}
-
-function evaluateBoard(b, turn) {
-    var score = 0;
-    var p1Pieces = 0, p2Pieces = 0;
-    var p1Kings = 0, p2Kings = 0;
-    var p1BackRow = 0, p2BackRow = 0;
-    var p1Center = 0, p2Center = 0;
-    var p1Advanced = 0, p2Advanced = 0;
-    var p1Trapped = 0, p2Trapped = 0;
-    var p1Mobile = 0, p2Mobile = 0;
-    
-    var centerSquares = [27, 28, 35, 36];
-    
-    for (var i = 0; i < 64; i++) {
-        var p = b[i];
-        if (p === 0) continue;
-        var r = Math.floor(i / 8);
-        var c = i % 8;
-        var isKing = Math.abs(p) === 2;
-        var pieceVal = isKing ? 500 : 100;
-        
-        if (p === 1 && r === 7) { pieceVal += 15; p1BackRow++; }
-        if (p === -1 && r === 0) { pieceVal += 15; p2BackRow++; }
-        
-        if (centerSquares.indexOf(i) >= 0) {
-            pieceVal += 20;
-            if (p > 0) p1Center++; else p2Center++;
-        }
-        
-        if (p === 1) {
-            pieceVal += (7 - r) * 8;
-            if (r <= 2) p1Advanced++;
-        }
-        if (p === -1) {
-            pieceVal += r * 8;
-            if (r >= 6) p2Advanced++;
-        }
-        
-        var mob = countMobility(b, r, c, p > 0 ? 1 : 2);
-        pieceVal += mob * 5;
-        if (p > 0) p1Mobile += mob; else p2Mobile += mob;
-        
-        if (mob === 0) {
-            pieceVal -= 30;
-            if (p > 0) p1Trapped++; else p2Trapped++;
-        }
-        
-        var totalPieces = p1Pieces + p2Pieces + 1;
-        if (totalPieces <= 8) {
-            if (isKing) {
-                var distToCenter = Math.abs(r - 3.5) + Math.abs(c - 3.5);
-                pieceVal -= distToCenter * 10;
-            }
-        }
-        
-        if ((r + c) % 2 === 0) pieceVal += 3;
-        
-        if (p > 0) {
-            score += pieceVal;
-            p1Pieces++;
-            if (isKing) p1Kings++;
-        } else {
-            score -= pieceVal;
-            p2Pieces++;
-            if (isKing) p2Kings++;
-        }
-    }
-    
-    score += turn === 1 ? 8 : -8;
-    
-    if (p1BackRow >= 2) score += 25;
-    if (p2BackRow >= 2) score -= 25;
-    
-    var p2Moves = countAllMoves(b, 2);
-    var p1Moves = countAllMoves(b, 1);
-    
-    if (p2Moves < 3) score += 150;
-    if (p1Moves < 3) score -= 150;
-    
-    if (p2Pieces === 0) score += 10000;
-    if (p1Pieces === 0) score -= 10000;
-    
-    return score;
-}
-
-function quiescenceSearch(b, alpha, beta, isMaximizing, depth) {
-    var player = isMaximizing ? 1 : 2;
-    var standPat = evaluateBoard(b, player);
-    if (depth <= -12) return standPat;
-    
-    if (isMaximizing) {
-        if (standPat >= beta) return beta;
-        if (alpha < standPat) alpha = standPat;
-    } else {
-        if (standPat <= alpha) return alpha;
-        if (beta > standPat) beta = standPat;
-    }
-    
-    var moves = getAllCapturesForAI(b, player);
-    if (moves.length === 0) return standPat;
-    
-    moves.sort(function(a, b2) { return b2.captured.length - a.captured.length; });
-    
-    for (var i = 0; i < moves.length; i++) {
-        var newB = applyMoveToBoard(b, moves[i]);
-        var score = quiescenceSearch(newB, alpha, beta, !isMaximizing, depth - 1);
-        
-        if (isMaximizing) {
-            if (score >= beta) return beta;
-            if (score > alpha) alpha = score;
-        } else {
-            if (score <= alpha) return alpha;
-            if (score < beta) beta = score;
-        }
-    }
-    
-    return isMaximizing ? alpha : beta;
-}
-
-function minimax(b, depth, alpha, beta, isMaximizing, ply) {
-    var hash = boardHash(b);
-    var ttEntry = transpositionTable.get(hash);
-    var ttMove = null;
-    if (ttEntry && ttEntry.depth >= depth) {
-        if (ttEntry.flag === 'exact') return ttEntry.score;
-        if (ttEntry.flag === 'lowerbound' && ttEntry.score >= beta) return ttEntry.score;
-        if (ttEntry.flag === 'upperbound' && ttEntry.score <= alpha) return ttEntry.score;
-        ttMove = ttEntry.move;
-    }
-    
-    // Null move pruning
-    if (depth >= 3 && !isMaximizing) {
-        var nullScore = -minimax(b, depth - 3, -beta, -beta + 1, true, ply + 1);
-        if (nullScore >= beta) return beta;
-    }
-    
-    var player = isMaximizing ? 1 : 2;
-    var moves = getAllValidMovesForAI(b, player);
-    
-    if (moves.length === 0) return isMaximizing ? -100000 + ply : 100000 - ply;
-    
-    moves.sort(function(a, b2) {
-        return scoreMove(b2, player, depth, ttMove) - scoreMove(a, player, depth, ttMove);
-    });
-    
-    if (depth <= 0) {
-        return quiescenceSearch(b, alpha, beta, isMaximizing, 0);
-    }
-    
-    var bestScore = isMaximizing ? -Infinity : Infinity;
-    var bestMove = null;
-    var oldAlpha = alpha;
-    
-    for (var i = 0; i < moves.length; i++) {
-        var newB = applyMoveToBoard(b, moves[i]);
-        var score = minimax(newB, depth - 1, alpha, beta, !isMaximizing, ply + 1);
-        
-        if (isMaximizing) {
-            if (score > bestScore) {
-                bestScore = score;
-                bestMove = moves[i];
-            }
-            alpha = Math.max(alpha, score);
-        } else {
-            if (score < bestScore) {
-                bestScore = score;
-                bestMove = moves[i];
-            }
-            beta = Math.min(beta, score);
-        }
-        
-        if (beta <= alpha) {
-            if (depth < killerMoves.length) {
-                if (!killerMoves[depth]) killerMoves[depth] = [];
-                if (killerMoves[depth].length < 2) {
-                    killerMoves[depth].push(moves[i]);
-                } else {
-                    killerMoves[depth][0] = killerMoves[depth][1];
-                    killerMoves[depth][1] = moves[i];
-                }
-            }
-            break;
-        }
-    }
-    
-    var flag = 'exact';
-    if (bestScore <= oldAlpha) flag = 'upperbound';
-    else if (bestScore >= beta) flag = 'lowerbound';
-    
-    transpositionTable.set(hash, { score: bestScore, depth: depth, flag: flag, move: bestMove });
-    
-    return bestScore;
-}
-
-function iterativeDeepening(b, maxDepth, timeLimit, forcedR, forcedC) {
-    var startTime = Date.now();
-    var bestMove = null;
-    var currentBest = null;
-    
-    var moves;
-    if (forcedR >= 0) {
-        var captures = getCapturesForPiece(b, forcedR, forcedC, 2);
-        var expanded = [];
-        for (var i = 0; i < captures.length; i++) expandMove(captures[i], b, 2, expanded);
-        moves = expanded;
-    } else {
-        moves = getAllValidMovesForAI(b, 2);
-    }
-    
-    if (moves.length === 0) return null;
-    if (moves.length === 1) return moves[0];
-    
-    var fallbackMove = moves[0];
-    var alpha = -Infinity;
-    var beta = Infinity;
-    var window = 50;
-    
-    for (var depth = 1; depth <= maxDepth; depth++) {
-        killerMoves = [];
-        var currentBestScore = Infinity;
-        var currentAlpha = alpha;
-        var currentBeta = beta;
-        
-        if (depth > 2 && currentBest) {
-            currentAlpha = currentBestScore - window;
-            currentBeta = currentBestScore + window;
-        }
-        
-        var failHigh = false;
-        var failLow = false;
-        
-        do {
-            var bestScore = Infinity;
-            currentBest = null;
-            
-            if (bestMove) {
-                var idx = moves.indexOf(bestMove);
-                if (idx > 0) {
-                    moves.splice(idx, 1);
-                    moves.unshift(bestMove);
-                }
-            }
-            
-            for (var i = 0; i < moves.length; i++) {
-                if (Date.now() - startTime > timeLimit) {
-                    if (currentBest) bestMove = currentBest;
-                    return bestMove || moves[0];
-                }
-                
-                var newB = applyMoveToBoard(b, moves[i]);
-                var score = minimax(newB, depth - 1, currentAlpha, currentBeta, true, 0);
-                
-                if (score < bestScore) {
-                    bestScore = score;
-                    currentBest = moves[i];
-                }
-                currentBeta = Math.min(currentBeta, score);
-                if (currentAlpha >= currentBeta) {
-                    updateHistory(moves[i], depth);
-                    break;
-                }
-            }
-            
-            if (bestScore <= currentAlpha) {
-                failLow = true;
-                currentAlpha = -Infinity;
-                failHigh = false;
-            } else if (bestScore >= currentBeta) {
-                failHigh = true;
-                currentBeta = Infinity;
-                failLow = false;
-            } else {
-                failLow = false;
-                failHigh = false;
-            }
-            
-        } while (failLow || failHigh);
-        
-        if (!failLow && !failHigh) {
-            bestMove = currentBest;
-            currentBestScore = bestScore;
-            if (currentBestScore < -90000 || currentBestScore > 90000) break;
-        } else {
-            break;
-        }
-    }
-    
-    return bestMove || fallbackMove;
-}
-
-function getOpeningMove(b) {
-    var moves = getAllValidMovesForAI(b, 2);
-    var trapMoves = [];
-    for (var i = 0; i < moves.length; i++) {
-        var newB = applyMoveToBoard(b, moves[i]);
-        var opponentMoves = countAllMoves(newB, 1);
-        var captureMoves = getAllCapturesForAI(newB, 1);
-        
-        if (opponentMoves < 6) {
-            trapMoves.push({move: moves[i], score: 100 - opponentMoves});
-        }
-    }
-    
-    if (trapMoves.length > 0) {
-        trapMoves.sort(function(a, b2) { return b2.score - a.score; });
-        return trapMoves[0].move;
-    }
-    return null;
-}
-
-function botMakeMove() {
-    if (!gameState || gameState.turn !== 2 || gameState.p2 !== 'Mada_Bot') return;
-    
-    try {
-        var board = gameState.board.slice();
-        var bestMove = null;
-        
-        if (gameState.selected && gameState.validMoves && gameState.validMoves.length > 0) {
-            var fR = gameState.selected[0], fC = gameState.selected[1];
-            var captures = getCapturesForPiece(board, fR, fC, 2);
-            var expanded = [];
-            for (var i = 0; i < captures.length; i++) {
-                if (expanded.length > 50) break;
-                var initialMove = captures[i];
-                var initialBoard = applyMoveToBoard(board, initialMove);
-                var wasPromoted = false;
-                var p = board[fR * 8 + fC];
-                if (initialMove.to[0] === 7 && p === -1) wasPromoted = true;
-                if (wasPromoted) {
-                    expanded.push(initialMove);
-                } else {
-                    expandMove(initialMove, initialBoard, 2, expanded);
-                }
-            }
-            
-            var validExpanded = [];
-            for (var i = 0; i < expanded.length; i++) {
-                var firstTo = expanded[i].path ? expanded[i].path[1] : expanded[i].to;
-                for (var j = 0; j < gameState.validMoves.length; j++) {
-                    if (firstTo[0] === gameState.validMoves[j][0] && firstTo[1] === gameState.validMoves[j][1]) {
-                        validExpanded.push(expanded[i]);
-                        break;
-                    }
-                }
-            }
-            
-            if (validExpanded.length > 0) {
-                validExpanded.sort(function(a, b) {
-                    if (b.captured.length !== a.captured.length) return b.captured.length - a.captured.length;
-                    return a.to[0] - b.to[0];
-                });
-                bestMove = validExpanded[0];
-            } else {
-                bestMove = { from: [fR, fC], to: gameState.validMoves[0] };
-            }
-            
-            var firstTo = bestMove.path ? bestMove.path[1] : bestMove.to;
-            makePvPMove(bestMove.from[0], bestMove.from[1], firstTo[0], firstTo[1]);
-            return;
-        }
-        
-        var openingMove = getOpeningMove(board);
-        if (openingMove && !gameState.selected) {
-            var firstTo = openingMove.path ? openingMove.path[1] : openingMove.to;
-            makePvPMove(openingMove.from[0], openingMove.from[1], firstTo[0], firstTo[1]);
-            return;
-        }
-        
-        bestMove = iterativeDeepening(board, MAX_DEPTH, TIME_LIMIT, -1, -1);
-        
-        if (bestMove) {
-            var firstTo = bestMove.path ? bestMove.path[1] : bestMove.to;
-            makePvPMove(bestMove.from[0], bestMove.from[1], firstTo[0], firstTo[1]);
-        } else {
-            var moves = getAllValidMovesForAI(board, 2);
-            if (moves.length > 0) {
-                var m = moves[0];
-                var firstTo = m.path ? m.path[1] : m.to;
-                makePvPMove(m.from[0], m.from[1], firstTo[0], firstTo[1]);
-            }
-        }
-    } catch (e) {
-        console.error("AI Error:", e);
-        try {
-            if (gameState.selected && gameState.validMoves && gameState.validMoves.length > 0) {
-                makePvPMove(gameState.selected[0], gameState.selected[1], gameState.validMoves[0][0], gameState.validMoves[0][1]);
-            } else {
-                var board = gameState.board.slice();
-                var moved = false;
-                for (var r=0; r<8 && !moved; r++) {
-                    for (var c=0; c<8 && !moved; c++) {
-                        if (board[r*8+c] < 0) {
-                            var simpleMoves = getSimpleMovesForPiece(board, r, c, 2);
-                            if (simpleMoves.length > 0) {
-                                makePvPMove(r, c, simpleMoves[0].to[0], simpleMoves[0].to[1]);
-                                moved = true;
-                            }
-                            var caps = getCapturesForPiece(board, r, c, 2);
-                            if (caps.length > 0) {
-                                makePvPMove(r, c, caps[0].to[0], caps[0].to[1]);
-                                moved = true;
-                            }
-                        }
-                    }
-                }
-            }
-        } catch (e2) {
-            console.error("AI Fallback Error:", e2);
-        }
-    }
-}
-
-function endPvPGame(g){if(!currentGameId)return;if(processedGameEnds[currentGameId]){currentGameId=null;gameState={};gameListener=null;myPlayerNumber=0;showPage('profile');return}processedGameEnds[currentGameId]=true;var endedGameId=currentGameId;currentGameId=null;gameState={};if(gameListener){db.ref('pvp_games/'+gameListener).off()}gameListener=null;myPlayerNumber=0;var isDraw=g.winner==='draw';var isWin=!isDraw&&g.winner===myUid;if(isDraw)playSound('move');else if(isWin)playSound('win');else playSound('lose');db.ref('leaderboard_all/'+myUid).once('value',function(s){var d=s.val()||{},u={};var opponent=g.p1===myUid?g.p2:g.p1;if(isDraw){u.mwk=(d.mwk||0)+(g.entryMWK||0);u.gamesPlayed=(parseInt(d.gamesPlayed)||0)+1;u.winStreak=0;db.ref('match_history/'+myUid).push({opponent:opponent,result:'draw',amount:g.entryMWK,gradeId:g.gradeId,timestamp:Date.now()});db.ref('leaderboard_all/'+myUid).update(u,function(){alert('🤝 DRAW! MWK '+(g.entryMWK||0)+' refunded.');showPage('profile')})}else{u.gamesPlayed=(parseInt(d.gamesPlayed)||0)+1;u.gamesWon=(parseInt(d.gamesWon)||0)+(isWin?1:0);u.gamesLost=(parseInt(d.gamesLost)||0)+(isWin?0:1);u.winStreak=isWin?((d.winStreak||0)+1):0;if(isWin)u.mwk=(d.mwk||0)+(g.winMWK||0);db.ref('match_history/'+myUid).push({opponent:opponent,result:isWin?'win':'loss',amount:isWin?g.winMWK:g.entryMWK,gradeId:g.gradeId,timestamp:Date.now()});db.ref('leaderboard_all/'+myUid).update(u,function(){alert(isWin?'🎉 YOU WIN! +MWK '+(g.winMWK||0):'😞 You Lost! MWK '+(g.entryMWK||0));showPage('profile')})}});var now=Date.now();processedGameEnds[endedGameId]=now;Object.keys(processedGameEnds).forEach(function(k){if(typeof processedGameEnds[k]==='number'&&now-processedGameEnds[k]>300000){delete processedGameEnds[k]}});
-
-    // Clear AI data for fresh game
-    transpositionTable.clear();
-    historyHeuristic = {};
-    killerMoves = [];
-    
-    setTimeout(function(){if(db)db.ref('pvp_games/'+endedGameId).remove()},5000);
-}
-
-function cancelMatchmaking(){if(botMatchTimeout){clearTimeout(botMatchTimeout);botMatchTimeout=null;}if(db&&myUid){db.ref('pvp_queue').once('value',function(s){s.forEach(function(gs){if(gs.val()&&gs.val()[myUid]){var gid=gs.key;db.ref('pvp_queue/'+gid+'/'+myUid).remove()}})})}document.getElementById('searchingOverlay').style.display='none'}
-function exitGame(){if(confirm('Leave & FORFEIT?')){if(db&&currentGameId&&gameState){var winner=myPlayerNumber===1?gameState.p2:gameState.p1;db.ref('pvp_games/'+currentGameId).update({status:'finished',winner:winner})}}}
-
-/* ===== PAYCHANGU AUTOMATED DEPOSIT & WITHDRAW ===== */
-var PIPEDREAM_DEPOSIT_URL = "https://mada-backend.vercel.app/api/deposit"; 
-var PIPEDREAM_WITHDRAW_URL = "https://mada-backend.vercel.app/api/withdraw";
-
-async function submitOneKhusaDeposit() {
-    var amount = document.getElementById("okDepositAmount").value;
-    var msgEl = document.getElementById("okDepositMsg");
-    
-    if(!myUid){ alert("Please login first."); return; }
-    
-    msgEl.innerHTML = '<span class="success">⏳ Generating secure payment link...</span>';
-    
-    try {
-        var response = await fetch(PIPEDREAM_DEPOSIT_URL, {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({
-                uid: myUid,
-                amount: amount
-            })
-        });
-        
-        var result = await response.json();
-        
-        if(result.success && result.checkout_url) {
-            msgEl.innerHTML = '<span class="success" style="color:#51cf66;">✅ Redirecting to PayChangu...</span>';
-            window.location.href = result.checkout_url;
-        } else {
-            msgEl.innerHTML = '<span class="error">❌ Error: ' + (result.message || 'Failed to initiate') + '</span>';
-        }
-    } catch (e) {
-        msgEl.innerHTML = '<span class="error">Error: ' + e.message + '</span>';
-    }
-}
-
-async function submitOneKhusaWithdraw() {
-    if(!db || !myUid) return;
-    var amount = parseInt(document.getElementById("withdrawAmount").value);
-    var msgEl = document.getElementById("withdrawMsg");
-    
-    if(amount > 50000) {
-        msgEl.innerHTML = '<span class="error">⚠️ Maximum withdrawal is 50,000 MWK per request.</span>';
-        return;
-    }
-    
-    msgEl.innerHTML = '<span class="success">⏳ Processing withdrawal...</span>';
-
-    try {
-        var response = await fetch(PIPEDREAM_WITHDRAW_URL, {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({
-                action: "withdraw",
-                uid: myUid,
-                amount: amount,
-                secret: mySecret
-            })
-        });
-        
-        var result = await response.json();
-        if(result.success) {
-            msgEl.innerHTML = '<span class="success" style="color:#51cf66;">✅ ' + result.message + '</span>';
-            showBalance(); 
-        } else {
-            msgEl.innerHTML = '<span class="error">❌ Error: ' + (result.message || 'Failed') + '</span>';
-            showBalance(); 
-        }
-    } catch (e) {
-        msgEl.innerHTML = '<span class="error">Error: ' + e.message + '</span>';
-        showBalance();
-    }
-}
-
-function listenMyDeposits(){
-  if(!db||!myUid) return;
-  db.ref('deposit_requests').orderByChild('uid').equalTo(myUid).on('value', function(s){
-    var h = '<div style="font-size:14px;color:#888;margin-bottom:8px">Deposit History</div>';
-    if(!s.exists()){
-      h += '<div style="text-align:center;color:#555;font-size:12px;padding:10px;">No deposits yet</div>';
-    } else {
-      s.forEach(function(c){
-        var r = c.val();
-        h += '<div class="history-item"><div><span style="color:#fff">MWK '+r.amountMWK+'</span><br><span style="color:#555;font-size:10px">'+new Date(r.timestamp).toLocaleDateString()+' • '+(r.txId||'')+'</span></div><span class="history-status-'+r.status+'">'+r.status+'</span></div>';
-      });
-    }
-    var el = document.getElementById('myDepositHistory');
-    if(el) el.innerHTML = h;
-  });
-}
-
-function listenMyWithdrawals(){
-  if(!db||!myUid) return;
-  db.ref('withdraw_requests').orderByChild('uid').equalTo(myUid).on('value', function(s){
-    var h = '<div style="font-size:14px;color:#888;margin-bottom:8px">Withdrawal History</div>';
-    if(!s.exists()){
-      h += '<div style="text-align:center;color:#555;font-size:12px;padding:10px;">No withdrawals yet</div>';
-    } else {
-      s.forEach(function(c){
-        var r = c.val();
-        var statusClass = r.status === 'pending' ? 'history-status-pending' : (r.status === 'approved' || r.status === 'sent') ? 'history-status-sent' : (r.status === 'declined' || r.status === 'failed') ? 'history-status-declined' : 'history-status-'+r.status;
-        h += '<div class="history-item"><div><span style="color:#fff">MWK '+r.amountMWK+'</span><br><span style="color:#555;font-size:10px">'+new Date(r.timestamp).toLocaleDateString()+'</span></div><span class="'+statusClass+'">'+r.status+'</span></div>';
-      });
-    }
-    var el = document.getElementById('myWithdrawHistory');
-    if(el) el.innerHTML = h;
-  });
-}
-
-var inboxFileData=null,inboxFileName=null;var inboxMessagesCache={};
-function loadInbox(){if(!db||!myUid)return;db.ref('admin_inbox/'+myUid+'/messages').orderByChild('timestamp').on('value',function(s){var h='';inboxMessagesCache={};s.forEach(function(c){var m=c.val(),im=m.from==='user',ch='';inboxMessagesCache[c.key]=m;if(m.image)ch+='<img src="'+m.image+'" class="inbox-img" onclick="openImageViewer(this.src)">';if(m.image)ch+='<button onclick="saveInboxPhoto(\''+c.key+'\')" class="inbox-action-btn inbox-save-btn">💾 Save Photo</button>';if(m.fileData)ch+='<a href="'+m.fileData+'" download="'+(m.fileName||'file')+'" class="inbox-file">📎 '+(m.fileName||'File')+'</a>';if(m.text)ch+='<div style="color:#fff;font-size:14px;white-space:pre-wrap;">'+escapeHtml(m.text)+'</div>';h+='<div class="inbox-item" id="inbox-msg-'+c.key+'" style="'+(im?'text-align:right;background:#0a2a3a;':'text-align:left;background:#1a1a2e;')+'">';h+=ch;h+='<div class="inbox-meta"><span>'+(im?'You':'Admin')+'</span><span>'+new Date(m.timestamp).toLocaleTimeString([],{hour:'2-digit',minute:'2-digit'})+'</span></div>';h+='<div class="inbox-actions-row"><button onclick="deleteInboxMsg(\''+c.key+'\')" class="inbox-action-btn inbox-delete-btn">🗑️ Delete</button></div>';h+='</div>'});document.getElementById('inboxMessages').innerHTML=h||'<div style="text-align:center;color:#555;padding:20px;">No messages yet</div>';document.getElementById('inboxMessages').scrollTop=99999})}
-function deleteInboxMsg(msgKey){if(!db||!myUid||!msgKey)return;if(!confirm('Delete this message?'))return;var msgEl=document.getElementById('inbox-msg-'+msgKey);if(msgEl)msgEl.classList.add('deleting');db.ref('admin_inbox/'+myUid+'/messages/'+msgKey).remove(function(err){if(err){alert('Failed to delete message.');if(msgEl)msgEl.classList.remove('deleting')}})}
-function saveInboxPhoto(msgKey){var msg=inboxMessagesCache[msgKey];if(!msg||!msg.image){alert('No photo found to save.');return}try{var a=document.createElement('a');a.href=msg.image;a.download='inbox_photo_'+Date.now()+'.jpg';a.style.display='none';document.body.appendChild(a);a.click();setTimeout(function(){document.body.removeChild(a)},500)}catch(e){openImageViewer(msg.image);alert('Tap 💾 Save in the viewer to download the photo.')}}
-window.handleInboxFileUpload=function(e){var f=e.target.files&&e.target.files[0];if(!f)return;var im=f.type.startsWith('image/'),r=new FileReader();r.onload=function(ev){if(im){var img=new Image();img.onload=function(){var c=document.createElement('canvas'),w=600,h=600,iw=img.width,ih=img.height;if(iw>w){ih*=w/iw;iw=w}if(ih>h){iw*=h/ih;ih=h}c.width=Math.round(iw);c.height=Math.round(ih);c.getContext('2d').drawImage(img,0,0,c.width,c.height);inboxFileData=c.toDataURL('image/jpeg',0.5);inboxFileName=f.name;document.getElementById('inboxFilePreview').style.display='block';document.getElementById('inboxFileName').innerText='📷 '+f.name};img.src=ev.target.result}else{if(f.size>1048576){alert("Max 1MB.");e.target.value='';return}inboxFileData=ev.target.result;inboxFileName=f.name;document.getElementById('inboxFilePreview').style.display='block';document.getElementById('inboxFileName').innerText='📎 '+f.name}};r.readAsDataURL(f)};
-window.clearInboxFile=function(){inboxFileData=null;inboxFileName=null;document.getElementById('inboxFilePreview').style.display='none';document.getElementById('inboxFileInput').value=''};
-window.sendInboxMsg=function(){if(!db||!myUid)return;var i=document.getElementById('inboxMsgInput');var t=(i.value||'').trim();if(!t&&!inboxFileData)return;var md={from:'user',text:t,timestamp:Date.now()};if(inboxFileData){if(inboxFileData.includes('image/'))md.image=inboxFileData;else{md.fileData=inboxFileData;md.fileName=inboxFileName}}db.ref('admin_inbox/'+myUid+'/messages').push(md,function(e){if(!e){i.value='';window.clearInboxFile()}})};
-function setupInboxNotif(){if(!db||!myUid)return;db.ref('admin_inbox/'+myUid+'/messages').orderByChild('timestamp').limitToLast(1).on('value',function(s){s.forEach(function(c){if(c.val().from==='admin'){var ip=document.getElementById('inboxPage');if(ip&&!ip.classList.contains('active')){var d=document.getElementById('inboxNotifDot');if(d)d.style.display='inline-block'}}})})}
-
-document.addEventListener('DOMContentLoaded',function(){
-    setupSlider('gateSliderTrack', 'gateSliderHandle', 'gateSliderProgress', 'gateSliderText', function() {
-        var gate = document.getElementById('appGate');
-        setTimeout(function() {
-            gate.style.transition = 'opacity 0.5s';
-            gate.style.opacity = '0';
-            setTimeout(function() { gate.style.display = 'none'; }, 500);
-        }, 500);
-    });
-    setupSlider('regSliderTrack', 'regSliderHandle', 'regSliderProgress', 'regSliderText', function() {
-        isHumanReg = true;
-    });
-    setupSlider('loginSliderTrack', 'loginSliderHandle', 'loginSliderProgress', 'loginSliderText', function() {
-        isHumanLogin = true;
-    });
-
-    setTimeout(function(){var sp=document.getElementById('splashScreen');if(sp){sp.classList.add('splash-hide');setTimeout(function(){sp.style.display='none'},700)}},2500);
-    var lsb=document.getElementById("loginSubmitBtn");if(lsb)lsb.addEventListener('click',function(e){e.preventDefault();login()});
-    var lui=document.getElementById("loginUsernameInput");if(lui)lui.addEventListener('keypress',function(e){if(e.key==='Enter'){e.preventDefault();login()}});
-    var lb=document.getElementById("loginBtn");if(lb)lb.addEventListener('click',function(e){e.preventDefault();register()});
-    var ui=document.getElementById("usernameInput");if(ui){ui.addEventListener('keypress',function(e){if(e.key==='Enter'){e.preventDefault();register()}});setTimeout(function(){ui.focus();},300)}
-    var pi=document.getElementById("phoneInput");if(pi)pi.addEventListener('input',function(e){this.value=this.value.replace(/[^0-9]/g,'')});
-    var el;el=document.getElementById("navProfile");if(el)el.onclick=function(){showPage('profile')};el=document.getElementById("navWallet");if(el)el.onclick=function(){showPage('wallet')};el=document.getElementById("navPlay");if(el)el.onclick=function(){showPage('play')};el=document.getElementById("navInbox");if(el)el.onclick=function(){showPage('inbox')}; el=document.getElementById("navFaq");if(el)el.onclick=function(){showPage('faq')};
-    try{var u=localStorage.getItem("user");if(u){myUid=u;mySecret=localStorage.getItem('secret');checkBanStatus();document.getElementById("loginPage").classList.remove("active");document.getElementById("mainNav").style.display="flex";document.getElementById('waFloatBtn').style.display='flex';showPage('profile');if(db)lockPaymentMethod(localStorage.getItem("userPhone")||'',localStorage.getItem("network")||'');initGameListeners();setupInboxNotif()}}catch(e){}
-});
-</script>
-
-<!-- ===== CHAT & VOICE SYSTEM ===== -->
-<script>
-(function(){var chatCurrentWith=null;var chatListenerRef=null;var replyToMsg=null;var chatUsersCache=[];var chatMessagesData=[];var chatOnlineListeners=[];var mediaRecorder=null;var audioChunks=[];var isRecording=false;var recordingTimer=null;var recordingSeconds=0;function setOnlineStatus(online){if(!db||!myUid)return;var ref=db.ref('online_status/'+myUid);if(online){ref.set({online:true,lastSeen:Date.now()});ref.onDisconnect().set({online:false,lastSeen:Date.now()})}else{ref.set({online:false,lastSeen:Date.now()})}}function getChatId(uid1,uid2){return uid1<uid2?uid1+'_'+uid2:uid2+'_'+uid1}function escapeHtml(text){var d=document.createElement('div');d.textContent=text;return d.innerHTML}function showChatPage(){var pages=document.querySelectorAll('.page');for(var i=0;i<pages.length;i++){pages[i].classList.remove('active');pages[i].style.display=''}document.getElementById('chatPage').classList.add('active');var btns=document.querySelectorAll('.nav-btn');for(var j=0;j<btns.length;j++)btns[j].classList.remove('active');if(btns[2])btns[2].classList.add('active');document.getElementById('mainNav').style.display='flex';document.getElementById('waFloatBtn').style.display='flex';loadChatUsers()}function loadChatUsers(){if(!db||!myUid)return;db.ref('leaderboard_all').once('value',function(snap){chatUsersCache=[];snap.forEach(function(child){if(child.key!==myUid)chatUsersCache.push({uid:child.key,displayName:(child.val()||{}).displayName||child.key})});renderChatUsers(chatUsersCache);listenAllOnlineStatus();loadAllLastMessages();loadAllUnreadCounts()})}function listenAllOnlineStatus(){chatOnlineListeners.forEach(function(r){r.off()});chatOnlineListeners=[];chatUsersCache.forEach(function(u){var ref=db.ref('online_status/'+u.uid);ref.on('value',function(sSnap){var dotEl=document.getElementById('cdot_'+u.uid);var sd=sSnap.val();if(dotEl){if(sd&&sd.online)dotEl.classList.add('on');else dotEl.classList.remove('on')}});chatOnlineListeners.push(ref)})}function loadAllLastMessages(){chatUsersCache.forEach(function(u){var chatId=getChatId(myUid,u.uid);db.ref('chats/'+chatId+'/messages').orderByChild('timestamp').limitToLast(1).once('value',function(snap){snap.forEach(function(child){var msg=child.val();var el=document.getElementById('lastmsg_'+u.uid);if(el)el.innerText=(msg.from===myUid?'You: ':'')+(msg.image?'📷':(msg.audio?'🎤':(msg.text||'')))})})})}function loadAllUnreadCounts(){chatUsersCache.forEach(function(u){var chatId=getChatId(myUid,u.uid);db.ref('chats/'+chatId+'/messages').orderByChild('read').equalTo(false).once('value',function(snap){var count=0;snap.forEach(function(c){if(c.val().from!==myUid)count++});var badge=document.getElementById('unread_'+u.uid);if(badge){if(count>0){badge.style.display='flex';badge.innerText=count}else badge.style.display='none'}})})}function renderChatUsers(users){var el=document.getElementById('chatUserList');if(!el)return;if(!users.length){el.innerHTML='<div style="padding:30px;color:#555">No users yet</div>';return}var html='';users.forEach(function(u){html+='<div class="chat-user-row" onclick="window._openChatWith(\''+u.uid+'\',\''+u.displayName+'\')" style="display:flex;align-items:center;gap:12px;padding:12px 8px;border-bottom:1px solid #1a1a1a">';html+='<div class="chat-avatar">'+escapeHtml(u.displayName[0])+'<span id="cdot_'+u.uid+'" class="chat-online-dot"></span></div>';html+='<div style="flex:1;text-align:left;min-width:0"><div style="font-weight:bold;color:#fff;font-size:14px">'+escapeHtml(u.displayName)+'</div><div id="lastmsg_'+u.uid+'" style="font-size:12px;color:#888;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">Tap to chat</div></div>';html+='<div id="unread_'+u.uid+'" class="chat-unread-badge">0</div>';html+='</div>'});el.innerHTML=html}window.filterChatUsers=function(){var q=(document.getElementById('chatSearchInput').value||'').toLowerCase();renderChatUsers(chatUsersCache.filter(function(u){return u.displayName.toLowerCase().indexOf(q)>=0}));listenAllOnlineStatus()};window._openChatWith=function(uid,displayName){chatCurrentWith=uid;document.getElementById('chatConvName').innerText=displayName;document.getElementById('chatConvAvatar').innerText=displayName[0];cancelReply();var pages=document.querySelectorAll('.page');for(var i=0;i<pages.length;i++){pages[i].classList.remove('active');pages[i].style.display=''}document.getElementById('chatConvPage').classList.add('active');document.getElementById('mainNav').style.display='none';document.getElementById('waFloatBtn').style.display='none';listenForChatMessages(uid)};window.backToChatList=function(){if(chatListenerRef&&db)db.ref('chats/'+chatListenerRef+'/messages').off();chatCurrentWith=null;showChatPage()};function listenForChatMessages(uid){var chatId=getChatId(myUid,uid);if(chatListenerRef&&db)db.ref('chats/'+chatListenerRef+'/messages').off();chatListenerRef=chatId;db.ref('chats/'+chatId+'/messages').orderByChild('timestamp').on('value',function(snap){chatMessagesData=[];snap.forEach(function(c){var m=c.val();m._id=c.key;chatMessagesData.push(m)});renderChatMessages(chatMessagesData);markChatAsRead(chatId,chatMessagesData)})}function renderChatMessages(messages){var container=document.getElementById('chatMessages');if(!container)return;var html='';var prevDate='';var me=String(myUid||'').trim();for(var idx=0;idx<messages.length;idx++){var msg=messages[idx];var fromId=String(msg.from||'').trim();var isMine=fromId===me;var dateStr=new Date(msg.timestamp).toLocaleDateString();if(dateStr!==prevDate){html+='<div style="text-align:center;margin:14px 0;font-size:11px;color:#999"><span style="background:#222;padding:3px 14px;border-radius:10px;display:inline-block">'+dateStr+'</span></div>';prevDate=dateStr}var tickHtml=isMine?(msg.read?' <span style="color:#00ffcc">✓✓</span>':' <span style="color:#777">✓✓</span>'):'';var replyHtml='';if(msg.replyTo){replyHtml='<div style="background:rgba(255,255,255,0.08);padding:4px 8px;border-radius:5px;border-left:3px solid #00ffcc;margin-bottom:6px;font-size:11px;color:#ccc">'+escapeHtml(msg.replyTo.text||'📷')+'</div>'}var imageHtml='';if(msg.image){imageHtml='<img src="'+msg.image+'" style="max-width:220px;max-height:220px;border-radius:10px;margin-bottom:6px;display:block;cursor:pointer;border:2px solid #333" onclick="openImageViewer(this.src)">'}var audioHtml='';if(msg.audio){audioHtml='<audio controls preload="none" style="width:200px;height:36px;margin-top:5px" src="'+msg.audio+'"></audio>'}var rowStyle='display:flex!important;visibility:visible!important;opacity:1!important;margin:8px 0;align-items:flex-end;gap:6px;width:100%;padding:0 6px;box-sizing:border-box;'+(isMine?'justify-content:flex-end;':'justify-content:flex-start;');var bubbleStyle='padding:10px 14px;max-width:78%;min-width:60px;min-height:28px;word-wrap:break-word;border-radius:16px;box-sizing:border-box;'+(isMine?'background-color:#005c4b;background:linear-gradient(135deg,#005c4b,#00786a);border:1px solid #00ffcc;color:#fff;border-bottom-right-radius:4px;':'background-color:#2a2f45;background:linear-gradient(135deg,#2a2f45,#32395e);border:1px solid #4a5568;color:#fff;border-bottom-left-radius:4px;');var senderLabel=isMine?'<div style="font-size:10px;color:#7fffd4;margin-bottom:3px;font-weight:bold">You</div>':'<div style="font-size:10px;color:#a0b4ff;margin-bottom:3px;font-weight:bold">'+escapeHtml((msg.from||'User').substring(0,12))+'</div>';html+='<div style="'+rowStyle+'">';if(!isMine)html+='<button style="font-size:14px;padding:4px;background:transparent;border:none;cursor:pointer;opacity:0.5;color:#888" onclick="window._setReplyByIndex('+idx+')">↩</button>';html+='<div style="'+bubbleStyle+'">';html+=senderLabel;html+=replyHtml;html+=imageHtml;html+=audioHtml;if(msg.text)html+='<div style="color:#ffffff!important;font-size:14px;white-space:pre-wrap;line-height:1.4">'+escapeHtml(msg.text)+'</div>';html+='<div style="font-size:10px;color:rgba(255,255,255,0.6);margin-top:5px;text-align:right">'+new Date(msg.timestamp).toLocaleTimeString([],{hour:'2-digit',minute:'2-digit'})+tickHtml+'</div>';html+='</div>';if(isMine){html+='<button style="font-size:14px;padding:4px;background:transparent;border:none;cursor:pointer;opacity:0.5;color:#888" onclick="window._setReplyByIndex('+idx+')">↩</button>';html+='<button style="font-size:14px;padding:4px;background:transparent;border:none;cursor:pointer;opacity:0.6;color:#ff7b7b" onclick="window._deleteMsg(\''+msg._id+'\')" title="Delete">🗑</button>'}html+='</div>'}container.innerHTML=html;container.scrollTop=container.scrollHeight}function markChatAsRead(chatId,msgs){if(!db)return;msgs.forEach(function(m){if(m.from!==myUid&&!m.read)db.ref('chats/'+chatId+'/messages/'+m._id).update({read:true})})}window.sendChatMsg=function(){if(!db||!chatCurrentWith||!myUid){alert('Chat not ready.');return}var input=document.getElementById('chatMsgInput');var text=(input.value||'').trim();if(!text)return;var msgData={from:myUid,text:text,timestamp:Date.now(),read:false};if(replyToMsg){msgData.replyTo={id:replyToMsg.id,text:replyToMsg.text};cancelReply()}var chatId=getChatId(myUid,chatCurrentWith);db.ref('chats/'+chatId+'/messages').push(msgData,function(err){if(err)alert('Message failed: '+err.message);else input.value=''})};window._setReplyByIndex=function(idx){var msg=chatMessagesData[idx];if(!msg)return;replyToMsg={id:msg._id,text:msg.text||(msg.image?'📷':(msg.audio?'🎤':''))};document.getElementById('replyPreview').style.display='block';document.getElementById('replyPreviewText').innerText=replyToMsg.text;document.getElementById('chatMsgInput').focus()};function cancelReply(){replyToMsg=null;document.getElementById('replyPreview').style.display='none'}window.cancelReply=cancelReply;window.handleChatFileUpload=function(e){var file=e.target.files&&e.target.files[0];if(!file||!db||!chatCurrentWith||!myUid)return;var reader=new FileReader();reader.onload=function(ev){var img=new Image();img.onload=function(){var c=document.createElement('canvas');var w=600,h=600,iw=img.width,ih=img.height;if(iw>w){ih*=w/iw;iw=w}if(ih>h){iw*=h/ih;ih=h}c.width=Math.round(iw);c.height=Math.round(ih);c.getContext('2d').drawImage(img,0,0,c.width,c.height);var imageData=c.toDataURL('image/jpeg',0.5);var chatId=getChatId(myUid,chatCurrentWith);db.ref('chats/'+chatId+'/messages').push({from:myUid,text:'',image:imageData,timestamp:Date.now(),read:false},function(err){if(err)alert('Image send failed: '+err.message)})};img.src=ev.target.result};reader.readAsDataURL(file);e.target.value=''};window._deleteMsg=function(msgId){if(!chatListenerRef||!db)return;if(confirm('Delete?'))db.ref('chats/'+chatListenerRef+'/messages/'+msgId).remove()};window.clearChat=function(){if(!chatCurrentWith||!db)return;if(confirm('Delete ALL messages?'))db.ref('chats/'+getChatId(myUid,chatCurrentWith)+'/messages').remove()};window.toggleVoiceNote=function(){if(isRecording)stopVoiceRecording();else startVoiceRecording()};function startVoiceRecording(){navigator.mediaDevices.getUserMedia({audio:true}).then(function(stream){audioChunks=[];mediaRecorder=new MediaRecorder(stream);mediaRecorder.ondataavailable=function(e){audioChunks.push(e.data)};mediaRecorder.onstop=function(){stream.getTracks().forEach(function(t){t.stop()});var blob=new Blob(audioChunks,{type:'audio/webm'});var reader=new FileReader();reader.onload=function(){db.ref('chats/'+getChatId(myUid,chatCurrentWith)+'/messages').push({from:myUid,text:'',audio:reader.result,timestamp:Date.now(),read:false})};reader.readAsDataURL(blob)};mediaRecorder.start();isRecording=true;document.getElementById('voiceNoteBtn').style.background='#ff6b6b';document.getElementById('voiceNoteBtn').innerText='⏹';document.getElementById('recordingStatus').style.display='block';recordingTimer=setInterval(function(){recordingSeconds++;if(recordingSeconds>=60)stopVoiceRecording()},1000)}).catch(function(){alert('Microphone access denied.')})}function stopVoiceRecording(){if(mediaRecorder&&mediaRecorder.state!=='inactive')mediaRecorder.stop();isRecording=false;clearInterval(recordingTimer);recordingSeconds=0;document.getElementById('voiceNoteBtn').style.background='#1a1a1a';document.getElementById('voiceNoteBtn').innerText='🎤';document.getElementById('recordingStatus').style.display='none'}if(document.getElementById('navChat'))document.getElementById('navChat').addEventListener('click',function(e){e.preventDefault();showChatPage()});function initChatOnline(){if(myUid&&db){setOnlineStatus(true);setInterval(function(){if(myUid&&db)setOnlineStatus(true)},30000)}}window.addEventListener('beforeunload',function(){setOnlineStatus(false)});setTimeout(function(){if(myUid&&db)initChatOnline()},500);var _lastUid=null;setInterval(function(){if(myUid!==_lastUid){_lastUid=myUid;if(myUid&&db)initChatOnline()}},500)})();
-</script>
-
-<!-- ===== BULLETPROOF APP INSTALL GATE DETECTION ===== -->
-<script>
-(function() {
-  var gateDismissed = false;
-  var gateShown = false;
-  var checkCount = 0;
-  var MAX_CHECKS = 40;
-
-  function hideAppGate() {
-    gateDismissed = true;
-    gateShown = false;
-    var gate = document.getElementById('appInstallGate');
-    if (gate) gate.style.display = 'none';
-  }
-
-  function showAppGate() {
-    if (gateDismissed) return;
-    gateShown = true;
-    var gate = document.getElementById('appInstallGate');
-    if (gate) gate.style.display = 'flex';
-  }
-
-  function isNativeApp() {
-    try {
-      if (window.MedianNative) return true;
-      var ua = (navigator.userAgent || '').toLowerCase();
-      if (ua.indexOf('median') !== -1) return true;
-      if (typeof median !== 'undefined' && typeof median.ready === 'function') return true;
-      var isAndroid = ua.indexOf('android') !== -1;
-      var isWV = ua.indexOf('wv') !== -1 || ua.indexOf('webview') !== -1;
-      var isRegularChrome = ua.indexOf('chrome') !== -1 && ua.indexOf('wv') === -1;
-      if (isAndroid && isWV && !isRegularChrome) return true;
-      if (window.__MEDIAN__) return true;
-      if (window.__goNativeBridge) return true;
-      var loc = window.location || {};
-      if (loc.protocol === 'file:') return true;
-      if (loc.href && loc.href.indexOf('median://') === 0) return true;
-    } catch(e) {}
-    return false;
-  }
-
-  if (isNativeApp()) {
-    hideAppGate();
-    return;
-  }
-
-  var pollInterval = setInterval(function() {
-    checkCount++;
-    if (isNativeApp()) {
-      clearInterval(pollInterval);
-      hideAppGate();
-      return;
-    }
-    if (checkCount >= MAX_CHECKS) {
-      clearInterval(pollInterval);
-      showAppGate();
-    }
-  }, 250);
-
-  (function tryMedianReady() {
-    try {
-      if (typeof median !== 'undefined' && typeof median.ready === 'function') {
-        median.ready(function() {
-          clearInterval(pollInterval);
-          hideAppGate();
-        });
-      } else if (checkCount < MAX_CHECKS) {
-        setTimeout(tryMedianReady, 300);
-      }
-    } catch(e) {}
-  })();
-
-  var medianScript = document.querySelector('script[src*="median"]');
-  if (medianScript) {
-    medianScript.onload = function() {
-      setTimeout(function() {
-        if (isNativeApp()) {
-          clearInterval(pollInterval);
-          hideAppGate();
-        }
-      }, 200);
-    };
-  }
-
-  var safetyInterval = setInterval(function() {
-    if (gateDismissed) {
-      clearInterval(safetyInterval);
-      return;
-    }
-    if (window.MedianNative || isNativeApp()) {
-      clearInterval(safetyInterval);
-      clearInterval(pollInterval);
-      hideAppGate();
-    }
-  }, 500);
-
-  setTimeout(function() {
-    clearInterval(safetyInterval);
-    clearInterval(pollInterval);
-  }, 60000);
-
-  var gateEl = document.getElementById('appInstallGate');
-  if (gateEl && typeof MutationObserver !== 'undefined') {
-    var observer = new MutationObserver(function(mutations) {
-      if (gateDismissed && gateEl.style.display !== 'none') {
-        gateEl.style.display = 'none';
-      }
-    });
-    observer.observe(gateEl, { attributes: true, attributeFilter: ['style'] });
-  }
-})();
-</script>
-
-</body>
-    </html>
+                                if(e2
