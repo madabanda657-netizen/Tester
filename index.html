@@ -187,19 +187,19 @@
   <p>MADA EARN</p>
 </div>
 
-<div id="termsModal" class="legal-modal"><div class="legal-modal-content"><h2>📜 Terms of Service</h2><p><b>1. Eligibility:</b> You must be at least 18 years old.</p><p><b>2. Real Money Gaming:</b> Play at your own risk.</p><p><b>3. Deposits:</b> Use registered username as reference.</p><p><b>4. Withdrawals:</b> Processed within 3 hours.</p><p><b>5. Fair Play:</b> Cheating = permanent ban.</p><p><b>6. Platform Fee:</b> 20% fee on winnings.</p><p><b>7. Referrals:</b> MWK 10 per 5 referrals.</p><br><button onclick="document.getElementById('termsModal').style.display='none'" style="width:auto;padding:10px 30px;margin:0 auto;display:block">Close</button></div></div>
-<div id="privacyModal" class="legal-modal"><div class="legal-modal-content"><h2>🔒 Privacy Policy</h2><p><b>1. Data Collection:</b> Username, phone, email.</p><p><b>2. Data Usage:</b> Operate app & process transactions.</p><p><b>3. Security:</b> Firebase encrypted.</p><p><b>4. Chat:</b> Voice stored in DB.</p><br><button onclick="document.getElementById('privacyModal').style.display='none'" style="width:auto;padding:10px 30px;margin:0 auto;display:block">Close</button></div></div>
+<div id="termsModal" class="legal-modal"><div class="legal-modal-content"><h2>📜 Terms of Service</h2><p><b>1. Eligibility:</b> You must be at least 18 years old.</p><p><b>2. Real Money Gaming:</b> Play at your own risk.</p><p><b>3. Deposits:</b> Use registered username as reference.</p><p><b>4. Withdrawals:</b> Processed within 3 hours.</p><p><b>5. Fair Play:</b> Cheating = permanent ban.</p><p><b>6. Platform Fee:</b> 20% fee on winnings.</p><p><b>7. Referrals:</b> MWK 10 per 5 referrals.</p><br><button id="closeTermsBtn" style="width:auto;padding:10px 30px;margin:0 auto;display:block">Close</button></div></div>
+<div id="privacyModal" class="legal-modal"><div class="legal-modal-content"><h2>🔒 Privacy Policy</h2><p><b>1. Data Collection:</b> Username, phone, email.</p><p><b>2. Data Usage:</b> Operate app & process transactions.</p><p><b>3. Security:</b> Firebase encrypted.</p><p><b>4. Chat:</b> Voice stored in DB.</p><br><button id="closePrivacyBtn" style="width:auto;padding:10px 30px;margin:0 auto;display:block">Close</button></div></div>
 
-<div id="editNameModal" class="profile-modal"><div class="profile-modal-content"><div style="font-size:40px;margin-bottom:10px;">✏</div><h3 style="color:#00ffcc;margin-bottom:15px;">Edit Display Name</h3><input type="text" id="editNameInput" placeholder="New display name" maxlength="20" style="background:#0a0a0a;color:#fff;border:1px solid #00ffcc33;margin-bottom:15px;"><div style="display:flex;gap:10px;justify-content:center;"><button onclick="saveDisplayName()" style="width:auto;padding:10px 25px;">💾 Save</button><button onclick="closeEditNameModal()" style="width:auto;padding:10px 25px;background:#333;color:#fff;">Cancel</button></div><p id="editNameMsg" style="margin-top:10px;font-size:13px;"></p></div></div>
+<div id="editNameModal" class="profile-modal"><div class="profile-modal-content"><div style="font-size:40px;margin-bottom:10px;">✏</div><h3 style="color:#00ffcc;margin-bottom:15px;">Edit Display Name</h3><input type="text" id="editNameInput" placeholder="New display name" maxlength="20" style="background:#0a0a0a;color:#fff;border:1px solid #00ffcc33;margin-bottom:15px;"><div style="display:flex;gap:10px;justify-content:center;"><button id="saveNameBtn" style="width:auto;padding:10px 25px;">💾 Save</button><button id="cancelNameBtn" style="width:auto;padding:10px 25px;background:#333;color:#fff;">Cancel</button></div><p id="editNameMsg" style="margin-top:10px;font-size:13px;"></p></div></div>
 
-<div id="changePasswordModal" class="profile-modal"><div class="profile-modal-content"><div style="font-size:40px;margin-bottom:10px;">🔑</div><h3 style="color:#00ffcc;margin-bottom:15px;">Change Password</h3><div class="input-wrapper" style="margin-bottom:8px;"><input type="password" id="oldPasswordInput" placeholder="Current Password"><span class="toggle-password" onclick="togglePassword('oldPasswordInput', this)">👁</span></div><div class="input-wrapper" style="margin-bottom:8px;"><input type="password" id="newPasswordInput" placeholder="New Password (min 6 chars)"><span class="toggle-password" onclick="togglePassword('newPasswordInput', this)">👁</span></div><div class="input-wrapper" style="margin-bottom:15px;"><input type="password" id="confirmPasswordInput" placeholder="Confirm New Password"><span class="toggle-password" onclick="togglePassword('confirmPasswordInput', this)">👁</span></div><div style="display:flex;gap:10px;justify-content:center;"><button onclick="changePassword()" style="width:auto;padding:10px 25px;">🔑 Change</button><button onclick="closeChangePasswordModal()" style="width:auto;padding:10px 25px;background:#333;color:#fff;">Cancel</button></div><p id="changePasswordMsg" style="margin-top:10px;font-size:13px;"></p></div></div>
+<div id="changePasswordModal" class="profile-modal"><div class="profile-modal-content"><div style="font-size:40px;margin-bottom:10px;">🔑</div><h3 style="color:#00ffcc;margin-bottom:15px;">Change Password</h3><div class="input-wrapper" style="margin-bottom:8px;"><input type="password" id="oldPasswordInput" placeholder="Current Password"><span id="toggleOldPass" class="toggle-password">👁</span></div><div class="input-wrapper" style="margin-bottom:8px;"><input type="password" id="newPasswordInput" placeholder="New Password (min 6 chars)"><span id="toggleNewPass" class="toggle-password">👁</span></div><div class="input-wrapper" style="margin-bottom:15px;"><input type="password" id="confirmPasswordInput" placeholder="Confirm New Password"><span id="toggleConfirmPass" class="toggle-password">👁</span></div><div style="display:flex;gap:10px;justify-content:center;"><button id="changePassBtn" style="width:auto;padding:10px 25px;">🔑 Change</button><button id="cancelPassBtn" style="width:auto;padding:10px 25px;background:#333;color:#fff;">Cancel</button></div><p id="changePasswordMsg" style="margin-top:10px;font-size:13px;"></p></div></div>
 
-<div id="deleteAccountModal" class="profile-modal"><div class="profile-modal-content" style="border-color:#ff6b6b44;"><div style="font-size:50px;margin-bottom:10px;">⚠</div><h3 style="color:#ff6b6b;margin-bottom:15px;">Delete Account</h3><p style="color:#ccc;font-size:13px;margin-bottom:15px;line-height:1.5;">This action <b style="color:#ff6b6b">cannot be undone</b>. All your data, balance, and history will be permanently deleted.</p><p style="color:#888;font-size:12px;margin-bottom:10px;">Type <b style="color:#ff6b6b">DELETE</b> to confirm:</p><input type="text" id="deleteConfirmInput" placeholder='Type "DELETE" to confirm' style="background:#0a0a0a;color:#ff6b6b;border:1px solid #ff6b6b44;margin-bottom:15px;text-align:center;"><div style="display:flex;gap:10px;justify-content:center;"><button onclick="confirmDeleteAccount()" style="width:auto;padding:10px 25px;background:linear-gradient(45deg,#ff6b6b,#c92a2a);color:#fff;">🗑 Delete Forever</button><button onclick="closeDeleteAccountModal()" style="width:auto;padding:10px 25px;background:#333;color:#fff;">Cancel</button></div><p id="deleteAccountMsg" style="margin-top:10px;font-size:13px;"></p></div></div>
+<div id="deleteAccountModal" class="profile-modal"><div class="profile-modal-content" style="border-color:#ff6b6b44;"><div style="font-size:50px;margin-bottom:10px;">⚠</div><h3 style="color:#ff6b6b;margin-bottom:15px;">Delete Account</h3><p style="color:#ccc;font-size:13px;margin-bottom:15px;line-height:1.5;">This action <b style="color:#ff6b6b">cannot be undone</b>. All your data, balance, and history will be permanently deleted.</p><p style="color:#888;font-size:12px;margin-bottom:10px;">Type <b style="color:#ff6b6b">DELETE</b> to confirm:</p><input type="text" id="deleteConfirmInput" placeholder='Type "DELETE" to confirm' style="background:#0a0a0a;color:#ff6b6b;border:1px solid #ff6b6b44;margin-bottom:15px;text-align:center;"><div style="display:flex;gap:10px;justify-content:center;"><button id="confirmDeleteBtn" style="width:auto;padding:10px 25px;background:linear-gradient(45deg,#ff6b6b,#c92a2a);color:#fff;">🗑 Delete Forever</button><button id="cancelDeleteBtn" style="width:auto;padding:10px 25px;background:#333;color:#fff;">Cancel</button></div><p id="deleteAccountMsg" style="margin-top:10px;font-size:13px;"></p></div></div>
 
-<div id="searchingOverlay" class="searching-overlay"><div class="search-spinner"></div><h2 style="color:#00ffcc">Finding Opponent...</h2><p id="searchGradeText" style="color:#ccc;margin-top:10px"></p><button onclick="cancelMatchmaking()" style="margin-top:30px;width:auto;padding:12px 30px;background:#ff6b6b;color:#fff">Cancel</button></div>
+<div id="searchingOverlay" class="searching-overlay"><div class="search-spinner"></div><h2 style="color:#00ffcc">Finding Opponent...</h2><p id="searchGradeText" style="color:#ccc;margin-top:10px"></p><button id="cancelMatchBtn" style="margin-top:30px;width:auto;padding:12px 30px;background:#ff6b6b;color:#fff">Cancel</button></div>
 <a href="https://chat.whatsapp.com/CmvdLsifPKS51OyRnrITFz" target="_blank" id="waFloatBtn" class="wa-float" title="Join WhatsApp Group"><svg viewBox="0 0 24 24"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0.16 5.335.157 11.892c0 2.096.547,4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg></a>
 
-<div id="imageViewerModal"><div class="iv-top-bar"><span id="ivTitle" style="color:#fff;font-weight:bold;font-size:14px">📷 Photo</span><div style="display:flex;gap:8px"><button onclick="saveImageFromViewer()" style="width:auto;padding:8px 16px;background:#51cf66;color:#000;font-weight:bold;border-radius:8px;font-size:13px">💾 Save</button><button onclick="closeImageViewer()" style="width:auto;padding:8px 16px;background:#ff6b6b;color:#fff;border-radius:8px;font-size:13px">✕ Close</button></div></div><div class="iv-img-wrap"><img id="imageViewerImg" src="" alt="Photo"></div></div>
+<div id="imageViewerModal"><div class="iv-top-bar"><span id="ivTitle" style="color:#fff;font-weight:bold;font-size:14px">📷 Photo</span><div style="display:flex;gap:8px"><button id="saveImageBtn" style="width:auto;padding:8px 16px;background:#51cf66;color:#000;font-weight:bold;border-radius:8px;font-size:13px">💾 Save</button><button id="closeImageBtn" style="width:auto;padding:8px 16px;background:#ff6b6b;color:#fff;border-radius:8px;font-size:13px">✕ Close</button></div></div><div class="iv-img-wrap"><img id="imageViewerImg" src="" alt="Photo"></div></div>
 
 <div class="container">
 <div id="loginPage" class="page active">
@@ -220,7 +220,7 @@
     <div class="card" id="registerCard">
         <h3>👤 Create Account</h3>
         <input type="text" id="usernameInput" placeholder="Username (min 3 chars)" maxlength="20">
-        <select id="networkRegInput" onchange="checkAirtelRecommend()">
+        <select id="networkRegInput">
             <option value="">📱 Select Network</option>
             <option value="Airtel Money" style="color:#ff0000; font-weight:bold;">🟴 Airtel Money</option>
             <option value="TNM Mpamba">🟣 TNM Mpamba</option>
@@ -228,18 +228,18 @@
         <div class="airtel-banner"><span>🇲🇼</span><span>Malawi Mobile Money</span></div>
         <div class="phone-input-group" id="regPhoneGroup" style="margin-top:0; border-radius:0 0 10px 10px;">
             <span class="phone-prefix">🇲🇼 +265</span>
-            <input type="tel" id="phoneInput" placeholder="99, 98, 88, or 89XXXXXXX" maxlength="12" pattern="[0-9]*" inputmode="numeric" oninput="validateAirtelNumber(this)">
+            <input type="tel" id="phoneInput" placeholder="99, 98, 88, or 89XXXXXXX" maxlength="12" pattern="[0-9]*" inputmode="numeric">
         </div>
         <div id="airtelValidationMsg" style="font-size:12px; margin-top:5px; text-align:left; padding-left:5px;"><span style="color:#888;">💡 Tip: Airtel (99/98) or TNM (88/89)</span></div>
         <input type="email" id="emailInput" placeholder="📧 Email (Required for Password Reset)">
-        <div class="input-wrapper"><input type="password" id="passwordInput" placeholder="Password (min 6 chars)"><span class="toggle-password" onclick="togglePassword('passwordInput', this)">👁</span></div>
-        <div style="text-align:left;margin:10px 0;font-size:13px"><label><input type="checkbox" id="agreeCheck" style="width:auto;margin-right:8px">I am 18+ & agree to <a href="#" onclick="document.getElementById('termsModal').style.display='flex';return false" style="color:#00ffcc">Terms</a></label></div>
+        <div class="input-wrapper"><input type="password" id="passwordInput" placeholder="Password (min 6 chars)"><span id="toggleRegPass" class="toggle-password">👁</span></div>
+        <div style="text-align:left;margin:10px 0;font-size:13px"><label><input type="checkbox" id="agreeCheck" style="width:auto;margin-right:8px">I am 18+ & agree to <a href="#" id="termsLinkReg" style="color:#00ffcc">Terms</a></label></div>
 
         <button id="regVerifyBtn" type="button" class="verify-btn">Tap to verify you are human</button>
 
         <button id="loginBtn" type="button">Create Account & Play</button>
         <p id="loginMsg" style="margin-top:10px;"></p>
-        <div class="auth-links">Already have an account? <a onclick="showLogin()">Login here</a></div>
+        <div class="auth-links">Already have an account? <a id="showLoginLink" style="color:#00ffcc; text-decoration:underline; cursor:pointer;">Login here</a></div>
 
         <div class="paychangu-footer">
             <span>POWERED BY</span>
@@ -249,23 +249,23 @@
     <div class="card" id="loginCard" style="display:none;">
         <h3>👤 Login</h3>
         <input type="text" id="loginUsernameInput" placeholder="Username">
-        <div class="input-wrapper"><input type="password" id="loginPasswordInput" placeholder="Password"><span class="toggle-password" onclick="togglePassword('loginPasswordInput', this)">👁</span></div>
+        <div class="input-wrapper"><input type="password" id="loginPasswordInput" placeholder="Password"><span id="toggleLoginPass" class="toggle-password">👁</span></div>
 
         <button id="loginVerifyBtn" type="button" class="verify-btn">Tap to verify you are human</button>
 
         <button id="loginSubmitBtn" type="button">Login</button>
         <p id="loginErrorMsg" style="margin-top:10px;"></p>
-        <div class="auth-links" id="forgotLinkRow"><a onclick="showForgotSection()" style="color:#ff922b;">Forgot Password?</a></div>
+        <div class="auth-links" id="forgotLinkRow"><a id="forgotLink" style="color:#ff922b; text-decoration:underline; cursor:pointer;">Forgot Password?</a></div>
         <div class="forgot-section" id="forgotSection">
             <h4>🔑 Reset Password</h4>
             <p style="font-size:12px;color:#aaa;margin-bottom:10px;text-align:center;">Enter the email you registered with.</p>
             <input type="email" id="forgotEmailInput" placeholder="📧 Your registered email">
-            <button onclick="resetPassword()" id="resetBtn" style="background:linear-gradient(45deg,#ff922b,#ff6b6b);margin-top:8px;">Reset Password</button>
+            <button id="resetBtn" style="background:linear-gradient(45deg,#ff922b,#ff6b6b);margin-top:8px;">Reset Password</button>
             <p id="forgotMsg" style="margin-top:10px;font-size:13px;"></p>
-            <div class="new-password-box" id="newPasswordBox"><div style="font-size:12px;color:#51cf66;">✅ Your new password is:</div><div class="new-pass-value" id="newPassDisplay">---</div><div style="font-size:11px;color:#888;margin-top:5px;">Copy this and login now!</div><button onclick="copyNewPassword()" style="width:auto;padding:8px 20px;margin-top:8px;background:#51cf66;color:#000;font-size:13px;">📋 Copy Password</button></div>
-            <div class="forgot-back" onclick="hideForgotSection()">← Back to Login</div>
+            <div class="new-password-box" id="newPasswordBox"><div style="font-size:12px;color:#51cf66;">✅ Your new password is:</div><div class="new-pass-value" id="newPassDisplay">---</div><div style="font-size:11px;color:#888;margin-top:5px;">Copy this and login now!</div><button id="copyPassBtn" style="width:auto;padding:8px 20px;margin-top:8px;background:#51cf66;color:#000;font-size:13px;">📋 Copy Password</button></div>
+            <div id="forgotBackBtn" class="forgot-back" style="color:#888; font-size:12px; cursor:pointer; text-align:center; margin-top:10px;">← Back to Login</div>
         </div>
-        <div class="auth-links">Don't have an account? <a onclick="showRegister()">Create Account</a></div>
+        <div class="auth-links">Don't have an account? <a id="showRegLink" style="color:#00ffcc; text-decoration:underline; cursor:pointer;">Create Account</a></div>
 
         <div class="paychangu-footer">
             <span>POWERED BY</span>
@@ -307,12 +307,12 @@
 <div id="profilePage" class="page">
   <h1>👤 My Profile</h1>
   <div class="card" style="display:flex;flex-direction:column;align-items:center;gap:15px;">
-     <div class="profile-pic-container" onclick="viewProfilePhoto()"><img id="profilePicImg" src="https://via.placeholder.com/100/111/00ffcc?text=U" class="profile-pic"><div class="profile-pic-upload-overlay">👁 View</div></div>
+     <div class="profile-pic-container" id="viewProfilePhotoBtn"><img id="profilePicImg" src="https://via.placeholder.com/100/111/00ffcc?text=U" class="profile-pic"><div class="profile-pic-upload-overlay">👁 View</div></div>
      <div style="display:flex;gap:10px;flex-wrap:wrap;justify-content:center;">
-        <button onclick="document.getElementById('profilePicInput').click()" style="width:auto;padding:8px 16px;font-size:13px;background:linear-gradient(45deg,#00ffcc,#00ccff);">📷 Update Photo</button>
-        <button onclick="viewProfilePhoto()" style="width:auto;padding:8px 16px;font-size:13px;background:#1a1a2e;color:#00ffcc;border:1px solid #00ffcc33;">🔍 View Photo</button>
+        <button id="uploadPhotoBtn" style="width:auto;padding:8px 16px;font-size:13px;background:linear-gradient(45deg,#00ffcc,#00ccff);">📷 Update Photo</button>
+        <button id="viewPhotoBtn" style="width:auto;padding:8px 16px;font-size:13px;background:#1a1a2e;color:#00ffcc;border:1px solid #00ffcc33;">🔍 View Photo</button>
      </div>
-     <input type="file" id="profilePicInput" accept="image/*" onchange="handleProfilePicUpload(event)" style="display:none;">
+     <input type="file" id="profilePicInput" accept="image/*" style="display:none;">
      <h2 id="profileDisplayName" style="color:#00ffcc;margin:0;">Loading...</h2>
   </div>
   <div class="card" style="text-align:left;">
@@ -333,10 +333,10 @@
   </div>
   <div class="card" style="text-align:left;padding:10px 0;">
      <h3 style="text-align:center;margin-bottom:10px;padding:0 12px;">⚙ Settings</h3>
-     <div class="profile-action-item" onclick="showEditDisplayName()"><span style="color:#ccc;font-size:14px;">✏ Edit Display Name</span><span class="profile-action-arrow">›</span></div>
-     <div class="profile-action-item" onclick="showChangePassword()"><span style="color:#ccc;font-size:14px;">🔑 Change Password</span><span class="profile-action-arrow">›</span></div>
-     <div class="profile-action-item" style="cursor:default;"><span style="color:#ccc;font-size:14px;">🔊 Sound</span><label class="toggle-switch"><input type="checkbox" id="soundToggle" checked onchange="toggleSoundSetting()"><span class="toggle-slider"></span></label></div>
-     <div class="profile-action-item" onclick="showDeleteAccount()" style="border-bottom:none;"><span style="color:#ff6b6b;font-size:14px;">🗑 Delete Account</span><span class="profile-action-arrow" style="color:#ff6b6b;">›</span></div>
+     <div class="profile-action-item" id="editNameBtn"><span style="color:#ccc;font-size:14px;">✏ Edit Display Name</span><span class="profile-action-arrow">›</span></div>
+     <div class="profile-action-item" id="changePassBtn"><span style="color:#ccc;font-size:14px;">🔑 Change Password</span><span class="profile-action-arrow">›</span></div>
+     <div class="profile-action-item" style="cursor:default;"><span style="color:#ccc;font-size:14px;">🔊 Sound</span><label class="toggle-switch"><input type="checkbox" id="soundToggle" checked><span class="toggle-slider"></span></label></div>
+     <div class="profile-action-item" id="deleteAccountBtn" style="border-bottom:none;"><span style="color:#ff6b6b;font-size:14px;">🗑 Delete Account</span><span class="profile-action-arrow" style="color:#ff6b6b;">›</span></div>
   </div>
   <div class="card" style="text-align:left;">
      <h3 style="text-align:center;margin-bottom:15px;">🏟 Recent Matches</h3>
@@ -350,14 +350,14 @@
       <img src="https://z-cdn-media.chatglm.cn/files/35d66da9-00f7-4401-a850-27d563de9c61.png?auth_key=1883501909-a012dbd7a77e4d4caa3b033d5019e93f-0-ae3f5a776eed45a6c9fef0c7283c8f28" alt="PayChangu">
   </div>
 
-  <div style="text-align:right;margin-top:10px"><button onclick="logout()" style="width:auto;padding:10px 20px;background:#333;color:#ff6b6b;border:1px solid #ff6b6b44">🚪 Logout</button></div>
+  <div style="text-align:right;margin-top:10px"><button id="logoutBtn" style="width:auto;padding:10px 20px;background:#333;color:#ff6b6b;border:1px solid #ff6b6b44">🚪 Logout</button></div>
 </div>
 
 <div id="walletPage" class="page">
     <h1>💳 Wallet</h1>
     <div class="card"><h3>💰 Balance</h3><p id="balanceText" style="font-size:28px;color:#ffd700;margin:10px 0;font-weight:bold;">💵 MWK 0</p></div>
     <div class="card"><h3>📊 Game Stats</h3><div class="flex-row"><span>♟ Played</span><span id="statPlayed" style="color:#fff;font-weight:bold">0</span></div><div class="flex-row"><span>🏆 Won</span><span id="statWon" style="color:#51cf66;font-weight:bold">0</span></div><div class="flex-row"><span>😞 Lost</span><span id="statLost" style="color:#ff6b6b;font-weight:bold">0</span></div></div>
-    <div class="card referral-card"><h3>🤝 Invite & Earn</h3><p style="font-size:13px;color:#ccc;margin-bottom:10px">Earn <b style="color:#ffd700">MWK 10</b> per 5 friends!</p><div style="font-size:14px;color:#fff;margin-bottom:10px">Referred: <span id="refCount" style="color:#51cf66;font-weight:bold">0</span></div><div class="referral-link-box"><input type="text" id="refLinkInput" readonly><button class="copy-btn" onclick="copyRefLink()">Copy</button></div><button id="claimRefBtn" onclick="claimReferralBonus()" style="display:none;margin-top:10px;background:linear-gradient(45deg,#ffd700,#ffaa00)">🎉 Claim MWK 10</button></div>
+    <div class="card referral-card"><h3>🤝 Invite & Earn</h3><p style="font-size:13px;color:#ccc;margin-bottom:10px">Earn <b style="color:#ffd700">MWK 10</b> per 5 friends!</p><div style="font-size:14px;color:#fff;margin-bottom:10px">Referred: <span id="refCount" style="color:#51cf66;font-weight:bold">0</span></div><div class="referral-link-box"><input type="text" id="refLinkInput" readonly><button id="copyRefBtn" class="copy-btn">Copy</button></div><button id="claimRefBtn" style="display:none;margin-top:10px;background:linear-gradient(45deg,#ffd700,#ffaa00)">🎉 Claim MWK 10</button></div>
 
     <div class="card"><h3>📱 Withdrawal Method</h3><div id="paymentLockedBox" class="payment-locked-box" style="display:none"><div class="payment-locked-title">💳 Registered Phone (Locked)</div><div class="payment-locked-row"><div style="text-align:left"><div class="payment-locked-label" id="payNetworkLabel">Network</div><div class="payment-locked-phone" id="payPhoneLabel">---</div></div><div class="payment-locked-flag">🇲🇼</div></div><div class="payment-locked-divider"></div><div class="payment-locked-secure">🔒 Withdrawals sent here automatically</div></div><div id="paymentNoPhone" style="display:none;padding:15px;background:#1a1a0a;border-radius:10px;border:1px solid #ffaa00"><p style="color:#ffaa00">⚠ No payment phone on file</p></div></div>
 
@@ -382,7 +382,7 @@
             <option value="50000">MWK 50,000</option>
         </select>
 
-        <button onclick="submitOneKhusaDeposit()" style="background: linear-gradient(45deg,#00ffcc,#00ccff); margin-top:15px;">⚡ Pay Now</button>
+        <button id="depositBtn" style="background: linear-gradient(45deg,#00ffcc,#00ccff); margin-top:15px;">⚡ Pay Now</button>
         <p id="okDepositMsg" style="margin-top:10px; font-size:13px;"></p>
     </div>
 
@@ -401,7 +401,7 @@
             <option value="20000">20,000 MWK</option>
             <option value="50000">50,000 MWK</option>
         </select>
-        <button onclick="submitOneKhusaWithdraw()" style="background: linear-gradient(45deg,#ffd700,#ffaa00);">💸 Request Instant Withdrawal</button>
+        <button id="withdrawBtn" style="background: linear-gradient(45deg,#ffd700,#ffaa00);">💸 Request Instant Withdrawal</button>
         <p id="withdrawMsg" style="margin-top:10px; font-size:13px;"></p>
     </div>
 
@@ -413,7 +413,7 @@
     </div>
 
     <div class="card" style="border-color:#ff6b6b44"><h3>⚠ Rules</h3><div style="text-align:left;color:#ccc;line-height:1.8;font-size:12px">1. Process time up to <b style="color:#fff">3 hours</b> (usually instant).<br>2. Min withdrawal 50 MWK.<br>3. Withdrawals sent to your registered phone number.<br>4. Fake activity = Permanent ban.<br>5. <b style="color:#ff6b6b">VPN usage = Permanent ban.</b></div></div>
-    <div style="margin-top:20px;padding:20px;background:#111;border-radius:15px;border:1px solid #222"><div style="font-size:28px;margin-bottom:10px">🔞</div><p style="color:#ff6b6b;font-weight:bold;font-size:16px">18+ Only</p><div style="display:flex;justify-content:center;gap:15px;font-size:13px;margin:15px 0"><a href="#" onclick="document.getElementById('termsModal').style.display='flex';return false" style="color:#00cc4f">Terms</a><a href="#" onclick="document.getElementById('privacyModal').style.display='flex';return false" style="color:#00cc4f">Privacy</a></div><a href="https://chat.whatsapp.com/CmvdLsifPKS51OyRnrITFz" target="_blank" style="display:block;background:#25d366;color:#fff;padding:12px;border-radius:10px;text-decoration:none;font-weight:bold;font-size:14px">💬 Join WhatsApp Group</a></div>
+    <div style="margin-top:20px;padding:20px;background:#111;border-radius:15px;border:1px solid #222"><div style="font-size:28px;margin-bottom:10px">🔞</div><p style="color:#ff6b6b;font-weight:bold;font-size:16px">18+ Only</p><div style="display:flex;justify-content:center;gap:15px;font-size:13px;margin:15px 0"><a href="#" id="termsLinkWallet" style="color:#00cc4f">Terms</a><a href="#" id="privacyLinkWallet" style="color:#00cc4f">Privacy</a></div><a href="https://chat.whatsapp.com/CmvdLsifPKS51OyRnrITFz" target="_blank" id="waLinkBtn" style="display:block;background:#25d366;color:#fff;padding:12px;border-radius:10px;text-decoration:none;font-weight:bold;font-size:14px">💬 Join WhatsApp Group</a></div>
 
     <div class="paychangu-footer">
         <span>POWERED BY</span>
@@ -447,11 +447,11 @@
   <div class="card">
      <h3>Send Message to Admin</h3>
      <div class="chat-input-bar" style="margin-bottom:10px;">
-        <label class="chat-attach-btn" style="font-size:16px;">📎<input type="file" id="inboxFileInput" accept="image/*,.pdf,.doc,.docx,.txt,.zip" onchange="handleInboxFileUpload(event)"></label>
-        <input type="text" id="inboxMsgInput" placeholder="Type your message..." style="flex:1; margin:0;" onkeypress="if(event.key==='Enter'){event.preventDefault();sendInboxMsg();}">
-        <button onclick="sendInboxMsg()" style="width:auto; padding:12px 18px; flex-shrink:0; margin:0;">Send</button>
+        <label class="chat-attach-btn" style="font-size:16px;">📎<input type="file" id="inboxFileInput" accept="image/*,.pdf,.doc,.docx,.txt,.zip"></label>
+        <input type="text" id="inboxMsgInput" placeholder="Type your message..." style="flex:1; margin:0;">
+        <button id="sendInboxBtn" style="width:auto; padding:12px 18px; flex-shrink:0; margin:0;">Send</button>
      </div>
-     <div id="inboxFilePreview" style="display:none; font-size:12px; color:#00ffcc; margin-top:10px;">Attached: <span id="inboxFileName"></span> <button onclick="clearInboxFile()" style="width:auto; padding:2px 8px; background:transparent; color:#ff6b6b; border:none; margin:0; font-size:14px;">✕</button></div>
+     <div id="inboxFilePreview" style="display:none; font-size:12px; color:#00ffcc; margin-top:10px;">Attached: <span id="inboxFileName"></span> <button id="clearInboxFileBtn" style="width:auto; padding:2px 8px; background:transparent; color:#ff6b6b; border:none; margin:0; font-size:14px;">✕</button></div>
   </div>
 </div>
 
@@ -461,32 +461,32 @@
 
   <div class="card" style="text-align:left; padding:10px;">
     <div class="faq-item">
-      <div class="faq-question" onclick="toggleFaq(this)">How do I deposit money? <span class="faq-arrow">▼</span></div>
+      <div class="faq-question">How do I deposit money? <span class="faq-arrow">▼</span></div>
       <div class="faq-answer">Go to the Wallet page, select "Deposit via Mobile Money", enter the amount, and click Pay Now. You will be redirected to a secure PayChangu page to enter your phone number and PIN. Your balance updates instantly after payment!</div>
     </div>
 
     <div class="faq-item">
-      <div class="faq-question" onclick="toggleFaq(this)">How long do withdrawals take? <span class="faq-arrow">▼</span></div>
+      <div class="faq-question">How long do withdrawals take? <span class="faq-arrow">▼</span></div>
       <div class="faq-answer">Withdrawals are processed automatically to your registered phone number. Usually, it is instant, but it can take up to 3 hours during high traffic. Minimum withdrawal is MWK 50.</div>
     </div>
 
     <div class="faq-item">
-      <div class="faq-question" onclick="toggleFaq(this)">What happens if I disconnect during a game? <span class="faq-arrow">▼</span></div>
+      <div class="faq-question">What happens if I disconnect during a game? <span class="faq-arrow">▼</span></div>
       <div class="faq-answer">If you disconnect or leave a checkers match before it finishes, you automatically forfeit the game and lose your entry fee. Please ensure you have a stable internet connection before starting a PvP match.</div>
     </div>
 
     <div class="faq-item">
-      <div class="faq-question" onclick="toggleFaq(this)">How much is the platform fee? <span class="faq-arrow">▼</span></div>
+      <div class="faq-question">How much is the platform fee? <span class="faq-arrow">▼</span></div>
       <div class="faq-answer">Mada Game Earn takes a 20% platform fee on all winnings. For example, if the entry fee is MWK 50, the total pot is MWK 100. The winner receives MWK 80.</div>
     </div>
 
     <div class="faq-item">
-      <div class="faq-question" onclick="toggleFaq(this)">Why was my account banned? <span class="faq-arrow">▼</span></div>
+      <div class="faq-question">Why was my account banned? <span class="faq-arrow">▼</span></div>
       <div class="faq-answer">Accounts are permanently banned for violating fair play policies. This includes using a VPN, Proxy, or any datacenter IP to manipulate the game or location.</div>
     </div>
 
     <div class="faq-item">
-      <div class="faq-question" onclick="toggleFaq(this)">How does the referral system work? <span class="faq-arrow">▼</span></div>
+      <div class="faq-question">How does the referral system work? <span class="faq-arrow">▼</span></div>
       <div class="faq-answer">Go to your Wallet, copy your referral link, and share it with friends. For every 5 friends who join using your link, you can claim MWK 10 for free!</div>
     </div>
   </div>
@@ -495,7 +495,7 @@
 </div>
 
 <div id="gamePage" class="page">
-  <button onclick="exitGame()" style="width:auto;padding:10px 20px;background:#333;color:#ff6b6b;margin-bottom:10px">✕ Exit</button>
+  <button id="exitGameBtn" style="width:auto;padding:10px 20px;background:#333;color:#ff6b6b;margin-bottom:10px">✕ Exit</button>
   <div class="pvp-board-container">
     <div class="pvp-info-bar">
       <div class="pvp-player" style="color:#ff6b6b" id="p1Name">P1</div>
@@ -511,19 +511,19 @@
   </div>
 </div>
 
-<div id="chatPage" class="page"><h1>💬 Chat</h1><input type="text" id="chatSearchInput" class="chat-search-input" placeholder="🔍 Search users..." oninput="filterChatUsers()"><div id="chatUserList" class="card chat-user-list"></div></div>
+<div id="chatPage" class="page"><h1>💬 Chat</h1><input type="text" id="chatSearchInput" class="chat-search-input" placeholder="🔍 Search users..."><div id="chatUserList" class="card chat-user-list"></div></div>
 
 <div id="chatConvPage" class="page">
   <div class="chat-header-bar">
-    <button class="chat-back-btn" onclick="backToChatList()">←</button>
+    <button class="chat-back-btn" id="backToChatListBtn">←</button>
     <div class="chat-conv-avatar" id="chatConvAvatar">?</div>
     <div style="flex:1;text-align:left"><div id="chatConvName" style="font-weight:bold;font-size:15px;color:#fff"></div><div id="chatConvStatus" style="font-size:11px;color:#888"></div></div>
-    <button class="chat-clear-btn" onclick="clearChat()">🗑</button>
+    <button class="chat-clear-btn" id="clearChatBtn">🗑</button>
   </div>
   <div id="chatMessages" class="chat-messages-box"></div>
-  <div id="replyPreview" class="chat-reply-preview-box"><div style="display:flex;justify-content:space-between;align-items:center;gap:8px"><div style="flex:1;min-width:0"><div style="font-size:10px;color:#00ffcc;margin-bottom:2px" id="replyPreviewLabel">Replying to</div><div id="replyPreviewText" style="font-size:12px;color:#ccc;overflow:hidden;text-overflow:ellipsis;white-space:nowrap"></div></div><button onclick="cancelReply()" style="width:auto;padding:4px 10px;background:transparent;color:#ff6b6b;font-size:16px;margin:0;cursor:pointer;border:none">✕</button></div></div>
+  <div id="replyPreview" class="chat-reply-preview-box"><div style="display:flex;justify-content:space-between;align-items:center;gap:8px"><div style="flex:1;min-width:0"><div style="font-size:10px;color:#00ffcc;margin-bottom:2px" id="replyPreviewLabel">Replying to</div><div id="replyPreviewText" style="font-size:12px;color:#ccc;overflow:hidden;text-overflow:ellipsis;white-space:nowrap"></div></div><button id="cancelReplyBtn" style="width:auto;padding:4px 10px;background:transparent;color:#ff6b6b;font-size:16px;margin:0;cursor:pointer;border:none">✕</button></div></div>
   <div id="recordingStatus" style="display:none;padding:5px;background:#1a0000;border-radius:8px 8px 0 0"><span class="recording-indicator">🔴 Recording Voice Note... Tap 🎤 to stop</span></div>
-  <div class="chat-input-bar"><label class="chat-attach-btn">📎<input type="file" id="chatFileInput" accept="image/*" onchange="handleChatFileUpload(event)"></label><button class="chat-voice-btn" id="voiceNoteBtn" onclick="toggleVoiceNote()">🎤</button><input type="text" id="chatMsgInput" placeholder="Type a message..." style="flex:1" onkeypress="if(event.key==='Enter'){event.preventDefault();sendChatMsg();}"><button onclick="sendChatMsg()" style="width:auto;padding:12px 18px;flex-shrink:0;margin:0">Send</button></div>
+  <div class="chat-input-bar"><label class="chat-attach-btn">📎<input type="file" id="chatFileInput" accept="image/*"></label><button class="chat-voice-btn" id="voiceNoteBtn">🎤</button><input type="text" id="chatMsgInput" placeholder="Type a message..." style="flex:1"><button id="sendChatMsgBtn" style="width:auto;padding:12px 18px;flex-shrink:0;margin:0">Send</button></div>
 </div>
 </div>
 
@@ -1673,48 +1673,219 @@ window.handleInboxFileUpload=function(e){var f=e.target.files&&e.target.files[0]
 window.clearInboxFile=function(){inboxFileData=null;inboxFileName=null;document.getElementById('inboxFilePreview').style.display='none';document.getElementById('inboxFileInput').value=''};
 window.sendInboxMsg=function(){if(!db||!myUid)return;var i=document.getElementById('inboxMsgInput');var t=(i.value||'').trim();if(!t&&!inboxFileData)return;var md={from:'user',text:t,timestamp:Date.now()};if(inboxFileData){if(inboxFileData.includes('image/'))md.image=inboxFileData;else{md.fileData=inboxFileData;md.fileName=inboxFileName}}db.ref('admin_inbox/'+myUid+'/messages').push(md,function(e){if(!e){i.value='';window.clearInboxFile()}})};
 function setupInboxNotif(){if(!db||!myUid)return;db.ref('admin_inbox/'+myUid+'/messages').orderByChild('timestamp').limitToLast(1).on('value',function(s){s.forEach(function(c){if(c.val().from==='admin'){var ip=document.getElementById('inboxPage');if(ip&&!ip.classList.contains('active')){var d=document.getElementById('inboxNotifDot');if(d)d.style.display='inline-block'}}})})}
+
+// ===== GLOBAL EVENT LISTENERS (Fixes WebView compatibility) =====
 document.addEventListener('DOMContentLoaded',function(){
-    // Robust event listeners for Verify buttons
+    // Verify Buttons
     var gateBtn = document.getElementById('gateVerifyBtn');
-    if(gateBtn) {
-        gateBtn.addEventListener('click', function() {
-            var gate = document.getElementById('appGate');
-            if(gate) {
-                gate.style.transition = 'opacity 0.5s';
-                gate.style.opacity = '0';
-                setTimeout(function() { gate.style.display = 'none'; }, 500);
-            }
-        });
-    }
+    if(gateBtn) gateBtn.addEventListener('click', function() {
+        var gate = document.getElementById('appGate');
+        if(gate) {
+            gate.style.transition = 'opacity 0.5s';
+            gate.style.opacity = '0';
+            setTimeout(function() { gate.style.display = 'none'; }, 500);
+        }
+    });
 
     var regBtn = document.getElementById('regVerifyBtn');
-    if(regBtn) {
-        regBtn.addEventListener('click', function() {
-            isHumanReg = true;
-            regBtn.innerText = '✓ Verified';
-            regBtn.classList.add('verified');
-            regBtn.disabled = true;
-        });
-    }
+    if(regBtn) regBtn.addEventListener('click', function() {
+        isHumanReg = true;
+        regBtn.innerText = '✓ Verified';
+        regBtn.classList.add('verified');
+        regBtn.disabled = true;
+    });
 
-    var loginBtn = document.getElementById('loginVerifyBtn');
-    if(loginBtn) {
-        loginBtn.addEventListener('click', function() {
-            isHumanLogin = true;
-            loginBtn.innerText = '✓ Verified';
-            loginBtn.classList.add('verified');
-            loginBtn.disabled = true;
-        });
-    }
+    var loginBtnVerify = document.getElementById('loginVerifyBtn');
+    if(loginBtnVerify) loginBtnVerify.addEventListener('click', function() {
+        isHumanLogin = true;
+        loginBtnVerify.innerText = '✓ Verified';
+        loginBtnVerify.classList.add('verified');
+        loginBtnVerify.disabled = true;
+    });
 
+    // Password Eyes
+    var eyeReg = document.getElementById('toggleRegPass');
+    if(eyeReg) eyeReg.addEventListener('click', function(){ togglePassword('passwordInput', this); });
+    var eyeLogin = document.getElementById('toggleLoginPass');
+    if(eyeLogin) eyeLogin.addEventListener('click', function(){ togglePassword('loginPasswordInput', this); });
+    var eyeOld = document.getElementById('toggleOldPass');
+    if(eyeOld) eyeOld.addEventListener('click', function(){ togglePassword('oldPasswordInput', this); });
+    var eyeNew = document.getElementById('toggleNewPass');
+    if(eyeNew) eyeNew.addEventListener('click', function(){ togglePassword('newPasswordInput', this); });
+    var eyeConfirm = document.getElementById('toggleConfirmPass');
+    if(eyeConfirm) eyeConfirm.addEventListener('click', function(){ togglePassword('confirmPasswordInput', this); });
+
+    // Phone Validation
+    var phoneInp = document.getElementById('phoneInput');
+    if(phoneInp) phoneInp.addEventListener('input', function(){ validateAirtelNumber(this); });
+
+    // Network Select
+    var netInp = document.getElementById('networkRegInput');
+    if(netInp) netInp.addEventListener('change', function(){ checkAirtelRecommend(); });
+
+    // Auth Links
+    var linkLogin = document.getElementById('showLoginLink');
+    if(linkLogin) linkLogin.addEventListener('click', function(){ showLogin(); });
+    var linkReg = document.getElementById('showRegLink');
+    if(linkReg) linkReg.addEventListener('click', function(){ showRegister(); });
+    var linkForgot = document.getElementById('forgotLink');
+    if(linkForgot) linkForgot.addEventListener('click', function(){ showForgotSection(); });
+    var linkForgotBack = document.getElementById('forgotBackBtn');
+    if(linkForgotBack) linkForgotBack.addEventListener('click', function(){ hideForgotSection(); });
+
+    // Login/Register Buttons
+    var btnLogin = document.getElementById("loginSubmitBtn");
+    if(btnLogin) btnLogin.addEventListener('click', function(e){ e.preventDefault(); login(); });
+    var btnReg = document.getElementById("loginBtn");
+    if(btnReg) btnReg.addEventListener('click', function(e){ e.preventDefault(); register(); });
+
+    // Reset/Copy Password
+    var btnReset = document.getElementById('resetBtn');
+    if(btnReset) btnReset.addEventListener('click', function(){ resetPassword(); });
+    var btnCopyPass = document.getElementById('copyPassBtn');
+    if(btnCopyPass) btnCopyPass.addEventListener('click', function(){ copyNewPassword(); });
+
+    // Terms/Privacy Links
+    var linkTermsReg = document.getElementById('termsLinkReg');
+    if(linkTermsReg) linkTermsReg.addEventListener('click', function(e){ e.preventDefault(); document.getElementById('termsModal').style.display='flex'; });
+    var linkTermsWallet = document.getElementById('termsLinkWallet');
+    if(linkTermsWallet) linkTermsWallet.addEventListener('click', function(e){ e.preventDefault(); document.getElementById('termsModal').style.display='flex'; });
+    var linkPrivacyWallet = document.getElementById('privacyLinkWallet');
+    if(linkPrivacyWallet) linkPrivacyWallet.addEventListener('click', function(e){ e.preventDefault(); document.getElementById('privacyModal').style.display='flex'; });
+
+    var closeTermsBtn = document.getElementById('closeTermsBtn');
+    if(closeTermsBtn) closeTermsBtn.addEventListener('click', function(){ document.getElementById('termsModal').style.display='none'; });
+    var closePrivacyBtn = document.getElementById('closePrivacyBtn');
+    if(closePrivacyBtn) closePrivacyBtn.addEventListener('click', function(){ document.getElementById('privacyModal').style.display='none'; });
+
+    // Profile Buttons
+    var btnLogout = document.getElementById('logoutBtn');
+    if(btnLogout) btnLogout.addEventListener('click', function(){ logout(); });
+    var btnViewPhoto = document.getElementById('viewProfilePhotoBtn');
+    if(btnViewPhoto) btnViewPhoto.addEventListener('click', function(){ viewProfilePhoto(); });
+    var btnViewPhoto2 = document.getElementById('viewPhotoBtn');
+    if(btnViewPhoto2) btnViewPhoto2.addEventListener('click', function(){ viewProfilePhoto(); });
+    var btnUploadPhoto = document.getElementById('uploadPhotoBtn');
+    if(btnUploadPhoto) btnUploadPhoto.addEventListener('click', function(){ document.getElementById('profilePicInput').click(); });
+    var profilePicInput = document.getElementById('profilePicInput');
+    if(profilePicInput) profilePicInput.addEventListener('change', function(e){ handleProfilePicUpload(e); });
+
+    var btnEditName = document.getElementById('editNameBtn');
+    if(btnEditName) btnEditName.addEventListener('click', function(){ showEditDisplayName(); });
+    var btnSaveName = document.getElementById('saveNameBtn');
+    if(btnSaveName) btnSaveName.addEventListener('click', function(){ saveDisplayName(); });
+    var btnCancelName = document.getElementById('cancelNameBtn');
+    if(btnCancelName) btnCancelName.addEventListener('click', function(){ closeEditNameModal(); });
+
+    var btnChangePass = document.getElementById('changePassBtn');
+    if(btnChangePass) btnChangePass.addEventListener('click', function(){ showChangePassword(); });
+    var btnDoChangePass = document.getElementById('changePassBtn');
+    if(btnDoChangePass) btnDoChangePass.addEventListener('click', function(){ changePassword(); });
+    var btnCancelPass = document.getElementById('cancelPassBtn');
+    if(btnCancelPass) btnCancelPass.addEventListener('click', function(){ closeChangePasswordModal(); });
+
+    var btnDeleteAcc = document.getElementById('deleteAccountBtn');
+    if(btnDeleteAcc) btnDeleteAcc.addEventListener('click', function(){ showDeleteAccount(); });
+    var btnConfirmDelete = document.getElementById('confirmDeleteBtn');
+    if(btnConfirmDelete) btnConfirmDelete.addEventListener('click', function(){ confirmDeleteAccount(); });
+    var btnCancelDelete = document.getElementById('cancelDeleteBtn');
+    if(btnCancelDelete) btnCancelDelete.addEventListener('click', function(){ closeDeleteAccountModal(); });
+
+    var soundToggle = document.getElementById('soundToggle');
+    if(soundToggle) soundToggle.addEventListener('change', function(){ toggleSoundSetting(); });
+
+    // Wallet Buttons
+    var btnDeposit = document.getElementById('depositBtn');
+    if(btnDeposit) btnDeposit.addEventListener('click', function(){ submitOneKhusaDeposit(); });
+    var btnWithdraw = document.getElementById('withdrawBtn');
+    if(btnWithdraw) btnWithdraw.addEventListener('click', function(){ submitOneKhusaWithdraw(); });
+    var btnCopyRef = document.getElementById('copyRefBtn');
+    if(btnCopyRef) btnCopyRef.addEventListener('click', function(){ copyRefLink(); });
+    var btnClaimRef = document.getElementById('claimRefBtn');
+    if(btnClaimRef) btnClaimRef.addEventListener('click', function(){ claimReferralBonus(); });
+
+    // Game Buttons
+    var btnExitGame = document.getElementById('exitGameBtn');
+    if(btnExitGame) btnExitGame.addEventListener('click', function(){ exitGame(); });
+    var btnCancelMatch = document.getElementById('cancelMatchBtn');
+    if(btnCancelMatch) btnCancelMatch.addEventListener('click', function(){ cancelMatchmaking(); });
+
+    // Inbox Buttons
+    var btnSendInbox = document.getElementById('sendInboxBtn');
+    if(btnSendInbox) btnSendInbox.addEventListener('click', function(){ sendInboxMsg(); });
+    var inboxFileInput = document.getElementById('inboxFileInput');
+    if(inboxFileInput) inboxFileInput.addEventListener('change', function(e){ handleInboxFileUpload(e); });
+    var inboxMsgInput = document.getElementById('inboxMsgInput');
+    if(inboxMsgInput) inboxMsgInput.addEventListener('keypress', function(e){ if(e.key==='Enter'){ e.preventDefault(); sendInboxMsg(); } });
+    var btnClearInboxFile = document.getElementById('clearInboxFileBtn');
+    if(btnClearInboxFile) btnClearInboxFile.addEventListener('click', function(){ clearInboxFile(); });
+
+    // Image Viewer Buttons
+    var btnSaveImage = document.getElementById('saveImageBtn');
+    if(btnSaveImage) btnSaveImage.addEventListener('click', function(){ saveImageFromViewer(); });
+    var btnCloseImage = document.getElementById('closeImageBtn');
+    if(btnCloseImage) btnCloseImage.addEventListener('click', function(){ closeImageViewer(); });
+
+    // Chat Buttons
+    var btnBackToChatList = document.getElementById('backToChatListBtn');
+    if(btnBackToChatList) btnBackToChatList.addEventListener('click', function(){ backToChatList(); });
+    var btnClearChat = document.getElementById('clearChatBtn');
+    if(btnClearChat) btnClearChat.addEventListener('click', function(){ clearChat(); });
+    var btnCancelReply = document.getElementById('cancelReplyBtn');
+    if(btnCancelReply) btnCancelReply.addEventListener('click', function(){ cancelReply(); });
+    var btnVoiceNote = document.getElementById('voiceNoteBtn');
+    if(btnVoiceNote) btnVoiceNote.addEventListener('click', function(){ toggleVoiceNote(); });
+    var chatFileInput = document.getElementById('chatFileInput');
+    if(chatFileInput) chatFileInput.addEventListener('change', function(e){ handleChatFileUpload(e); });
+    var chatMsgInput = document.getElementById('chatMsgInput');
+    if(chatMsgInput) chatMsgInput.addEventListener('keypress', function(e){ if(e.key==='Enter'){ e.preventDefault(); sendChatMsg(); } });
+    var btnSendChatMsg = document.getElementById('sendChatMsgBtn');
+    if(btnSendChatMsg) btnSendChatMsg.addEventListener('click', function(){ sendChatMsg(); });
+    var chatSearchInput = document.getElementById('chatSearchInput');
+    if(chatSearchInput) chatSearchInput.addEventListener('input', function(){ filterChatUsers(); });
+
+    // Nav Buttons
+    var navProfile = document.getElementById('navProfile');
+    if(navProfile) navProfile.addEventListener('click', function(){ showPage('profile'); });
+    var navWallet = document.getElementById('navWallet');
+    if(navWallet) navWallet.addEventListener('click', function(){ showPage('wallet'); });
+    var navChat = document.getElementById('navChat');
+    if(navChat) navChat.addEventListener('click', function(e){ e.preventDefault(); showChatPage(); });
+    var navPlay = document.getElementById('navPlay');
+    if(navPlay) navPlay.addEventListener('click', function(){ showPage('play'); });
+    var navInbox = document.getElementById('navInbox');
+    if(navInbox) navInbox.addEventListener('click', function(){ showPage('inbox'); });
+    var navFaq = document.getElementById('navFaq');
+    if(navFaq) navFaq.addEventListener('click', function(){ showPage('faq'); });
+
+    // FAQ Click Listeners
+    var faqQuestions = document.querySelectorAll('.faq-question');
+    faqQuestions.forEach(function(q) {
+        q.addEventListener('click', function() { toggleFaq(this); });
+    });
+
+    // Splash Screen
     setTimeout(function(){var sp=document.getElementById('splashScreen');if(sp){sp.classList.add('splash-hide');setTimeout(function(){sp.style.display='none'},700)}},2500);
-    var lsb=document.getElementById("loginSubmitBtn");if(lsb)lsb.addEventListener('click',function(e){e.preventDefault();login()});
-    var lui=document.getElementById("loginUsernameInput");if(lui)lui.addEventListener('keypress',function(e){if(e.key==='Enter'){e.preventDefault();login()}});
-    var lb=document.getElementById("loginBtn");if(lb)lb.addEventListener('click',function(e){e.preventDefault();register()});
-    var ui=document.getElementById("usernameInput");if(ui){ui.addEventListener('keypress',function(e){if(e.key==='Enter'){e.preventDefault();register()}});setTimeout(function(){ui.focus();},300)}
-    var pi=document.getElementById("phoneInput");if(pi)pi.addEventListener('input',function(e){this.value=this.value.replace(/[^0-9]/g,'')});
-    var el;el=document.getElementById("navProfile");if(el)el.onclick=function(){showPage('profile')};el=document.getElementById("navWallet");if(el)el.onclick=function(){showPage('wallet')};el=document.getElementById("navPlay");if(el)el.onclick=function(){showPage('play')};el=document.getElementById("navInbox");if(el)el.onclick=function(){showPage('inbox')}; el=document.getElementById("navFaq");if(el)el.onclick=function(){showPage('faq')};
-    try{var u=localStorage.getItem("user");if(u){myUid=u;mySecret=localStorage.getItem('secret');checkBanStatus();document.getElementById("loginPage").classList.remove("active");document.getElementById("mainNav").style.display="flex";document.getElementById('waFloatBtn').style.display='flex';showPage('profile');if(db)lockPaymentMethod(localStorage.getItem("userPhone")||'',localStorage.getItem("network")||'');initGameListeners();setupInboxNotif()}}catch(e){}
+
+    // Auto-Login / Remember Me
+    try {
+        var u = localStorage.getItem("user");
+        if (u) {
+            myUid = u;
+            mySecret = localStorage.getItem('secret') || null;
+            checkBanStatus();
+            document.getElementById("loginPage").classList.remove("active");
+            document.getElementById("mainNav").style.display = "flex";
+            var waBtn = document.getElementById('waFloatBtn');
+            if (waBtn) waBtn.style.display = 'flex';
+            showPage('profile');
+            if (db) {
+                lockPaymentMethod(localStorage.getItem("userPhone") || '', localStorage.getItem("network") || '');
+                initGameListeners();
+                setupInboxNotif();
+            }
+        }
+    } catch(e) { console.error("Auto-login failed:", e); }
 });
 </script>
 
@@ -1825,4 +1996,4 @@ document.addEventListener('DOMContentLoaded',function(){
 </script>
 
 </body>
-    </html>
+                                                                                                                                                  </html> 
