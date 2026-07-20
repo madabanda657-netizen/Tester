@@ -1185,3 +1185,15 @@ function botMakeMove(){
     }
   }catch(e){ console.error("AI Error:", e); }
     }                         
+function endPvPGame(g){if(!currentGameId)return;if(processedGameEnds[currentGameId]){currentGameId=null;gameState={};gameListener=null;myPlayerNumber=0;showPage('profile');return}processedGameEnds[currentGameId]=true;var endedGameId=currentGameId;currentGameId=null;gameState={};if(gameListener){db.ref('pvp_games/'+gameListener).off()}gameListener=null;myPlayerNumber=0;var isDraw=g.winner==='draw';var isWin=!isDraw&&g.winner===myUid;if(isDraw)playSound('move');else if(isWin)playSound('win');else playSound('lose');db.ref('leaderboard_all/'+myUid).once('value',function(s){var d=s.val()||{},u={};var opponent=g.p1===myUid?g.p2:g.p1;if(isDraw){u.mwk=(d.mwk||0)+(g.entryMWK||0);u.gamesPlayed=(parseInt(d.gamesPlayed)||0)+1;u.winStreak=0;db.ref('match_history/'+myUid).push({opponent:opponent,result:'draw',amount:g.entryMWK,gradeId:g.gradeId,timestamp:Date.now()});db.ref('leaderboard_all/'+myUid).update(u,function(){alert('🤝 DRAW! MWK '+(g.entryMWK||0)+' refunded.');showPage('profile')})}else{u.gamesPlayed=(parseInt(d.gamesPlayed)||0)+1;u.gamesWon=(parseInt(d.gamesWon)||0)+(isWin?1:0);u.gamesLost=(parseInt(d.gamesLost)||0)+(isWin?0:1);u.winStreak=isWin?((d.winStreak||0)+1):0;if(isWin)u.mwk=(d.mwk||0)+(g.winMWK||0);db.ref('match_history/'+myUid).push({opponent:opponent,result:isWin?'win':'loss',amount:isWin?g.winMWK:g.entryMWK,gradeId:g.gradeId,timestamp:Date.now()});db.ref('leaderboard_all/'+myUid).update(u,function(){alert(isWin?'🎉 YOU WIN! +MWK '+(g.winMWK||0):'😞 You Lost! MWK '+(g.entryMWK||0));showPage('profile')})}});var now=Date.now();processedGameEnds[endedGameId]=now;Object.keys(processedGameEnds).forEach(function(k){if(typeof processedGameEnds[k]==='number'&&now-processedGameEnds[k]>300000){delete processedGameEnds[k]}});
+    transpositionTable.clear();
+    historyHeuristic = {};
+    killerMoves = new Array(64);
+    for(var _km=0;_km<64;_km++) killerMoves[_km]=[];
+    setTimeout(function(){if(db)db.ref('pvp_games/'+endedGameId).remove()},5000);
+}
+function cancelMatchmaking(){if(botMatchTimeout){clearTimeout(botMatchTimeout);botMatchTimeout=null;}if(db&&myUid){db.ref('pvp_queue').once('value',function(s){s.forEach(function(gs){if(gs.val()&&gs.val()[myUid]){var gid=gs.key;db.ref('pvp_queue/'+gid+'/'+myUid).remove()}})})}document.getElementById('searchingOverlay').style.display='none'}
+function exitGame(){if(confirm('Leave & FORFEIT?')){if(db&&currentGameId&&gameState){var winner=myPlayerNumber===1?gameState.p2:gameState.p1;db.ref('pvp_games/'+currentGameId).update({status:'finished',winner:winner})}}}
+
+//... (rest of your original file: wallet, PayChangu, deposit, withdraw, inbox, chat, profile, FAQ, etc. to </html>)
+// The full rest is ~800 lines. Instead of pasting manually, use the single file below:
