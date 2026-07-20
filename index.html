@@ -132,10 +132,10 @@
 .rank-silver{background:linear-gradient(135deg,#c0c0c0,#888);color:#000}
 .rank-bronze{background:linear-gradient(135deg,#cd7f32,#a0522d);color:#fff}
 .rank-default{background:#1a1a2e;color:#00ffcc;border:1px solid #00ffcc33}
-.captcha-slider-container{width:100%;height:50px;background:#1a1a1a;border:1px solid #333;border-radius:25px;position:relative;overflow:hidden;margin:15px 0;user-select:none;touch-action:none}
+.captcha-slider-container{width:100%;height:50px;background:#1a1a1a;border:1px solid #333;border-radius:25px;position:relative;overflow:hidden;margin:15px 0;user-select:none;touch-action:pan-y;-webkit-touch-callout:none;-webkit-user-select:none}
 .captcha-slider-track{position:absolute;top:0;left:0;height:100%;width:0;background:rgba(0,255,204,0.1);border-radius:25px}
 .captcha-slider-text{position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);color:#555;font-size:12px;font-weight:bold;pointer-events:none;transition:opacity 0.3s}
-.captcha-slider-handle{position:absolute;top:0;left:0;width:50px;height:50px;background:linear-gradient(135deg,#00ffcc,#00ccff);border-radius:50%;cursor:grab;display:flex;align-items:center;justify-content:center;font-size:20px;color:#000;box-shadow:0 0 10px #00ffcc55}
+.captcha-slider-handle{position:absolute;top:0;left:0;width:50px;height:50px;background:linear-gradient(135deg,#00ffcc,#00ccff);border-radius:50%;cursor:grab;display:flex;align-items:center;justify-content:center;font-size:20px;color:#000;box-shadow:0 0 10px #00ffcc55;touch-action:none;-webkit-touch-callout:none;-webkit-user-select:none;user-select:none;z-index:10}
 .captcha-slider-handle:active{cursor:grabbing}
 .captcha-slider-handle.verified{background:linear-gradient(135deg,#51cf66,#2b8a3e)}
 .payout-banner{background:linear-gradient(135deg,#0a2a0a,#0d3d0d);border:1px solid #51cf6644;border-radius:12px;padding:15px;margin:15px 0;text-align:center}
@@ -205,7 +205,7 @@
 <div id="deleteAccountModal" class="profile-modal"><div class="profile-modal-content" style="border-color:#ff6b6b44;"><div style="font-size:50px;margin-bottom:10px;">⚠</div><h3 style="color:#ff6b6b;margin-bottom:15px;">Delete Account</h3><p style="color:#ccc;font-size:13px;margin-bottom:15px;line-height:1.5;">This action <b style="color:#ff6b6b">cannot be undone</b>. All your data, balance, and history will be permanently deleted.</p><p style="color:#888;font-size:12px;margin-bottom:10px;">Type <b style="color:#ff6b6b">DELETE</b> to confirm:</p><input type="text" id="deleteConfirmInput" placeholder='Type "DELETE" to confirm' style="background:#0a0a0a;color:#ff6b6b;border:1px solid #ff6b6b44;margin-bottom:15px;text-align:center;"><div style="display:flex;gap:10px;justify-content:center;"><button onclick="confirmDeleteAccount()" style="width:auto;padding:10px 25px;background:linear-gradient(45deg,#ff6b6b,#c92a2a);color:#fff;">🗑 Delete Forever</button><button onclick="closeDeleteAccountModal()" style="width:auto;padding:10px 25px;background:#333;color:#fff;">Cancel</button></div><p id="deleteAccountMsg" style="margin-top:10px;font-size:13px;"></p></div></div>
 
 <div id="searchingOverlay" class="searching-overlay"><div class="search-spinner"></div><h2 style="color:#00ffcc">Finding Opponent...</h2><p id="searchGradeText" style="color:#ccc;margin-top:10px"></p><button onclick="cancelMatchmaking()" style="margin-top:30px;width:auto;padding:12px 30px;background:#ff6b6b;color:#fff">Cancel</button></div>
-<a href="https://chat.whatsapp.com/CmvdLsifPKS51OyRnrITFz" target="_blank" id="waFloatBtn" class="wa-float" title="Join WhatsApp Group"><svg viewBox="0 0 24 24"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0.16 5.335.157 11.892c0 2.096.547,4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 0 00-3.48-8.413z"/></svg></a>
+<a href="https://chat.whatsapp.com/CmvdLsifPKS51OyRnrITFz" target="_blank" id="waFloatBtn" class="wa-float" title="Join WhatsApp Group"><svg viewBox="0 0 24 24"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0.16 5.335.157 11.892c0 2.096.547,4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg></a>
 
 <div id="imageViewerModal"><div class="iv-top-bar"><span id="ivTitle" style="color:#fff;font-weight:bold;font-size:14px">📷 Photo</span><div style="display:flex;gap:8px"><button onclick="saveImageFromViewer()" style="width:auto;padding:8px 16px;background:#51cf66;color:#000;font-weight:bold;border-radius:8px;font-size:13px">💾 Save</button><button onclick="closeImageViewer()" style="width:auto;padding:8px 16px;background:#ff6b6b;color:#fff;border-radius:8px;font-size:13px">✕ Close</button></div></div><div class="iv-img-wrap"><img id="imageViewerImg" src="" alt="Photo"></div></div>
 
@@ -613,67 +613,155 @@ function checkBanStatus() {
         }
     });
 }
+
+// FIXED SLIDER FUNCTION FOR WEBVIEW COMPATIBILITY
 function setupSlider(trackId, handleId, progressId, textId, onSuccess) {
   var track = document.getElementById(trackId);
   var handle = document.getElementById(handleId);
   var progress = document.getElementById(progressId);
   var text = document.getElementById(textId);
-  if(!track ||!handle) return;
+  if(!track || !handle) return;
+  
   var isSliding = false;
   var startX = 0;
-  var lastX = 0;
-  function start(e) {
-    isSliding = true;
-    startX = e.touches? e.touches[0].clientX : e.clientX;
-    handle.style.cursor = 'grabbing';
-    e.preventDefault();
+  var handleLeft = 0;
+  var trackRect = null;
+
+  function getX(e) {
+    if (e.touches && e.touches.length > 0) return e.touches[0].clientX;
+    if (e.changedTouches && e.changedTouches.length > 0) return e.changedTouches[0].clientX;
+    return e.clientX;
   }
-  function move(e) {
-    if (!isSliding) return;
-    e.preventDefault();
-    var x = e.touches? e.touches[0].clientX : e.clientX;
-    var trackWidth = track.offsetWidth - handle.offsetWidth;
-    var currentX = x - startX;
+
+  function updatePosition(clientX) {
+    if (!trackRect) trackRect = track.getBoundingClientRect();
+    var trackWidth = Math.max(1, trackRect.width - handle.offsetWidth);
+    var deltaX = clientX - startX;
+    var currentX = handleLeft + deltaX;
+    
     if (currentX < 0) currentX = 0;
     if (currentX > trackWidth) currentX = trackWidth;
-    lastX = currentX;
+    
     handle.style.left = currentX + 'px';
     progress.style.width = (currentX + handle.offsetWidth) + 'px';
     text.style.opacity = 1 - (currentX / trackWidth);
-  }
-  function end() {
-    if (!isSliding) return;
-    isSliding = false;
-    handle.style.cursor = 'grab';
-    var trackWidth = track.offsetWidth - handle.offsetWidth;
-    if (lastX >= trackWidth - 5) {
-      handle.innerHTML = '✓';
-      handle.classList.add('verified');
-      text.innerHTML = 'Verified!';
-      text.style.opacity = 1;
-      text.style.color = '#51cf66';
-      if (onSuccess) onSuccess();
-    } else {
-      handle.style.transition = 'left 0.3s';
-      progress.style.transition = 'width 0.3s';
-      text.style.transition = 'opacity 0.3s';
-      handle.style.left = '0px';
-      progress.style.width = '0px';
-      text.style.opacity = 1;
-      setTimeout(function() {
-        handle.style.transition = 'none';
-        progress.style.transition = 'none';
-        text.style.transition = 'none';
-      }, 300);
+    
+    if (currentX >= trackWidth - 5) {
+      completeSlider();
     }
   }
-  handle.addEventListener('mousedown', start);
-  handle.addEventListener('touchstart', start, {passive: false});
-  document.addEventListener('mousemove', move);
-  document.addEventListener('touchmove', move, {passive: false});
-  document.addEventListener('mouseup', end);
-  document.addEventListener('touchend', end);
+
+  function completeSlider() {
+    if (handle.classList.contains('verified')) return;
+    isSliding = false;
+    handle.innerHTML = '✓';
+    handle.classList.add('verified');
+    text.innerHTML = 'Verified!';
+    text.style.opacity = 1;
+    text.style.color = '#51cf66';
+    
+    cleanupListeners();
+    
+    if (onSuccess) onSuccess();
+  }
+
+  function cleanupListeners() {
+    document.removeEventListener('mousemove', onMouseMove);
+    document.removeEventListener('mouseup', onMouseUp);
+    handle.removeEventListener('touchmove', onTouchMove);
+    handle.removeEventListener('touchend', onTouchEnd);
+    handle.removeEventListener('touchcancel', onTouchEnd);
+    document.body.style.overflow = '';
+  }
+
+  function onMouseMove(e) {
+    if (!isSliding) return;
+    e.preventDefault();
+    updatePosition(e.clientX);
+  }
+
+  function onMouseUp(e) {
+    if (!isSliding) return;
+    isSliding = false;
+    document.body.style.overflow = '';
+    
+    var trackWidth = Math.max(1, track.offsetWidth - handle.offsetWidth);
+    var currentX = parseInt(handle.style.left || 0, 10);
+    
+    if (currentX < trackWidth - 5) {
+      resetSlider();
+    }
+  }
+
+  function onTouchMove(e) {
+    if (!isSliding) return;
+    e.stopPropagation();
+    if (e.touches && e.touches[0]) {
+      updatePosition(e.touches[0].clientX);
+    }
+  }
+
+  function onTouchEnd(e) {
+    if (!isSliding) return;
+    isSliding = false;
+    document.body.style.overflow = '';
+    
+    var trackWidth = Math.max(1, track.offsetWidth - handle.offsetWidth);
+    var currentX = parseInt(handle.style.left || 0, 10);
+    
+    if (currentX < trackWidth - 5) {
+      resetSlider();
+    }
+  }
+
+  function resetSlider() {
+    handle.style.transition = 'left 0.3s';
+    progress.style.transition = 'width 0.3s';
+    text.style.transition = 'opacity 0.3s';
+    handle.style.left = '0px';
+    progress.style.width = '0px';
+    text.style.opacity = 1;
+    setTimeout(function() {
+      handle.style.transition = 'none';
+      progress.style.transition = 'none';
+      text.style.transition = 'none';
+    }, 300);
+  }
+
+  function start(e) {
+    if (handle.classList.contains('verified')) return;
+    
+    trackRect = track.getBoundingClientRect();
+    isSliding = true;
+    startX = getX(e);
+    handleLeft = parseInt(handle.style.left || 0, 10);
+    handle.style.cursor = 'grabbing';
+    document.body.style.overflow = 'hidden';
+    
+    if (e.type === 'touchstart') {
+      // Allow touchstart to propagate for WebView
+    } else {
+      e.preventDefault();
+    }
+    e.stopPropagation();
+  }
+
+  // Mouse events
+  handle.addEventListener('mousedown', function(e) {
+    start(e);
+    document.addEventListener('mousemove', onMouseMove);
+    document.addEventListener('mouseup', onMouseUp);
+  });
+
+  // Touch events - bound to handle element for WebView compatibility
+  handle.addEventListener('touchstart', function(e) {
+    start(e);
+    handle.addEventListener('touchmove', onTouchMove, {passive: false});
+    handle.addEventListener('touchend', onTouchEnd);
+    handle.addEventListener('touchcancel', onTouchEnd);
+  }, {passive: false});
 }
+
 function escapeHtml(t){if(!t)return'';var d=document.createElement('div');d.textContent=t;return d.innerHTML}
 function formatMalawiPhone(i){var d=i.replace(/[^0-9]/g,'');if(d.length===9&&/^(99|98|88|89)/.test(d))return'+265'+d;if(d.length===10&&/^0(99|98|88|89)/.test(d))return'+265'+d.substring(1);if(d.length===12&&/^265(99|98|88|89)/.test(d))return'+'+d;return d}
 function isValidMalawiPhone(p){return/^(\+265|0)(99|98|88|89)[0-9]{7}$/.test(p)}
@@ -705,730 +793,4 @@ function showRegister(){document.getElementById('registerCard').style.display='b
 function showLogin(){document.getElementById('registerCard').style.display='none';document.getElementById('loginCard').style.display='block';hideForgotSection()}
 function validateAirtelNumber(input){var val=input.value.replace(/[^0-9]/g,'');var msgEl=document.getElementById('airtelValidationMsg');var networkSelect=document.getElementById('networkRegInput');if(val.length>=2){if(val.substring(0,2)==='99'||val.substring(0,2)==='98'){msgEl.innerHTML='<span style="color:#51cf66;">✅ Airtel number detected</span>';if(networkSelect.value!=='Airtel Money')networkSelect.value='Airtel Money'}else if(val.substring(0,2)==='88'||val.substring(0,2)==='89'){msgEl.innerHTML='<span style="color:#51cf66;">✅ TNM number detected</span>';if(networkSelect.value!=='TNM Mpamba')networkSelect.value='TNM Mpamba'}else{msgEl.innerHTML='<span style="color:#ff6b6b;">❌ Invalid Malawi number</span>'}}else{msgEl.innerHTML='<span style="color:#888;">💡 Tip: Airtel (99/98) or TNM (88/89)</span>'}}
 function checkAirtelRecommend(){var network=document.getElementById('networkRegInput').value;var msgEl=document.getElementById('airtelValidationMsg');if(network==='Airtel Money'){msgEl.innerHTML='<span style="color:#888;">💡 Tip: Airtel starts with 99 or 98</span>'}else if(network==='TNM Mpamba'){msgEl.innerHTML='<span style="color:#888;">💡 Tip: TNM starts with 88 or 89</span>'}else{msgEl.innerHTML='<span style="color:#888;">💡 Tip: Airtel (99/98) or TNM (88/89)</span>'}}
-function register(){try{var user=(document.getElementById("usernameInput").value||"").trim(),networkReg=document.getElementById("networkRegInput").value,phoneDigits=(document.getElementById("phoneInput").value||"").trim(),email=(document.getElementById("emailInput").value||"").trim(),pass=document.getElementById("passwordInput").value||"",agree=document.getElementById("agreeCheck").checked,msgEl=document.getElementById("loginMsg");if(user.length<3){msgEl.innerHTML='<span class="error">Username min 3</span>';return}if(!networkReg){msgEl.innerHTML='<span class="error">Select network</span>';return}var fullPhone=formatMalawiPhone(phoneDigits);if(!isValidMalawiPhone(fullPhone)){msgEl.innerHTML='<span class="error">Invalid Phone</span>';return}if(!email){msgEl.innerHTML='<span class="error">Enter email</span>';return}if(pass.length<6){msgEl.innerHTML='<span class="error">Password min 6</span>';return}if(!agree){msgEl.innerHTML='<span class="error">Must agree</span>';return}if(!isHumanReg){msgEl.innerHTML='<span class="error">⚠ Please slide to verify you are human!</span>';return}msgEl.innerHTML='<span class="success">Creating...</span>';var name=user.replace(/\s+/g,'_').replace(/[.#$\[\]]/g,''),refCode=new URLSearchParams(window.location.search).get('ref');if(refCode){try{localStorage.setItem('refCode',refCode)}catch(e){}}var savedRefCode=localStorage.getItem('refCode')||null;try{localStorage.setItem("user",name);localStorage.setItem("userPhone",fullPhone);localStorage.setItem("network",networkReg)}catch(e){}myUid=name;checkBanStatus();document.getElementById("loginPage").classList.remove("active");document.getElementById("mainNav").style.display="flex";showPage('profile');setTimeout(function(){if(!db)return;var ek=emailToKey(email);mySecret = Math.random().toString(36).substring(2) + Date.now().toString(36);localStorage.setItem('secret', mySecret);db.ref('users/'+name).set({phone:fullPhone,network:networkReg,email:email,created:Date.now(),password:md5(pass),winStreak:0,mwk:0,secret:mySecret});db.ref('email_index/'+ek).set({uid:name});db.ref('leaderboard_all/'+name).once('value',function(sn){if(!sn.exists()){db.ref('leaderboard_all/'+name).set({mwk:0,score:0,gamesPlayed:0,gamesWon:0,gamesLost:0,winStreak:0,referralClaimed:0,banned:false,lastPlayed:Date.now(),displayName:user,phone:fullPhone,network:networkReg});if(savedRefCode&&savedRefCode!==name)db.ref('referrals/'+savedRefCode+'/'+name).set(true)}});lockPaymentMethod(fullPhone,networkReg);initGameListeners();setupInboxNotif()},200)}catch(e){alert("Error: "+e.message)}}
-function login(){try{var rawName=(document.getElementById("loginUsernameInput").value||"").trim(),pass=document.getElementById("loginPasswordInput").value,msgEl=document.getElementById("loginErrorMsg");if(!rawName||!pass){msgEl.innerHTML='<span class="error">Enter username & password</span>';return}if(!isHumanLogin){msgEl.innerHTML='<span class="error">⚠ Please slide to verify you are human!</span>';return}var name=rawName.replace(/\s+/g,'_').replace(/[.#$\[\]]/g,'');msgEl.innerHTML='<span class="success">Checking...</span>';if(!db){msgEl.innerHTML='<span class="error">DB error</span>';return}db.ref('users/'+name).once('value',function(sn){var data=sn.val();if(!data){msgEl.innerHTML='<span class="error">User not found</span>';return}if(data.password!==md5(pass)){msgEl.innerHTML='<span class="error">Wrong password</span>';return}if(data.email){var ek=emailToKey(data.email);db.ref('email_index/'+ek).once('value',function(is){if(!is.exists())db.ref('email_index/'+ek).set({uid:name})})}localStorage.setItem("user",name);myUid=name;checkBanStatus();document.getElementById("loginPage").classList.remove("active");document.getElementById("mainNav").style.display="flex";showPage('profile');lockPaymentMethod(data.phone||'',data.network||'');if(data.secret){mySecret = data.secret;} else {mySecret = Math.random().toString(36).substring(2) + Date.now().toString(36);db.ref('users/'+name+'/secret').set(mySecret);}localStorage.setItem('secret', mySecret);initGameListeners();setupInboxNotif()})}catch(e){alert(e.message)}}
-function logout(){if(confirm('Logout?')){localStorage.removeItem('user');localStorage.removeItem('secret');myUid=null;location.reload()}}
-function showPage(page){try{var pages=document.querySelectorAll('.page');for(var i=0;i<pages.length;i++){pages[i].classList.remove('active');pages[i].style.display=''}var btns=document.querySelectorAll('.nav-btn');for(var j=0;j<btns.length;j++)btns[j].classList.remove('active');document.getElementById('mainNav').style.display='flex';document.getElementById('waFloatBtn').style.display='flex';if(page==='profile'){document.getElementById('profilePage').classList.add('active');if(btns[0])btns[0].classList.add('active');loadProfile();}else if(page==='wallet'){document.getElementById('walletPage').classList.add('active');if(btns[1])btns[1].classList.add('active');showBalance();listenMyDeposits();listenMyWithdrawals();loadReferralData();checkVpnStatus();}else if(page==='chat'){document.getElementById('chatPage').classList.add('active');if(btns[2])btns[2].classList.add('active');}else if(page==='play'){document.getElementById('playPage').classList.add('active');if(btns[3])btns[3].classList.add('active');renderGrades();}else if(page==='inbox'){document.getElementById('inboxPage').classList.add('active');if(btns[4])btns[4].classList.add('active');loadInbox();document.getElementById('inboxNotifDot').style.display='none';}else if(page==='faq'){document.getElementById('faqPage').classList.add('active');if(btns[5])btns[5].classList.add('active');}else if(page==='game'){document.getElementById('gamePage').classList.add('active');document.getElementById('mainNav').style.display='none';document.getElementById('waFloatBtn').style.display='none';}}catch(e){console.error('showPage error:',e)}}
-function toggleFaq(element) {
-    var item = element.parentElement;
-    var allItems = document.querySelectorAll('.faq-item');
-    allItems.forEach(function(i) {
-        if (i!== item) i.classList.remove('active');
-    });
-    item.classList.toggle('active');
-}
-function showBalance(){
-  if(!db||!myUid) return;
-  db.ref('leaderboard_all/'+myUid+'/mwk').on('value', s=>{
-    var bal = s.val()||0;
-    document.getElementById("balanceText").innerHTML="💵 MWK "+Number(bal).toLocaleString();
-  });
-  db.ref('leaderboard_all/'+myUid).on('value', s=>{
-    var d=s.val()||{};
-    document.getElementById("statPlayed").innerText=parseInt(d.gamesPlayed)||0;
-    document.getElementById("statWon").innerText=parseInt(d.gamesWon)||0;
-    document.getElementById("statLost").innerText=parseInt(d.gamesLost)||0;
-  });
-}
-function loadReferralData(){if(!db||!myUid)return;var bu=window.location.href.split('?')[0];document.getElementById('refLinkInput').value=bu+'?ref='+myUid;db.ref('referrals/'+myUid).once('value',function(s){var c=s.numChildren();document.getElementById('refCount').innerText=c;db.ref('leaderboard_all/'+myUid+'/referralClaimed').once('value',function(cs){var cl=cs.val()||0,uc=Math.floor(c/5)-cl,cb=document.getElementById('claimRefBtn');if(uc>0){cb.style.display='block';cb.innerText='🎉 Claim MWK '+(uc*10)}else cb.style.display='none'})})}
-function copyRefLink(){var ct=document.getElementById("refLinkInput");if(navigator.clipboard)navigator.clipboard.writeText(ct.value);else{ct.select();document.execCommand("copy")}alert("Copied!")}
-function claimReferralBonus(){if(!db||!myUid)return;db.ref('referrals/'+myUid).once('value',function(s){var c=s.numChildren();db.ref('leaderboard_all/'+myUid).once('value',function(us){var ud=us.val()||{},cl=ud.referralClaimed||0,uc=Math.floor(c/5)-cl;if(uc>0){db.ref('leaderboard_all/'+myUid).update({mwk:(ud.mwk||0)+(uc*10),referralClaimed:cl+uc},function(e){if(!e){alert('🎉 Claimed MWK '+(uc*10)+'!');showBalance();loadReferralData()}})}})})}
-function renderGrades(){var g=document.getElementById('gradeGrid'),h='';PVP_GRADES.forEach(function(gr){h+='<div class="grade-card" onclick="joinPvP('+gr.id+')"><div class="grade-icon">'+gr.icon+'</div><h3 style="color:#fff;font-size:16px">'+gr.name+'</h3><div class="grade-entry">Pay: MWK '+gr.entryMWK+'</div><div class="grade-prize">Win: MWK '+gr.winMWK+'</div></div>'});g.innerHTML=h;showBalance();
-    if(db){
-        db.ref('online_status').orderByChild('online').equalTo(true).on('value',function(snap){
-            var el=document.getElementById('onlinePlayersCount');
-            if(el) el.innerText = snap.numChildren();
-        });
-        db.ref('leaderboard_all').on('value',function(snap){
-            var el=document.getElementById('totalPlayersCount');
-            if(el) el.innerText = snap.numChildren();
-        });
-    }
-}
-function joinPvP(gid){if(!db||!myUid){alert('Login first');return}var gr=PVP_GRADES.find(function(g){return g.id===gid});if(!gr)return;db.ref('leaderboard_all/'+myUid+'/mwk').once('value',function(s){var b=s.val()||0;if(b<gr.entryMWK){alert('Not enough balance! Need MWK '+gr.entryMWK);return}document.getElementById('searchGradeText').innerText=gr.name+' - MWK '+gr.entryMWK;document.getElementById('searchingOverlay').style.display='flex';var queueRef=db.ref('pvp_queue/'+gid+'/'+myUid);queueRef.set({timestamp:Date.now(),entryMWK:gr.entryMWK});queueRef.onDisconnect().remove();
-    botMatchTimeout = setTimeout(function() {
-        if (document.getElementById('searchingOverlay').style.display === 'flex') {
-            if (confirm("⚠ No online players found!\n\nWould you like to play against the Computer (Pro+) instead?")) {
-                createBotGame(gid, gr);
-            } else {
-                cancelMatchmaking();
-            }
-        }
-    }, 15000);
-    })}
-function createBotGame(gid, gr) {
-    db.ref('pvp_queue/'+gid+'/'+myUid).remove();
-    document.getElementById('searchingOverlay').style.display='none';
-    db.ref('leaderboard_all/'+myUid+'/mwk').once('value', function(s) {
-        var b = s.val() || 0;
-        if (b < gr.entryMWK) {
-            alert('Not enough balance! Match cancelled.');
-            return;
-        }
-        db.ref('leaderboard_all/'+myUid).update({mwk: b - gr.entryMWK}, function(e1) {
-            if (e1) return;
-            var gameId = 'bot_game_'+gid+'_'+myUid+'_'+Date.now();
-            var ib = [];
-            for (var r=0; r<8; r++) {
-                for (var c=0; c<8; c++) {
-                    ib.push((r+c)%2 && r<3? -1 : (r+c)%2 && r>4? 1 : 0);
-                }
-            }
-            db.ref('pvp_games/'+gameId).transaction(function(data) {
-                if (data === null) {
-                    return {
-                        p1: myUid,
-                        p2: 'Mada_Bot',
-                        gradeId: gid,
-                        winMWK: gr.winMWK,
-                        entryMWK: gr.entryMWK,
-                        board: ib,
-                        turn: 1,
-                        status: 'playing',
-                        winner: null,
-                        created: Date.now(),
-                        drawCounter: 0,
-                        drawTargetPlayer: 0
-                    };
-                }
-                return data;
-            });
-        });
-    });
-}
-if(db){
-    db.ref('pvp_queue').on('value', function(s) {
-        if(!myUid) return;
-        s.forEach(function(gs) {
-            var gid = gs.key, pl = [];
-            gs.forEach(function(ps) { pl.push(ps.key) });
-            if(pl.length >= 2 && (pl.indexOf(myUid) >= 0)) {
-                var sorted = pl.slice().sort();
-                var p1 = sorted[0], p2 = sorted[1];
-                var gameId = 'game_' + gid + '_' + p1 + '_' + p2 + '_' + Date.now();
-                var gd = PVP_GRADES.find(function(g) { return g.id === parseInt(gid) });
-                var entryMWK = gd.entryMWK;
-                if(myUid!== p1) return;
-                if (botMatchTimeout) { clearTimeout(botMatchTimeout); botMatchTimeout = null; }
-                db.ref('pvp_queue/' + gid + '/' + p1).remove();
-                db.ref('pvp_queue/' + gid + '/' + p2).remove();
-                db.ref('leaderboard_all/' + p1 + '/mwk').once('value', function(s1) {
-                    var b1 = s1.val() || 0;
-                    if(b1 < entryMWK) {
-                        db.ref('pvp_queue/' + gid + '/' + p2).set({timestamp: Date.now(), entryMWK: entryMWK});
-                        if(myUid === p1) { alert('❌ Not enough balance! Match cancelled.'); document.getElementById('searchingOverlay').style.display = 'none' }
-                        return;
-                    }
-                    db.ref('leaderboard_all/' + p1).update({mwk: b1 - entryMWK}, function(e1) {
-                        if(e1) { db.ref('pvp_queue/' + gid + '/' + p2).set({timestamp: Date.now(), entryMWK: entryMWK}); return; }
-                        db.ref('leaderboard_all/' + p2 + '/mwk').once('value', function(s2) {
-                                                var b2 = s2.val() || 0;
-                    if(b2 < entryMWK) {
-                        db.ref('leaderboard_all/' + p1 + '/mwk').once('value', function(s1b) { db.ref('leaderboard_all/' + p1).update({mwk: (s1b.val() || 0) + entryMWK}) });
-                        db.ref('pvp_queue/' + gid + '/' + p1).set({timestamp: Date.now(), entryMWK: entryMWK});
-                        return;
-                    }
-                    db.ref('leaderboard_all/' + p2).update({mwk: b2 - entryMWK}, function(e2) {
-                        if(e2) { db.ref('pvp_queue/' + gid + '/' + p1).set({timestamp: Date.now(), entryMWK: entryMWK}); return; }
-                        var ib = [];
-                        for(var r=0; r<8; r++) {
-                            for(var c=0; c<8; c++) {
-                                ib.push((r+c)%2 && r<3? -1 : (r+c)%2 && r>4? 1 : 0);
-                            }
-                        }
-                        db.ref('pvp_games/'+gameId).transaction(function(data){
-                            if(data === null){
-                                return {
-                                    p1: p1,
-                                    p2: p2,
-                                    gradeId: parseInt(gid),
-                                    winMWK: gd.winMWK,
-                                    entryMWK: entryMWK,
-                                    board: ib,
-                                    turn: 1,
-                                    status: 'playing',
-                                    winner: null,
-                                    created: Date.now(),
-                                    drawCounter: 0,
-                                    drawTargetPlayer: 0
-                                };
-                            }
-                            return data;
-                        });
-                    });
-                });
-            });
-        });
-    });
-    }
-  /* ===== UNBEATABLE DEPTH 20 FIXED + VERIFY FIXED ===== */
-var transpositionTable = new Map();
-var TT_SIZE_LIMIT = 350000;
-var MAX_DEPTH = 20;
-var TIME_LIMIT = 6000;
-var killerMoves = new Array(64);
-for(var _km=0;_km<64;_km++) killerMoves[_km]=[];
-var historyHeuristic = {};
-var nodesSearched = 0;
-var searchStartTime = 0;
-var zobristTable = [];
-(function initZobrist(){
-  function rnd(){ return Math.floor(Math.random()*2147483647); }
-  for(var i=0;i<64;i++){ zobristTable[i]=[rnd(),rnd(),rnd(),rnd()]; }
-})();
-function boardHash(b){
-  var h=0;
-  for(var i=0;i<64;i++){
-    var p=b[i];
-    if(p!==0){
-      var idx = p===1?0:p===2?1:p===-1?2:3;
-      h ^= zobristTable[i][idx];
-    }
-  }
-  return h;
-}
-function applyMoveToBoard(b, move){
-  var newB = b.slice();
-  var fR = move.from[0], fC = move.from[1];
-  var tR = move.to[0], tC = move.to[1];
-  var p = newB[fR*8+fC];
-  newB[fR*8+fC]=0;
-  newB[tR*8+tC]=p;
-  if(move.captured && move.captured.length>0){
-    for(var i=0;i<move.captured.length;i++){
-      var cap = move.captured[i];
-      newB[cap[0]*8+cap[1]]=0;
-    }
-  }
-  if(p===1 && tR===0) newB[tR*8+tC]=2;
-  if(p===-1 && tR===7) newB[tR*8+tC]=-2;
-  return newB;
-}
-function expandMove(move, b, pl, results, visited){
-  if(results.length>80) return;
-  if(!visited) visited={};
-  var key = move.to[0]+','+move.to[1];
-  if(visited[key]) return;
-  visited[key]=true;
-  var tR=move.to[0], tC=move.to[1];
-  var nextCaptures = getCapturesForPiece(b, tR, tC, pl);
-  if(nextCaptures.length===0){
-    results.push(move);
-    return;
-  }
-  var hasContinuation=false;
-  for(var i=0;i<nextCaptures.length;i++){
-    if(results.length>80) break;
-    var nc = nextCaptures[i];
-    var dup=false;
-    for(var a=0;a<move.captured.length;a++){
-      for(var c=0;c<nc.captured.length;c++){
-        if(move.captured[a][0]===nc.captured[c][0] && move.captured[a][1]===nc.captured[c][1]){dup=true;break;}
-      }
-      if(dup) break;
-    }
-    if(dup) continue;
-    var loop=false;
-    if(move.path){
-      for(var p=0;p<move.path.length;p++){
-        if(move.path[p][0]===nc.to[0] && move.path[p][1]===nc.to[1]){loop=true;break;}
-      }
-    }
-    if(loop) continue;
-    var newB = b.slice();
-    var piece = newB[tR*8+tC];
-    newB[tR*8+tC]=0;
-    newB[nc.to[0]*8+nc.to[1]]=piece;
-    for(var j=0;j<nc.captured.length;j++){
-      var cap=nc.captured[j];
-      newB[cap[0]*8+cap[1]]=0;
-    }
-    var promoted=false;
-    if(pl===1 && nc.to[0]===0 && piece===1){ newB[nc.to[0]*8+nc.to[1]]=2; promoted=true; }
-    if(pl===2 && nc.to[0]===7 && piece===-1){ newB[nc.to[0]*8+nc.to[1]]=-2; promoted=true; }
-    var combined={
-      from: move.from,
-      to: nc.to,
-      captured: move.captured.concat(nc.captured),
-      path: (move.path||[move.from]).concat([nc.to])
-    };
-    if(promoted){
-      results.push(combined);
-    }else{
-      hasContinuation=true;
-      expandMove(combined, newB, pl, results, Object.assign({},visited));
-    }
-  }
-  if(!hasContinuation){
-    results.push(move);
-  }
-}
-function getAllValidMovesForAI(b, pl){
-  var s = pl===1?1:-1;
-  var captures=[];
-  for(var r=0;r<8;r++){
-    for(var c=0;c<8;c++){
-      if(Math.sign(b[r*8+c])===s){
-        var pc=getCapturesForPiece(b,r,c,pl);
-        captures=captures.concat(pc);
-      }
-    }
-  }
-  if(captures.length>0){
-    var expanded=[];
-    for(var i=0;i<captures.length;i++){
-      if(expanded.length>80) break;
-      var init=captures[i];
-      var initBoard=applyMoveToBoard(b, init);
-      var piece=b[init.from[0]*8+init.from[1]];
-      var promoted=false;
-      if(pl===1 && init.to[0]===0 && piece===1) promoted=true;
-      if(pl===2 && init.to[0]===7 && piece===-1) promoted=true;
-      if(promoted){
-        expanded.push({from:init.from,to:init.to,captured:init.captured,path:[init.from,init.to]});
-      }else{
-        expandMove({from:init.from,to:init.to,captured:init.captured,path:[init.from,init.to]}, initBoard, pl, expanded);
-      }
-    }
-    return expanded;
-  }
-  var simple=[];
-  for(var r=0;r<8;r++){
-    for(var c=0;c<8;c++){
-      if(Math.sign(b[r*8+c])===s){
-        var sm=getSimpleMovesForPiece(b,r,c,pl);
-        for(var k=0;k<sm.length;k++){
-          simple.push({from:sm[k].from,to:sm[k].to,captured:[],path:[sm[k].from,sm[k].to]});
-        }
-      }
-    }
-  }
-  return simple;
-}
-function getAllCapturesForAI(b, pl){
-  var s=pl===1?1:-1;
-  var caps=[];
-  for(var r=0;r<8;r++){
-    for(var c=0;c<8;c++){
-      if(Math.sign(b[r*8+c])===s){
-        caps=caps.concat(getCapturesForPiece(b,r,c,pl));
-      }
-    }
-  }
-  var expanded=[];
-  for(var i=0;i<caps.length;i++){
-    if(expanded.length>80) break;
-    var init=caps[i];
-    var initBoard=applyMoveToBoard(b,init);
-    var piece=b[init.from[0]*8+init.from[1]];
-    var promoted=false;
-    if(pl===1 && init.to[0]===0 && piece===1) promoted=true;
-    if(pl===2 && init.to[0]===7 && piece===-1) promoted=true;
-    if(promoted){
-      expanded.push({from:init.from,to:init.to,captured:init.captured,path:[init.from,init.to]});
-    }else{
-      expandMove({from:init.from,to:init.to,captured:init.captured,path:[init.from,init.to]}, initBoard, pl, expanded);
-    }
-  }
-  return expanded;
-}
-function scoreMove(move, pl, depth, ttMove){
-  if(ttMove && move.from[0]===ttMove.from[0] && move.from[1]===ttMove.from[1] && move.to[0]===ttMove.to[0] && move.to[1]===ttMove.to[1]) return 10000000;
-  if(move.captured && move.captured.length>0) return 900000 + move.captured.length*10000;
-  if(pl===2 && move.to[0]===7) return 850000;
-  if(pl===1 && move.to[0]===0) return 850000;
-  return 0;
-}
-function evaluateBoard(b, turn){
-  var score=0;
-  var p1P=0,p2P=0;
-  for(var i=0;i<64;i++){
-    var p=b[i]; if(p===0) continue;
-    var r=Math.floor(i/8), c=i%8;
-    var isKing=Math.abs(p)===2;
-    var base = isKing?420:100;
-    if(p>0){ base += (7-r)*7; p1P++; } else { base += r*7; p2P++; }
-    if(r>=2 && r<=5 && c>=2 && c<=5) base+= isKing?12:18;
-    if(p>0) score+=base; else score-=base;
-  }
-  if(p2P===0) score+=20000;
-  if(p1P===0) score-=20000;
-  return score;
-}
-function quiescenceSearch(b, alpha, beta, isMaximizing, depth){
-  nodesSearched++;
-  if(Date.now()-searchStartTime > TIME_LIMIT-300) return evaluateBoard(b, isMaximizing?1:2);
-  if(depth<=-10) return evaluateBoard(b, isMaximizing?1:2);
-  var standPat = evaluateBoard(b, isMaximizing?1:2);
-  if(isMaximizing){
-    if(standPat>=beta) return beta;
-    if(alpha<standPat) alpha=standPat;
-  }else{
-    if(standPat<=alpha) return alpha;
-    if(beta>standPat) beta=standPat;
-  }
-  var moves=getAllCapturesForAI(b, isMaximizing?1:2);
-  if(moves.length===0) return standPat;
-  for(var i=0;i<moves.length;i++){
-    var newB=applyMoveToBoard(b,moves[i]);
-    var score=quiescenceSearch(newB, alpha, beta,!isMaximizing, depth-1);
-    if(isMaximizing){
-      if(score>=beta) return beta;
-      if(score>alpha) alpha=score;
-    }else{
-      if(score<=alpha) return alpha;
-      if(score<beta) beta=score;
-    }
-  }
-  return isMaximizing?alpha:beta;
-}
-function minimax(b, depth, alpha, beta, isMaximizing, ply){
-  nodesSearched++;
-  if(nodesSearched % 1024===0 && Date.now()-searchStartTime > TIME_LIMIT-300){
-    return evaluateBoard(b, isMaximizing?1:2);
-  }
-  var hash=boardHash(b);
-  var ttEntry=transpositionTable.get(hash);
-  if(ttEntry && ttEntry.depth>=depth){
-    if(ttEntry.flag==='exact') return ttEntry.score;
-    if(ttEntry.flag==='lowerbound' && ttEntry.score>=beta) return ttEntry.score;
-    if(ttEntry.flag==='upperbound' && ttEntry.score<=alpha) return ttEntry.score;
-  }
-  var player=isMaximizing?1:2;
-  var moves=getAllValidMovesForAI(b, player);
-  if(moves.length===0) return isMaximizing? -15000+ply : 15000-ply;
-  if(depth<=0){
-    return quiescenceSearch(b, alpha, beta, isMaximizing, 0);
-  }
-  var bestScore=isMaximizing? -Infinity:Infinity;
-  var oldAlpha=alpha, oldBeta=beta;
-  for(var i=0;i<moves.length;i++){
-    var newB=applyMoveToBoard(b,moves[i]);
-    var score=minimax(newB, depth-1, alpha, beta,!isMaximizing, ply+1);
-    if(isMaximizing){
-      if(score>bestScore) bestScore=score;
-      alpha=Math.max(alpha,score);
-    }else{
-      if(score<bestScore) bestScore=score;
-      beta=Math.min(beta,score);
-    }
-    if(beta<=alpha) break;
-  }
-  var flag='exact';
-  if(bestScore<=oldAlpha) flag='upperbound';
-  else if(bestScore>=oldBeta) flag='lowerbound';
-  if(transpositionTable.size>TT_SIZE_LIMIT) transpositionTable.clear();
-  transpositionTable.set(hash,{score:bestScore,depth:depth,flag:flag});
-  return bestScore;
-}
-function iterativeDeepening(b, maxDepth, timeLimit, forcedR, forcedC){
-  searchStartTime=Date.now();
-  nodesSearched=0;
-  var moves;
-  if(forcedR>=0){
-    var caps=getCapturesForPiece(b,forcedR,forcedC,2);
-    var expanded=[];
-    for(var i=0;i<caps.length;i++) expandMove({from:caps[i].from,to:caps[i].to,captured:caps[i].captured,path:[caps[i].from,caps[i].to]}, applyMoveToBoard(b,caps[i]), 2, expanded);
-    moves=expanded;
-  }else{
-    moves=getAllValidMovesForAI(b,2);
-  }
-  if(moves.length===0) return null;
-  if(moves.length===1) return moves[0];
-  var bestMove=moves[0];
-  for(var depth=1;depth<=maxDepth;depth++){
-    if(Date.now()-searchStartTime > timeLimit-400) break;
-    var currentBest=null;
-    var bestScore=Infinity;
-    var alpha=-Infinity, beta=Infinity;
-    for(var i=0;i<moves.length;i++){
-      if(Date.now()-searchStartTime > timeLimit-300) break;
-      var newB=applyMoveToBoard(b,moves[i]);
-      var score=minimax(newB, depth-1, alpha, beta, true, 0);
-      if(score<bestScore){ bestScore=score; currentBest=moves[i]; }
-      beta=Math.min(beta,score);
-    }
-    if(currentBest) bestMove=currentBest;
-  }
-  return bestMove;
-}
-function botMakeMove(){
-  if(!gameState || gameState.turn!==2 || gameState.p2!=='Mada_Bot') return;
-  try{
-    var board=gameState.board.slice();
-    var bestMove=null;
-    if(gameState.selected && gameState.validMoves && gameState.validMoves.length>0){
-      var fR=gameState.selected[0], fC=gameState.selected[1];
-      var caps=getCapturesForPiece(board,fR,fC,2);
-      var expanded=[];
-      for(var i=0;i<caps.length;i++){
-        var init=caps[i];
-        var initBoard=applyMoveToBoard(board,init);
-        var piece=board[fR*8+fC];
-        var promoted=false;
-        if(init.to[0]===7 && piece===-1) promoted=true;
-        if(promoted){
-          expanded.push({from:[fR,fC],to:init.to,captured:init.captured,path:[[fR,fC],init.to]});
-        }else{
-          expandMove({from:[fR,fC],to:init.to,captured:init.captured,path:[[fR,fC],init.to]}, initBoard, 2, expanded);
-        }
-      }
-      if(expanded.length>0) bestMove=expanded[0];
-      var firstTo=bestMove.path?bestMove.path[1]:bestMove.to;
-      makePvPMove(bestMove.from[0],bestMove.from[1],firstTo[0],firstTo[1]);
-      return;
-    }
-    bestMove=iterativeDeepening(board, MAX_DEPTH, TIME_LIMIT, -1, -1);
-    if(bestMove){
-      var firstTo=bestMove.path?bestMove.path[1]:bestMove.to;
-      makePvPMove(bestMove.from[0],bestMove.from[1],firstTo[0],firstTo[1]);
-    }
-  }catch(e){ console.error("AI Error:", e); }
-    }                         
-function endPvPGame(g){if(!currentGameId)return;if(processedGameEnds[currentGameId]){currentGameId=null;gameState={};gameListener=null;myPlayerNumber=0;showPage('profile');return}processedGameEnds[currentGameId]=true;var endedGameId=currentGameId;currentGameId=null;gameState={};if(gameListener){db.ref('pvp_games/'+gameListener).off()}gameListener=null;myPlayerNumber=0;var isDraw=g.winner==='draw';var isWin=!isDraw&&g.winner===myUid;if(isDraw)playSound('move');else if(isWin)playSound('win');else playSound('lose');db.ref('leaderboard_all/'+myUid).once('value',function(s){var d=s.val()||{},u={};var opponent=g.p1===myUid?g.p2:g.p1;if(isDraw){u.mwk=(d.mwk||0)+(g.entryMWK||0);u.gamesPlayed=(parseInt(d.gamesPlayed)||0)+1;u.winStreak=0;db.ref('match_history/'+myUid).push({opponent:opponent,result:'draw',amount:g.entryMWK,gradeId:g.gradeId,timestamp:Date.now()});db.ref('leaderboard_all/'+myUid).update(u,function(){alert('🤝 DRAW! MWK '+(g.entryMWK||0)+' refunded.');showPage('profile')})}else{u.gamesPlayed=(parseInt(d.gamesPlayed)||0)+1;u.gamesWon=(parseInt(d.gamesWon)||0)+(isWin?1:0);u.gamesLost=(parseInt(d.gamesLost)||0)+(isWin?0:1);u.winStreak=isWin?((d.winStreak||0)+1):0;if(isWin)u.mwk=(d.mwk||0)+(g.winMWK||0);db.ref('match_history/'+myUid).push({opponent:opponent,result:isWin?'win':'loss',amount:isWin?g.winMWK:g.entryMWK,gradeId:g.gradeId,timestamp:Date.now()});db.ref('leaderboard_all/'+myUid).update(u,function(){alert(isWin?'🎉 YOU WIN! +MWK '+(g.winMWK||0):'😞 You Lost! MWK '+(g.entryMWK||0));showPage('profile')})}});var now=Date.now();processedGameEnds[endedGameId]=now;Object.keys(processedGameEnds).forEach(function(k){if(typeof processedGameEnds[k]==='number'&&now-processedGameEnds[k]>300000){delete processedGameEnds[k]}});
-    // Clear AI data for fresh game - UPGRADED ENGINE RESET
-    transpositionTable.clear();
-    historyHeuristic = {};
-    killerMoves = new Array(64);
-    for(var _km=0;_km<64;_km++) killerMoves[_km]=[];
-    setTimeout(function(){if(db)db.ref('pvp_games/'+endedGameId).remove()},5000);
-}
-function cancelMatchmaking(){if(botMatchTimeout){clearTimeout(botMatchTimeout);botMatchTimeout=null;}if(db&&myUid){db.ref('pvp_queue').once('value',function(s){s.forEach(function(gs){if(gs.val()&&gs.val()[myUid]){var gid=gs.key;db.ref('pvp_queue/'+gid+'/'+myUid).remove()}})})}document.getElementById('searchingOverlay').style.display='none'}
-function exitGame(){if(confirm('Leave & FORFEIT?')){if(db&&currentGameId&&gameState){var winner=myPlayerNumber===1?gameState.p2:gameState.p1;db.ref('pvp_games/'+currentGameId).update({status:'finished',winner:winner})}}}
-
-/* ===== PAYCHANGU AUTOMATED DEPOSIT & WITHDRAW ===== */
-var PIPEDREAM_DEPOSIT_URL = "https://mada-backend.vercel.app/api/deposit";
-var PIPEDREAM_WITHDRAW_URL = "https://mada-backend.vercel.app/api/withdraw";
-async function submitOneKhusaDeposit() {
-    var amount = document.getElementById("okDepositAmount").value;
-    var msgEl = document.getElementById("okDepositMsg");
-    if(!myUid){ alert("Please login first."); return; }
-    msgEl.innerHTML = '<span class="success">⏳ Generating secure payment link...</span>';
-    try {
-        var response = await fetch(PIPEDREAM_DEPOSIT_URL, {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({
-                uid: myUid,
-                amount: amount
-            })
-        });
-        var result = await response.json();
-        if(result.success && result.checkout_url) {
-            msgEl.innerHTML = '<span class="success" style="color:#51cf66;">✅ Redirecting to PayChangu...</span>';
-            window.location.href = result.checkout_url;
-        } else {
-            msgEl.innerHTML = '<span class="error">❌ Error: ' + (result.message || 'Failed to initiate') + '</span>';
-        }
-    } catch (e) {
-        msgEl.innerHTML = '<span class="error">Error: ' + e.message + '</span>';
-    }
-}
-async function submitOneKhusaWithdraw() {
-    if(!db ||!myUid) return;
-    var amount = parseInt(document.getElementById("withdrawAmount").value);
-    var msgEl = document.getElementById("withdrawMsg");
-    if(amount > 50000) {
-        msgEl.innerHTML = '<span class="error">⚠ Maximum withdrawal is 50,000 MWK per request.</span>';
-        return;
-    }
-    msgEl.innerHTML = '<span class="success">⏳ Processing withdrawal...</span>';
-    try {
-        var response = await fetch(PIPEDREAM_WITHDRAW_URL, {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({
-                action: "withdraw",
-                uid: myUid,
-                amount: amount,
-                secret: mySecret
-            })
-        });
-        var result = await response.json();
-        if(result.success) {
-            msgEl.innerHTML = '<span class="success" style="color:#51cf66;">✅ ' + result.message + '</span>';
-            showBalance();
-        } else {
-            msgEl.innerHTML = '<span class="error">❌ Error: ' + (result.message || 'Failed') + '</span>';
-            showBalance();
-        }
-    } catch (e) {
-        msgEl.innerHTML = '<span class="error">Error: ' + e.message + '</span>';
-        showBalance();
-    }
-}
-function listenMyDeposits(){
-  if(!db||!myUid) return;
-  db.ref('deposit_requests').orderByChild('uid').equalTo(myUid).on('value', function(s){
-    var h = '<div style="font-size:14px;color:#888;margin-bottom:8px">Deposit History</div>';
-    if(!s.exists()){
-      h += '<div style="text-align:center;color:#555;font-size:12px;padding:10px;">No deposits yet</div>';
-    } else {
-      s.forEach(function(c){
-        var r = c.val();
-        h += '<div class="history-item"><div><span style="color:#fff">MWK '+r.amountMWK+'</span><br><span style="color:#555;font-size:10px">'+new Date(r.timestamp).toLocaleDateString()+' • '+(r.txId||'')+'</span></div><span class="history-status-'+r.status+'">'+r.status+'</span></div>';
-      });
-    }
-    var el = document.getElementById('myDepositHistory');
-    if(el) el.innerHTML = h;
-  });
-}
-function listenMyWithdrawals(){
-  if(!db||!myUid) return;
-  db.ref('withdraw_requests').orderByChild('uid').equalTo(myUid).on('value', function(s){
-    var h = '<div style="font-size:14px;color:#888;margin-bottom:8px">Withdrawal History</div>';
-    if(!s.exists()){
-      h += '<div style="text-align:center;color:#555;font-size:12px;padding:10px;">No withdrawals yet</div>';
-    } else {
-      s.forEach(function(c){
-        var r = c.val();
-        var statusClass = r.status === 'pending'? 'history-status-pending' : (r.status === 'approved' || r.status === 'sent')? 'history-status-sent' : (r.status === 'declined' || r.status === 'failed')? 'history-status-declined' : 'history-status-'+r.status;
-        h += '<div class="history-item"><div><span style="color:#fff">MWK '+r.amountMWK+'</span><br><span style="color:#555;font-size:10px">'+new Date(r.timestamp).toLocaleDateString()+'</span></div><span class="'+statusClass+'">'+r.status+'</span></div>';
-      });
-    }
-    var el = document.getElementById('myWithdrawHistory');
-    if(el) el.innerHTML = h;
-  });
-}
-var inboxFileData=null,inboxFileName=null;var inboxMessagesCache={};
-function loadInbox(){if(!db||!myUid)return;db.ref('admin_inbox/'+myUid+'/messages').orderByChild('timestamp').on('value',function(s){var h='';inboxMessagesCache={};s.forEach(function(c){var m=c.val(),im=m.from==='user',ch='';inboxMessagesCache[c.key]=m;if(m.image)ch+='<img src="'+m.image+'" class="inbox-img" onclick="openImageViewer(this.src)">';if(m.image)ch+='<button onclick="saveInboxPhoto(\''+c.key+'\')" class="inbox-action-btn inbox-save-btn">💾 Save Photo</button>';if(m.fileData)ch+='<a href="'+m.fileData+'" download="'+(m.fileName||'file')+'" class="inbox-file">📎 '+(m.fileName||'File')+'</a>';if(m.text)ch+='<div style="color:#fff;font-size:14px;white-space:pre-wrap;">'+escapeHtml(m.text)+'</div>';h+='<div class="inbox-item" id="inbox-msg-'+c.key+'" style="'+(im?'text-align:right;background:#0a2a3a;':'text-align:left;background:#1a1a2e;')+'">';h+=ch;h+='<div class="inbox-meta"><span>'+(im?'You':'Admin')+'</span><span>'+new Date(m.timestamp).toLocaleTimeString([],{hour:'2-digit',minute:'2-digit'})+'</span></div>';h+='<div class="inbox-actions-row"><button onclick="deleteInboxMsg(\''+c.key+'\')" class="inbox-action-btn inbox-delete-btn">🗑 Delete</button></div>';h+='</div>'});document.getElementById('inboxMessages').innerHTML=h||'<div style="text-align:center;color:#555;padding:20px;">No messages yet</div>';document.getElementById('inboxMessages').scrollTop=99999})}
-function deleteInboxMsg(msgKey){if(!db||!myUid||!msgKey)return;if(!confirm('Delete this message?'))return;var msgEl=document.getElementById('inbox-msg-'+msgKey);if(msgEl)msgEl.classList.add('deleting');db.ref('admin_inbox/'+myUid+'/messages/'+msgKey).remove(function(err){if(err){alert('Failed to delete message.');if(msgEl)msgEl.classList.remove('deleting')}})}
-function saveInboxPhoto(msgKey){var msg=inboxMessagesCache[msgKey];if(!msg||!msg.image){alert('No photo found to save.');return}try{var a=document.createElement('a');a.href=msg.image;a.download='inbox_photo_'+Date.now()+'.jpg';a.style.display='none';document.body.appendChild(a);a.click();setTimeout(function(){document.body.removeChild(a)},500)}catch(e){openImageViewer(msg.image);alert('Tap 💾 Save in the viewer to download the photo.')}}
-window.handleInboxFileUpload=function(e){var f=e.target.files&&e.target.files[0];if(!f)return;var im=f.type.startsWith('image/'),r=new FileReader();r.onload=function(ev){if(im){var img=new Image();img.onload=function(){var c=document.createElement('canvas'),w=600,h=600,iw=img.width,ih=img.height;if(iw>w){ih*=w/iw;iw=w}if(ih>h){iw*=h/ih;ih=h}c.width=Math.round(iw);c.height=Math.round(ih);c.getContext('2d').drawImage(img,0,0,c.width,c.height);inboxFileData=c.toDataURL('image/jpeg',0.5);inboxFileName=f.name;document.getElementById('inboxFilePreview').style.display='block';document.getElementById('inboxFileName').innerText='📷 '+f.name};img.src=ev.target.result}else{if(f.size>1048576){alert("Max 1MB.");e.target.value='';return}inboxFileData=ev.target.result;inboxFileName=f.name;document.getElementById('inboxFilePreview').style.display='block';document.getElementById('inboxFileName').innerText='📎 '+f.name}};r.readAsDataURL(f)};
-window.clearInboxFile=function(){inboxFileData=null;inboxFileName=null;document.getElementById('inboxFilePreview').style.display='none';document.getElementById('inboxFileInput').value=''};
-window.sendInboxMsg=function(){if(!db||!myUid)return;var i=document.getElementById('inboxMsgInput');var t=(i.value||'').trim();if(!t&&!inboxFileData)return;var md={from:'user',text:t,timestamp:Date.now()};if(inboxFileData){if(inboxFileData.includes('image/'))md.image=inboxFileData;else{md.fileData=inboxFileData;md.fileName=inboxFileName}}db.ref('admin_inbox/'+myUid+'/messages').push(md,function(e){if(!e){i.value='';window.clearInboxFile()}})};
-function setupInboxNotif(){if(!db||!myUid)return;db.ref('admin_inbox/'+myUid+'/messages').orderByChild('timestamp').limitToLast(1).on('value',function(s){s.forEach(function(c){if(c.val().from==='admin'){var ip=document.getElementById('inboxPage');if(ip&&!ip.classList.contains('active')){var d=document.getElementById('inboxNotifDot');if(d)d.style.display='inline-block'}}})})}
-document.addEventListener('DOMContentLoaded',function(){
-    setupSlider('gateSliderTrack', 'gateSliderHandle', 'gateSliderProgress', 'gateSliderText', function() {
-        var gate = document.getElementById('appGate');
-        setTimeout(function() {
-            gate.style.transition = 'opacity 0.5s';
-            gate.style.opacity = '0';
-            setTimeout(function() { gate.style.display = 'none'; }, 500);
-        }, 500);
-    });
-    setupSlider('regSliderTrack', 'regSliderHandle', 'regSliderProgress', 'regSliderText', function() {
-        isHumanReg = true;
-    });
-    setupSlider('loginSliderTrack', 'loginSliderHandle', 'loginSliderProgress', 'loginSliderText', function() {
-        isHumanLogin = true;
-    });
-    setTimeout(function(){var sp=document.getElementById('splashScreen');if(sp){sp.classList.add('splash-hide');setTimeout(function(){sp.style.display='none'},700)}},2500);
-    var lsb=document.getElementById("loginSubmitBtn");if(lsb)lsb.addEventListener('click',function(e){e.preventDefault();login()});
-    var lui=document.getElementById("loginUsernameInput");if(lui)lui.addEventListener('keypress',function(e){if(e.key==='Enter'){e.preventDefault();login()}});
-    var lb=document.getElementById("loginBtn");if(lb)lb.addEventListener('click',function(e){e.preventDefault();register()});
-    var ui=document.getElementById("usernameInput");if(ui){ui.addEventListener('keypress',function(e){if(e.key==='Enter'){e.preventDefault();register()}});setTimeout(function(){ui.focus();},300)}
-    var pi=document.getElementById("phoneInput");if(pi)pi.addEventListener('input',function(e){this.value=this.value.replace(/[^0-9]/g,'')});
-    var el;el=document.getElementById("navProfile");if(el)el.onclick=function(){showPage('profile')};el=document.getElementById("navWallet");if(el)el.onclick=function(){showPage('wallet')};el=document.getElementById("navPlay");if(el)el.onclick=function(){showPage('play')};el=document.getElementById("navInbox");if(el)el.onclick=function(){showPage('inbox')}; el=document.getElementById("navFaq");if(el)el.onclick=function(){showPage('faq')};
-    try{var u=localStorage.getItem("user");if(u){myUid=u;mySecret=localStorage.getItem('secret');checkBanStatus();document.getElementById("loginPage").classList.remove("active");document.getElementById("mainNav").style.display="flex";document.getElementById('waFloatBtn').style.display='flex';showPage('profile');if(db)lockPaymentMethod(localStorage.getItem("userPhone")||'',localStorage.getItem("network")||'');initGameListeners();setupInboxNotif()}}catch(e){}
-});
-</script>
-
-<script>
-(function(){var chatCurrentWith=null;var chatListenerRef=null;var replyToMsg=null;var chatUsersCache=[];var chatMessagesData=[];var chatOnlineListeners=[];var mediaRecorder=null;var audioChunks=[];var isRecording=false;var recordingTimer=null;var recordingSeconds=0;function setOnlineStatus(online){if(!db||!myUid)return;var ref=db.ref('online_status/'+myUid);if(online){ref.set({online:true,lastSeen:Date.now()});ref.onDisconnect().set({online:false,lastSeen:Date.now()})}else{ref.set({online:false,lastSeen:Date.now()})}}function getChatId(uid1,uid2){return uid1<uid2?uid1+'_'+uid2:uid2+'_'+uid1}function escapeHtml(text){var d=document.createElement('div');d.textContent=text;return d.innerHTML}function showChatPage(){var pages=document.querySelectorAll('.page');for(var i=0;i<pages.length;i++){pages[i].classList.remove('active');pages[i].style.display=''}document.getElementById('chatPage').classList.add('active');var btns=document.querySelectorAll('.nav-btn');for(var j=0;j<btns.length;j++)btns[j].classList.remove('active');if(btns[2])btns[2].classList.add('active');document.getElementById('mainNav').style.display='flex';document.getElementById('waFloatBtn').style.display='flex';loadChatUsers()}function loadChatUsers(){if(!db||!myUid)return;db.ref('leaderboard_all').once('value',function(snap){chatUsersCache=[];snap.forEach(function(child){if(child.key!==myUid)chatUsersCache.push({uid:child.key,displayName:(child.val()||{}).displayName||child.key})});renderChatUsers(chatUsersCache);listenAllOnlineStatus();loadAllLastMessages();loadAllUnreadCounts()})}function listenAllOnlineStatus(){chatOnlineListeners.forEach(function(r){r.off()});chatOnlineListeners=[];chatUsersCache.forEach(function(u){var ref=db.ref('online_status/'+u.uid);ref.on('value',function(sSnap){var dotEl=document.getElementById('cdot_'+u.uid);var sd=sSnap.val();if(dotEl){if(sd&&sd.online)dotEl.classList.add('on');else dotEl.classList.remove('on')}});chatOnlineListeners.push(ref)})}function loadAllLastMessages(){chatUsersCache.forEach(function(u){var chatId=getChatId(myUid,u.uid);db.ref('chats/'+chatId+'/messages').orderByChild('timestamp').limitToLast(1).once('value',function(snap){snap.forEach(function(child){var msg=child.val();var el=document.getElementById('lastmsg_'+u.uid);if(el)el.innerText=(msg.from===myUid?'You: ':'')+(msg.image?'📷':(msg.audio?'🎤':(msg.text||'')))})})})}function loadAllUnreadCounts(){chatUsersCache.forEach(function(u){var chatId=getChatId(myUid,u.uid);db.ref('chats/'+chatId+'/messages').orderByChild('read').equalTo(false).once('value',function(snap){var count=0;snap.forEach(function(c){if(c.val().from!==myUid)count++});var badge=document.getElementById('unread_'+u.uid);if(badge){if(count>0){badge.style.display='flex';badge.innerText=count}else badge.style.display='none'}})})}function renderChatUsers(users){var el=document.getElementById('chatUserList');if(!el)return;if(!users.length){el.innerHTML='<div style="padding:30px;color:#555">No users yet</div>';return}var html='';users.forEach(function(u){html+='<div class="chat-user-row" onclick="window._openChatWith(\''+u.uid+'\',\''+u.displayName+'\')" style="display:flex;align-items:center;gap:12px;padding:12px 8px;border-bottom:1px solid #1a1a1a">';html+='<div class="chat-avatar">'+escapeHtml(u.displayName[0])+'<span id="cdot_'+u.uid+'" class="chat-online-dot"></span></div>';html+='<div style="flex:1;text-align:left;min-width:0"><div style="font-weight:bold;color:#fff;font-size:14px">'+escapeHtml(u.displayName)+'</div><div id="lastmsg_'+u.uid+'" style="font-size:12px;color:#888;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">Tap to chat</div></div>';html+='<div id="unread_'+u.uid+'" class="chat-unread-badge">0</div>';html+='</div>'});el.innerHTML=html}window.filterChatUsers=function(){var q=(document.getElementById('chatSearchInput').value||'').toLowerCase();renderChatUsers(chatUsersCache.filter(function(u){return u.displayName.toLowerCase().indexOf(q)>=0}));listenAllOnlineStatus()};window._openChatWith=function(uid,displayName){chatCurrentWith=uid;document.getElementById('chatConvName').innerText=displayName;document.getElementById('chatConvAvatar').innerText=displayName[0];cancelReply();var pages=document.querySelectorAll('.page');for(var i=0;i<pages.length;i++){pages[i].classList.remove('active');pages[i].style.display=''}document.getElementById('chatConvPage').classList.add('active');document.getElementById('mainNav').style.display='none';document.getElementById('waFloatBtn').style.display='none';listenForChatMessages(uid)};window.backToChatList=function(){if(chatListenerRef&&db)db.ref('chats/'+chatListenerRef+'/messages').off();chatCurrentWith=null;showChatPage()};function listenForChatMessages(uid){var chatId=getChatId(myUid,uid);if(chatListenerRef&&db)db.ref('chats/'+chatListenerRef+'/messages').off();chatListenerRef=chatId;db.ref('chats/'+chatId+'/messages').orderByChild('timestamp').on('value',function(snap){chatMessagesData=[];snap.forEach(function(c){var m=c.val();m._id=c.key;chatMessagesData.push(m)});renderChatMessages(chatMessagesData);markChatAsRead(chatId,chatMessagesData)})}function renderChatMessages(messages){var container=document.getElementById('chatMessages');if(!container)return;var html='';var prevDate='';var me=String(myUid||'').trim();for(var idx=0;idx<messages.length;idx++){var msg=messages[idx];var fromId=String(msg.from||'').trim();var isMine=fromId===me;var dateStr=new Date(msg.timestamp).toLocaleDateString();if(dateStr!==prevDate){html+='<div style="text-align:center;margin:14px 0;font-size:11px;color:#999"><span style="background:#222;padding:3px 14px;border-radius:10px;display:inline-block">'+dateStr+'</span></div>';prevDate=dateStr}var tickHtml=isMine?(msg.read?' <span style="color:#00ffcc">✓✓</span>':' <span style="color:#777">✓✓</span>'):'';var replyHtml='';if(msg.replyTo){replyHtml='<div style="background:rgba(255,255,255,0.08);padding:4px 8px;border-radius:5px;border-left:3px solid #00ffcc;margin-bottom:6px;font-size:11px;color:#ccc">'+escapeHtml(msg.replyTo.text||'📷')+'</div>'}var imageHtml='';if(msg.image){imageHtml='<img src="'+msg.image+'" style="max-width:220px;max-height:220px;border-radius:10px;margin-bottom:6px;display:block;cursor:pointer;border:2px solid #333" onclick="openImageViewer(this.src)">'}var audioHtml='';if(msg.audio){audioHtml='<audio controls preload="none" style="width:200px;height:36px;margin-top:5px" src="'+msg.audio+'"></audio>'}var rowStyle='display:flex!important;visibility:visible!important;opacity:1!important;margin:8px 0;align-items:flex-end;gap:6px;width:100%;padding:0 6px;box-sizing:border-box;'+(isMine?'justify-content:flex-end;':'justify-content:flex-start;');var bubbleStyle='padding:10px 14px;max-width:78%;min-width:60px;min-height:28px;word-wrap:break-word;border-radius:16px;box-sizing:border-box;'+(isMine?'background-color:#005c4b;background:linear-gradient(135deg,#005c4b,#00786a);border:1px solid #00ffcc;color:#fff;border-bottom-right-radius:4px;':'background-color:#2a2f45;background:linear-gradient(135deg,#2a2f45,#32395e);border:1px solid #4a5568;color:#fff;border-bottom-left-radius:4px;');var senderLabel=isMine?'<div style="font-size:10px;color:#7fffd4;margin-bottom:3px;font-weight:bold">You</div>':'<div style="font-size:10px;color:#a0b4ff;margin-bottom:3px;font-weight:bold">'+escapeHtml((msg.from||'User').substring(0,12))+'</div>';html+='<div style="'+rowStyle+'">';if(!isMine)html+='<button style="font-size:14px;padding:4px;background:transparent;border:none;cursor:pointer;opacity:0.5;color:#888" onclick="window._setReplyByIndex('+idx+')">↩</button>';html+='<div style="'+bubbleStyle+'">';html+=senderLabel;html+=replyHtml;html+=imageHtml;html+=audioHtml;if(msg.text)html+='<div style="color:#ffffff!important;font-size:14px;white-space:pre-wrap;line-height:1.4">'+escapeHtml(msg.text)+'</div>';html+='<div style="font-size:10px;color:rgba(255,255,255,0.6);margin-top:5px;text-align:right">'+new Date(msg.timestamp).toLocaleTimeString([],{hour:'2-digit',minute:'2-digit'})+tickHtml+'</div>';html+='</div>';if(isMine){html+='<button style="font-size:14px;padding:4px;background:transparent;border:none;cursor:pointer;opacity:0.5;color:#888" onclick="window._setReplyByIndex('+idx+')">↩</button>';html+='<button style="font-size:14px;padding:4px;background:transparent;border:none;cursor:pointer;opacity:0.6;color:#ff7b7b" onclick="window._deleteMsg(\''+msg._id+'\')" title="Delete">🗑</button>'}html+='</div>'}container.innerHTML=html;container.scrollTop=container.scrollHeight}function markChatAsRead(chatId,msgs){if(!db)return;msgs.forEach(function(m){if(m.from!==myUid&&!m.read)db.ref('chats/'+chatId+'/messages/'+m._id).update({read:true})})}window.sendChatMsg=function(){if(!db||!chatCurrentWith||!myUid){alert('Chat not ready.');return}var input=document.getElementById('chatMsgInput');var text=(input.value||'').trim();if(!text)return;var msgData={from:myUid,text:text,timestamp:Date.now(),read:false};if(replyToMsg){msgData.replyTo={id:replyToMsg.id,text:replyToMsg.text};cancelReply()}var chatId=getChatId(myUid,chatCurrentWith);db.ref('chats/'+chatId+'/messages').push(msgData,function(err){if(err)alert('Message failed: '+err.message);else input.value=''})};window._setReplyByIndex=function(idx){var msg=chatMessagesData[idx];if(!msg)return;replyToMsg={id:msg._id,text:msg.text||(msg.image?'📷':(msg.audio?'🎤':''))};document.getElementById('replyPreview').style.display='block';document.getElementById('replyPreviewText').innerText=replyToMsg.text;document.getElementById('chatMsgInput').focus()};function cancelReply(){replyToMsg=null;document.getElementById('replyPreview').style.display='none'}window.cancelReply=cancelReply;window.handleChatFileUpload=function(e){var file=e.target.files&&e.target.files[0];if(!file||!db||!chatCurrentWith||!myUid)return;var reader=new FileReader();reader.onload=function(ev){var img=new Image();img.onload=function(){var c=document.createElement('canvas');var w=600,h=600,iw=img.width,ih=img.height;if(iw>w){ih*=w/iw;iw=w}if(ih>h){iw*=h/ih;ih=h}c.width=Math.round(iw);c.height=Math.round(ih);c.getContext('2d').drawImage(img,0,0,c.width,c.height);var imageData=c.toDataURL('image/jpeg',0.5);var chatId=getChatId(myUid,chatCurrentWith);db.ref('chats/'+chatId+'/messages').push({from:myUid,text:'',image:imageData,timestamp:Date.now(),read:false},function(err){if(err)alert('Image send failed: '+err.message)})};img.src=ev.target.result};reader.readAsDataURL(file);e.target.value=''};window._deleteMsg=function(msgId){if(!chatListenerRef||!db)return;if(confirm('Delete?'))db.ref('chats/'+chatListenerRef+'/messages/'+msgId).remove()};window.clearChat=function(){if(!chatCurrentWith||!db)return;if(confirm('Delete ALL messages?'))db.ref('chats/'+getChatId(myUid,chatCurrentWith)+'/messages').remove()};window.toggleVoiceNote=function(){if(isRecording)stopVoiceRecording();else startVoiceRecording()};function startVoiceRecording(){navigator.mediaDevices.getUserMedia({audio:true}).then(function(stream){audioChunks=[];mediaRecorder=new MediaRecorder(stream);mediaRecorder.ondataavailable=function(e){audioChunks.push(e.data)};mediaRecorder.onstop=function(){stream.getTracks().forEach(function(t){t.stop()});var blob=new Blob(audioChunks,{type:'audio/webm'});var reader=new FileReader();reader.onload=function(){db.ref('chats/'+getChatId(myUid,chatCurrentWith)+'/messages').push({from:myUid,text:'',audio:reader.result,timestamp:Date.now(),read:false})};reader.readAsDataURL(blob)};mediaRecorder.start();isRecording=true;document.getElementById('voiceNoteBtn').style.background='#ff6b6b';document.getElementById('voiceNoteBtn').innerText='⏹';document.getElementById('recordingStatus').style.display='block';recordingTimer=setInterval(function(){recordingSeconds++;if(recordingSeconds>=60)stopVoiceRecording()},1000)}).catch(function(){alert('Microphone access denied.')})}function stopVoiceRecording(){if(mediaRecorder&&mediaRecorder.state!=='inactive')mediaRecorder.stop();isRecording=false;clearInterval(recordingTimer);recordingSeconds=0;document.getElementById('voiceNoteBtn').style.background='#1a1a1a';document.getElementById('voiceNoteBtn').innerText='🎤';document.getElementById('recordingStatus').style.display='none'}if(document.getElementById('navChat'))document.getElementById('navChat').addEventListener('click',function(e){e.preventDefault();showChatPage()});function initChatOnline(){if(myUid&&db){setOnlineStatus(true);setInterval(function(){if(myUid&&db)setOnlineStatus(true)},30000)}}window.addEventListener('beforeunload',function(){setOnlineStatus(false)});setTimeout(function(){if(myUid&&db)initChatOnline()},500);var _lastUid=null;setInterval(function(){if(myUid!==_lastUid){_lastUid=myUid;if(myUid&&db)initChatOnline()}},500)})();
-</script>
-
-<script>
-(function() {
-  var gateDismissed = false;
-  var gateShown = false;
-  var checkCount = 0;
-  var MAX_CHECKS = 40;
-  function hideAppGate() {
-    gateDismissed = true;
-    gateShown = false;
-    var gate = document.getElementById('appInstallGate');
-    if (gate) gate.style.display = 'none';
-  }
-  function showAppGate() {
-    if (gateDismissed) return;
-    gateShown = true;
-    var gate = document.getElementById('appInstallGate');
-    if (gate) gate.style.display = 'flex';
-  }
-  function isNativeApp() {
-    try {
-      if (window.MedianNative) return true;
-      var ua = (navigator.userAgent || '').toLowerCase();
-      if (ua.indexOf('median')!== -1) return true;
-      if (typeof median!== 'undefined' && typeof median.ready === 'function') return true;
-      var isAndroid = ua.indexOf('android')!== -1;
-      var isWV = ua.indexOf('wv')!== -1 || ua.indexOf('webview')!== -1;
-      var isRegularChrome = ua.indexOf('chrome')!== -1 && ua.indexOf('wv') === -1;
-      if (isAndroid && isWV &&!isRegularChrome) return true;
-      if (window.__MEDIAN__) return true;
-      if (window.__goNativeBridge) return true;
-      var loc = window.location || {};
-      if (loc.protocol === 'file:') return true;
-      if (loc.href && loc.href.indexOf('median://') === 0) return true;
-    } catch(e) {}
-    return false;
-  }
-  if (isNativeApp()) {
-    hideAppGate();
-    return;
-  }
-  var pollInterval = setInterval(function() {
-    checkCount++;
-    if (isNativeApp()) {
-      clearInterval(pollInterval);
-      hideAppGate();
-      return;
-    }
-    if (checkCount >= MAX_CHECKS) {
-      clearInterval(pollInterval);
-      showAppGate();
-    }
-  }, 250);
-  (function tryMedianReady() {
-    try {
-      if (typeof median!== 'undefined' && typeof median.ready === 'function') {
-        median.ready(function() {
-          clearInterval(pollInterval);
-          hideAppGate();
-        });
-      } else if (checkCount < MAX_CHECKS) {
-        setTimeout(tryMedianReady, 300);
-      }
-    } catch(e) {}
-  })();
-  var medianScript = document.querySelector('script[src*="median"]');
-  if (medianScript) {
-    medianScript.onload = function() {
-      setTimeout(function() {
-        if (isNativeApp()) {
-          clearInterval(pollInterval);
-          hideAppGate();
-        }
-      }, 200);
-    };
-  }
-  var safetyInterval = setInterval(function() {
-    if (gateDismissed) {
-      clearInterval(safetyInterval);
-      return;
-    }
-    if (window.MedianNative || isNativeApp()) {
-      clearInterval(safetyInterval);
-      clearInterval(pollInterval);
-      hideAppGate();
-    }
-  }, 500);
-  setTimeout(function() {
-    clearInterval(safetyInterval);
-    clearInterval(pollInterval);
-  }, 60000);
-  var gateEl = document.getElementById('appInstallGate');
-  if (gateEl && typeof MutationObserver!== 'undefined') {
-    var observer = new MutationObserver(function(mutations) {
-      if (gateDismissed && gateEl.style.display!== 'none') {
-        gateEl.style.display = 'none';
-      }
-    });
-    observer.observe(gateEl, { attributes: true, attributeFilter: ['style'] });
-  }
-})();
-</script>
-
-</body>
-</html>
+function register(){try{var user=(document.getElementById("usernameInput").value||"").trim(),networkReg=document.getElementById("networkRegInput").value,phoneDigits=(document.getElementById("phoneInput").value||"").trim(),email=(document.getElementById("emailInput").value||"").trim(),pass=document.getElementById("passwordInput").value||"",agree=document.getElementById("agreeCheck").checked,msgEl=document.getElementById("loginMsg");if(user.length<3){msgEl.innerHTML='<span class="error">Username min 3</span>';return}if(!networkReg){msgEl.innerHTML='<span class="error">Select network</span>';return}var fullPhone=formatMalawiPhone(phoneDigits);if(!isValidMalawiPhone(fullPhone)){msgEl.innerHTML='<span class="error">Invalid Phone</span>';return}if(!email){msgEl.innerHTML='<span class="error">Enter email</span>';return}if(pass.length<6){msgEl.innerHTML='<span class="error">Password min 6</span>';return}if(!agree){msgEl.innerHTML='<span class="error">Must agree</span>';return}if(!isHumanReg){msgEl.innerHTML='<span class="error">⚠ Please slide to verify you are human!</span>';return}msgEl.innerHTML='<span class="success">Creating...</span>';var name=user.replace(/\s+/g,'_').replace(/[.#$\[\]]/g,''),refCode=new URLSearchParams(window.location.search).get('ref');if(refCode){try{localStorage.setItem('refCode',refCode)}catch(e){}}var savedRefCode=localStorage.getItem('refCode')||null;try{localStorage.setItem("user",name);localStorage.setItem("userPhone",fullPhone);localStorage.setItem("network",networkReg)}catch(e){}myUid=name;checkBanStatus();document.getElementById("loginPage").classList.remove("active");document.getElementById("mainNav").style.display="flex";showPage('profile');setTimeout(function(){if(!db)return;var ek=emailToKey(email);mySecret = Math.random().toString(36).substring(2) + Date.now().toString(36);localStorage.setItem('secret', mySecret);db.ref('users/'+name).set({phone:fullPhone,network:networkReg,email:email,created:Date.now(),password:md5(pass),winStreak:0,mwk:0,secret:mySecret});db.ref('email_index/'+ek).set({uid:name});db.ref('leaderboard_all/'+name).once('value',function(sn){if(!sn.exists()){db.ref('leaderboard_all/'+name).set({mwk:0,score:0,gamesPlayed:0,gamesWon:0,gamesLost:0,winStreak:0,referralClaimed:0,banned:false,lastPlayed:Date.now(),displayName:user,phone:fullPhone,network:networkReg});if(savedRefCode&&savedRefCode!==name)db.ref
