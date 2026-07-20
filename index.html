@@ -861,3 +861,327 @@ if(db){
         });
     });
     }
+  /* ===== UNBEATABLE DEPTH 20 FIXED + VERIFY FIXED ===== */
+var transpositionTable = new Map();
+var TT_SIZE_LIMIT = 350000;
+var MAX_DEPTH = 20;
+var TIME_LIMIT = 6000;
+var killerMoves = new Array(64);
+for(var _km=0;_km<64;_km++) killerMoves[_km]=[];
+var historyHeuristic = {};
+var nodesSearched = 0;
+var searchStartTime = 0;
+var zobristTable = [];
+(function initZobrist(){
+  function rnd(){ return Math.floor(Math.random()*2147483647); }
+  for(var i=0;i<64;i++){ zobristTable[i]=[rnd(),rnd(),rnd(),rnd()]; }
+})();
+function boardHash(b){
+  var h=0;
+  for(var i=0;i<64;i++){
+    var p=b[i];
+    if(p!==0){
+      var idx = p===1?0:p===2?1:p===-1?2:3;
+      h ^= zobristTable[i][idx];
+    }
+  }
+  return h;
+}
+function applyMoveToBoard(b, move){
+  var newB = b.slice();
+  var fR = move.from[0], fC = move.from[1];
+  var tR = move.to[0], tC = move.to[1];
+  var p = newB[fR*8+fC];
+  newB[fR*8+fC]=0;
+  newB[tR*8+tC]=p;
+  if(move.captured && move.captured.length>0){
+    for(var i=0;i<move.captured.length;i++){
+      var cap = move.captured[i];
+      newB[cap[0]*8+cap[1]]=0;
+    }
+  }
+  if(p===1 && tR===0) newB[tR*8+tC]=2;
+  if(p===-1 && tR===7) newB[tR*8+tC]=-2;
+  return newB;
+}
+function expandMove(move, b, pl, results, visited){
+  if(results.length>80) return;
+  if(!visited) visited={};
+  var key = move.to[0]+','+move.to[1];
+  if(visited[key]) return;
+  visited[key]=true;
+  var tR=move.to[0], tC=move.to[1];
+  var nextCaptures = getCapturesForPiece(b, tR, tC, pl);
+  if(nextCaptures.length===0){
+    results.push(move);
+    return;
+  }
+  var hasContinuation=false;
+  for(var i=0;i<nextCaptures.length;i++){
+    if(results.length>80) break;
+    var nc = nextCaptures[i];
+    var dup=false;
+    for(var a=0;a<move.captured.length;a++){
+      for(var c=0;c<nc.captured.length;c++){
+        if(move.captured[a][0]===nc.captured[c][0] && move.captured[a][1]===nc.captured[c][1]){dup=true;break;}
+      }
+      if(dup) break;
+    }
+    if(dup) continue;
+    var loop=false;
+    if(move.path){
+      for(var p=0;p<move.path.length;p++){
+        if(move.path[p][0]===nc.to[0] && move.path[p][1]===nc.to[1]){loop=true;break;}
+      }
+    }
+    if(loop) continue;
+    var newB = b.slice();
+    var piece = newB[tR*8+tC];
+    newB[tR*8+tC]=0;
+    newB[nc.to[0]*8+nc.to[1]]=piece;
+    for(var j=0;j<nc.captured.length;j++){
+      var cap=nc.captured[j];
+      newB[cap[0]*8+cap[1]]=0;
+    }
+    var promoted=false;
+    if(pl===1 && nc.to[0]===0 && piece===1){ newB[nc.to[0]*8+nc.to[1]]=2; promoted=true; }
+    if(pl===2 && nc.to[0]===7 && piece===-1){ newB[nc.to[0]*8+nc.to[1]]=-2; promoted=true; }
+    var combined={
+      from: move.from,
+      to: nc.to,
+      captured: move.captured.concat(nc.captured),
+      path: (move.path||[move.from]).concat([nc.to])
+    };
+    if(promoted){
+      results.push(combined);
+    }else{
+      hasContinuation=true;
+      expandMove(combined, newB, pl, results, Object.assign({},visited));
+    }
+  }
+  if(!hasContinuation){
+    results.push(move);
+  }
+}
+function getAllValidMovesForAI(b, pl){
+  var s = pl===1?1:-1;
+  var captures=[];
+  for(var r=0;r<8;r++){
+    for(var c=0;c<8;c++){
+      if(Math.sign(b[r*8+c])===s){
+        var pc=getCapturesForPiece(b,r,c,pl);
+        captures=captures.concat(pc);
+      }
+    }
+  }
+  if(captures.length>0){
+    var expanded=[];
+    for(var i=0;i<captures.length;i++){
+      if(expanded.length>80) break;
+      var init=captures[i];
+      var initBoard=applyMoveToBoard(b, init);
+      var piece=b[init.from[0]*8+init.from[1]];
+      var promoted=false;
+      if(pl===1 && init.to[0]===0 && piece===1) promoted=true;
+      if(pl===2 && init.to[0]===7 && piece===-1) promoted=true;
+      if(promoted){
+        expanded.push({from:init.from,to:init.to,captured:init.captured,path:[init.from,init.to]});
+      }else{
+        expandMove({from:init.from,to:init.to,captured:init.captured,path:[init.from,init.to]}, initBoard, pl, expanded);
+      }
+    }
+    return expanded;
+  }
+  var simple=[];
+  for(var r=0;r<8;r++){
+    for(var c=0;c<8;c++){
+      if(Math.sign(b[r*8+c])===s){
+        var sm=getSimpleMovesForPiece(b,r,c,pl);
+        for(var k=0;k<sm.length;k++){
+          simple.push({from:sm[k].from,to:sm[k].to,captured:[],path:[sm[k].from,sm[k].to]});
+        }
+      }
+    }
+  }
+  return simple;
+}
+function getAllCapturesForAI(b, pl){
+  var s=pl===1?1:-1;
+  var caps=[];
+  for(var r=0;r<8;r++){
+    for(var c=0;c<8;c++){
+      if(Math.sign(b[r*8+c])===s){
+        caps=caps.concat(getCapturesForPiece(b,r,c,pl));
+      }
+    }
+  }
+  var expanded=[];
+  for(var i=0;i<caps.length;i++){
+    if(expanded.length>80) break;
+    var init=caps[i];
+    var initBoard=applyMoveToBoard(b,init);
+    var piece=b[init.from[0]*8+init.from[1]];
+    var promoted=false;
+    if(pl===1 && init.to[0]===0 && piece===1) promoted=true;
+    if(pl===2 && init.to[0]===7 && piece===-1) promoted=true;
+    if(promoted){
+      expanded.push({from:init.from,to:init.to,captured:init.captured,path:[init.from,init.to]});
+    }else{
+      expandMove({from:init.from,to:init.to,captured:init.captured,path:[init.from,init.to]}, initBoard, pl, expanded);
+    }
+  }
+  return expanded;
+}
+function scoreMove(move, pl, depth, ttMove){
+  if(ttMove && move.from[0]===ttMove.from[0] && move.from[1]===ttMove.from[1] && move.to[0]===ttMove.to[0] && move.to[1]===ttMove.to[1]) return 10000000;
+  if(move.captured && move.captured.length>0) return 900000 + move.captured.length*10000;
+  if(pl===2 && move.to[0]===7) return 850000;
+  if(pl===1 && move.to[0]===0) return 850000;
+  return 0;
+}
+function evaluateBoard(b, turn){
+  var score=0;
+  var p1P=0,p2P=0;
+  for(var i=0;i<64;i++){
+    var p=b[i]; if(p===0) continue;
+    var r=Math.floor(i/8), c=i%8;
+    var isKing=Math.abs(p)===2;
+    var base = isKing?420:100;
+    if(p>0){ base += (7-r)*7; p1P++; } else { base += r*7; p2P++; }
+    if(r>=2 && r<=5 && c>=2 && c<=5) base+= isKing?12:18;
+    if(p>0) score+=base; else score-=base;
+  }
+  if(p2P===0) score+=20000;
+  if(p1P===0) score-=20000;
+  return score;
+}
+function quiescenceSearch(b, alpha, beta, isMaximizing, depth){
+  nodesSearched++;
+  if(Date.now()-searchStartTime > TIME_LIMIT-300) return evaluateBoard(b, isMaximizing?1:2);
+  if(depth<=-10) return evaluateBoard(b, isMaximizing?1:2);
+  var standPat = evaluateBoard(b, isMaximizing?1:2);
+  if(isMaximizing){
+    if(standPat>=beta) return beta;
+    if(alpha<standPat) alpha=standPat;
+  }else{
+    if(standPat<=alpha) return alpha;
+    if(beta>standPat) beta=standPat;
+  }
+  var moves=getAllCapturesForAI(b, isMaximizing?1:2);
+  if(moves.length===0) return standPat;
+  for(var i=0;i<moves.length;i++){
+    var newB=applyMoveToBoard(b,moves[i]);
+    var score=quiescenceSearch(newB, alpha, beta,!isMaximizing, depth-1);
+    if(isMaximizing){
+      if(score>=beta) return beta;
+      if(score>alpha) alpha=score;
+    }else{
+      if(score<=alpha) return alpha;
+      if(score<beta) beta=score;
+    }
+  }
+  return isMaximizing?alpha:beta;
+}
+function minimax(b, depth, alpha, beta, isMaximizing, ply){
+  nodesSearched++;
+  if(nodesSearched % 1024===0 && Date.now()-searchStartTime > TIME_LIMIT-300){
+    return evaluateBoard(b, isMaximizing?1:2);
+  }
+  var hash=boardHash(b);
+  var ttEntry=transpositionTable.get(hash);
+  if(ttEntry && ttEntry.depth>=depth){
+    if(ttEntry.flag==='exact') return ttEntry.score;
+    if(ttEntry.flag==='lowerbound' && ttEntry.score>=beta) return ttEntry.score;
+    if(ttEntry.flag==='upperbound' && ttEntry.score<=alpha) return ttEntry.score;
+  }
+  var player=isMaximizing?1:2;
+  var moves=getAllValidMovesForAI(b, player);
+  if(moves.length===0) return isMaximizing? -15000+ply : 15000-ply;
+  if(depth<=0){
+    return quiescenceSearch(b, alpha, beta, isMaximizing, 0);
+  }
+  var bestScore=isMaximizing? -Infinity:Infinity;
+  var oldAlpha=alpha, oldBeta=beta;
+  for(var i=0;i<moves.length;i++){
+    var newB=applyMoveToBoard(b,moves[i]);
+    var score=minimax(newB, depth-1, alpha, beta,!isMaximizing, ply+1);
+    if(isMaximizing){
+      if(score>bestScore) bestScore=score;
+      alpha=Math.max(alpha,score);
+    }else{
+      if(score<bestScore) bestScore=score;
+      beta=Math.min(beta,score);
+    }
+    if(beta<=alpha) break;
+  }
+  var flag='exact';
+  if(bestScore<=oldAlpha) flag='upperbound';
+  else if(bestScore>=oldBeta) flag='lowerbound';
+  if(transpositionTable.size>TT_SIZE_LIMIT) transpositionTable.clear();
+  transpositionTable.set(hash,{score:bestScore,depth:depth,flag:flag});
+  return bestScore;
+}
+function iterativeDeepening(b, maxDepth, timeLimit, forcedR, forcedC){
+  searchStartTime=Date.now();
+  nodesSearched=0;
+  var moves;
+  if(forcedR>=0){
+    var caps=getCapturesForPiece(b,forcedR,forcedC,2);
+    var expanded=[];
+    for(var i=0;i<caps.length;i++) expandMove({from:caps[i].from,to:caps[i].to,captured:caps[i].captured,path:[caps[i].from,caps[i].to]}, applyMoveToBoard(b,caps[i]), 2, expanded);
+    moves=expanded;
+  }else{
+    moves=getAllValidMovesForAI(b,2);
+  }
+  if(moves.length===0) return null;
+  if(moves.length===1) return moves[0];
+  var bestMove=moves[0];
+  for(var depth=1;depth<=maxDepth;depth++){
+    if(Date.now()-searchStartTime > timeLimit-400) break;
+    var currentBest=null;
+    var bestScore=Infinity;
+    var alpha=-Infinity, beta=Infinity;
+    for(var i=0;i<moves.length;i++){
+      if(Date.now()-searchStartTime > timeLimit-300) break;
+      var newB=applyMoveToBoard(b,moves[i]);
+      var score=minimax(newB, depth-1, alpha, beta, true, 0);
+      if(score<bestScore){ bestScore=score; currentBest=moves[i]; }
+      beta=Math.min(beta,score);
+    }
+    if(currentBest) bestMove=currentBest;
+  }
+  return bestMove;
+}
+function botMakeMove(){
+  if(!gameState || gameState.turn!==2 || gameState.p2!=='Mada_Bot') return;
+  try{
+    var board=gameState.board.slice();
+    var bestMove=null;
+    if(gameState.selected && gameState.validMoves && gameState.validMoves.length>0){
+      var fR=gameState.selected[0], fC=gameState.selected[1];
+      var caps=getCapturesForPiece(board,fR,fC,2);
+      var expanded=[];
+      for(var i=0;i<caps.length;i++){
+        var init=caps[i];
+        var initBoard=applyMoveToBoard(board,init);
+        var piece=board[fR*8+fC];
+        var promoted=false;
+        if(init.to[0]===7 && piece===-1) promoted=true;
+        if(promoted){
+          expanded.push({from:[fR,fC],to:init.to,captured:init.captured,path:[[fR,fC],init.to]});
+        }else{
+          expandMove({from:[fR,fC],to:init.to,captured:init.captured,path:[[fR,fC],init.to]}, initBoard, 2, expanded);
+        }
+      }
+      if(expanded.length>0) bestMove=expanded[0];
+      var firstTo=bestMove.path?bestMove.path[1]:bestMove.to;
+      makePvPMove(bestMove.from[0],bestMove.from[1],firstTo[0],firstTo[1]);
+      return;
+    }
+    bestMove=iterativeDeepening(board, MAX_DEPTH, TIME_LIMIT, -1, -1);
+    if(bestMove){
+      var firstTo=bestMove.path?bestMove.path[1]:bestMove.to;
+      makePvPMove(bestMove.from[0],bestMove.from[1],firstTo[0],firstTo[1]);
+    }
+  }catch(e){ console.error("AI Error:", e); }
+    }                         
