@@ -1201,7 +1201,7 @@ function expandMove(move, b, pl, results) {
             if (wasPromoted) {
                 results.push(combinedMove);
             } else {
-                expandMove(combinedMove, newB, pl, results);
+                expandMove(combinedMove, newB, pl, expanded);
             }
         }
     }
@@ -2046,4 +2046,4 @@ document.addEventListener('DOMContentLoaded',function(){
 </script>
 
 </body>
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                  </html>
+    </html> 
