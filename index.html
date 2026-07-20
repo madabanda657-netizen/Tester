@@ -56,7 +56,7 @@
 .legal-modal{display:none;position:fixed;top:0;left:0;width:100%;height:100%;background:rgba(0,0,0,0.9);z-index:10000;align-items:center;justify-content:center;padding:20px}.legal-modal-content{background:#111;border:1px solid #00ffcc44;border-radius:15px;padding:20px;max-width:500px;width:100%;max-height:80vh;overflow-y:auto;text-align:left;color:#ccc;font-size:13px;line-height:1.6}.legal-modal-content h2{color:#00ffcc;margin-bottom:15px;text-align:center}
 .wa-float{position:fixed;bottom:80px;right:15px;width:55px;height:55px;background:#25d366;border-radius:50%;display:none;align-items:center;justify-content:center;box-shadow:0 4px 12px rgba(37,211,102,.4);z-index:99;text-decoration:none}.wa-float:hover{transform:scale(1.1)}.wa-float svg{width:28px;height:28px;fill:#fff}
 .inbox-item { padding: 10px; border-radius: 10px; margin-bottom: 8px; display: flex; flex-direction: column; gap: 5px; }
-.inbox-meta { font-size: 10px; color: #888; display: flex; justify-content: space-between; }
+.inbox-meta { font-size: 10px; color: #888; display: flex; justify-content:space-between; }
 .inbox-file { background: #1a1a2e; padding: 6px 12px; border-radius: 8px; color: #00ccff; font-size: 13px; text-decoration: none; display: inline-block; margin-top: 5px; border: 1px solid #00ccff33; }
 .inbox-img { max-width: 100%; max-height: 150px; border-radius: 8px; margin-top: 5px; cursor: pointer; }
 .notification-dot { width: 8px; height: 8px; background: #ff6b6b; border-radius: 50%; display: inline-block; vertical-align: middle; margin-left: 4px; }
@@ -946,7 +946,7 @@ function renderPvPBoard(){
 
     if (gameState.p2 === 'Mada_Bot' && gameState.turn === 2 && gameState.status === 'playing' && !botThinking) {
         botThinking = true;
-        setTimeout(botMakeMove, 1000);
+        setTimeout(botMakeMove, 800);
     }
 }
 
@@ -1110,11 +1110,12 @@ function makePvPMove(fR,fC,tR,tC){
     db.ref('pvp_games/'+currentGameId).update(u);
 }
 
-/* ===== UNBEATABLE GOD AI ENGINE (Depth 24, Advanced Traps, Zero Mistakes) ===== */
+/* ===== UNBEATABLE GOD AI ENGINE (Depth 22, Advanced Traps, Zero Mistakes) ===== */
 var transpositionTable = new Map();
-var TT_SIZE_LIMIT = 500000;
-var MAX_DEPTH = 24; 
-var TIME_LIMIT = 3500; // 3.5 seconds max thinking time
+var TT_SIZE_LIMIT = 300000;
+var MAX_DEPTH = 22; 
+var TIME_LIMIT = 2000; 
+var startTime = 0;
 var killerMoves = [];
 var historyHeuristic = {};
 
@@ -1159,21 +1160,16 @@ function expandMove(move, b, pl, results) {
             
             var alreadyCaptured = false;
             for (var j = 0; j < move.captured.length; j++) {
-                for (var k = 0; k < nc.captured.length; k++) {
-                    if (move.captured[j][0] === nc.captured[k][0] && move.captured[j][1] === nc.captured[k][1]) {
-                        alreadyCaptured = true;
-                        break;
-                    }
+                if (move.captured[j][0] === nc.captured[0][0] && move.captured[j][1] === nc.captured[0][1]) {
+                    alreadyCaptured = true; break;
                 }
-                if (alreadyCaptured) break;
             }
             if (alreadyCaptured) continue;
             
             var alreadyVisited = false;
             for (var j = 0; j < move.path.length; j++) {
                 if (move.path[j][0] === nc.to[0] && move.path[j][1] === nc.to[1]) {
-                    alreadyVisited = true;
-                    break;
+                    alreadyVisited = true; break;
                 }
             }
             if (alreadyVisited) continue;
@@ -1201,7 +1197,7 @@ function expandMove(move, b, pl, results) {
             if (wasPromoted) {
                 results.push(combinedMove);
             } else {
-                expandMove(combinedMove, newB, pl, results); // FIXED
+                expandMove(combinedMove, newB, pl, results);
             }
         }
     }
@@ -1238,9 +1234,6 @@ function getAllValidMovesForAI(b, pl) {
                 expandMove(initialMove, initialBoard, pl, expanded);
             }
         }
-        expanded.sort(function(a, b2) {
-            return b2.captured.length - a.captured.length;
-        });
         return expanded;
     }
     
@@ -1251,10 +1244,6 @@ function getAllValidMovesForAI(b, pl) {
             }
         }
     }
-    
-    simpleMoves.sort(function(a, b2) {
-        return scoreMove(b2, pl, 0, null) - scoreMove(a, pl, 0, null);
-    });
     
     return simpleMoves;
 }
@@ -1288,59 +1277,7 @@ function getAllCapturesForAI(b, pl) {
         }
     }
     
-    expanded.sort(function(a, b2) {
-        return b2.captured.length - a.captured.length;
-    });
     return expanded;
-}
-
-function scoreMove(move, pl, depth, ttMove) {
-    var score = 0;
-    
-    if (ttMove && move.from[0] === ttMove.from[0] && move.from[1] === ttMove.from[1] 
-        && move.to[0] === ttMove.to[0] && move.to[1] === ttMove.to[1]) {
-        return 10000000;
-    }
-    
-    if (move.captured && move.captured.length > 0) {
-        return 900000 + move.captured.length * 1000;
-    }
-    
-    if (depth < killerMoves.length && killerMoves[depth]) {
-        for (var i=0; i<killerMoves[depth].length; i++) {
-            var km = killerMoves[depth][i];
-            if (km && move.from[0] === km.from[0] && move.from[1] === km.from[1] 
-                && move.to[0] === km.to[0] && move.to[1] === km.to[1]) {
-                return 800000;
-            }
-        }
-    }
-    
-    var histKey = move.from[0] + ',' + move.from[1] + ',' + move.to[0] + ',' + move.to[1];
-    if (historyHeuristic[histKey]) {
-        score += Math.min(historyHeuristic[histKey] * 100, 50000);
-    }
-    
-    if (move.to[1] >= 2 && move.to[1] <= 5) score += 10;
-    if (pl === 2 && move.to[0] > 3) score += 15;
-    if (pl === 2 && move.to[0] >= 6) score += 20;
-    
-    return score;
-}
-
-function updateHistory(move, depth) {
-    var histKey = move.from[0] + ',' + move.from[1] + ',' + move.to[0] + ',' + move.to[1];
-    if (!historyHeuristic[histKey]) historyHeuristic[histKey] = 0;
-    historyHeuristic[histKey] += depth * depth;
-}
-
-function boardHash(b) {
-    var hash = 5381;
-    for (var i = 0; i < 64; i++) {
-        hash = ((hash << 5) + hash) + b[i];
-        hash = hash & hash;
-    }
-    return hash;
 }
 
 function countAllMovesFast(b, pl) {
@@ -1480,7 +1417,60 @@ function quiescenceSearch(b, alpha, beta, isMaximizing, depth) {
     return isMaximizing ? alpha : beta;
 }
 
+function scoreMove(move, pl, depth, ttMove) {
+    var score = 0;
+    
+    if (ttMove && move.from[0] === ttMove.from[0] && move.from[1] === ttMove.from[1] 
+        && move.to[0] === ttMove.to[0] && move.to[1] === ttMove.to[1]) {
+        return 10000000;
+    }
+    
+    if (move.captured && move.captured.length > 0) {
+        return 900000 + move.captured.length * 1000;
+    }
+    
+    if (depth < killerMoves.length && killerMoves[depth]) {
+        for (var i=0; i<killerMoves[depth].length; i++) {
+            var km = killerMoves[depth][i];
+            if (km && move.from[0] === km.from[0] && move.from[1] === km.from[1] 
+                && move.to[0] === km.to[0] && move.to[1] === km.to[1]) {
+                return 800000;
+            }
+        }
+    }
+    
+    var histKey = move.from[0] + ',' + move.from[1] + ',' + move.to[0] + ',' + move.to[1];
+    if (historyHeuristic[histKey]) {
+        score += Math.min(historyHeuristic[histKey] * 100, 50000);
+    }
+    
+    if (move.to[1] >= 2 && move.to[1] <= 5) score += 10;
+    if (pl === 2 && move.to[0] > 3) score += 15;
+    if (pl === 2 && move.to[0] >= 6) score += 20;
+    
+    return score;
+}
+
+function updateHistory(move, depth) {
+    var histKey = move.from[0] + ',' + move.from[1] + ',' + move.to[0] + ',' + move.to[1];
+    if (!historyHeuristic[histKey]) historyHeuristic[histKey] = 0;
+    historyHeuristic[histKey] += depth * depth;
+}
+
+function boardHash(b) {
+    var hash = 5381;
+    for (var i = 0; i < 64; i++) {
+        hash = ((hash << 5) + hash) + b[i];
+        hash = hash & hash;
+    }
+    return hash;
+}
+
 function minimax(b, depth, alpha, beta, isMaximizing, ply) {
+    if (Date.now() - startTime > TIME_LIMIT) {
+        return evaluateBoard(b, isMaximizing ? 1 : 2);
+    }
+    
     var hash = boardHash(b);
     var ttEntry = transpositionTable.get(hash);
     var ttMove = null;
@@ -1555,7 +1545,7 @@ function minimax(b, depth, alpha, beta, isMaximizing, ply) {
 }
 
 function iterativeDeepening(b, maxDepth, timeLimit, forcedR, forcedC) {
-    var startTime = Date.now();
+    startTime = Date.now();
     var bestMove = null;
     var currentBest = null;
     
