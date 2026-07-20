@@ -822,11 +822,42 @@ if(db){
                     db.ref('leaderboard_all/' + p1).update({mwk: b1 - entryMWK}, function(e1) {
                         if(e1) { db.ref('pvp_queue/' + gid + '/' + p2).set({timestamp: Date.now(), entryMWK: entryMWK}); return; }
                         db.ref('leaderboard_all/' + p2 + '/mwk').once('value', function(s2) {
-                            var b2 = s2.val() || 0;
-                            if(b2 < entryMWK) {
-                                db.ref('leaderboard_all/' + p1 + '/mwk').once('value', function(s1b) { db.ref('leaderboard_all/' + p1).update({mwk: (s1b.val() || 0) + entryMWK}) });
-                                db.ref('pvp_queue/' + gid + '/' + p1).set({timestamp: Date.now(), entryMWK: entryMWK});
-                                return;
+                                                var b2 = s2.val() || 0;
+                    if(b2 < entryMWK) {
+                        db.ref('leaderboard_all/' + p1 + '/mwk').once('value', function(s1b) { db.ref('leaderboard_all/' + p1).update({mwk: (s1b.val() || 0) + entryMWK}) });
+                        db.ref('pvp_queue/' + gid + '/' + p1).set({timestamp: Date.now(), entryMWK: entryMWK});
+                        return;
+                    }
+                    db.ref('leaderboard_all/' + p2).update({mwk: b2 - entryMWK}, function(e2) {
+                        if(e2) { db.ref('pvp_queue/' + gid + '/' + p1).set({timestamp: Date.now(), entryMWK: entryMWK}); return; }
+                        var ib = [];
+                        for(var r=0; r<8; r++) {
+                            for(var c=0; c<8; c++) {
+                                ib.push((r+c)%2 && r<3? -1 : (r+c)%2 && r>4? 1 : 0);
                             }
-                            db.ref('leaderboard_all/' + p2).update({mwk: b2 - entryMWK}, function(e2) {
-                                if(e2
+                        }
+                        db.ref('pvp_games/'+gameId).transaction(function(data){
+                            if(data === null){
+                                return {
+                                    p1: p1,
+                                    p2: p2,
+                                    gradeId: parseInt(gid),
+                                    winMWK: gd.winMWK,
+                                    entryMWK: entryMWK,
+                                    board: ib,
+                                    turn: 1,
+                                    status: 'playing',
+                                    winner: null,
+                                    created: Date.now(),
+                                    drawCounter: 0,
+                                    drawTargetPlayer: 0
+                                };
+                            }
+                            return data;
+                        });
+                    });
+                });
+            });
+        });
+    });
+    }
