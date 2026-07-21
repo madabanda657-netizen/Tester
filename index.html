@@ -1,16 +1,1780 @@
 <!DOCTYPE html>
-<html><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1">
-<title>MADA CHECKER MALAWI DEPTH 24</title>
-<script src="https://cdn.tailwindcss.com"></script>
-<script crossorigin src="https://unpkg.com/react@18/umd/react.production.min.js"></script>
-<script crossorigin src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js"></script>
-<script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
-</head><body><div id="root"></div>
-<script type="text/babel">
-// FULL ENGINE CODE - Paste the complete code from my build
-// Board 8x8, getManCaptures 4 dirs, getKingCaptures flying scan,
-// getAllCaptures max rule, getQuietMoves, evaluate, negamax depth 24,
-// findBestMove iterative deepening, App with auth, tabs PLAY/WALLET/RULES,
-// deposit/withdraw modals, localStorage for user/balance/tx
-// See full implementation in canvas above - 800+ lines
-</script></body></html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Mada Checker - Malawi Checkers</title>
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Rajdhani:wght@300;400;600;700&display=swap" rel="stylesheet" />
+    <!-- Firebase Compat (non-module, works in all browsers) -->
+    <script src="https://www.gstatic.com/firebasejs/11.0.0/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/11.0.0/firebase-auth-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/11.0.0/firebase-firestore-compat.js"></script>
+    <style>
+        /* ===== RESET & BASE ===== */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        :root {
+            --primary: #00f0ff;
+            --primary-dark: #00b8c9;
+            --secondary: #ff6b35;
+            --bg-dark: #0a0e17;
+            --bg-card: #111927;
+            --bg-board: #1a2332;
+            --text-light: #e8f0fe;
+            --text-muted: #8899bb;
+            --gold: #f7d44a;
+            --green: #00e676;
+            --red: #ff1744;
+            --shadow: 0 8px 32px rgba(0, 240, 255, 0.08);
+            --radius: 16px;
+            --transition: 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+        html,
+        body {
+            height: 100%;
+            font-family: 'Rajdhani', sans-serif;
+            background: var(--bg-dark);
+            color: var(--text-light);
+            overflow-x: hidden;
+            scroll-behavior: smooth;
+        }
+        a {
+            color: var(--primary);
+            text-decoration: none;
+        }
+        button {
+            cursor: pointer;
+            font-family: inherit;
+            border: none;
+            outline: none;
+        }
+        input {
+            font-family: inherit;
+            outline: none;
+            border: none;
+        }
+        ::-webkit-scrollbar {
+            width: 6px;
+        }
+        ::-webkit-scrollbar-track {
+            background: var(--bg-dark);
+        }
+        ::-webkit-scrollbar-thumb {
+            background: var(--primary);
+            border-radius: 10px;
+        }
+
+        /* ===== GLOW ANIMATIONS ===== */
+        @keyframes glow {
+            0%,
+            100% {
+                text-shadow: 0 0 10px var(--primary), 0 0 20px var(--primary-dark);
+            }
+            50% {
+                text-shadow: 0 0 20px var(--primary), 0 0 40px var(--primary-dark), 0 0 60px var(--primary);
+            }
+        }
+        @keyframes pulse {
+            0%,
+            100% {
+                opacity: 1;
+            }
+            50% {
+                opacity: 0.5;
+            }
+        }
+        @keyframes slideUp {
+            from {
+                opacity: 0;
+                transform: translateY(40px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        /* ===== LAYOUT ===== */
+        .app-container {
+            display: none;
+            min-height: 100vh;
+            background: var(--bg-dark);
+            padding: 20px;
+        }
+        .app-container.active {
+            display: block;
+        }
+
+        /* ===== AUTH PAGES ===== */
+        .auth-page {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            min-height: 100vh;
+            background: radial-gradient(ellipse at center, #0d1a2b 0%, #060a12 100%);
+            padding: 20px;
+        }
+        .auth-box {
+            background: var(--bg-card);
+            border-radius: var(--radius);
+            padding: 48px 40px;
+            width: 100%;
+            max-width: 420px;
+            border: 1px solid rgba(0, 240, 255, 0.12);
+            box-shadow: var(--shadow);
+            animation: slideUp 0.6s ease;
+        }
+        .auth-box .logo {
+            text-align: center;
+            margin-bottom: 32px;
+        }
+        .auth-box .logo h1 {
+            font-family: 'Orbitron', monospace;
+            font-size: 28px;
+            font-weight: 900;
+            color: var(--primary);
+            animation: glow 3s infinite;
+            letter-spacing: 2px;
+        }
+        .auth-box .logo p {
+            color: var(--text-muted);
+            font-size: 14px;
+            margin-top: 4px;
+            letter-spacing: 4px;
+            text-transform: uppercase;
+        }
+        .auth-box .form-group {
+            margin-bottom: 18px;
+        }
+        .auth-box .form-group label {
+            display: block;
+            font-size: 13px;
+            font-weight: 600;
+            color: var(--text-muted);
+            margin-bottom: 6px;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+        }
+        .auth-box .form-group input,
+        .auth-box .form-group select {
+            width: 100%;
+            padding: 14px 16px;
+            background: rgba(255, 255, 255, 0.04);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            border-radius: 10px;
+            color: var(--text-light);
+            font-size: 16px;
+            transition: var(--transition);
+        }
+        .auth-box .form-group input:focus,
+        .auth-box .form-group select:focus {
+            border-color: var(--primary);
+            box-shadow: 0 0 0 3px rgba(0, 240, 255, 0.15);
+            background: rgba(255, 255, 255, 0.06);
+        }
+        .auth-box .form-group select option {
+            background: var(--bg-dark);
+            color: var(--text-light);
+        }
+        .auth-btn {
+            width: 100%;
+            padding: 16px;
+            background: linear-gradient(135deg, var(--primary), var(--primary-dark));
+            color: #000;
+            font-weight: 700;
+            font-size: 18px;
+            border-radius: 10px;
+            transition: var(--transition);
+            letter-spacing: 1px;
+            text-transform: uppercase;
+            margin-top: 8px;
+        }
+        .auth-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 30px rgba(0, 240, 255, 0.3);
+        }
+        .auth-btn:disabled {
+            opacity: 0.6;
+            transform: none;
+            cursor: not-allowed;
+        }
+        .auth-link {
+            text-align: center;
+            margin-top: 20px;
+            color: var(--text-muted);
+            font-size: 14px;
+        }
+        .auth-link span {
+            color: var(--primary);
+            font-weight: 600;
+            cursor: pointer;
+            transition: var(--transition);
+        }
+        .auth-link span:hover {
+            text-shadow: 0 0 10px var(--primary);
+        }
+        .auth-error {
+            background: rgba(255, 23, 68, 0.12);
+            border: 1px solid var(--red);
+            color: var(--red);
+            padding: 10px 14px;
+            border-radius: 8px;
+            font-size: 14px;
+            margin-bottom: 16px;
+            display: none;
+        }
+        .auth-error.show {
+            display: block;
+        }
+
+        /* ===== TOP BAR ===== */
+        .top-bar {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 12px 24px;
+            background: var(--bg-card);
+            border-radius: var(--radius);
+            border: 1px solid rgba(255, 255, 255, 0.04);
+            margin-bottom: 24px;
+            flex-wrap: wrap;
+            gap: 12px;
+        }
+        .top-bar .brand {
+            font-family: 'Orbitron', monospace;
+            font-size: 20px;
+            font-weight: 700;
+            color: var(--primary);
+            letter-spacing: 1px;
+        }
+        .top-bar .brand small {
+            font-size: 12px;
+            color: var(--text-muted);
+            font-family: 'Rajdhani', sans-serif;
+            font-weight: 400;
+            letter-spacing: 2px;
+        }
+        .top-bar .user-info {
+            display: flex;
+            align-items: center;
+            gap: 18px;
+            flex-wrap: wrap;
+        }
+        .top-bar .user-info .balance {
+            background: rgba(0, 240, 255, 0.08);
+            padding: 6px 18px;
+            border-radius: 30px;
+            border: 1px solid rgba(0, 240, 255, 0.15);
+            font-weight: 700;
+            font-size: 18px;
+            color: var(--gold);
+        }
+        .top-bar .user-info .balance i {
+            margin-right: 8px;
+            color: var(--gold);
+        }
+        .top-bar .user-info .username {
+            font-weight: 600;
+            color: var(--text-light);
+        }
+        .top-bar .user-info .logout-btn {
+            background: rgba(255, 23, 68, 0.12);
+            color: var(--red);
+            padding: 6px 16px;
+            border-radius: 30px;
+            font-weight: 600;
+            font-size: 13px;
+            transition: var(--transition);
+            border: 1px solid transparent;
+        }
+        .top-bar .user-info .logout-btn:hover {
+            background: rgba(255, 23, 68, 0.2);
+            border-color: var(--red);
+        }
+
+        /* ===== NAV TABS ===== */
+        .nav-tabs {
+            display: flex;
+            gap: 6px;
+            background: var(--bg-card);
+            border-radius: var(--radius);
+            padding: 6px;
+            margin-bottom: 24px;
+            border: 1px solid rgba(255, 255, 255, 0.04);
+            flex-wrap: wrap;
+        }
+        .nav-tabs .tab {
+            padding: 10px 24px;
+            border-radius: 10px;
+            font-weight: 600;
+            font-size: 15px;
+            color: var(--text-muted);
+            transition: var(--transition);
+            background: transparent;
+            flex: 1;
+            min-width: 100px;
+            text-align: center;
+            letter-spacing: 0.5px;
+        }
+        .nav-tabs .tab:hover {
+            color: var(--text-light);
+            background: rgba(255, 255, 255, 0.04);
+        }
+        .nav-tabs .tab.active {
+            background: linear-gradient(135deg, var(--primary), var(--primary-dark));
+            color: #000;
+            box-shadow: 0 4px 20px rgba(0, 240, 255, 0.2);
+        }
+        .nav-tabs .tab i {
+            margin-right: 8px;
+        }
+
+        /* ===== PANELS ===== */
+        .panel {
+            display: none;
+            animation: slideUp 0.4s ease;
+        }
+        .panel.active {
+            display: block;
+        }
+
+        /* ===== GAME PANEL ===== */
+        .game-layout {
+            display: grid;
+            grid-template-columns: 1fr 320px;
+            gap: 24px;
+        }
+        @media (max-width: 900px) {
+            .game-layout {
+                grid-template-columns: 1fr;
+            }
+        }
+        .board-wrapper {
+            background: var(--bg-card);
+            border-radius: var(--radius);
+            padding: 24px;
+            border: 1px solid rgba(255, 255, 255, 0.04);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+        .board-wrapper .board-header {
+            display: flex;
+            justify-content: space-between;
+            width: 100%;
+            margin-bottom: 16px;
+            font-size: 14px;
+            color: var(--text-muted);
+            font-weight: 600;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+        }
+        .board-wrapper .board-header .turn-indicator {
+            color: var(--primary);
+        }
+        .board-wrapper .board-header .turn-indicator .highlight {
+            color: var(--gold);
+        }
+        .board-container {
+            position: relative;
+            width: 100%;
+            max-width: 560px;
+            aspect-ratio: 1/1;
+        }
+        #checkerBoard {
+            width: 100%;
+            height: 100%;
+            display: grid;
+            grid-template-columns: repeat(8, 1fr);
+            grid-template-rows: repeat(8, 1fr);
+            border-radius: 8px;
+            overflow: hidden;
+            border: 3px solid rgba(255, 255, 255, 0.06);
+            background: #1a1a2e;
+        }
+        .cell {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+            transition: background 0.15s;
+            aspect-ratio: 1/1;
+        }
+        .cell.light {
+            background: #e8d5b5;
+        }
+        .cell.dark {
+            background: #1a2a3a;
+        }
+        .cell.highlight {
+            background: rgba(0, 240, 255, 0.25) !important;
+            cursor: pointer;
+        }
+        .cell.last-move {
+            background: rgba(255, 215, 0, 0.15) !important;
+        }
+        .piece {
+            width: 78%;
+            height: 78%;
+            border-radius: 50%;
+            position: relative;
+            cursor: pointer;
+            transition: all 0.2s;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.5);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 24px;
+            font-weight: 700;
+            user-select: none;
+        }
+        .piece.black-piece {
+            background: radial-gradient(circle at 35% 35%, #555, #111);
+            border: 2px solid #333;
+            color: #888;
+        }
+        .piece.white-piece {
+            background: radial-gradient(circle at 35% 35%, #fff, #ccc);
+            border: 2px solid #aaa;
+            color: #666;
+        }
+        .piece.king::after {
+            content: '♛';
+            position: absolute;
+            font-size: 28px;
+            color: var(--gold);
+            text-shadow: 0 0 12px rgba(247, 212, 74, 0.6);
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+        }
+        .piece.selected {
+            transform: scale(1.12);
+            box-shadow: 0 0 30px rgba(0, 240, 255, 0.6);
+            border-color: var(--primary);
+        }
+        .piece.can-capture {
+            animation: pulse 1s infinite;
+            border-color: var(--red);
+        }
+        .piece.animate-move {
+            animation: pieceMove 0.3s ease;
+        }
+        @keyframes pieceMove {
+            0% {
+                transform: scale(0.6);
+                opacity: 0.5;
+            }
+            100% {
+                transform: scale(1);
+                opacity: 1;
+            }
+        }
+
+        /* ===== GAME SIDEBAR ===== */
+        .game-sidebar {
+            display: flex;
+            flex-direction: column;
+            gap: 16px;
+        }
+        .game-sidebar .card {
+            background: var(--bg-card);
+            border-radius: var(--radius);
+            padding: 20px;
+            border: 1px solid rgba(255, 255, 255, 0.04);
+        }
+        .game-sidebar .card h3 {
+            font-size: 14px;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            color: var(--text-muted);
+            margin-bottom: 12px;
+            font-weight: 600;
+        }
+        .game-sidebar .card .stat {
+            display: flex;
+            justify-content: space-between;
+            padding: 6px 0;
+            font-size: 15px;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.04);
+        }
+        .game-sidebar .card .stat:last-child {
+            border-bottom: none;
+        }
+        .game-sidebar .card .stat .label {
+            color: var(--text-muted);
+        }
+        .game-sidebar .card .stat .value {
+            font-weight: 700;
+            color: var(--text-light);
+        }
+        .game-sidebar .card .stat .value.gold {
+            color: var(--gold);
+        }
+        .game-sidebar .card .stat .value.green {
+            color: var(--green);
+        }
+        .game-sidebar .card .stat .value.red {
+            color: var(--red);
+        }
+        .game-sidebar .btn-primary {
+            width: 100%;
+            padding: 14px;
+            background: linear-gradient(135deg, var(--secondary), #e55a2b);
+            border-radius: 10px;
+            font-weight: 700;
+            font-size: 16px;
+            color: #fff;
+            transition: var(--transition);
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+        .game-sidebar .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 30px rgba(255, 107, 53, 0.3);
+        }
+        .game-sidebar .btn-primary:disabled {
+            opacity: 0.5;
+            transform: none;
+            cursor: not-allowed;
+        }
+        .game-sidebar .btn-secondary {
+            width: 100%;
+            padding: 12px;
+            background: transparent;
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            border-radius: 10px;
+            font-weight: 600;
+            font-size: 14px;
+            color: var(--text-muted);
+            transition: var(--transition);
+        }
+        .game-sidebar .btn-secondary:hover {
+            background: rgba(255, 255, 255, 0.04);
+            color: var(--text-light);
+        }
+        .game-status {
+            font-size: 16px;
+            font-weight: 600;
+            text-align: center;
+            padding: 12px;
+            border-radius: 10px;
+            background: rgba(0, 240, 255, 0.04);
+            border: 1px solid rgba(0, 240, 255, 0.06);
+            color: var(--primary);
+        }
+        .game-status.over {
+            color: var(--gold);
+            border-color: rgba(247, 212, 74, 0.2);
+            background: rgba(247, 212, 74, 0.04);
+        }
+
+        /* ===== WALL / DASHBOARD ===== */
+        .wall-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 24px;
+        }
+        @media (max-width: 700px) {
+            .wall-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+        .wall-card {
+            background: var(--bg-card);
+            border-radius: var(--radius);
+            padding: 24px;
+            border: 1px solid rgba(255, 255, 255, 0.04);
+        }
+        .wall-card h2 {
+            font-size: 18px;
+            font-weight: 700;
+            margin-bottom: 16px;
+            color: var(--text-light);
+        }
+        .wall-card h2 i {
+            color: var(--primary);
+            margin-right: 10px;
+        }
+        .wall-card .big-number {
+            font-size: 42px;
+            font-weight: 900;
+            color: var(--gold);
+            font-family: 'Orbitron', monospace;
+        }
+        .wall-card .big-number .currency {
+            font-size: 20px;
+            color: var(--text-muted);
+            font-weight: 400;
+        }
+        .transaction-list {
+            max-height: 300px;
+            overflow-y: auto;
+        }
+        .transaction-item {
+            display: flex;
+            justify-content: space-between;
+            padding: 12px 0;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.04);
+            align-items: center;
+        }
+        .transaction-item:last-child {
+            border-bottom: none;
+        }
+        .transaction-item .tx-info {
+            display: flex;
+            flex-direction: column;
+            gap: 2px;
+        }
+        .transaction-item .tx-info .tx-type {
+            font-weight: 600;
+            font-size: 15px;
+        }
+        .transaction-item .tx-info .tx-date {
+            font-size: 12px;
+            color: var(--text-muted);
+        }
+        .transaction-item .tx-amount {
+            font-weight: 700;
+            font-size: 18px;
+        }
+        .transaction-item .tx-amount.positive {
+            color: var(--green);
+        }
+        .transaction-item .tx-amount.negative {
+            color: var(--red);
+        }
+        .transaction-item .tx-status {
+            font-size: 12px;
+            padding: 2px 12px;
+            border-radius: 20px;
+            font-weight: 600;
+        }
+        .transaction-item .tx-status.completed {
+            background: rgba(0, 230, 118, 0.12);
+            color: var(--green);
+        }
+        .transaction-item .tx-status.pending {
+            background: rgba(247, 212, 74, 0.12);
+            color: var(--gold);
+        }
+        .transaction-item .tx-status.failed {
+            background: rgba(255, 23, 68, 0.12);
+            color: var(--red);
+        }
+
+        /* ===== DEPOSIT / WITHDRAW ===== */
+        .pay-section {
+            display: flex;
+            flex-direction: column;
+            gap: 16px;
+        }
+        .pay-section .input-group {
+            display: flex;
+            gap: 12px;
+            flex-wrap: wrap;
+        }
+        .pay-section .input-group input {
+            flex: 1;
+            padding: 14px 16px;
+            background: rgba(255, 255, 255, 0.04);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            border-radius: 10px;
+            color: var(--text-light);
+            font-size: 16px;
+            min-width: 140px;
+        }
+        .pay-section .input-group input:focus {
+            border-color: var(--primary);
+            box-shadow: 0 0 0 3px rgba(0, 240, 255, 0.15);
+        }
+        .pay-section .btn-pay {
+            padding: 14px 32px;
+            background: linear-gradient(135deg, var(--green), #00c853);
+            color: #000;
+            font-weight: 700;
+            border-radius: 10px;
+            font-size: 16px;
+            transition: var(--transition);
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+        .pay-section .btn-pay:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 30px rgba(0, 230, 118, 0.3);
+        }
+        .pay-section .btn-pay.withdraw {
+            background: linear-gradient(135deg, var(--secondary), #e55a2b);
+        }
+        .pay-section .btn-pay.withdraw:hover {
+            box-shadow: 0 8px 30px rgba(255, 107, 53, 0.3);
+        }
+        .pay-section .btn-pay:disabled {
+            opacity: 0.5;
+            transform: none;
+            cursor: not-allowed;
+        }
+
+        /* ===== TOAST ===== */
+        .toast-container {
+            position: fixed;
+            bottom: 30px;
+            right: 30px;
+            z-index: 9999;
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+            max-width: 380px;
+            width: 100%;
+        }
+        .toast {
+            padding: 16px 20px;
+            border-radius: 12px;
+            background: var(--bg-card);
+            border: 1px solid rgba(255, 255, 255, 0.06);
+            box-shadow: 0 12px 40px rgba(0, 0, 0, 0.6);
+            animation: slideUp 0.4s ease;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            font-weight: 600;
+            font-size: 14px;
+        }
+        .toast.success {
+            border-left: 4px solid var(--green);
+        }
+        .toast.error {
+            border-left: 4px solid var(--red);
+        }
+        .toast.info {
+            border-left: 4px solid var(--primary);
+        }
+        .toast .toast-icon {
+            font-size: 22px;
+        }
+
+        /* ===== RESPONSIVE ===== */
+        @media (max-width: 600px) {
+            .auth-box {
+                padding: 32px 20px;
+            }
+            .top-bar {
+                padding: 12px 16px;
+            }
+            .top-bar .brand {
+                font-size: 16px;
+            }
+            .top-bar .user-info .balance {
+                font-size: 14px;
+                padding: 4px 12px;
+            }
+            .nav-tabs .tab {
+                font-size: 12px;
+                padding: 8px 12px;
+                min-width: 60px;
+            }
+            .nav-tabs .tab i {
+                margin-right: 4px;
+            }
+            .board-wrapper {
+                padding: 12px;
+            }
+            .game-sidebar .card {
+                padding: 14px;
+            }
+            .wall-card {
+                padding: 16px;
+            }
+            .wall-card .big-number {
+                font-size: 28px;
+            }
+            .pay-section .input-group {
+                flex-direction: column;
+            }
+            .toast-container {
+                right: 16px;
+                left: 16px;
+                max-width: 100%;
+                bottom: 16px;
+            }
+        }
+
+        /* ===== LOADING SPINNER ===== */
+        .spinner {
+            display: inline-block;
+            width: 20px;
+            height: 20px;
+            border: 3px solid rgba(255, 255, 255, 0.1);
+            border-top: 3px solid var(--primary);
+            border-radius: 50%;
+            animation: spin 0.8s linear infinite;
+        }
+        @keyframes spin {
+            to {
+                transform: rotate(360deg);
+            }
+        }
+        .crown-icon {
+            color: var(--gold);
+            font-size: 18px;
+            text-shadow: 0 0 8px rgba(247, 212, 74, 0.4);
+        }
+    </style>
+</head>
+<body>
+
+    <!-- ===== TOAST ===== -->
+    <div class="toast-container" id="toastContainer"></div>
+
+    <!-- ===== LOGIN ===== -->
+    <div class="auth-page" id="loginPage">
+        <div class="auth-box">
+            <div class="logo"><h1>♛ MADA</h1><p>Checker · Malawi</p></div>
+            <div class="auth-error" id="loginError">Invalid credentials</div>
+            <form id="loginForm">
+                <div class="form-group"><label>Email</label><input type="email" id="loginUsername" placeholder="Enter email" required /></div>
+                <div class="form-group"><label>Password</label><input type="password" id="loginPassword" placeholder="Enter password" required /></div>
+                <button class="auth-btn" type="submit" id="loginBtn">Login <i class="fas fa-arrow-right"></i></button>
+            </form>
+            <div class="auth-link">Don't have an account? <span onclick="showRegister()">Register</span></div>
+        </div>
+    </div>
+
+    <!-- ===== REGISTER ===== -->
+    <div class="auth-page" id="registerPage" style="display:none;">
+        <div class="auth-box">
+            <div class="logo"><h1>♛ MADA</h1><p>Create Account</p></div>
+            <div class="auth-error" id="registerError">Error</div>
+            <form id="registerForm">
+                <div class="form-group"><label>Full Name</label><input type="text" id="regFullname" placeholder="Your full name" required /></div>
+                <div class="form-group"><label>Username</label><input type="text" id="regUsername" placeholder="Choose username" required /></div>
+                <div class="form-group"><label>Email</label><input type="email" id="regEmail" placeholder="you@example.com" required /></div>
+                <div class="form-group"><label>Password</label><input type="password" id="regPassword" placeholder="Min 6 characters" required minlength="6" /></div>
+                <div class="form-group"><label>Mobile (TNM / Airtel)</label><input type="tel" id="regMobile" placeholder="09xxxxxxxx" required /></div>
+                <div class="form-group"><label>Network</label><select id="regNetwork" required><option value="">Select</option><option value="TNM">TNM</option><option value="Airtel">Airtel</option></select></div>
+                <button class="auth-btn" type="submit" id="registerBtn">Create Account <i class="fas fa-user-plus"></i></button>
+            </form>
+            <div class="auth-link">Already have an account? <span onclick="showLogin()">Login</span></div>
+        </div>
+    </div>
+
+    <!-- ===== MAIN APP ===== -->
+    <div class="app-container" id="appContainer">
+        <div class="top-bar">
+            <div class="brand">♛ MADA <small>· Malawi Checkers</small></div>
+            <div class="user-info">
+                <span class="balance" id="headerBalance"><i class="fas fa-coins"></i> 0.00</span>
+                <span class="username" id="headerUsername">Player</span>
+                <button class="logout-btn" onclick="logout()"><i class="fas fa-sign-out-alt"></i> Logout</button>
+            </div>
+        </div>
+
+        <div class="nav-tabs">
+            <button class="tab active" data-panel="gamePanel"><i class="fas fa-chess-board"></i> Game</button>
+            <button class="tab" data-panel="wallPanel"><i class="fas fa-chart-line"></i> Wall</button>
+        </div>
+
+        <!-- GAME PANEL -->
+        <div class="panel active" id="gamePanel">
+            <div class="game-layout">
+                <div class="board-wrapper">
+                    <div class="board-header">
+                        <span>Mada Checker</span>
+                        <span class="turn-indicator" id="turnIndicator">Your turn <span class="highlight">●</span></span>
+                    </div>
+                    <div class="board-container"><div id="checkerBoard"></div></div>
+                    <div style="margin-top:16px;width:100%;display:flex;gap:12px;flex-wrap:wrap;">
+                        <button class="btn-primary" id="newGameBtn" style="flex:1;min-width:120px;"><i class="fas fa-play"></i> New Game</button>
+                        <button class="btn-secondary" id="undoBtn" style="flex:0.5;min-width:80px;"><i class="fas fa-undo"></i> Undo</button>
+                        <button class="btn-secondary" id="hintBtn" style="flex:0.5;min-width:80px;"><i class="fas fa-lightbulb"></i> Hint</button>
+                    </div>
+                </div>
+                <div class="game-sidebar">
+                    <div class="card"><h3><i class="fas fa-info-circle"></i> Status</h3><div class="game-status" id="gameStatus">Ready</div></div>
+                    <div class="card">
+                        <h3><i class="fas fa-trophy"></i> Score</h3>
+                        <div class="stat"><span class="label">You (White)</span><span class="value gold" id="whiteScore">0</span></div>
+                        <div class="stat"><span class="label">AI (Black)</span><span class="value" id="blackScore">0</span></div>
+                        <div class="stat"><span class="label">Draws</span><span class="value" id="drawCount">0</span></div>
+                    </div>
+                    <div class="card">
+                        <h3><i class="fas fa-cogs"></i> AI Engine</h3>
+                        <div class="stat"><span class="label">Depth</span><span class="value">24</span></div>
+                        <div class="stat"><span class="label">Status</span><span class="value green" id="aiStatus">● Active</span></div>
+                        <div class="stat"><span class="label">Evaluation</span><span class="value" id="evalDisplay">0.00</span></div>
+                    </div>
+                    <button class="btn-primary" id="aiMoveBtn" disabled>AI Move <i class="fas fa-robot"></i></button>
+                </div>
+            </div>
+        </div>
+
+        <!-- WALL PANEL -->
+        <div class="panel" id="wallPanel">
+            <div class="wall-grid">
+                <div class="wall-card"><h2><i class="fas fa-wallet"></i> Balance</h2><div class="big-number" id="wallBalance">0.00 <span class="currency">MWK</span></div></div>
+                <div class="wall-card">
+                    <h2><i class="fas fa-bolt"></i> Actions</h2>
+                    <div class="pay-section">
+                        <div class="input-group"><input type="number" id="depositAmount" placeholder="Amount (MWK)" min="100" step="100" /><button class="btn-pay" id="depositBtn"><i class="fas fa-plus-circle"></i> Deposit</button></div>
+                        <div class="input-group"><input type="number" id="withdrawAmount" placeholder="Amount (MWK)" min="100" step="100" /><button class="btn-pay withdraw" id="withdrawBtn"><i class="fas fa-arrow-up"></i> Withdraw</button></div>
+                        <p style="font-size:12px;color:var(--text-muted);">Deposits via PayChangu · Withdrawals to registered mobile</p>
+                    </div>
+                </div>
+                <div class="wall-card" style="grid-column:1/-1;">
+                    <h2><i class="fas fa-history"></i> Transactions</h2>
+                    <div class="transaction-list" id="transactionList"><p style="color:var(--text-muted);text-align:center;padding:20px;">None yet</p></div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- ============================================================ -->
+    <!-- ===== JAVASCRIPT (Firebase + Full Game Engine) ===== -->
+    <!-- ============================================================ -->
+    <script>
+        // ---------- FIREBASE CONFIG ----------
+        var firebaseConfig = {
+            apiKey: "AIzaSyBRDfT-P8wzVAAZs8lveF1-ZTf8QlpRC5g",
+            authDomain: "apple-green-ded09.firebaseapp.com",
+            databaseURL: "https://apple-green-ded09-default-rtdb.firebaseio.com",
+            projectId: "apple-green-ded09",
+            storageBucket: "apple-green-ded09.firebasestorage.app",
+            messagingSenderId: "1093712798003",
+            appId: "1:1093712798003:web:2a945cd7fc76641dab5e46",
+            measurementId: "G-J4SE2DS3VP"
+        };
+        firebase.initializeApp(firebaseConfig);
+        var auth = firebase.auth();
+        var db = firebase.firestore();
+
+        // ---------- TOAST ----------
+        function showToast(message, type) {
+            type = type || 'info';
+            var container = document.getElementById('toastContainer');
+            var icons = { success: 'fa-check-circle', error: 'fa-times-circle', info: 'fa-info-circle' };
+            var colors = { success: 'var(--green)', error: 'var(--red)', info: 'var(--primary)' };
+            var toast = document.createElement('div');
+            toast.className = 'toast ' + type;
+            toast.innerHTML = '<span class="toast-icon" style="color:' + colors[type] + '"><i class="fas ' + icons[type] +
+                '"></i></span><span>' + message + '</span>';
+            container.appendChild(toast);
+            setTimeout(function() {
+                toast.style.opacity = '0';
+                toast.style.transform = 'translateX(40px)';
+                setTimeout(function() { toast.remove(); }, 400);
+            }, 4000);
+        }
+
+        // ---------- UI REFS ----------
+        var loginPage = document.getElementById('loginPage');
+        var registerPage = document.getElementById('registerPage');
+        var appContainer = document.getElementById('appContainer');
+        var loginForm = document.getElementById('loginForm');
+        var registerForm = document.getElementById('registerForm');
+        var loginError = document.getElementById('loginError');
+        var registerError = document.getElementById('registerError');
+        var loginBtn = document.getElementById('loginBtn');
+        var registerBtn = document.getElementById('registerBtn');
+
+        // ---------- AUTH ----------
+        function registerUser(email, password, fullname, username, mobile, network) {
+            return auth.createUserWithEmailAndPassword(email, password)
+                .then(function(uc) {
+                    var user = uc.user;
+                    return user.updateProfile({ displayName: username }).then(function() {
+                        return db.collection('users').doc(user.uid).set({
+                            uid: user.uid,
+                            fullname: fullname,
+                            username: username,
+                            email: email,
+                            mobile: mobile,
+                            network: network,
+                            balance: 0,
+                            createdAt: firebase.firestore.FieldValue.serverTimestamp()
+                        });
+                    });
+                });
+        }
+
+        function loginUser(email, password) { return auth.signInWithEmailAndPassword(email, password); }
+
+        function logoutUser() { return auth.signOut(); }
+
+        // ---------- AUTH STATE ----------
+        var currentUserData = null;
+
+        auth.onAuthStateChanged(function(user) {
+            if (user) {
+                db.collection('users').doc(user.uid).get().then(function(doc) {
+                    if (doc.exists) {
+                        currentUserData = doc.data();
+                        currentUserData.uid = user.uid;
+                        enterApp(currentUserData);
+                    } else { showToast('Profile not found.', 'error');
+                        logoutUser(); }
+                }).catch(function(err) { showToast('Error: ' + err.message, 'error'); });
+            } else {
+                currentUserData = null;
+                appContainer.classList.remove('active');
+                loginPage.style.display = 'flex';
+                registerPage.style.display = 'none';
+            }
+        });
+
+        window.showLogin = function() {
+            loginPage.style.display = 'flex';
+            registerPage.style.display = 'none';
+            loginError.classList.remove('show');
+        };
+        window.showRegister = function() {
+            loginPage.style.display = 'none';
+            registerPage.style.display = 'flex';
+            registerError.classList.remove('show');
+        };
+
+        // ---------- FORM HANDLERS ----------
+        loginForm.addEventListener('submit', function(e) {
+            e.preventDefault();
+            var email = document.getElementById('loginUsername').value.trim();
+            var pass = document.getElementById('loginPassword').value;
+            loginBtn.disabled = true;
+            loginBtn.innerHTML = '<span class="spinner"></span> Logging in...';
+            loginError.classList.remove('show');
+            loginUser(email, pass).catch(function(err) {
+                loginError.textContent = err.message;
+                loginError.classList.add('show');
+                loginBtn.disabled = false;
+                loginBtn.innerHTML = 'Login <i class="fas fa-arrow-right"></i>';
+            });
+        });
+
+        registerForm.addEventListener('submit', function(e) {
+            e.preventDefault();
+            var fullname = document.getElementById('regFullname').value.trim();
+            var username = document.getElementById('regUsername').value.trim();
+            var email = document.getElementById('regEmail').value.trim();
+            var pass = document.getElementById('regPassword').value;
+            var mobile = document.getElementById('regMobile').value.trim();
+            var network = document.getElementById('regNetwork').value;
+            registerBtn.disabled = true;
+            registerBtn.innerHTML = '<span class="spinner"></span> Creating...';
+            registerError.classList.remove('show');
+            registerUser(email, pass, fullname, username, mobile, network)
+                .then(function() {
+                    registerForm.reset();
+                    showLogin();
+                    document.getElementById('loginUsername').value = email;
+                    showToast('Account created! Please login.', 'success');
+                })
+                .catch(function(err) {
+                    registerError.textContent = err.message;
+                    registerError.classList.add('show');
+                })
+                .finally(function() {
+                    registerBtn.disabled = false;
+                    registerBtn.innerHTML = 'Create Account <i class="fas fa-user-plus"></i>';
+                });
+        });
+
+        window.logout = function() {
+            logoutUser().then(function() { showToast('Logged out', 'info'); });
+        };
+
+        // ---------- ENTER APP ----------
+        function enterApp(user) {
+            loginPage.style.display = 'none';
+            registerPage.style.display = 'none';
+            appContainer.classList.add('active');
+            document.getElementById('headerUsername').textContent = user.fullname || user.username;
+            updateBalanceUI(user.balance || 0);
+            loadTransactions(user.uid);
+            initGame();
+        }
+
+        function updateBalanceUI(balance) {
+            var f = balance.toFixed(2);
+            document.getElementById('headerBalance').innerHTML = '<i class="fas fa-coins"></i> ' + f;
+            document.getElementById('wallBalance').textContent = f;
+        }
+
+        // ---------- TRANSACTIONS ----------
+        function loadTransactions(uid) {
+            if (!uid) return;
+            var container = document.getElementById('transactionList');
+            db.collection('users').doc(uid).collection('transactions').orderBy('createdAt', 'desc').get()
+                .then(function(snap) {
+                    if (snap.empty) { container.innerHTML =
+                            '<p style="color:var(--text-muted);text-align:center;padding:20px;">No transactions</p>'; return; }
+                    var html = '';
+                    snap.forEach(function(doc) {
+                        var tx = doc.data();
+                        var pos = (tx.type === 'deposit' || tx.type === 'win');
+                        var cls = pos ? 'positive' : 'negative';
+                        var sign = pos ? '+' : '-';
+                        var stCls = tx.status === 'completed' ? 'completed' : tx.status === 'pending' ? 'pending' :
+                            'failed';
+                        var icon = tx.type === 'deposit' ? 'fa-arrow-down' : tx.type === 'withdraw' ?
+                            'fa-arrow-up' : 'fa-trophy';
+                        var date = tx.createdAt ? new Date(tx.createdAt.seconds * 1000).toLocaleString() : 'Just now';
+                        html += '<div class="transaction-item"><div class="tx-info"><span class="tx-type"><i class="fas ' +
+                            icon + '"></i> ' + tx.type.charAt(0).toUpperCase() + tx.type.slice(1) +
+                            '</span><span class="tx-date">' + date + '</span></div><div style="display:flex;align-items:center;gap:12px;"><span class="tx-amount ' +
+                            cls + '">' + sign + tx.amount.toFixed(2) + ' MWK</span><span class="tx-status ' + stCls +
+                            '">' + tx.status + '</span></div></div>';
+                    });
+                    container.innerHTML = html;
+                }).catch(function() {});
+        }
+
+        function addTransaction(uid, type, amount, status, desc) {
+            status = status || 'completed';
+            desc = desc || '';
+            return db.collection('users').doc(uid).collection('transactions').add({
+                type: type,
+                amount: amount,
+                status: status,
+                description: desc,
+                createdAt: firebase.firestore.FieldValue.serverTimestamp()
+            });
+        }
+
+        // ---------- DEPOSIT / WITHDRAW ----------
+        document.getElementById('depositBtn').addEventListener('click', function() {
+            if (!currentUserData) return;
+            var amount = parseFloat(document.getElementById('depositAmount').value);
+            if (!amount || amount < 100) { showToast('Min 100 MWK', 'error'); return; }
+            var btn = this;
+            btn.disabled = true;
+            btn.innerHTML = '<span class="spinner"></span> Processing...';
+            var ref = db.collection('users').doc(currentUserData.uid);
+            ref.update({ balance: firebase.firestore.FieldValue.increment(amount) })
+                .then(function() { return addTransaction(currentUserData.uid, 'deposit', amount, 'completed',
+                        'Deposit via PayChangu'); })
+                .then(function() { return ref.get(); })
+                .then(function(doc) {
+                    if (doc.exists) { currentUserData = doc.data();
+                        currentUserData.uid = currentUserData.uid;
+                        updateBalanceUI(currentUserData.balance || 0);
+                        loadTransactions(currentUserData.uid); }
+                    showToast('Deposited ' + amount + ' MWK', 'success');
+                    document.getElementById('depositAmount').value = '';
+                }).catch(function(err) { showToast('Failed: ' + err.message, 'error'); })
+                .finally(function() { btn.disabled = false;
+                    btn.innerHTML = '<i class="fas fa-plus-circle"></i> Deposit'; });
+        });
+
+        document.getElementById('withdrawBtn').addEventListener('click', function() {
+            if (!currentUserData) return;
+            var amount = parseFloat(document.getElementById('withdrawAmount').value);
+            if (!amount || amount < 100) { showToast('Min 100 MWK', 'error'); return; }
+            if (amount > (currentUserData.balance || 0)) { showToast('Insufficient balance', 'error'); return; }
+            var btn = this;
+            btn.disabled = true;
+            btn.innerHTML = '<span class="spinner"></span> Processing...';
+            var ref = db.collection('users').doc(currentUserData.uid);
+            ref.update({ balance: firebase.firestore.FieldValue.increment(-amount) })
+                .then(function() { return addTransaction(currentUserData.uid, 'withdraw', amount, 'completed',
+                        'Withdrawal to ' + currentUserData.mobile + ' (' + currentUserData.network + ')'); })
+                .then(function() { return ref.get(); })
+                .then(function(doc) {
+                    if (doc.exists) { currentUserData = doc.data();
+                        currentUserData.uid = currentUserData.uid;
+                        updateBalanceUI(currentUserData.balance || 0);
+                        loadTransactions(currentUserData.uid); }
+                    showToast('Withdrew ' + amount + ' MWK to ' + currentUserData.mobile, 'success');
+                    document.getElementById('withdrawAmount').value = '';
+                }).catch(function(err) { showToast('Failed: ' + err.message, 'error'); })
+                .finally(function() { btn.disabled = false;
+                    btn.innerHTML = '<i class="fas fa-arrow-up"></i> Withdraw'; });
+        });
+
+        // ================================================================
+        //  FULL CHECKERS ENGINE (Malawi Rules, Depth 24, Killer Moves)
+        // ================================================================
+        class CheckersEngine {
+            constructor() {
+                this.board = [];
+                this.turn = 'white';
+                this.selected = null;
+                this.validMoves = [];
+                this.moveHistory = [];
+                this.captures = { white: 0, black: 0 };
+                this.gameOver = false;
+                this.winner = null;
+                this.moveCount = 0;
+                this.onePieceMoveCount = 0;
+                this.kingVsKing = false;
+                this.killerMoves = [];
+                this.initBoard();
+            }
+
+            initBoard() {
+                var b = [];
+                for (var r = 0; r < 8; r++) {
+                    b[r] = [];
+                    for (var c = 0; c < 8; c++) {
+                        if ((r + c) % 2 === 1) {
+                            if (r < 3) b[r][c] = 2;
+                            else if (r > 4) b[r][c] = 1;
+                            else b[r][c] = 0;
+                        } else b[r][c] = 0;
+                    }
+                }
+                this.board = b;
+                this.turn = 'white';
+                this.selected = null;
+                this.validMoves = [];
+                this.moveHistory = [];
+                this.captures = { white: 0, black: 0 };
+                this.gameOver = false;
+                this.winner = null;
+                this.moveCount = 0;
+                this.onePieceMoveCount = 0;
+                this.kingVsKing = false;
+                this.killerMoves = [];
+            }
+
+            isWhite(p) { return p === 1 || p === 3; }
+            isBlack(p) { return p === 2 || p === 4; }
+            isKing(p) { return p === 3 || p === 4; }
+
+            countPieces() {
+                var w = 0,
+                    b = 0,
+                    wk = 0,
+                    bk = 0;
+                for (var r = 0; r < 8; r++) {
+                    for (var c = 0; c < 8; c++) {
+                        var p = this.board[r][c];
+                        if (p === 1) w++;
+                        else if (p === 2) b++;
+                        else if (p === 3) wk++;
+                        else if (p === 4) bk++;
+                    }
+                }
+                return { white: w + wk, black: b + bk, whiteKings: wk, blackKings: bk };
+            }
+
+            getMovesForPiece(row, col, boardOverride) {
+                var b = boardOverride || this.board;
+                var piece = b[row][col];
+                if (piece === 0) return [];
+                var isWhite = this.isWhite(piece);
+                var isKing = this.isKing(piece);
+                var moves = [];
+                var captures = [];
+                var dirs = [];
+                if (isWhite) dirs.push(-1);
+                if (!isWhite) dirs.push(1);
+                if (isKing) { dirs.push(-1);
+                    dirs.push(1); }
+
+                for (var di = 0; di < dirs.length; di++) {
+                    var dr = dirs[di];
+                    for (var dc of [-1, 1]) {
+                        var nr = row + dr,
+                            nc = col + dc;
+                        if (nr < 0 || nr > 7 || nc < 0 || nc > 7) continue;
+                        var target = b[nr][nc];
+                        if (target === 0) {
+                            moves.push({ fromRow: row, fromCol: col, toRow: nr, toCol: nc, captures: [] });
+                        } else if (isWhite ? this.isBlack(target) : this.isWhite(target)) {
+                            var cr = nr + dr,
+                                cc = nc + dc;
+                            while (cr >= 0 && cr < 8 && cc >= 0 && cc < 8) {
+                                if (b[cr][cc] === 0) {
+                                    var captured = [];
+                                    var tr = row + dr,
+                                        tc = col + dc;
+                                    while (tr !== cr || tc !== cc) {
+                                        if (isWhite ? this.isBlack(b[tr][tc]) : this.isWhite(b[tr][tc])) {
+                                            captured.push({ row: tr, col: tc });
+                                        }
+                                        tr += dr;
+                                        tc += dc;
+                                    }
+                                    if (captured.length > 0) {
+                                        captures.push({ fromRow: row, fromCol: col, toRow: cr, toCol: cc,
+                                            captures: captured, isCapture: true });
+                                    }
+                                    break;
+                                } else break;
+                            }
+                        }
+                    }
+                }
+
+                if (isKing) {
+                    for (var di2 = 0; di2 < dirs.length; di2++) {
+                        var dr2 = dirs[di2];
+                        for (var dc2 of [-1, 1]) {
+                            var nr2 = row + dr2,
+                                nc2 = col + dc2;
+                            while (nr2 >= 0 && nr2 < 8 && nc2 >= 0 && nc2 < 8) {
+                                if (b[nr2][nc2] === 0) {
+                                    var exists = moves.some(function(m) { return m.toRow === nr2 && m.toCol === nc2; });
+                                    if (!exists) moves.push({ fromRow: row, fromCol: col, toRow: nr2, toCol: nc2,
+                                        captures: [] });
+                                } else break;
+                                nr2 += dr2;
+                                nc2 += dc2;
+                            }
+                        }
+                    }
+                }
+                return captures.concat(moves);
+            }
+
+            getAllValidMoves(boardOverride) {
+                var b = boardOverride || this.board;
+                var isWhiteTurn = this.turn === 'white';
+                var moves = [];
+                var hasCaptures = false;
+                for (var r = 0; r < 8; r++) {
+                    for (var c = 0; c < 8; c++) {
+                        var p = b[r][c];
+                        if (p === 0) continue;
+                        if (isWhiteTurn ? !this.isWhite(p) : !this.isBlack(p)) continue;
+                        var pieceMoves = this.getMovesForPiece(r, c, b);
+                        for (var mi = 0; mi < pieceMoves.length; mi++) {
+                            var m = pieceMoves[mi];
+                            if (m.captures && m.captures.length > 0) { hasCaptures = true;
+                                moves.push(m); } else moves.push(m);
+                        }
+                    }
+                }
+                if (hasCaptures) return moves.filter(function(m) { return m.captures && m.captures.length > 0; });
+                return moves;
+            }
+
+            makeMove(move, boardOverride) {
+                var b = boardOverride ? boardOverride.map(function(row) { return row.slice(); }) : this.board.map(
+                    function(row) { return row.slice(); });
+                var piece = b[move.fromRow][move.fromCol];
+                b[move.fromRow][move.fromCol] = 0;
+                b[move.toRow][move.toCol] = piece;
+                if (move.captures) { for (var ci = 0; ci < move.captures.length; ci++) { b[move.captures[ci].row][move
+                            .captures[ci].col] = 0; } }
+                if (piece === 1 && move.toRow === 0) b[move.toRow][move.toCol] = 3;
+                if (piece === 2 && move.toRow === 7) b[move.toRow][move.toCol] = 4;
+                return b;
+            }
+
+            checkGameOver(boardState) {
+                var b = boardState || this.board;
+                var counts = this.countPieces();
+                var totalWhite = counts.white + counts.whiteKings;
+                var totalBlack = counts.black + counts.blackKings;
+                if (totalWhite === 0) { this.gameOver = true;
+                    this.winner = 'black'; return true; }
+                if (totalBlack === 0) { this.gameOver = true;
+                    this.winner = 'white'; return true; }
+                if (totalWhite === 1 && totalBlack === 1 && counts.whiteKings === 1 && counts.blackKings === 1) {
+                    this.gameOver = true;
+                    this.winner = 'draw';
+                    this.kingVsKing = true;
+                    return true;
+                }
+                if (this.onePieceMoveCount >= 12) {
+                    if ((totalWhite === 1 && totalBlack > 1) || (totalBlack === 1 && totalWhite > 1)) {
+                        var hasCapture = false;
+                        var start = Math.max(0, this.moveHistory.length - 12);
+                        for (var i = start; i < this.moveHistory.length; i++) {
+                            if (this.moveHistory[i] && this.moveHistory[i].captures && this.moveHistory[i].captures
+                                .length > 0) { hasCapture = true; break; }
+                        }
+                        if (!hasCapture) { this.gameOver = true;
+                            this.winner = 'draw'; return true; }
+                    }
+                }
+                var moves = this.getAllValidMoves(b);
+                if (moves.length === 0) { this.gameOver = true;
+                    this.winner = this.turn === 'white' ? 'black' : 'white'; return true; }
+                return false;
+            }
+
+            // ---------- AI: Minimax ----------
+            evaluate(boardState) {
+                var b = boardState || this.board;
+                var score = 0;
+                for (var r = 0; r < 8; r++) {
+                    for (var c = 0; c < 8; c++) {
+                        var p = b[r][c];
+                        if (p === 1) score += 10 + (7 - r) * 2;
+                        else if (p === 2) score -= 10 + r * 2;
+                        else if (p === 3) score += 30 + (7 - r) * 1;
+                        else if (p === 4) score -= 30 + r * 1;
+                    }
+                }
+                for (var r2 = 2; r2 < 6; r2++) {
+                    for (var c2 = 2; c2 < 6; c2++) {
+                        var p2 = b[r2][c2];
+                        if (p2 === 1) score += 3;
+                        else if (p2 === 2) score -= 3;
+                        else if (p2 === 3) score += 5;
+                        else if (p2 === 4) score -= 5;
+                    }
+                }
+                return score;
+            }
+
+            getOrderedMoves(moves) {
+                var self = this;
+                return moves.sort(function(a, b) {
+                    var aCap = a.captures ? a.captures.length : 0;
+                    var bCap = b.captures ? b.captures.length : 0;
+                    if (aCap !== bCap) return bCap - aCap;
+                    var aKey = a.fromRow + ',' + a.fromCol + ',' + a.toRow + ',' + a.toCol;
+                    var bKey = b.fromRow + ',' + b.fromCol + ',' + b.toRow + ',' + b.toCol;
+                    var aIsKiller = self.killerMoves.indexOf(aKey) !== -1;
+                    var bIsKiller = self.killerMoves.indexOf(bKey) !== -1;
+                    if (aIsKiller && !bIsKiller) return -1;
+                    if (!aIsKiller && bIsKiller) return 1;
+                    return 0;
+                });
+            }
+
+            minimax(boardState, depth, alpha, beta, isMaximizing, maxDepth) {
+                maxDepth = maxDepth || 24;
+                var b = boardState || this.board;
+                var counts = this.countPieces();
+                var totalWhite = counts.white + counts.whiteKings;
+                var totalBlack = counts.black + counts.blackKings;
+                if (totalWhite === 0) return { score: -99999 + (maxDepth - depth) };
+                if (totalBlack === 0) return { score: 99999 - (maxDepth - depth) };
+                if (depth === 0) return { score: this.evaluate(b) };
+
+                var moves = this.getAllValidMoves(b);
+                if (moves.length === 0) {
+                    return { score: isMaximizing ? -99999 + (maxDepth - depth) : 99999 - (maxDepth - depth) };
+                }
+                var ordered = this.getOrderedMoves(moves);
+                var bestMove = ordered[0];
+                var bestScore = isMaximizing ? -Infinity : Infinity;
+                var self = this;
+
+                for (var mi = 0; mi < ordered.length; mi++) {
+                    var move = ordered[mi];
+                    var newBoard = this.makeMove(move, b);
+                    var origTurn = this.turn;
+                    this.turn = isMaximizing ? 'black' : 'white';
+
+                    var result;
+                    var multiCapture = false;
+                    if (move.captures && move.captures.length > 0) {
+                        var piece = newBoard[move.toRow][move.toCol];
+                        if (piece !== 0) {
+                            var moreMoves = this.getMovesForPiece(move.toRow, move.toCol, newBoard);
+                            for (var mmi = 0; mmi < moreMoves.length; mmi++) {
+                                if (moreMoves[mmi].captures && moreMoves[mmi].captures.length > 0) { multiCapture =
+                                        true; break; }
+                            }
+                        }
+                    }
+                    if (multiCapture) {
+                        var evalScore = this.evaluate(newBoard);
+                        result = { score: isMaximizing ? evalScore : -evalScore };
+                    } else {
+                        result = this.minimax(newBoard, depth - 1, alpha, beta, !isMaximizing, maxDepth);
+                    }
+                    this.turn = origTurn;
+
+                    if (isMaximizing) {
+                        if (result.score > bestScore) { bestScore = result.score;
+                            bestMove = move; }
+                        alpha = Math.max(alpha, bestScore);
+                    } else {
+                        if (result.score < bestScore) { bestScore = result.score;
+                            bestMove = move; }
+                        beta = Math.min(beta, bestScore);
+                    }
+                    if (beta <= alpha) {
+                        var key = move.fromRow + ',' + move.fromCol + ',' + move.toRow + ',' + move.toCol;
+                        if (self.killerMoves.indexOf(key) === -1) { self.killerMoves.push(key); if (self.killerMoves
+                                .length > 20) self.killerMoves.shift(); }
+                        break;
+                    }
+                }
+                return { score: bestScore, move: bestMove };
+            }
+
+            getAIMove() {
+                if (this.turn !== 'black') return null;
+                var result = this.minimax(this.board, 24, -Infinity, Infinity, true, 24);
+                if (result && result.move) return result.move;
+                var moves = this.getAllValidMoves();
+                if (moves.length > 0) return moves[0];
+                return null;
+            }
+
+            executeAIMove() {
+                if (this.turn !== 'black' || this.gameOver) return null;
+                var move = this.getAIMove();
+                if (!move) return null;
+                this.board = this.makeMove(move);
+                this.moveHistory.push({ fromRow: move.fromRow, fromCol: move.fromCol, toRow: move.toRow, toCol: move
+                        .toCol, captures: move.captures, player: 'black' });
+                this.moveCount++;
+                if (move.captures && move.captures.length > 0) { this.captures.black += move.captures.length;
+                    this.onePieceMoveCount = 0; } else this.onePieceMoveCount++;
+                this.turn = 'white';
+                this.selected = null;
+                this.validMoves = [];
+                this.checkGameOver();
+                return move;
+            }
+
+            getValidMovesForPiece(row, col) {
+                var piece = this.board[row][col];
+                if (piece === 0) return [];
+                var isWhiteTurn = this.turn === 'white';
+                if (isWhiteTurn ? !this.isWhite(piece) : !this.isBlack(piece)) return [];
+                var allMoves = this.getAllValidMoves();
+                return allMoves.filter(function(m) { return m.fromRow === row && m.fromCol === col; });
+            }
+
+            playerMove(move) {
+                if (this.turn !== 'white' || this.gameOver) return false;
+                var valid = this.getAllValidMoves();
+                var found = null;
+                for (var i = 0; i < valid.length; i++) {
+                    var v = valid[i];
+                    if (v.fromRow === move.fromRow && v.fromCol === move.fromCol &&
+                        v.toRow === move.toRow && v.toCol === move.toCol) { found = v; break; }
+                }
+                if (!found) return false;
+                this.board = this.makeMove(move);
+                this.moveHistory.push({ fromRow: move.fromRow, fromCol: move.fromCol, toRow: move.toRow, toCol: move
+                        .toCol, captures: move.captures, player: 'white' });
+                this.moveCount++;
+                if (move.captures && move.captures.length > 0) { this.captures.white += move.captures.length;
+                    this.onePieceMoveCount = 0; } else this.onePieceMoveCount++;
+                this.turn = 'black';
+                this.selected = null;
+                this.validMoves = [];
+                this.checkGameOver();
+                return true;
+            }
+        }
+
+        // ================================================================
+        //  GAME UI CONTROLLER
+        // ================================================================
+        var game = new CheckersEngine();
+        var selectedCell = null;
+        var isAIThinking = false;
+        var gameStats = { whiteWins: 0, blackWins: 0, draws: 0 };
+
+        function initGame() {
+            game = new CheckersEngine();
+            selectedCell = null;
+            isAIThinking = false;
+            renderBoard();
+            updateUI();
+            if (game.turn === 'black') { setTimeout(function() { doAIMove(); }, 400); }
+            showToast('New game! You are White.', 'info');
+        }
+
+        function renderBoard() {
+            var boardEl = document.getElementById('checkerBoard');
+            boardEl.innerHTML = '';
+            var b = game.board;
+            for (var r = 0; r < 8; r++) {
+                for (var c = 0; c < 8; c++) {
+                    var cell = document.createElement('div');
+                    var isDark = (r + c) % 2 === 1;
+                    cell.className = 'cell ' + (isDark ? 'dark' : 'light');
+                    cell.dataset.row = r;
+                    cell.dataset.col = c;
+                    if (game.moveHistory.length > 0) {
+                        var last = game.moveHistory[game.moveHistory.length - 1];
+                        if (last.toRow === r && last.toCol === c) cell.classList.add('last-move');
+                        if (last.fromRow === r && last.fromCol === c) cell.classList.add('last-move');
+                    }
+                    if (selectedCell && selectedCell.row === r && selectedCell.col === c) cell.classList.add('highlight');
+                    if (game.validMoves.some(function(m) { return m.toRow === r && m.toCol === c; })) cell.classList.add(
+                        'highlight');
+                    var piece = b[r][c];
+                    if (piece !== 0) {
+                        var pieceEl = document.createElement('div');
+                        var isWhite = game.isWhite(piece);
+                        pieceEl.className = 'piece ' + (isWhite ? 'white-piece' : 'black-piece');
+                        if (game.isKing(piece)) pieceEl.classList.add('king');
+                        if (selectedCell && selectedCell.row === r && selectedCell.col === c) pieceEl.classList.add(
+                        'selected');
+                        var validForPiece = game.getValidMovesForPiece(r, c);
+                        if (validForPiece.some(function(m) { return m.captures && m.captures.length > 0; })) pieceEl
+                            .classList.add('can-capture');
+                        (function(row, col) { pieceEl.addEventListener('click', function() { onCellClick(row,
+                            col); }); })(r, c);
+                        cell.appendChild(pieceEl);
+                    } else {
+                        (function(row, col) { cell.addEventListener('click', function() { onCellClick(row,
+                            col); }); })(r, c);
+                    }
+                    boardEl.appendChild(cell);
+                }
+            }
+        }
+
+        function onCellClick(row, col) {
+            if (game.gameOver || game.turn !== 'white' || isAIThinking) return;
+            var piece = game.board[row][col];
+            if (piece !== 0 && game.isWhite(piece)) {
+                var moves = game.getValidMovesForPiece(row, col);
+                if (moves.length > 0) { selectedCell = { row: row, col: col };
+                    game.validMoves = moves;
+                    renderBoard();
+                    updateUI(); return; } else { selectedCell = null;
+                    game.validMoves = [];
+                    renderBoard();
+                    updateUI(); return; }
+            }
+            if (selectedCell) {
+                var move = null;
+                for (var i = 0; i < game.validMoves.length; i++) {
+                    if (game.validMoves[i].toRow === row && game.validMoves[i].toCol === col) { move = game.validMoves[
+                        i]; break; }
+                }
+                if (move) {
+                    var success = game.playerMove(move);
+                    if (success) {
+                        selectedCell = null;
+                        game.validMoves = [];
+                        renderBoard();
+                        updateUI();
+                        if (game.gameOver) { handleGameOver(); return; }
+                        if (game.turn === 'black' && !game.gameOver) { setTimeout(function() { doAIMove(); }, 300); }
+                        return;
+                    }
+                }
+                selectedCell = null;
+                game.validMoves = [];
+                renderBoard();
+                updateUI();
+            }
+        }
+
+        function doAIMove() {
+            if (isAIThinking || game.gameOver || game.turn !== 'black') return;
+            isAIThinking = true;
+            document.getElementById('aiStatus').textContent = '● Thinking...';
+            document.getElementById('aiStatus').style.color = 'var(--gold)';
+            document.getElementById('aiMoveBtn').disabled = true;
+            setTimeout(function() {
+                var move = game.executeAIMove();
+                isAIThinking = false;
+                document.getElementById('aiStatus').textContent = '● Active';
+                document.getElementById('aiStatus').style.color = 'var(--green)';
+                document.getElementById('aiMoveBtn').disabled = false;
+                if (move) {
+                    renderBoard();
+                    updateUI();
+                    var evalScore = game.evaluate(game.board);
+                    document.getElementById('evalDisplay').textContent = evalScore.toFixed(2);
+                }
+                if (game.gameOver) { handleGameOver(); } else if (game.turn === 'black') { setTimeout(function() {
+                        doAIMove(); }, 300); }
+            }, 200);
+        }
+
+        function updateUI() {
+            var counts = game.countPieces();
+            document.getElementById('whiteScore').textContent = counts.white + counts.whiteKings;
+            document.getElementById('blackScore').textContent = counts.black + counts.blackKings;
+            document.getElementById('drawCount').textContent = gameStats.draws;
+            var turnEl = document.getElementById('turnIndicator');
+            if (game.gameOver) { turnEl.textContent = 'Game Over';
+                turnEl.style.color = 'var(--gold)'; } else if (game.turn === 'white') { turnEl.innerHTML =
+                    'Your turn <span class="highlight">●</span>';
+                turnEl.style.color = 'var(--primary)'; } else { turnEl.innerHTML =
+                    'AI thinking <span class="highlight">●</span>';
+                turnEl.style.color = 'var(--gold)'; }
+            var statusEl = document.getElementById('gameStatus');
+            if (game.gameOver) { statusEl.className = 'game-status over'; if (game.winner === 'white') statusEl
+                    .textContent = '🏆 You Win!'; else if (game.winner === 'black') statusEl.textContent =
+                    '🤖 AI Wins!'; else statusEl.textContent = '🤝 Draw'; } else { statusEl.className =
+                    'game-status';
+                statusEl.textContent = game.turn === 'white' ? 'Your move' : 'AI is calculating...'; }
+            if (currentUserData) {
+                document.getElementById('headerBalance').innerHTML = '<i class="fas fa-coins"></i> ' + (currentUserData
+                    .balance || 0).toFixed(2);
+                document.getElementById('wallBalance').textContent = (currentUserData.balance || 0).toFixed(2);
+            }
+            document.getElementById('aiMoveBtn').disabled = game.turn !== 'black' || game.gameOver || isAIThinking;
+        }
+
+        function handleGameOver() {
+            renderBoard();
+            updateUI();
+            if (game.winner === 'white') {
+                gameStats.whiteWins++;
+                showToast('🎉 You won! +50 MWK bonus!', 'success');
+                if (currentUserData) {
+                    var ref = db.collection('users').doc(currentUserData.uid);
+                    ref.update({ balance: firebase.firestore.FieldValue.increment(50) })
+                        .then(function() { return ref.get(); })
+                        .then(function(doc) {
+                            if (doc.exists) { currentUserData = doc.data();
+                                currentUserData.uid = currentUserData.uid;
+                                updateBalanceUI(currentUserData.balance || 0);
+                                loadTransactions(currentUserData.uid); }
+                        }).catch(function() {});
+                    addTransaction(currentUserData.uid, 'win', 50, 'completed', 'Game win bonus');
+                }
+            } else if (game.winner === 'black') { gameStats.blackWins++;
+                showToast('🤖 AI wins!', 'error'); } else { gameStats.draws++;
+                showToast('🤝 Draw!', 'info'); }
+            if (currentUserData) loadTransactions(currentUserData.uid);
+        }
+
+        // ---------- TAB SWITCHING ----------
+        document.querySelectorAll('.tab').forEach(function(tab) {
+            tab.addEventListener('click', function() {
+                document.querySelectorAll('.tab').forEach(function(t) { t.classList.remove('active'); });
+                this.classList.add('active');
+                var panelId = this.dataset.panel;
+                document.querySelectorAll('.panel').forEach(function(p) { p.classList.remove('active'); });
+                document.getElementById(panelId).classList.add('active');
+                if (panelId === 'wallPanel' && currentUserData) loadTransactions(currentUserData.uid);
+            });
+        });
+
+        // ---------- BUTTONS ----------
+        document.getElementById('newGameBtn').addEventListener('click', function() { if (isAIThinking) return;
+            initGame(); });
+        document.getElementById('undoBtn').addEventListener('click', function() {
+            if (isAIThinking || game.gameOver || game.moveHistory.length < 2) { showToast('Cannot undo', 'error'); return; }
+            showToast('Undo: restarting game.', 'info');
+            initGame();
+        });
+        document.getElementById('hintBtn').addEventListener('click', function() {
+            if (game.gameOver || game.turn !== 'white' || isAIThinking) return;
+            var moves = game.getAllValidMoves();
+            if (moves.length === 0) return;
+            var best = moves.find(function(m) { return m.captures && m.captures.length > 0; }) || moves[0];
+            var boardEl = document.getElementById('checkerBoard');
+            var cells = boardEl.querySelectorAll('.cell');
+            var idx = best.toRow * 8 + best.toCol;
+            if (cells[idx]) {
+                cells[idx].style.transition = 'background 0.2s';
+                cells[idx].style.background = 'rgba(0,240,255,0.4)';
+                setTimeout(function() { cells[idx].style.background = '';
+                    renderBoard(); }, 600);
+            }
+            showToast('Hint: (' + String.fromCharCode(65 + best.toCol) + (8 - best.toRow) + ')', 'info');
+        });
+        document.getElementById('aiMoveBtn').addEventListener('click', function() {
+            if (game.turn === 'black' && !game.gameOver && !isAIThinking) doAIMove();
+        });
+
+        console.log('✅ MADA Checker with Firebase & full AI engine ready!');
+    </script>
+</body>
+  </html>
