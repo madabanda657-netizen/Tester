@@ -154,6 +154,7 @@
         }
         .auth-box .form-group {
             margin-bottom: 18px;
+            position: relative;
         }
         .auth-box .form-group label {
             display: block;
@@ -180,6 +181,22 @@
             border-color: var(--primary);
             box-shadow: 0 0 0 3px rgba(0, 240, 255, 0.15);
             background: rgba(255, 255, 255, 0.06);
+        }
+        .auth-box .form-group select option {
+            background: var(--bg-dark);
+            color: var(--text-light);
+        }
+        .auth-box .form-group .toggle-pw {
+            position: absolute;
+            right: 14px;
+            top: 44px;
+            background: none;
+            color: var(--text-muted);
+            font-size: 18px;
+            transition: var(--transition);
+        }
+        .auth-box .form-group .toggle-pw:hover {
+            color: var(--text-light);
         }
         .auth-btn {
             width: 100%;
@@ -218,6 +235,15 @@
         .auth-link span:hover {
             text-shadow: 0 0 10px var(--primary);
         }
+        .auth-link .forgot-pw {
+            color: var(--gold);
+            font-weight: 600;
+            cursor: pointer;
+            transition: var(--transition);
+        }
+        .auth-link .forgot-pw:hover {
+            text-shadow: 0 0 10px var(--gold);
+        }
         .auth-error {
             background: rgba(255, 23, 68, 0.12);
             border: 1px solid var(--red);
@@ -229,6 +255,19 @@
             display: none;
         }
         .auth-error.show {
+            display: block;
+        }
+        .auth-success {
+            background: rgba(0, 230, 118, 0.12);
+            border: 1px solid var(--green);
+            color: var(--green);
+            padding: 10px 14px;
+            border-radius: 8px;
+            font-size: 14px;
+            margin-bottom: 16px;
+            display: none;
+        }
+        .auth-success.show {
             display: block;
         }
 
@@ -273,10 +312,25 @@
             font-weight: 700;
             font-size: 18px;
             color: var(--gold);
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            cursor: pointer;
+            user-select: none;
         }
-        .top-bar .user-info .balance i {
-            margin-right: 8px;
-            color: var(--gold);
+        .top-bar .user-info .balance i.fa-eye,
+        .top-bar .user-info .balance i.fa-eye-slash {
+            font-size: 16px;
+            color: var(--text-muted);
+            transition: var(--transition);
+        }
+        .top-bar .user-info .balance i.fa-eye:hover,
+        .top-bar .user-info .balance i.fa-eye-slash:hover {
+            color: var(--text-light);
+        }
+        .top-bar .user-info .balance .balance-amount {
+            min-width: 60px;
+            display: inline-block;
         }
         .top-bar .user-info .username {
             font-weight: 600;
@@ -668,11 +722,23 @@
             font-weight: 900;
             color: var(--gold);
             font-family: 'Orbitron', monospace;
+            display: flex;
+            align-items: center;
+            gap: 10px;
         }
         .wall-card .big-number .currency {
             font-size: 20px;
             color: var(--text-muted);
             font-weight: 400;
+        }
+        .wall-card .big-number .toggle-balance {
+            cursor: pointer;
+            color: var(--text-muted);
+            font-size: 24px;
+            transition: var(--transition);
+        }
+        .wall-card .big-number .toggle-balance:hover {
+            color: var(--text-light);
         }
 
         .pay-section {
@@ -787,6 +853,48 @@
             color: var(--red);
         }
 
+        /* ===== FOOTER ===== */
+        .footer {
+            margin-top: 40px;
+            padding: 16px 0;
+            border-top: 1px solid rgba(255, 255, 255, 0.04);
+            text-align: center;
+            font-size: 13px;
+            color: var(--text-muted);
+        }
+        .footer .powered {
+            color: var(--primary);
+            font-weight: 600;
+        }
+        .footer .copyright {
+            margin-top: 4px;
+            letter-spacing: 1px;
+        }
+        .footer .links {
+            display: flex;
+            justify-content: center;
+            gap: 20px;
+            margin-top: 8px;
+            flex-wrap: wrap;
+        }
+        .footer .links a {
+            color: var(--text-muted);
+            transition: var(--transition);
+            font-size: 14px;
+        }
+        .footer .links a:hover {
+            color: var(--primary);
+        }
+        .footer .links a i {
+            margin-right: 6px;
+        }
+        .footer .links .whatsapp {
+            color: #25d366;
+        }
+        .footer .links .whatsapp:hover {
+            color: #128c7e;
+        }
+
         /* ===== TOAST ===== */
         .toast-container {
             position: fixed;
@@ -868,6 +976,10 @@
             .grade-selector {
                 grid-template-columns: 1fr 1fr;
             }
+            .footer .links {
+                flex-direction: column;
+                gap: 6px;
+            }
         }
 
         .spinner-sm {
@@ -893,12 +1005,37 @@
         <div class="auth-box">
             <div class="logo"><h1>♛ MADA</h1><p>Play · Earn · Win</p></div>
             <div class="auth-error" id="loginError">Invalid credentials</div>
+            <div class="auth-success" id="loginSuccess">Password reset email sent.</div>
             <form id="loginForm">
-                <div class="form-group"><label>Email</label><input type="email" id="loginUsername" placeholder="Enter email" required /></div>
-                <div class="form-group"><label>Password</label><input type="password" id="loginPassword" placeholder="Enter password" required /></div>
+                <div class="form-group">
+                    <label>Email</label>
+                    <input type="email" id="loginUsername" placeholder="Enter email" required />
+                </div>
+                <div class="form-group">
+                    <label>Password</label>
+                    <input type="password" id="loginPassword" placeholder="Enter password" required />
+                    <button type="button" class="toggle-pw" onclick="togglePassword('loginPassword', this)"><i class="fas fa-eye"></i></button>
+                </div>
                 <button class="auth-btn" type="submit" id="loginBtn">Login <i class="fas fa-arrow-right"></i></button>
             </form>
-            <div class="auth-link">Don't have an account? <span onclick="showRegister()">Register</span></div>
+            <div class="auth-link">
+                <span class="forgot-pw" onclick="resetPassword()">Forgot password?</span>
+            </div>
+            <div class="auth-link">
+                Don't have an account? <span onclick="showRegister()">Register</span>
+            </div>
+            <div style="margin-top:20px;text-align:center;border-top:1px solid rgba(255,255,255,0.04);padding-top:16px;">
+                <div style="display:flex;justify-content:center;gap:16px;flex-wrap:wrap;margin-bottom:8px;">
+                    <a href="#" onclick="showFAQ()" style="color:var(--text-muted);font-size:14px;"><i class="fas fa-question-circle"></i> FAQ</a>
+                    <a href="https://chat.whatsapp.com/CmvdLsifPKS51OyRnrITFz" target="_blank" class="whatsapp" style="color:#25d366;font-size:14px;"><i class="fab fa-whatsapp"></i> Join WhatsApp</a>
+                </div>
+                <div style="font-size:12px;color:var(--text-muted);">
+                    <span>Powered by <strong style="color:var(--primary);">PayChangu</strong></span>
+                </div>
+                <div style="font-size:11px;color:var(--text-muted);margin-top:6px;">
+                    All rights reserved &copy; 2026-2026 MADA-CHECKER-EARN
+                </div>
+            </div>
         </div>
     </div>
 
@@ -911,12 +1048,28 @@
                 <div class="form-group"><label>Full Name</label><input type="text" id="regFullname" placeholder="Your full name" required /></div>
                 <div class="form-group"><label>Username</label><input type="text" id="regUsername" placeholder="Choose username" required /></div>
                 <div class="form-group"><label>Email</label><input type="email" id="regEmail" placeholder="you@example.com" required /></div>
-                <div class="form-group"><label>Password</label><input type="password" id="regPassword" placeholder="Min 6 characters" required minlength="6" /></div>
+                <div class="form-group">
+                    <label>Password</label>
+                    <input type="password" id="regPassword" placeholder="Min 6 characters" required minlength="6" />
+                    <button type="button" class="toggle-pw" onclick="togglePassword('regPassword', this)"><i class="fas fa-eye"></i></button>
+                </div>
                 <div class="form-group"><label>Mobile (TNM / Airtel)</label><input type="tel" id="regMobile" placeholder="09xxxxxxxx" required /></div>
                 <div class="form-group"><label>Network</label><select id="regNetwork" required><option value="">Select</option><option value="TNM">TNM</option><option value="Airtel">Airtel</option></select></div>
                 <button class="auth-btn" type="submit" id="registerBtn">Create Account <i class="fas fa-user-plus"></i></button>
             </form>
             <div class="auth-link">Already have an account? <span onclick="showLogin()">Login</span></div>
+            <div style="margin-top:20px;text-align:center;border-top:1px solid rgba(255,255,255,0.04);padding-top:16px;">
+                <div style="display:flex;justify-content:center;gap:16px;flex-wrap:wrap;margin-bottom:8px;">
+                    <a href="#" onclick="showFAQ()" style="color:var(--text-muted);font-size:14px;"><i class="fas fa-question-circle"></i> FAQ</a>
+                    <a href="https://chat.whatsapp.com/CmvdLsifPKS51OyRnrITFz" target="_blank" class="whatsapp" style="color:#25d366;font-size:14px;"><i class="fab fa-whatsapp"></i> Join WhatsApp</a>
+                </div>
+                <div style="font-size:12px;color:var(--text-muted);">
+                    <span>Powered by <strong style="color:var(--primary);">PayChangu</strong></span>
+                </div>
+                <div style="font-size:11px;color:var(--text-muted);margin-top:6px;">
+                    All rights reserved &copy; 2026-2026 MADA-CHECKER-EARN
+                </div>
+            </div>
         </div>
     </div>
 
@@ -926,7 +1079,10 @@
         <div class="top-bar">
             <div class="brand">♛ MADA <small>· Play & Earn</small></div>
             <div class="user-info">
-                <span class="balance" id="headerBalance"><i class="fas fa-coins"></i> 0.00</span>
+                <span class="balance" id="balanceToggle" onclick="toggleBalanceVisibility()">
+                    <i class="fas fa-eye" id="balanceEye"></i>
+                    <span class="balance-amount" id="headerBalance">0.00</span>
+                </span>
                 <span class="username" id="headerUsername">Player</span>
                 <button class="logout-btn" onclick="logout()"><i class="fas fa-sign-out-alt"></i> Logout</button>
             </div>
@@ -999,6 +1155,15 @@
                     </div>
                 </div>
             </div>
+            <!-- Footer inside Game panel -->
+            <div class="footer">
+                <div class="links">
+                    <a href="#" onclick="showFAQ()"><i class="fas fa-question-circle"></i> FAQ</a>
+                    <a href="https://chat.whatsapp.com/CmvdLsifPKS51OyRnrITFz" target="_blank" class="whatsapp"><i class="fab fa-whatsapp"></i> WhatsApp</a>
+                </div>
+                <div class="powered">Powered by <strong>PayChangu</strong></div>
+                <div class="copyright">All rights reserved &copy; 2026-2026 MADA-CHECKER-EARN</div>
+            </div>
         </div>
 
         <!-- ===== WALLET PANEL ===== -->
@@ -1007,7 +1172,11 @@
                 <!-- Balance -->
                 <div class="wall-card">
                     <h2><i class="fas fa-wallet"></i> Balance</h2>
-                    <div class="big-number" id="wallBalance">0.00 <span class="currency">MWK</span></div>
+                    <div class="big-number">
+                        <span id="wallBalanceDisplay">0.00</span>
+                        <span class="currency">MWK</span>
+                        <i class="fas fa-eye toggle-balance" id="wallBalanceEye" onclick="toggleBalanceVisibility()"></i>
+                    </div>
                     <p style="color:var(--text-muted);margin-top:8px;font-size:14px;">Available to play & withdraw</p>
                 </div>
 
@@ -1049,6 +1218,15 @@
                     </div>
                 </div>
             </div>
+            <!-- Footer inside Wallet panel -->
+            <div class="footer">
+                <div class="links">
+                    <a href="#" onclick="showFAQ()"><i class="fas fa-question-circle"></i> FAQ</a>
+                    <a href="https://chat.whatsapp.com/CmvdLsifPKS51OyRnrITFz" target="_blank" class="whatsapp"><i class="fab fa-whatsapp"></i> WhatsApp</a>
+                </div>
+                <div class="powered">Powered by <strong>PayChangu</strong></div>
+                <div class="copyright">All rights reserved &copy; 2026-2026 MADA-CHECKER-EARN</div>
+            </div>
         </div>
     </div>
 
@@ -1089,6 +1267,43 @@
             }, 4000);
         }
 
+        // ---------- TOGGLE PASSWORD ----------
+        function togglePassword(inputId, btn) {
+            var input = document.getElementById(inputId);
+            if (input.type === 'password') {
+                input.type = 'text';
+                btn.innerHTML = '<i class="fas fa-eye-slash"></i>';
+            } else {
+                input.type = 'password';
+                btn.innerHTML = '<i class="fas fa-eye"></i>';
+            }
+        }
+
+        // ---------- TOGGLE BALANCE ----------
+        var balanceVisible = true;
+
+        function toggleBalanceVisibility() {
+            balanceVisible = !balanceVisible;
+            var display = document.getElementById('headerBalance');
+            var wallDisplay = document.getElementById('wallBalanceDisplay');
+            var eyeIcon = document.getElementById('balanceEye');
+            var wallEye = document.getElementById('wallBalanceEye');
+
+            if (balanceVisible) {
+                if (currentUserData) {
+                    display.textContent = (currentUserData.balance || 0).toFixed(2);
+                    wallDisplay.textContent = (currentUserData.balance || 0).toFixed(2);
+                }
+                eyeIcon.className = 'fas fa-eye';
+                wallEye.className = 'fas fa-eye toggle-balance';
+            } else {
+                display.textContent = '••••••';
+                wallDisplay.textContent = '••••••';
+                eyeIcon.className = 'fas fa-eye-slash';
+                wallEye.className = 'fas fa-eye-slash toggle-balance';
+            }
+        }
+
         // ---------- UI REFS ----------
         var loginPage = document.getElementById('loginPage');
         var registerPage = document.getElementById('registerPage');
@@ -1096,6 +1311,7 @@
         var loginForm = document.getElementById('loginForm');
         var registerForm = document.getElementById('registerForm');
         var loginError = document.getElementById('loginError');
+        var loginSuccess = document.getElementById('loginSuccess');
         var registerError = document.getElementById('registerError');
         var loginBtn = document.getElementById('loginBtn');
         var registerBtn = document.getElementById('registerBtn');
@@ -1125,6 +1341,25 @@
 
         function logoutUser() { return auth.signOut(); }
 
+        // ---------- PASSWORD RESET ----------
+        function resetPassword() {
+            var email = document.getElementById('loginUsername').value.trim();
+            if (!email) {
+                showToast('Please enter your email address first.', 'error');
+                return;
+            }
+            auth.sendPasswordResetEmail(email)
+                .then(function() {
+                    loginSuccess.textContent = 'Password reset email sent to ' + email;
+                    loginSuccess.classList.add('show');
+                    setTimeout(function() { loginSuccess.classList.remove('show'); }, 6000);
+                    showToast('Password reset email sent!', 'success');
+                })
+                .catch(function(err) {
+                    showToast('Error: ' + err.message, 'error');
+                });
+        }
+
         // ---------- AUTH STATE ----------
         var currentUserData = null;
 
@@ -1146,6 +1381,8 @@
                 appContainer.classList.remove('active');
                 loginPage.style.display = 'flex';
                 registerPage.style.display = 'none';
+                // Reset balance visibility
+                balanceVisible = true;
             }
         });
 
@@ -1153,6 +1390,7 @@
             loginPage.style.display = 'flex';
             registerPage.style.display = 'none';
             loginError.classList.remove('show');
+            loginSuccess.classList.remove('show');
         };
         window.showRegister = function() {
             loginPage.style.display = 'none';
@@ -1168,6 +1406,7 @@
             loginBtn.disabled = true;
             loginBtn.innerHTML = '<span class="spinner"></span> Logging in...';
             loginError.classList.remove('show');
+            loginSuccess.classList.remove('show');
             loginUser(email, pass).catch(function(err) {
                 loginError.textContent = err.message;
                 loginError.classList.add('show');
@@ -1227,8 +1466,18 @@
 
         function updateBalanceUI(balance) {
             var f = balance.toFixed(2);
-            document.getElementById('headerBalance').innerHTML = '<i class="fas fa-coins"></i> ' + f;
-            document.getElementById('wallBalance').textContent = f;
+            var display = document.getElementById('headerBalance');
+            var wallDisplay = document.getElementById('wallBalanceDisplay');
+            if (balanceVisible) {
+                display.textContent = f;
+                wallDisplay.textContent = f;
+            } else {
+                display.textContent = '••••••';
+                wallDisplay.textContent = '••••••';
+            }
+            // Store raw value for later toggling
+            display.dataset.raw = f;
+            wallDisplay.dataset.raw = f;
         }
 
         function updateStakeDisplay() {
@@ -1280,7 +1529,7 @@
                         html += '<div class="history-item">' +
                             '<span>' + date + ' · Grade ' + m.grade + ' · K' + stake + '</span>' +
                             '<span class="result ' + resultClass + '">' + label + ' ' + (winnings > 0 ? '(+K' + winnings
-                            .toFixed(2) + ')' : '') + '</span>' +
+                                .toFixed(2) + ')' : '') + '</span>' +
                             '</div>';
                     });
                     container.innerHTML = html;
@@ -1391,6 +1640,12 @@
                     btn.innerHTML = '<i class="fas fa-arrow-up"></i> Withdraw';
                 });
         });
+
+        // ---------- FAQ (simple alert) ----------
+        function showFAQ() {
+            showToast('FAQ: For help, visit our WhatsApp group or contact support.', 'info');
+            // Could also open a modal, but simple for now.
+        }
 
         // ================================================================
         //  FULL CHECKERS ENGINE (Malawi Rules, Depth 24, Killer Moves)
@@ -1850,19 +2105,6 @@
         function gameLoop() {
             if (!gameInProgress || game.gameOver) return;
 
-            if (game.turn === 'white') {
-                // Player's turn - wait for click
-                // But we need to handle the AI automatically
-                // We'll use a different approach: AI plays both sides? No, the user said "computer won't play"
-                // The issue was the AI wasn't being called. Let's make AI play automatically.
-                // Actually, the user said "remove all control buttons" and "computer won't play"
-                // So we need to make the AI play automatically.
-                // But the user also said "player stake" so the player should play.
-                // The proper flow: player makes a move, AI responds.
-                // But the user said "remove all control buttons" - so we need to handle clicks on the board.
-                // Let's keep the click handler but remove the buttons.
-            }
-
             // If it's AI's turn, call AI move after a delay
             if (game.turn === 'black' && !game.gameOver && gameInProgress) {
                 isAIThinking = true;
@@ -2106,7 +2348,7 @@
         });
 
         // ---------- INIT ----------
-        console.log('✅ MADA Checker with stake system & auto AI ready.');
+        console.log('✅ MADA Checker with password reset & balance toggle ready.');
     </script>
 </body>
-</html> 0
+</html> 
