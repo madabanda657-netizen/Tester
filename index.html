@@ -594,6 +594,427 @@ var botMatchTimeout = null;
 var botThinking = false;
 var lastBoardStr = "";
 
+// ============================================================
+// UPGRADED AI ENGINE – GRANDMASTER LEVEL
+// ============================================================
+
+// ---- Global AI structures ----
+var transpositionTable = new Map();
+var TT_SIZE_LIMIT = 500000;
+var killerMoves = [];
+var historyHeuristic = {};
+var MAX_DEPTH = 26;
+var TIME_LIMIT = 3000;
+var startTime = 0;
+
+// ---- Board hash for TT ----
+function boardHash(b) {
+    var hash = 0;
+    for (var i = 0; i < 64; i++) {
+        var p = b[i];
+        if (p !== 0) {
+            var val = p > 0 ? (p === 2 ? 4 : 1) : (p === -2 ? 5 : 2);
+            hash ^= (val * 31) ^ (i * 17);
+            hash = (hash * 37) & 0xFFFFFFFF;
+        }
+    }
+    return hash;
+}
+
+function getTTEntry(b) {
+    var h = boardHash(b);
+    var entry = transpositionTable.get(h);
+    if (entry) return entry;
+    return null;
+}
+
+function setTTEntry(b, depth, score, flag, move) {
+    var h = boardHash(b);
+    if (transpositionTable.size > TT_SIZE_LIMIT) transpositionTable.clear();
+    transpositionTable.set(h, { depth: depth, score: score, flag: flag, move: move });
+}
+
+// ---- Killer & History ----
+function updateHistory(move, depth) {
+    var key = move.from[0] + ',' + move.from[1] + ',' + move.to[0] + ',' + move.to[1];
+    historyHeuristic[key] = (historyHeuristic[key] || 0) + depth * depth;
+}
+
+function scoreMove(move, depth, ttMove) {
+    if (ttMove && move.from[0] === ttMove.from[0] && move.from[1] === ttMove.from[1] &&
+        move.to[0] === ttMove.to[0] && move.to[1] === ttMove.to[1]) {
+        return 10000000;
+    }
+    if (move.captured.length > 0) {
+        return 900000 + move.captured.length * 1000;
+    }
+    if (depth < killerMoves.length && killerMoves[depth]) {
+        for (var i = 0; i < killerMoves[depth].length; i++) {
+            var km = killerMoves[depth][i];
+            if (km && move.from[0] === km.from[0] && move.from[1] === km.from[1] &&
+                move.to[0] === km.to[0] && move.to[1] === km.to[1]) {
+                return 800000;
+            }
+        }
+    }
+    var histKey = move.from[0] + ',' + move.from[1] + ',' + move.to[0] + ',' + move.to[1];
+    var hist = historyHeuristic[histKey] || 0;
+    return hist * 100;
+}
+
+// ---- Quiescence search (captures only) ----
+function quiescenceSearch(b, alpha, beta, isMaximizing, player) {
+    var standPat = evaluateBoard(b, player);
+    if (isMaximizing) {
+        if (standPat >= beta) return beta;
+        if (alpha < standPat) alpha = standPat;
+    } else {
+        if (standPat <= alpha) return alpha;
+        if (beta > standPat) beta = standPat;
+    }
+    var moves = getAllCapturesForAI(b, player);
+    if (moves.length === 0) return standPat;
+    moves.sort(function(a, b2) { return b2.captured.length - a.captured.length; });
+    for (var i = 0; i < moves.length; i++) {
+        var newB = applyMoveToBoard(b, moves[i]);
+        var score = -quiescenceSearch(newB, -beta, -alpha, !isMaximizing, player === 1 ? 2 : 1);
+        if (isMaximizing) {
+            if (score >= beta) return beta;
+            if (score > alpha) alpha = score;
+        } else {
+            if (score <= alpha) return alpha;
+            if (score < beta) beta = score;
+        }
+    }
+    return isMaximizing ? alpha : beta;
+}
+
+// ---- Improved evaluation (piece-square tables) ----
+function evaluateBoard(b, player) {
+    var manTable = [
+        [0,0,0,0,0,0,0,0],
+        [5,10,15,20,20,15,10,5],
+        [6,12,18,24,24,18,12,6],
+        [7,14,21,28,28,21,14,7],
+        [8,16,24,32,32,24,16,8],
+        [9,18,27,36,36,27,18,9],
+        [10,20,30,40,40,30,20,10],
+        [0,0,0,0,0,0,0,0]
+    ];
+    var blackManTable = manTable.slice().reverse();
+    var score = 0;
+    var p1Pieces = 0, p2Pieces = 0;
+    for (var r = 0; r < 8; r++) {
+        for (var c = 0; c < 8; c++) {
+            var p = b[r*8 + c];
+            if (p === 0) continue;
+            var isKing = Math.abs(p) === 2;
+            var val = isKing ? 200 : 100;
+            if (!isKing) {
+                if (p === 1) val += manTable[r][c];
+                else if (p === -1) val += blackManTable[r][c];
+            } else {
+                var centerBonus = 10 - Math.abs(r - 3.5) - Math.abs(c - 3.5);
+                val += Math.max(0, centerBonus * 5);
+            }
+            if (p > 0) {
+                score += val;
+                p1Pieces++;
+            } else {
+                score -= val;
+                p2Pieces++;
+            }
+        }
+    }
+    var wMoves = getAllValidMovesForAI(b, 1).length;
+    var bMoves = getAllValidMovesForAI(b, 2).length;
+    score += (wMoves - bMoves) * 2;
+    return score;
+}
+
+// ---- Negamax with TT, killers, quiescence ----
+function minimax(b, depth, alpha, beta, isMaximizing, player, ply) {
+    if (Date.now() - startTime > TIME_LIMIT) {
+        return evaluateBoard(b, player);
+    }
+    var ttEntry = getTTEntry(b);
+    if (ttEntry && ttEntry.depth >= depth) {
+        if (ttEntry.flag === 'exact') return ttEntry.score;
+        if (ttEntry.flag === 'lowerbound' && ttEntry.score >= beta) return ttEntry.score;
+        if (ttEntry.flag === 'upperbound' && ttEntry.score <= alpha) return ttEntry.score;
+    }
+    if (depth <= 0) {
+        return quiescenceSearch(b, alpha, beta, isMaximizing, player);
+    }
+    var moves = getAllValidMovesForAI(b, player);
+    if (moves.length === 0) {
+        return isMaximizing ? -10000 + ply : 10000 - ply;
+    }
+    var ttMove = ttEntry ? ttEntry.move : null;
+    moves.sort(function(a, b2) {
+        return scoreMove(b2, depth, ttMove) - scoreMove(a, depth, ttMove);
+    });
+    var bestScore = isMaximizing ? -Infinity : Infinity;
+    var bestMove = null;
+    for (var i = 0; i < moves.length; i++) {
+        var newB = applyMoveToBoard(b, moves[i]);
+        var score = -minimax(newB, depth - 1, -beta, -alpha, !isMaximizing, player === 1 ? 2 : 1, ply + 1);
+        if (isMaximizing) {
+            if (score > bestScore) {
+                bestScore = score;
+                bestMove = moves[i];
+            }
+            alpha = Math.max(alpha, score);
+        } else {
+            if (score < bestScore) {
+                bestScore = score;
+                bestMove = moves[i];
+            }
+            beta = Math.min(beta, score);
+        }
+        if (beta <= alpha) {
+            if (depth < 12) {
+                if (!killerMoves[depth]) killerMoves[depth] = [];
+                if (killerMoves[depth].length < 2) {
+                    killerMoves[depth].push(moves[i]);
+                } else {
+                    killerMoves[depth][0] = killerMoves[depth][1];
+                    killerMoves[depth][1] = moves[i];
+                }
+                updateHistory(moves[i], depth);
+            }
+            break;
+        }
+    }
+    var flag = 'exact';
+    if (bestScore <= alpha) flag = 'upperbound';
+    else if (bestScore >= beta) flag = 'lowerbound';
+    setTTEntry(b, depth, bestScore, flag, bestMove);
+    return bestScore;
+}
+
+// ---- Iterative deepening with aspiration ----
+function iterativeDeepening(b, maxDepth, timeLimit, forcedR, forcedC) {
+    startTime = Date.now();
+    var bestMove = null;
+    var bestScore = Infinity;
+    var alpha = -Infinity;
+    var beta = Infinity;
+
+    var moves;
+    if (forcedR >= 0) {
+        var caps = getCapturesForPiece(b, forcedR, forcedC, 2);
+        var expanded = [];
+        for (var i = 0; i < caps.length; i++) expandMove(caps[i], b, 2, expanded);
+        moves = expanded;
+    } else {
+        moves = getAllValidMovesForAI(b, 2);
+    }
+    if (moves.length === 0) return null;
+    if (moves.length === 1) return moves[0];
+
+    for (var depth = 1; depth <= maxDepth; depth++) {
+        killerMoves = [];
+        if (depth > 2 && bestMove) {
+            alpha = bestScore - 50;
+            beta = bestScore + 50;
+        } else {
+            alpha = -Infinity;
+            beta = Infinity;
+        }
+        if (bestMove) {
+            var idx = moves.indexOf(bestMove);
+            if (idx > 0) {
+                moves.splice(idx, 1);
+                moves.unshift(bestMove);
+            }
+        }
+        var currentBest = null;
+        var currentBestScore = Infinity;
+        var currentAlpha = alpha;
+        var currentBeta = beta;
+        for (var i = 0; i < moves.length; i++) {
+            if (Date.now() - startTime > timeLimit) {
+                if (currentBest) bestMove = currentBest;
+                return bestMove || moves[0];
+            }
+            var newB = applyMoveToBoard(b, moves[i]);
+            var score = -minimax(newB, depth - 1, -currentBeta, -currentAlpha, true, 2, 0);
+            if (score < currentBestScore) {
+                currentBestScore = score;
+                currentBest = moves[i];
+            }
+            currentBeta = Math.min(currentBeta, score);
+            if (currentAlpha >= currentBeta) break;
+        }
+        if (currentBest) {
+            bestMove = currentBest;
+            bestScore = currentBestScore;
+        }
+    }
+    return bestMove || moves[0];
+}
+
+// ---- Opening book ----
+function getOpeningMove(b) {
+    var book = [
+        { from: [5,1], to: [4,2] },
+        { from: [5,3], to: [4,4] },
+        { from: [5,5], to: [4,6] },
+        { from: [5,7], to: [4,6] },
+        { from: [6,0], to: [5,1] },
+        { from: [6,2], to: [5,3] },
+        { from: [6,4], to: [5,5] },
+        { from: [6,6], to: [5,7] },
+        { from: [2,0], to: [3,1] },
+        { from: [2,2], to: [3,3] },
+        { from: [2,4], to: [3,5] },
+        { from: [2,6], to: [3,7] }
+    ];
+    var count = 0;
+    for (var i = 0; i < 64; i++) if (b[i] !== 0) count++;
+    if (count > 20) {
+        var moves = getAllValidMovesForAI(b, 2);
+        for (var i = 0; i < moves.length; i++) {
+            for (var j = 0; j < book.length; j++) {
+                if (moves[i].from[0] === book[j].from[0] && moves[i].from[1] === book[j].from[1] &&
+                    moves[i].to[0] === book[j].to[0] && moves[i].to[1] === book[j].to[1]) {
+                    return moves[i];
+                }
+            }
+        }
+    }
+    return null;
+}
+
+// ---- The main AI function (replaces old botMakeMove) ----
+function botMakeMove() {
+    if (!gameState || gameState.turn !== 2 || gameState.p2 !== 'Mada_Bot') return;
+
+    try {
+        var board = gameState.board.slice();
+        var bestMove = null;
+
+        // If we have a forced multi-capture in progress
+        if (gameState.selected && gameState.validMoves && gameState.validMoves.length > 0) {
+            var fR = gameState.selected[0], fC = gameState.selected[1];
+            var captures = getCapturesForPiece(board, fR, fC, 2);
+            var expanded = [];
+            for (var i = 0; i < captures.length; i++) {
+                if (expanded.length > 100) break;
+                var initialMove = captures[i];
+                var initialBoard = applyMoveToBoard(board, initialMove);
+                var wasPromoted = false;
+                var p = board[fR * 8 + fC];
+                if (initialMove.to[0] === 7 && p === -1) wasPromoted = true;
+                if (wasPromoted) {
+                    expanded.push(initialMove);
+                } else {
+                    expandMove(initialMove, initialBoard, 2, expanded);
+                }
+            }
+
+            var validExpanded = [];
+            for (var i = 0; i < expanded.length; i++) {
+                var firstTo = expanded[i].path ? expanded[i].path[1] : expanded[i].to;
+                for (var j = 0; j < gameState.validMoves.length; j++) {
+                    if (firstTo[0] === gameState.validMoves[j][0] && firstTo[1] === gameState.validMoves[j][1]) {
+                        validExpanded.push(expanded[i]);
+                        break;
+                    }
+                }
+            }
+
+            if (validExpanded.length > 0) {
+                validExpanded.sort(function(a, b) {
+                    if (b.captured.length !== a.captured.length) return b.captured.length - a.captured.length;
+                    return a.to[0] - b.to[0];
+                });
+                bestMove = validExpanded[0];
+            } else {
+                bestMove = { from: [fR, fC], to: gameState.validMoves[0] };
+            }
+
+            var firstTo = bestMove.path ? bestMove.path[1] : bestMove.to;
+            makePvPMove(bestMove.from[0], bestMove.from[1], firstTo[0], firstTo[1]);
+            return;
+        }
+
+        // Opening book
+        var openingMove = getOpeningMove(board);
+        if (openingMove && !gameState.selected) {
+            var firstTo = openingMove.path ? openingMove.path[1] : openingMove.to;
+            makePvPMove(openingMove.from[0], openingMove.from[1], firstTo[0], firstTo[1]);
+            return;
+        }
+
+        // Main AI search
+        bestMove = iterativeDeepening(board, MAX_DEPTH, TIME_LIMIT, -1, -1);
+
+        if (bestMove) {
+            var firstTo = bestMove.path ? bestMove.path[1] : bestMove.to;
+            makePvPMove(bestMove.from[0], bestMove.from[1], firstTo[0], firstTo[1]);
+        } else {
+            var moves = getAllValidMovesForAI(board, 2);
+            if (moves.length > 0) {
+                var m = moves[0];
+                var firstTo = m.path ? m.path[1] : m.to;
+                makePvPMove(m.from[0], m.from[1], firstTo[0], firstTo[1]);
+            }
+        }
+    } catch (e) {
+        console.error("AI Error:", e);
+        // fallback to simple move
+        try {
+            if (gameState.selected && gameState.validMoves && gameState.validMoves.length > 0) {
+                makePvPMove(gameState.selected[0], gameState.selected[1], gameState.validMoves[0][0], gameState.validMoves[0][1]);
+            } else {
+                var board = gameState.board.slice();
+                var moved = false;
+                for (var r=0; r<8 && !moved; r++) {
+                    for (var c=0; c<8 && !moved; c++) {
+                        if (board[r*8+c] < 0) {
+                            var simpleMoves = getSimpleMovesForPiece(board, r, c, 2);
+                            if (simpleMoves.length > 0) {
+                                makePvPMove(r, c, simpleMoves[0].to[0], simpleMoves[0].to[1]);
+                                moved = true;
+                            }
+                            var caps = getCapturesForPiece(board, r, c, 2);
+                            if (caps.length > 0) {
+                                makePvPMove(r, c, caps[0].to[0], caps[0].to[1]);
+                                moved = true;
+                            }
+                        }
+                    }
+                }
+            }
+        } catch (e2) {
+            console.error("AI Fallback Error:", e2);
+        }
+    }
+}
+
+// ---- Clear AI data on new game ----
+function resetAI() {
+    transpositionTable.clear();
+    historyHeuristic = {};
+    killerMoves = [];
+}
+
+// ---- Hook into game end to reset ----
+var originalEndPvPGame = endPvPGame;
+endPvPGame = function(g) {
+    originalEndPvPGame(g);
+    resetAI();
+};
+
+// ---- Also reset when starting new bot game ----
+var originalCreateBotGame = createBotGame;
+createBotGame = function(gid, gr) {
+    resetAI();
+    originalCreateBotGame(gid, gr);
+};
+
 /* ===== VPN DETECTION & BAN SYSTEM ===== */
 async function checkVpnStatus() {
     if (!myUid || !db) return;
@@ -1099,66 +1520,10 @@ function makePvPMove(fR,fC,tR,tC){
     db.ref('pvp_games/'+currentGameId).update(u);
 }
 
-/* ===== UNBEATABLE GOD AI ENGINE (Depth 30, Advanced Traps, Zero Mistakes) ===== */
-var transpositionTable = new Map();
-var TT_SIZE_LIMIT = 500000; // bigger table for more positions
-var MAX_DEPTH = 30;          // deeper search
-var TIME_LIMIT = 4000;       // 4 seconds of thinking
-var startTime = 0;
-var killerMoves = [];
-var historyHeuristic = {};
-
-// Opening book for black (player 2) – traps included
-function getOpeningMove(b) {
-    // Known strong opening moves for black
-    const book = [
-        { from: [5,1], to: [4,2] },
-        { from: [5,3], to: [4,4] },
-        { from: [5,5], to: [4,6] },
-        { from: [5,7], to: [4,6] },
-        { from: [6,0], to: [5,1] },
-        { from: [6,2], to: [5,3] },
-        { from: [6,4], to: [5,5] },
-        { from: [6,6], to: [5,7] },
-    ];
-    // Count pieces to detect early game
-    let count = 0;
-    for (let i = 0; i < 64; i++) if (b[i] !== 0) count++;
-    if (count > 20) {
-        const moves = getAllValidMovesForAI(b, 2);
-        for (let i = 0; i < moves.length; i++) {
-            const m = moves[i];
-            for (let j = 0; j < book.length; j++) {
-                const bk = book[j];
-                if (m.from[0] === bk.from[0] && m.from[1] === bk.from[1] &&
-                    m.to[0] === bk.to[0] && m.to[1] === bk.to[1]) {
-                    return m;
-                }
-            }
-        }
-        // If no book move, pick the move that attacks the most enemy pieces
-        let bestScore = -Infinity;
-        let bestMove = null;
-        for (let i = 0; i < moves.length; i++) {
-            const newB = applyMoveToBoard(b, moves[i]);
-            const enemyMoves = getAllValidMovesForAI(newB, 1);
-            const ownMoves = getAllValidMovesForAI(newB, 2);
-            let score = ownMoves.length - enemyMoves.length * 2;
-            // Prefer moves that create a threat to capture
-            const captures = getAllCapturesForAI(newB, 2);
-            if (captures.length > 0) score += 100;
-            if (score > bestScore) { bestScore = score; bestMove = moves[i]; }
-        }
-        if (bestMove) return bestMove;
-    }
-    return null;
-}
-
-setInterval(function() {
-    if (transpositionTable.size > TT_SIZE_LIMIT) {
-        transpositionTable.clear();
-    }
-}, 30000);
+// ============================================================
+// ORIGINAL FUNCTIONS (applyMoveToBoard, expandMove, etc.)
+// These were part of the original file, now restored.
+// ============================================================
 
 function applyMoveToBoard(b, move) {
     var newB = b.slice();
@@ -1167,46 +1532,41 @@ function applyMoveToBoard(b, move) {
     var p = newB[fR * 8 + fC];
     newB[fR * 8 + fC] = 0;
     newB[tR * 8 + tC] = p;
-    
     if (move.captured && move.captured.length > 0) {
         for (var i = 0; i < move.captured.length; i++) {
             var cap = move.captured[i];
             newB[cap[0] * 8 + cap[1]] = 0;
         }
     }
-    
     if (p === 1 && tR === 0) newB[tR * 8 + tC] = 2;
     if (p === -1 && tR === 7) newB[tR * 8 + tC] = -2;
-    
     return newB;
 }
 
 function expandMove(move, b, pl, results) {
-    if (results.length > 200) return; // limit explosion
-    const tR = move.to[0], tC = move.to[1];
-    const nextCaptures = getCapturesForPiece(b, tR, tC, pl);
+    if (results.length > 100) return;
+    var tR = move.to[0], tC = move.to[1];
+    var nextCaptures = getCapturesForPiece(b, tR, tC, pl);
     if (nextCaptures.length === 0) {
         results.push(move);
     } else {
-        // Prevent revisiting squares
-        const visited = move.path || [move.from];
-        for (let i = 0; i < nextCaptures.length; i++) {
-            if (results.length > 200) break;
-            const nc = nextCaptures[i];
-            let already = false;
-            for (let v = 0; v < visited.length; v++) {
+        var visited = move.path || [move.from];
+        for (var i = 0; i < nextCaptures.length; i++) {
+            if (results.length > 100) break;
+            var nc = nextCaptures[i];
+            var already = false;
+            for (var v = 0; v < visited.length; v++) {
                 if (visited[v][0] === nc.to[0] && visited[v][1] === nc.to[1]) {
-                    already = true;
-                    break;
+                    already = true; break;
                 }
             }
             if (already) continue;
-            const newB = applyMoveToBoard(b, nc);
-            let promoted = false;
-            const p = b[tR*8 + tC];
+            var newB = applyMoveToBoard(b, nc);
+            var promoted = false;
+            var p = b[tR * 8 + tC];
             if (pl === 1 && nc.to[0] === 0 && p === 1) promoted = true;
             if (pl === 2 && nc.to[0] === 7 && p === -1) promoted = true;
-            const combined = {
+            var combined = {
                 from: move.from,
                 to: nc.to,
                 captured: move.captured.concat(nc.captured),
@@ -1222,27 +1582,25 @@ function expandMove(move, b, pl, results) {
 }
 
 function getAllValidMovesForAI(b, pl) {
-    const captures = [];
-    const simpleMoves = [];
-
-    for (let r = 0; r < 8; r++) {
-        for (let c = 0; c < 8; c++) {
+    var captures = [];
+    var simpleMoves = [];
+    for (var r = 0; r < 8; r++) {
+        for (var c = 0; c < 8; c++) {
             if (Math.sign(b[r*8 + c]) === (pl === 1 ? 1 : -1)) {
-                const caps = getCapturesForPiece(b, r, c, pl);
+                var caps = getCapturesForPiece(b, r, c, pl);
                 if (caps.length > 0) {
-                    caps.forEach(cap => {
-                        const expanded = [];
-                        expandMove(cap, b, pl, expanded);
-                        expanded.forEach(m => captures.push(m));
-                    });
+                    for (var i = 0; i < caps.length; i++) {
+                        var expanded = [];
+                        expandMove(caps[i], b, pl, expanded);
+                        for (var j = 0; j < expanded.length; j++) captures.push(expanded[j]);
+                    }
                 } else {
-                    const simple = getSimpleMovesForPiece(b, r, c, pl);
-                    simple.forEach(s => simpleMoves.push(s));
+                    var simple = getSimpleMovesForPiece(b, r, c, pl);
+                    for (var i = 0; i < simple.length; i++) simpleMoves.push(simple[i]);
                 }
             }
         }
     }
-
     if (captures.length > 0) return captures;
     return simpleMoves;
 }
@@ -1252,30 +1610,27 @@ function getAllCapturesForAI(b, pl) {
     var captures = [];
     for (var r = 0; r < 8; r++) {
         for (var c = 0; c < 8; c++) {
-            if (Math.sign(b[r * 8 + c]) === s) {
-                var pc = getCapturesForPiece(b, r, c, pl);
-                captures = captures.concat(pc);
+            if (Math.sign(b[r*8 + c]) === s) {
+                var caps = getCapturesForPiece(b, r, c, pl);
+                for (var i = 0; i < caps.length; i++) captures.push(caps[i]);
             }
         }
     }
-    
     var expanded = [];
     for (var i = 0; i < captures.length; i++) {
-        if (expanded.length > 200) break;
+        if (expanded.length > 100) break;
         var initialMove = captures[i];
         var initialBoard = applyMoveToBoard(b, initialMove);
         var wasPromoted = false;
         var p = b[initialMove.from[0] * 8 + initialMove.from[1]];
         if (pl === 1 && initialMove.to[0] === 0 && p === 1) wasPromoted = true;
         if (pl === 2 && initialMove.to[0] === 7 && p === -1) wasPromoted = true;
-        
         if (wasPromoted) {
             expanded.push(initialMove);
         } else {
             expandMove(initialMove, initialBoard, pl, expanded);
         }
     }
-    
     return expanded;
 }
 
@@ -1283,7 +1638,6 @@ function countAllMovesFast(b, pl) {
     var s = pl === 1 ? 1 : -1;
     var count = 0;
     var hasCapture = false;
-    
     for (var i = 0; i < 64; i++) {
         if (Math.sign(b[i]) === s) {
             var r = Math.floor(i/8), c = i%8;
@@ -1294,478 +1648,18 @@ function countAllMovesFast(b, pl) {
             }
         }
     }
-    
     if (hasCapture) return count;
-    
     for (var i = 0; i < 64; i++) {
         if (Math.sign(b[i]) === s) {
             var r = Math.floor(i/8), c = i%8;
             count += getSimpleMovesForPiece(b, r, c, pl).length;
         }
     }
-    
     return count;
 }
 
-function evaluateBoard(b, turn) {
-    // Piece values: men = 100, kings = 450
-    // Enhanced piece‑square tables
-    const P1_MAN_TABLE = [
-        [0,  0,  0,  0,  0,  0,  0,  0],
-        [5, 10, 15, 20, 20, 15, 10,  5],
-        [6, 12, 18, 24, 24, 18, 12,  6],
-        [7, 14, 21, 28, 28, 21, 14,  7],
-        [8, 16, 24, 32, 32, 24, 16,  8],
-        [9, 18, 27, 36, 36, 27, 18,  9],
-        [10,20, 30, 40, 40, 30, 20, 10],
-        [0,  0,  0,  0,  0,  0,  0,  0]
-    ];
-    const P2_MAN_TABLE = P1_MAN_TABLE.slice().reverse(); // black’s perspective
-
-    let score = 0;
-    let p1Pieces = 0, p2Pieces = 0;
-    let p1Kings = 0, p2Kings = 0;
-
-    for (let r = 0; r < 8; r++) {
-        for (let c = 0; c < 8; c++) {
-            const p = b[r*8 + c];
-            if (p === 0) continue;
-            const isKing = Math.abs(p) === 2;
-            let val = isKing ? 450 : 100;
-
-            if (!isKing) {
-                if (p === 1) val += P1_MAN_TABLE[r][c];
-                else if (p === -1) val += P2_MAN_TABLE[r][c];
-            } else {
-                // Kings like the centre
-                const centerBonus = 10 - Math.abs(r - 3.5) - Math.abs(c - 3.5);
-                val += Math.max(0, centerBonus * 3);
-                // Kings also get a bonus for controlling the opponent's back rank
-                if (p === 2 && r === 0) val += 30;
-                if (p === -2 && r === 7) val += 30;
-            }
-
-            // Extra for controlling the opponent’s back rank
-            if (p === 1 && r === 7) val += 20;
-            if (p === -1 && r === 0) val += 20;
-
-            if (p > 0) {
-                score += val;
-                p1Pieces++;
-                if (isKing) p1Kings++;
-            } else {
-                score -= val;
-                p2Pieces++;
-                if (isKing) p2Kings++;
-            }
-        }
-    }
-
-    // Mobility bonus (rough count of available moves)
-    const p1Moves = getAllValidMovesForAI(b, 1).length;
-    const p2Moves = getAllValidMovesForAI(b, 2).length;
-    score += (p1Moves - p2Moves) * 4;
-
-    // Endgame: if fewer than 5 pieces total, kings become much more important
-    const total = p1Pieces + p2Pieces;
-    if (total <= 8) {
-        score += (p1Kings * 80 - p2Kings * 80);
-        // If only kings left, prefer to keep kings near centre
-        for (let r = 0; r < 8; r++) {
-            for (let c = 0; c < 8; c++) {
-                const p = b[r*8 + c];
-                if (Math.abs(p) === 2) {
-                    const centerBonus = 10 - Math.abs(r - 3.5) - Math.abs(c - 3.5);
-                    if (p > 0) score += centerBonus * 3;
-                    else score -= centerBonus * 3;
-                }
-            }
-        }
-    }
-
-    // If one side has no moves, it's a loss
-    if (p2Moves === 0 && p1Moves > 0) score += 100000;
-    if (p1Moves === 0 && p2Moves > 0) score -= 100000;
-
-    // Drawish positions: if only kings left and equal count, push for win
-    if (total === 2 && p1Kings === 1 && p2Kings === 1) {
-        // King vs King is a draw – we score 0 but we want to avoid losing
-        score += turn === 1 ? 10 : -10; // slight bias for the player to move
-    }
-
-    return score;
-}
-
-function quiescenceSearch(b, alpha, beta, isMaximizing, depth) {
-    var player = isMaximizing ? 1 : 2;
-    var standPat = evaluateBoard(b, player);
-    if (depth <= -12) return standPat;
-    
-    if (isMaximizing) {
-        if (standPat >= beta) return beta;
-        if (alpha < standPat) alpha = standPat;
-    } else {
-        if (standPat <= alpha) return alpha;
-        if (beta > standPat) beta = standPat;
-    }
-    
-    var moves = getAllCapturesForAI(b, player);
-    if (moves.length === 0) return standPat;
-    
-    moves.sort(function(a, b2) { return b2.captured.length - a.captured.length; });
-    
-    for (var i = 0; i < moves.length; i++) {
-        var newB = applyMoveToBoard(b, moves[i]);
-        var score = quiescenceSearch(newB, alpha, beta, !isMaximizing, depth - 1);
-        
-        if (isMaximizing) {
-            if (score >= beta) return beta;
-            if (score > alpha) alpha = score;
-        } else {
-            if (score <= alpha) return alpha;
-            if (score < beta) beta = score;
-        }
-    }
-    
-    return isMaximizing ? alpha : beta;
-}
-
-function scoreMove(move, pl, depth, ttMove) {
-    var score = 0;
-    
-    if (ttMove && move.from[0] === ttMove.from[0] && move.from[1] === ttMove.from[1] 
-        && move.to[0] === ttMove.to[0] && move.to[1] === ttMove.to[1]) {
-        return 10000000;
-    }
-    
-    if (move.captured && move.captured.length > 0) {
-        return 900000 + move.captured.length * 1000;
-    }
-    
-    if (depth < killerMoves.length && killerMoves[depth]) {
-        for (var i=0; i<killerMoves[depth].length; i++) {
-            var km = killerMoves[depth][i];
-            if (km && move.from[0] === km.from[0] && move.from[1] === km.from[1] 
-                && move.to[0] === km.to[0] && move.to[1] === km.to[1]) {
-                return 800000;
-            }
-        }
-    }
-    
-    var histKey = move.from[0] + ',' + move.from[1] + ',' + move.to[0] + ',' + move.to[1];
-    if (historyHeuristic[histKey]) {
-        score += Math.min(historyHeuristic[histKey] * 100, 50000);
-    }
-    
-    if (move.to[1] >= 2 && move.to[1] <= 5) score += 10;
-    if (pl === 2 && move.to[0] > 3) score += 15;
-    if (pl === 2 && move.to[0] >= 6) score += 20;
-    
-    return score;
-}
-
-function updateHistory(move, depth) {
-    var histKey = move.from[0] + ',' + move.from[1] + ',' + move.to[0] + ',' + move.to[1];
-    if (!historyHeuristic[histKey]) historyHeuristic[histKey] = 0;
-    historyHeuristic[histKey] += depth * depth;
-}
-
-function boardHash(b) {
-    var hash = 5381;
-    for (var i = 0; i < 64; i++) {
-        hash = ((hash << 5) + hash) + b[i];
-        hash = hash & hash;
-    }
-    return hash;
-}
-
-function minimax(b, depth, alpha, beta, isMaximizing, ply) {
-    if (Date.now() - startTime > TIME_LIMIT) {
-        return evaluateBoard(b, isMaximizing ? 1 : 2);
-    }
-    
-    var hash = boardHash(b);
-    var ttEntry = transpositionTable.get(hash);
-    var ttMove = null;
-    if (ttEntry && ttEntry.depth >= depth) {
-        if (ttEntry.flag === 'exact') return ttEntry.score;
-        if (ttEntry.flag === 'lowerbound' && ttEntry.score >= beta) return ttEntry.score;
-        if (ttEntry.flag === 'upperbound' && ttEntry.score <= alpha) return ttEntry.score;
-        ttMove = ttEntry.move;
-    }
-    
-    // Null-move pruning (only for non‑capture positions)
-    if (depth >= 3 && !isMaximizing) {
-        var nullScore = -minimax(b, depth - 3, -beta, -beta + 1, true, ply + 1);
-        if (nullScore >= beta) return beta;
-    }
-    
-    var player = isMaximizing ? 1 : 2;
-    var moves = getAllValidMovesForAI(b, player);
-    
-    if (moves.length === 0) return isMaximizing ? -100000 + ply : 100000 - ply;
-    
-    moves.sort(function(a, b2) {
-        return scoreMove(b2, player, depth, ttMove) - scoreMove(a, player, depth, ttMove);
-    });
-    
-    if (depth <= 0) {
-        return quiescenceSearch(b, alpha, beta, isMaximizing, 0);
-    }
-    
-    var bestScore = isMaximizing ? -Infinity : Infinity;
-    var bestMove = null;
-    var oldAlpha = alpha;
-    
-    for (var i = 0; i < moves.length; i++) {
-        var newB = applyMoveToBoard(b, moves[i]);
-        var score = minimax(newB, depth - 1, alpha, beta, !isMaximizing, ply + 1);
-        
-        if (isMaximizing) {
-            if (score > bestScore) {
-                bestScore = score;
-                bestMove = moves[i];
-            }
-            alpha = Math.max(alpha, score);
-        } else {
-            if (score < bestScore) {
-                bestScore = score;
-                bestMove = moves[i];
-            }
-            beta = Math.min(beta, score);
-        }
-        
-        if (beta <= alpha) {
-            if (depth < killerMoves.length) {
-                if (!killerMoves[depth]) killerMoves[depth] = [];
-                if (killerMoves[depth].length < 2) {
-                    killerMoves[depth].push(moves[i]);
-                } else {
-                    killerMoves[depth][0] = killerMoves[depth][1];
-                    killerMoves[depth][1] = moves[i];
-                }
-            }
-            break;
-        }
-    }
-    
-    var flag = 'exact';
-    if (bestScore <= oldAlpha) flag = 'upperbound';
-    else if (bestScore >= beta) flag = 'lowerbound';
-    
-    transpositionTable.set(hash, { score: bestScore, depth: depth, flag: flag, move: bestMove });
-    
-    return bestScore;
-}
-
-function iterativeDeepening(b, maxDepth, timeLimit, forcedR, forcedC) {
-    startTime = Date.now();
-    var bestMove = null;
-    var currentBest = null;
-    
-    var moves;
-    if (forcedR >= 0) {
-        var captures = getCapturesForPiece(b, forcedR, forcedC, 2);
-        var expanded = [];
-        for (var i = 0; i < captures.length; i++) expandMove(captures[i], b, 2, expanded);
-        moves = expanded;
-    } else {
-        moves = getAllValidMovesForAI(b, 2);
-    }
-    
-    if (moves.length === 0) return null;
-    if (moves.length === 1) return moves[0];
-    
-    var fallbackMove = moves[0];
-    var alpha = -Infinity;
-    var beta = Infinity;
-    var window = 50;
-    
-    for (var depth = 1; depth <= maxDepth; depth++) {
-        killerMoves = [];
-        var currentBestScore = Infinity;
-        var currentAlpha = alpha;
-        var currentBeta = beta;
-        
-        if (depth > 2 && currentBest) {
-            currentAlpha = currentBestScore - window;
-            currentBeta = currentBestScore + window;
-        }
-        
-        var failHigh = false;
-        var failLow = false;
-        
-        do {
-            var bestScore = Infinity;
-            currentBest = null;
-            
-            if (bestMove) {
-                var idx = moves.indexOf(bestMove);
-                if (idx > 0) {
-                    moves.splice(idx, 1);
-                    moves.unshift(bestMove);
-                }
-            }
-            
-            for (var i = 0; i < moves.length; i++) {
-                if (Date.now() - startTime > timeLimit) {
-                    if (currentBest) bestMove = currentBest;
-                    return bestMove || moves[0];
-                }
-                
-                var newB = applyMoveToBoard(b, moves[i]);
-                var score = minimax(newB, depth - 1, currentAlpha, currentBeta, true, 0);
-                
-                if (score < bestScore) {
-                    bestScore = score;
-                    currentBest = moves[i];
-                }
-                currentBeta = Math.min(currentBeta, score);
-                if (currentAlpha >= currentBeta) {
-                    updateHistory(moves[i], depth);
-                    break;
-                }
-            }
-            
-            if (bestScore <= currentAlpha) {
-                failLow = true;
-                currentAlpha = -Infinity;
-                failHigh = false;
-            } else if (bestScore >= currentBeta) {
-                failHigh = true;
-                currentBeta = Infinity;
-                failLow = false;
-            } else {
-                failLow = false;
-                failHigh = false;
-            }
-            
-        } while (failLow || failHigh);
-        
-        if (!failLow && !failHigh) {
-            bestMove = currentBest;
-            currentBestScore = bestScore;
-            if (currentBestScore < -90000 || currentBestScore > 90000) break;
-        } else {
-            break;
-        }
-    }
-    
-    return bestMove || fallbackMove;
-}
-
-function botMakeMove() {
-    if (!gameState || gameState.turn !== 2 || gameState.p2 !== 'Mada_Bot') return;
-    
-    try {
-        var board = gameState.board.slice();
-        var bestMove = null;
-        
-        // If we have a forced multi‑capture in progress
-        if (gameState.selected && gameState.validMoves && gameState.validMoves.length > 0) {
-            var fR = gameState.selected[0], fC = gameState.selected[1];
-            var captures = getCapturesForPiece(board, fR, fC, 2);
-            var expanded = [];
-            for (var i = 0; i < captures.length; i++) {
-                if (expanded.length > 100) break;
-                var initialMove = captures[i];
-                var initialBoard = applyMoveToBoard(board, initialMove);
-                var wasPromoted = false;
-                var p = board[fR * 8 + fC];
-                if (initialMove.to[0] === 7 && p === -1) wasPromoted = true;
-                if (wasPromoted) {
-                    expanded.push(initialMove);
-                } else {
-                    expandMove(initialMove, initialBoard, 2, expanded);
-                }
-            }
-            
-            var validExpanded = [];
-            for (var i = 0; i < expanded.length; i++) {
-                var firstTo = expanded[i].path ? expanded[i].path[1] : expanded[i].to;
-                for (var j = 0; j < gameState.validMoves.length; j++) {
-                    if (firstTo[0] === gameState.validMoves[j][0] && firstTo[1] === gameState.validMoves[j][1]) {
-                        validExpanded.push(expanded[i]);
-                        break;
-                    }
-                }
-            }
-            
-            if (validExpanded.length > 0) {
-                validExpanded.sort(function(a, b) {
-                    if (b.captured.length !== a.captured.length) return b.captured.length - a.captured.length;
-                    return a.to[0] - b.to[0];
-                });
-                bestMove = validExpanded[0];
-            } else {
-                bestMove = { from: [fR, fC], to: gameState.validMoves[0] };
-            }
-            
-            var firstTo = bestMove.path ? bestMove.path[1] : bestMove.to;
-            makePvPMove(bestMove.from[0], bestMove.from[1], firstTo[0], firstTo[1]);
-            return;
-        }
-        
-        // Opening book
-        var openingMove = getOpeningMove(board);
-        if (openingMove && !gameState.selected) {
-            var firstTo = openingMove.path ? openingMove.path[1] : openingMove.to;
-            makePvPMove(openingMove.from[0], openingMove.from[1], firstTo[0], firstTo[1]);
-            return;
-        }
-        
-        // Main AI search
-        bestMove = iterativeDeepening(board, MAX_DEPTH, TIME_LIMIT, -1, -1);
-        
-        if (bestMove) {
-            var firstTo = bestMove.path ? bestMove.path[1] : bestMove.to;
-            makePvPMove(bestMove.from[0], bestMove.from[1], firstTo[0], firstTo[1]);
-        } else {
-            var moves = getAllValidMovesForAI(board, 2);
-            if (moves.length > 0) {
-                var m = moves[0];
-                var firstTo = m.path ? m.path[1] : m.to;
-                makePvPMove(m.from[0], m.from[1], firstTo[0], firstTo[1]);
-            }
-        }
-    } catch (e) {
-        console.error("AI Error:", e);
-        try {
-            if (gameState.selected && gameState.validMoves && gameState.validMoves.length > 0) {
-                makePvPMove(gameState.selected[0], gameState.selected[1], gameState.validMoves[0][0], gameState.validMoves[0][1]);
-            } else {
-                var board = gameState.board.slice();
-                var moved = false;
-                for (var r=0; r<8 && !moved; r++) {
-                    for (var c=0; c<8 && !moved; c++) {
-                        if (board[r*8+c] < 0) {
-                            var simpleMoves = getSimpleMovesForPiece(board, r, c, 2);
-                            if (simpleMoves.length > 0) {
-                                makePvPMove(r, c, simpleMoves[0].to[0], simpleMoves[0].to[1]);
-                                moved = true;
-                            }
-                            var caps = getCapturesForPiece(board, r, c, 2);
-                            if (caps.length > 0) {
-                                makePvPMove(r, c, caps[0].to[0], caps[0].to[1]);
-                                moved = true;
-                            }
-                        }
-                    }
-                }
-            }
-        } catch (e2) {
-            console.error("AI Fallback Error:", e2);
-        }
-    }
-}
-
 function endPvPGame(g){if(!currentGameId)return;if(processedGameEnds[currentGameId]){currentGameId=null;gameState={};gameListener=null;myPlayerNumber=0;showPage('profile');return}processedGameEnds[currentGameId]=true;var endedGameId=currentGameId;currentGameId=null;gameState={};if(gameListener){db.ref('pvp_games/'+gameListener).off()}gameListener=null;myPlayerNumber=0;var isDraw=g.winner==='draw';var isWin=!isDraw&&g.winner===myUid;if(isDraw)playSound('move');else if(isWin)playSound('win');else playSound('lose');db.ref('leaderboard_all/'+myUid).once('value',function(s){var d=s.val()||{},u={};var opponent=g.p1===myUid?g.p2:g.p1;if(isDraw){u.mwk=(d.mwk||0)+(g.entryMWK||0);u.gamesPlayed=(parseInt(d.gamesPlayed)||0)+1;u.winStreak=0;db.ref('match_history/'+myUid).push({opponent:opponent,result:'draw',amount:g.entryMWK,gradeId:g.gradeId,timestamp:Date.now()});db.ref('leaderboard_all/'+myUid).update(u,function(){alert('🤝 DRAW! MWK '+(g.entryMWK||0)+' refunded.');showPage('profile')})}else{u.gamesPlayed=(parseInt(d.gamesPlayed)||0)+1;u.gamesWon=(parseInt(d.gamesWon)||0)+(isWin?1:0);u.gamesLost=(parseInt(d.gamesLost)||0)+(isWin?0:1);u.winStreak=isWin?((d.winStreak||0)+1):0;if(isWin)u.mwk=(d.mwk||0)+(g.winMWK||0);db.ref('match_history/'+myUid).push({opponent:opponent,result:isWin?'win':'loss',amount:isWin?g.winMWK:g.entryMWK,gradeId:g.gradeId,timestamp:Date.now()});db.ref('leaderboard_all/'+myUid).update(u,function(){alert(isWin?'🎉 YOU WIN! +MWK '+(g.winMWK||0):'😞 You Lost! MWK '+(g.entryMWK||0));showPage('profile')})}});var now=Date.now();processedGameEnds[endedGameId]=now;Object.keys(processedGameEnds).forEach(function(k){if(typeof processedGameEnds[k]==='number'&&now-processedGameEnds[k]>300000){delete processedGameEnds[k]}});
-
-    // Clear AI data for fresh game
-    transpositionTable.clear();
-    historyHeuristic = {};
-    killerMoves = [];
-    
+    resetAI();
     setTimeout(function(){if(db)db.ref('pvp_games/'+endedGameId).remove()},5000);
 }
 
@@ -2035,4 +1929,4 @@ document.addEventListener('DOMContentLoaded',function(){
 </script>
 
 </body>
-                                                       </html>
+    </html> 
