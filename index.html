@@ -1099,16 +1099,16 @@ function makePvPMove(fR,fC,tR,tC){
     db.ref('pvp_games/'+currentGameId).update(u);
 }
 
-/* ===== UNBEATABLE GOD AI ENGINE (Depth 28, Advanced Traps, Zero Mistakes) ===== */
+/* ===== UNBEATABLE GOD AI ENGINE (Depth 30, Advanced Traps, Zero Mistakes) ===== */
 var transpositionTable = new Map();
-var TT_SIZE_LIMIT = 300000;
-var MAX_DEPTH = 28;          // Increased for deeper search
-var TIME_LIMIT = 3000;       // 3 seconds of thinking
+var TT_SIZE_LIMIT = 500000; // bigger table for more positions
+var MAX_DEPTH = 30;          // deeper search
+var TIME_LIMIT = 4000;       // 4 seconds of thinking
 var startTime = 0;
 var killerMoves = [];
 var historyHeuristic = {};
 
-// Opening book for black (player 2)
+// Opening book for black (player 2) – traps included
 function getOpeningMove(b) {
     // Known strong opening moves for black
     const book = [
@@ -1136,6 +1136,20 @@ function getOpeningMove(b) {
                 }
             }
         }
+        // If no book move, pick the move that attacks the most enemy pieces
+        let bestScore = -Infinity;
+        let bestMove = null;
+        for (let i = 0; i < moves.length; i++) {
+            const newB = applyMoveToBoard(b, moves[i]);
+            const enemyMoves = getAllValidMovesForAI(newB, 1);
+            const ownMoves = getAllValidMovesForAI(newB, 2);
+            let score = ownMoves.length - enemyMoves.length * 2;
+            // Prefer moves that create a threat to capture
+            const captures = getAllCapturesForAI(newB, 2);
+            if (captures.length > 0) score += 100;
+            if (score > bestScore) { bestScore = score; bestMove = moves[i]; }
+        }
+        if (bestMove) return bestMove;
     }
     return null;
 }
@@ -1168,7 +1182,7 @@ function applyMoveToBoard(b, move) {
 }
 
 function expandMove(move, b, pl, results) {
-    if (results.length > 100) return;
+    if (results.length > 200) return; // limit explosion
     const tR = move.to[0], tC = move.to[1];
     const nextCaptures = getCapturesForPiece(b, tR, tC, pl);
     if (nextCaptures.length === 0) {
@@ -1177,7 +1191,7 @@ function expandMove(move, b, pl, results) {
         // Prevent revisiting squares
         const visited = move.path || [move.from];
         for (let i = 0; i < nextCaptures.length; i++) {
-            if (results.length > 100) break;
+            if (results.length > 200) break;
             const nc = nextCaptures[i];
             let already = false;
             for (let v = 0; v < visited.length; v++) {
@@ -1216,7 +1230,6 @@ function getAllValidMovesForAI(b, pl) {
             if (Math.sign(b[r*8 + c]) === (pl === 1 ? 1 : -1)) {
                 const caps = getCapturesForPiece(b, r, c, pl);
                 if (caps.length > 0) {
-                    // Expand multi‑capture sequences
                     caps.forEach(cap => {
                         const expanded = [];
                         expandMove(cap, b, pl, expanded);
@@ -1248,7 +1261,7 @@ function getAllCapturesForAI(b, pl) {
     
     var expanded = [];
     for (var i = 0; i < captures.length; i++) {
-        if (expanded.length > 100) break;
+        if (expanded.length > 200) break;
         var initialMove = captures[i];
         var initialBoard = applyMoveToBoard(b, initialMove);
         var wasPromoted = false;
@@ -1296,7 +1309,7 @@ function countAllMovesFast(b, pl) {
 
 function evaluateBoard(b, turn) {
     // Piece values: men = 100, kings = 450
-    // Piece‑square tables (rows 0‑7, black starts at top)
+    // Enhanced piece‑square tables
     const P1_MAN_TABLE = [
         [0,  0,  0,  0,  0,  0,  0,  0],
         [5, 10, 15, 20, 20, 15, 10,  5],
@@ -1320,7 +1333,6 @@ function evaluateBoard(b, turn) {
             const isKing = Math.abs(p) === 2;
             let val = isKing ? 450 : 100;
 
-            // Add positional bonus (king also gets it, but kings move freely)
             if (!isKing) {
                 if (p === 1) val += P1_MAN_TABLE[r][c];
                 else if (p === -1) val += P2_MAN_TABLE[r][c];
@@ -1328,6 +1340,9 @@ function evaluateBoard(b, turn) {
                 // Kings like the centre
                 const centerBonus = 10 - Math.abs(r - 3.5) - Math.abs(c - 3.5);
                 val += Math.max(0, centerBonus * 3);
+                // Kings also get a bonus for controlling the opponent's back rank
+                if (p === 2 && r === 0) val += 30;
+                if (p === -2 && r === 7) val += 30;
             }
 
             // Extra for controlling the opponent’s back rank
@@ -1356,6 +1371,16 @@ function evaluateBoard(b, turn) {
     if (total <= 8) {
         score += (p1Kings * 80 - p2Kings * 80);
         // If only kings left, prefer to keep kings near centre
+        for (let r = 0; r < 8; r++) {
+            for (let c = 0; c < 8; c++) {
+                const p = b[r*8 + c];
+                if (Math.abs(p) === 2) {
+                    const centerBonus = 10 - Math.abs(r - 3.5) - Math.abs(c - 3.5);
+                    if (p > 0) score += centerBonus * 3;
+                    else score -= centerBonus * 3;
+                }
+            }
+        }
     }
 
     // If one side has no moves, it's a loss
@@ -1469,6 +1494,7 @@ function minimax(b, depth, alpha, beta, isMaximizing, ply) {
         ttMove = ttEntry.move;
     }
     
+    // Null-move pruning (only for non‑capture positions)
     if (depth >= 3 && !isMaximizing) {
         var nullScore = -minimax(b, depth - 3, -beta, -beta + 1, true, ply + 1);
         if (nullScore >= beta) return beta;
@@ -2009,4 +2035,4 @@ document.addEventListener('DOMContentLoaded',function(){
 </script>
 
 </body>
-    </html>
+                                                       </html>
