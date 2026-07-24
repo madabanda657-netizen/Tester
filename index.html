@@ -5,59 +5,31 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>Malawi Checkers - Cash Games</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <!-- Firebase SDKs -->
     <script src="https://www.gstatic.com/firebasejs/9.15.0/firebase-app-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/9.15.0/firebase-database-compat.js"></script>
     <style>
         * { -webkit-tap-highlight-color: transparent; box-sizing: border-box; }
-        body {
-            margin: 0; padding: 0;
-            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
-            background: #121212; color: #e0e0e0;
-            display: flex; flex-direction: column;
-            justify-content: space-between; /* Push footer to bottom */
-            align-items: center;
-            min-height: 100vh; overflow-x: hidden;
-            touch-action: manipulation;
-        }
+        body { margin: 0; padding: 0; font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif; background: #121212; color: #e0e0e0; display: flex; flex-direction: column; justify-content: space-between; align-items: center; min-height: 100vh; overflow-x: hidden; touch-action: manipulation; }
         .header { width: 100%; max-width: 500px; padding: 15px; display: flex; justify-content: space-between; align-items: center; flex-shrink: 0; }
         .title { font-size: 20px; font-weight: 600; color: #ffffff; }
         .menu-btn { background: #2c2c2c; border: none; color: #fff; padding: 8px 16px; border-radius: 20px; font-size: 14px; cursor: pointer; }
-        
-        .main-content {
-            flex: 1;
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            align-items: center;
-            width: 100%;
-            max-width: 500px;
-            padding-bottom: 20px;
-        }
-
+        .main-content { flex: 1; display: flex; flex-direction: column; justify-content: center; align-items: center; width: 100%; max-width: 500px; padding-bottom: 20px; }
         .view { width: 100%; max-width: 500px; display: none; flex-direction: column; align-items: center; padding: 0 15px; }
         .view.active { display: flex; }
-
-        /* AUTH UI */
         .auth-container { width: 100%; max-width: 400px; background: #1e1e1e; padding: 30px; border-radius: 16px; box-shadow: 0 10px 30px rgba(0,0,0,0.5); }
         .auth-title { text-align: center; color: #f1c40f; font-size: 24px; margin-bottom: 20px; }
-        
         .input-wrap { position: relative; margin-bottom: 15px; }
         .auth-input { width: 100%; padding: 15px; margin: 0; background: #121212; border: 1px solid #444; border-radius: 8px; color: #fff; font-size: 16px; box-sizing: border-box; }
         .input-wrap .auth-input { padding-right: 45px; }
         .toggle-pass { position: absolute; right: 15px; top: 50%; transform: translateY(-50%); cursor: pointer; color: #666; font-size: 16px; }
-
         .captcha-box { display: flex; align-items: center; background: #121212; border: 1px solid #444; border-radius: 8px; padding: 0 15px; margin-bottom: 15px; }
         .captcha-box span { font-family: monospace; font-size: 18px; color: #f1c40f; white-space: nowrap; padding-right: 10px; border-right: 1px solid #333; }
         .captcha-box input { border: none; background: transparent; margin: 0; padding: 15px; color: #fff; font-size: 16px; width: 100%; box-sizing: border-box; }
         .captcha-box input:focus { outline: none; }
-
         .auth-btn { width: 100%; background: #f1c40f; color: #000; border: none; padding: 15px; border-radius: 8px; font-size: 16px; font-weight: 700; cursor: pointer; margin-bottom: 10px; }
         .auth-switch { display: flex; justify-content: space-between; align-items: center; color: #888; font-size: 14px; margin-bottom: 20px; }
         .auth-switch span { color: #3498db; cursor: pointer; text-decoration: underline; }
         .wa-btn { display: flex; align-items: center; justify-content: center; gap: 8px; width: 100%; padding: 12px; background: #25D366; color: #000; text-decoration: none; border-radius: 8px; font-weight: 700; font-size: 14px; margin-top: 10px; box-sizing: border-box; }
-
-        /* WALLET & GRADES */
         .wallet-card { width: 100%; background: linear-gradient(135deg, #1e1e1e, #2c2c2c); border-radius: 16px; padding: 20px; margin-bottom: 20px; box-shadow: 0 4px 15px rgba(0,0,0,0.5); border: 1px solid #333; }
         .wallet-label { color: #888; font-size: 14px; display: flex; justify-content: space-between; }
         .wallet-balance { color: #fff; font-size: 32px; font-weight: 700; margin: 10px 0; font-family: monospace; }
@@ -65,7 +37,6 @@
         .w-btn { flex: 1; background: #333; color: #fff; border: none; padding: 12px; border-radius: 8px; font-weight: 600; cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 8px; }
         .w-btn.deposit { background: #27ae60; }
         .w-btn.withdraw { background: #c0392b; }
-
         .history-actions { width: 100%; display: flex; gap: 10px; margin-bottom: 20px; }
         .grades-title { width: 100%; color: #aaa; font-size: 14px; text-transform: uppercase; margin-bottom: 10px; }
         .grade-list { width: 100%; display: grid; grid-template-columns: 1fr 1fr; gap: 15px; }
@@ -74,8 +45,6 @@
         .grade-name { color: #f1c40f; font-weight: 700; font-size: 16px; margin-bottom: 5px; }
         .grade-stake { color: #fff; font-size: 18px; font-weight: 600; }
         .grade-fee { color: #666; font-size: 11px; margin-top: 5px; }
-
-        /* GAME UI */
         .status-bar { width: 100%; display: flex; justify-content: space-between; align-items: center; margin-bottom: 15px; background: #1e1e1e; padding: 12px 20px; border-radius: 12px; }
         .player-info { display: flex; align-items: center; gap: 10px; font-size: 16px; font-weight: 500; }
         .dot { width: 16px; height: 16px; border-radius: 50%; border: 1px solid #444; }
@@ -88,8 +57,6 @@
         .eval-bar { height: 100%; background: linear-gradient(90deg, #f1c40f, #e67e22); width: 50%; transition: width 0.3s ease; }
         .stats-row { display: flex; justify-content: space-between; font-size: 13px; color: #aaa; }
         .back-btn { background: #333; color: #fff; border: none; padding: 10px 20px; border-radius: 20px; margin-bottom: 15px; cursor: pointer; font-weight: 600; align-self: flex-start; }
-
-        /* MODALS */
         .modal-overlay { position: fixed; top: 0; left: 0; right: 0; bottom: 0; background: rgba(0,0,0,0.85); display: none; justify-content: center; align-items: center; z-index: 100; backdrop-filter: blur(5px); }
         .modal { background: #1e1e1e; padding: 30px; border-radius: 20px; width: 85%; max-width: 380px; box-shadow: 0 20px 50px rgba(0,0,0,0.8); text-align: center; max-height: 85vh; overflow-y: auto; }
         .modal h2 { margin: 0 0 20px 0; color: #f1c40f; }
@@ -98,7 +65,6 @@
         .modal button { width: 100%; background: #f1c40f; color: #000; border: none; padding: 15px; border-radius: 8px; font-size: 16px; font-weight: 700; cursor: pointer; }
         .modal button.secondary { background: #333; color: #fff; margin-top: 10px; }
         .modal p { color: #ccc; font-size: 14px; margin-bottom: 20px; }
-        
         .history-list { max-height: 350px; overflow-y: auto; text-align: left; font-size: 13px; background: #121212; padding: 15px; border-radius: 8px; margin-bottom: 15px; border: 1px solid #333; }
         .history-list::-webkit-scrollbar { width: 6px; }
         .history-list::-webkit-scrollbar-thumb { background: #444; border-radius: 3px; }
@@ -107,39 +73,10 @@
         .h-label { color: #ccc; font-size: 13px; }
         .h-date { color: #666; font-size: 11px; }
         .h-amount { font-weight: 700; font-size: 14px; }
-
-        /* FOOTER */
-        .app-footer {
-            width: 100%;
-            max-width: 500px;
-            padding: 20px 15px;
-            text-align: center;
-            background: #0a0a0a;
-            border-top: 1px solid #2c2c2c;
-            flex-shrink: 0;
-            margin-top: auto;
-        }
-        .footer-powered {
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 8px;
-            margin-bottom: 8px;
-            font-size: 12px;
-            font-weight: 600;
-            color: #aaa;
-            letter-spacing: 1px;
-        }
-        .footer-powered img {
-            height: 24px;
-            width: auto;
-            border-radius: 3px;
-        }
-        .footer-copy {
-            font-size: 10px;
-            color: #555;
-            line-height: 1.4;
-        }
+        .app-footer { width: 100%; max-width: 500px; padding: 20px 15px; text-align: center; background: #0a0a0a; border-top: 1px solid #2c2c2c; flex-shrink: 0; margin-top: auto; }
+        .footer-powered { display: flex; align-items: center; justify-content: center; gap: 8px; margin-bottom: 8px; font-size: 12px; font-weight: 600; color: #aaa; letter-spacing: 1px; }
+        .footer-powered img { height: 24px; width: auto; border-radius: 3px; }
+        .footer-copy { font-size: 10px; color: #555; line-height: 1.4; }
     </style>
 </head>
 <body>
@@ -153,7 +90,6 @@
 </div>
 
 <div class="main-content">
-    <!-- AUTH VIEW -->
     <div class="view active" id="authView">
         <div class="auth-container" id="loginForm">
             <div class="auth-title">Login</div>
@@ -196,7 +132,6 @@
         </div>
     </div>
 
-    <!-- HUB VIEW (Wallet & Grades) -->
     <div class="view" id="hubView">
         <div class="wallet-card">
             <div class="wallet-label">
@@ -240,7 +175,6 @@
         </div>
     </div>
 
-    <!-- GAME VIEW -->
     <div class="view" id="gameView">
         <button type="button" class="back-btn" onclick="forfeitMatch()"><i class="fas fa-arrow-left"></i> Forfeit</button>
         <div class="status-bar">
@@ -271,7 +205,6 @@
     </div>
 </div>
 
-<!-- FOOTER -->
 <footer class="app-footer">
     <div class="footer-powered">
         <span>POWERED BY</span>
@@ -280,7 +213,6 @@
     <div class="footer-copy">All rights are reserved since 2021-2026 Mada checker earn.</div>
 </footer>
 
-<!-- MODALS -->
 <div class="modal-overlay" id="rulesModal">
     <div class="modal">
         <h2>Rules & Terms</h2>
@@ -366,7 +298,6 @@
     </div>
 </div>
 
-<!-- AI Web Worker Code -->
 <script id="worker-code" type="javascript/worker">
     const EMPTY = 0, W_MAN = 1, W_KING = 2, B_MAN = -1, B_KING = -2;
     const WHITE = 1, BLACK = -1;
@@ -631,9 +562,7 @@
     };
 </script>
 
-<!-- Main UI Logic -->
 <script>
-    // FIREBASE CONFIG & INIT
     const firebaseConfig = {
         apiKey: "AIzaSyBRDfT-P8wzVAAZs8lveF1-ZTf8QlpRC5g",
         authDomain: "apple-green-ded09.firebaseapp.com",
@@ -645,7 +574,6 @@
         measurementId: "G-J4SE2DS3VP"
     };
     
-    // Safety check for Firebase initialization
     let db = null;
     try {
         firebase.initializeApp(firebaseConfig);
@@ -671,14 +599,12 @@
     let currentStake = 0, isHidden = false;
     let currentUser = null, balanceListener = null;
 
-    // Math Captcha Variables
     let logCaptchaAns = 0, regCaptchaAns = 0, resetCaptchaAns = 0;
 
-    // Initialize App
     window.onload = function() {
         refreshCaptchas();
         if (!db) {
-            showAuth(); // Show auth screen anyway so they don't see a blank page
+            showAuth(); 
             return;
         }
         let savedUser = localStorage.getItem('mw_session_user');
@@ -707,7 +633,6 @@
         });
     }
 
-    // --- AUTH ---
     function showAuth() {
         document.getElementById('authView').classList.add('active');
         document.getElementById('hubView').classList.remove('active');
@@ -785,8 +710,8 @@
                     username: u,
                     email: e,
                     phone: p,
-                    password: pass, // Storing plain text for prototype only.
-                    mwk: 0 // Using 'mwk' field as per backend
+                    password: pass, 
+                    mwk: 0 
                 }).then(() => {
                     currentUser = { username: u, email: e, phone: p, password: pass, mwk: 0 };
                     localStorage.setItem('mw_session_user', u);
@@ -835,7 +760,6 @@
         showAuth();
     }
 
-    // --- RESET PASSWORD ---
     function showResetModal() { 
         refreshCaptchas();
         document.getElementById('resetModal').style.display = 'flex'; 
@@ -852,7 +776,6 @@
         document.getElementById('procText').innerText = "Sending reset link...";
         document.getElementById('processingModal').style.display = 'flex';
 
-        // Try to call backend endpoint
         fetch(`${API_BASE}/reset-password`, {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
@@ -876,7 +799,6 @@
         });
     }
 
-    // --- WALLET ---
     function updateWalletUI() {
         if (!currentUser) return;
         let balText = document.getElementById('balanceText');
@@ -894,7 +816,6 @@
         updateWalletUI();
     }
 
-    // --- PAYMENTS ---
     function showDepositModal() { document.getElementById('depositModal').style.display = 'flex'; }
     function hideDepositModal() { document.getElementById('depositModal').style.display = 'none'; }
     
@@ -915,7 +836,6 @@
         .then(r => r.json())
         .then(data => {
             if (data.success && data.checkout_url) {
-                // Redirect user to Paychangu hosted checkout page
                 window.location.href = data.checkout_url; 
             } else {
                 document.getElementById('processingModal').style.display = 'none';
@@ -929,10 +849,9 @@
     }
 
     function showWithdrawModal() { 
-        // Lock phone number to registered number only
         let phoneInput = document.getElementById('wdPhone');
         phoneInput.value = currentUser.phone || "No phone registered";
-        phoneInput.readOnly = true; // Strictly lock
+        phoneInput.readOnly = true; 
         
         if(!currentUser.phone) {
             alert("You do not have a phone number registered. Please contact support.");
@@ -974,7 +893,6 @@
         });
     }
 
-    // --- HISTORY ---
     async function showHistory(type) {
         if (!currentUser) return;
         document.getElementById('historyTitle').innerText = type === 'tx' ? 'Transactions' : 'Game History';
@@ -986,12 +904,11 @@
             if (type === 'tx') {
                 let txs = [];
                 
-                // Fetch Withdrawals
                 const wdSnap = await db.ref('withdraw_requests').orderByChild('uid').equalTo(currentUser.username).once('value');
                 wdSnap.forEach(c => txs.push({ type: 'Withdraw', amount: c.val().amount, status: c.val().status, date: c.val().createdAt }));
                 
-                // Fetch Deposits
-                const depSnap = await db.ref('deposits').orderByChild('uid').equalTo(currentUser.username).once('value');
+                // Fixed to look for deposit_requests instead of deposits
+                const depSnap = await db.ref('deposit_requests').orderByChild('uid').equalTo(currentUser.username).once('value');
                 depSnap.forEach(c => txs.push({ type: 'Deposit', amount: c.val().amount, status: c.val().status, date: c.val().creditedAt }));
 
                 txs.sort((a, b) => b.date - a.date);
@@ -1038,7 +955,6 @@
         document.getElementById('historyModal').style.display = 'none';
     }
 
-    // --- GAME MATCH FLOW ---
     function startMatch(grade, stake) {
         if ((currentUser.mwk || 0) < stake) {
             alert("Insufficient balance. Please deposit K" + stake + " to play Grade " + grade);
@@ -1046,18 +962,15 @@
             return;
         }
 
-        // Deduct Stake Locally (Firebase listener will sync it, but we can also write it directly)
         currentUser.mwk -= stake;
         db.ref('users/' + currentUser.username + '/mwk').set(currentUser.mwk);
         updateWalletUI();
         currentStake = stake;
 
-        // Switch Views
         document.getElementById('hubView').classList.remove('active');
         document.getElementById('gameView').classList.add('active');
         document.getElementById('stake_text').innerText = `Stake: K ${stake}`;
 
-        // Setup Game
         humanPlayer = WHITE;
         game = createGame();
         setupBoard(game);
@@ -1081,7 +994,7 @@
 
     function forfeitMatch() {
         if (confirm("Forfeiting will lose your stake. Continue?")) {
-            endMatch(BLACK, true); // AI wins
+            endMatch(BLACK, true);
         }
     }
 
@@ -1101,7 +1014,7 @@
             text = `You won K ${payout.toFixed(2)}! (20% platform fee of K ${fee.toFixed(2)} applied)`;
             result = "Win";
         } else if (winner === 0) {
-            currentUser.mwk = (currentUser.mwk || 0) + currentStake; // Refund stake on draw
+            currentUser.mwk = (currentUser.mwk || 0) + currentStake;
             db.ref('users/' + currentUser.username + '/mwk').set(currentUser.mwk);
             title = "🤝 Draw!";
             text = `Your stake of K ${currentStake.toFixed(2)} has been refunded.`;
@@ -1112,7 +1025,6 @@
             result = "Loss";
         }
 
-        // Save Game History
         if (currentStake > 0) {
             db.ref('users/' + currentUser.username + '/game_history').push({
                 result: result,
@@ -1127,7 +1039,6 @@
         document.getElementById('resultModal').style.display = 'flex';
     }
 
-    // --- GAME LOGIC MIRRORS ---
     function createGame() { return { board: Array(8).fill(0).map(() => Array(8).fill(EMPTY)), turn: WHITE, no_cap: 0 }; }
     function setupBoard(g) { for (let r = 0; r < 3; r++) for (let c = 0; c < 8; c++) if ((r + c) % 2 === 1) g.board[r][c] = B_MAN; for (let r = 5; r < 8; r++) for (let c = 0; c < 8; c++) if ((r + c) % 2 === 1) g.board[r][c] = W_MAN; }
     function pcolor(p) { return p > 0 ? 1 : (p < 0 ? -1 : 0); }
@@ -1207,7 +1118,7 @@
         isAiThinking = true;
         document.getElementById('status_text').innerText = "AI thinking...";
         document.getElementById('depth_text').innerText = "Calculating...";
-        worker.postMessage({cmd: 'search', game: game, timeLimit: 4000}); // 4 Seconds thinking time
+        worker.postMessage({cmd: 'search', game: game, timeLimit: 4000});
     }
 
     function checkGameOver() {
@@ -1282,4 +1193,4 @@
 </script>
 
 </body>
-            </html>
+                    </html>
