@@ -94,6 +94,7 @@
         .modal { background: #1e1e1e; padding: 30px; border-radius: 20px; width: 85%; max-width: 380px; box-shadow: 0 20px 50px rgba(0,0,0,0.8); text-align: center; max-height: 85vh; overflow-y: auto; }
         .modal h2 { margin: 0 0 20px 0; color: #f1c40f; }
         .modal input { width: 100%; padding: 15px; margin-bottom: 15px; background: #121212; border: 1px solid #444; border-radius: 8px; color: #fff; font-size: 16px; box-sizing: border-box; }
+        .modal input:read-only { background: #2c2c2c; color: #888; cursor: not-allowed; border-color: #333; }
         .modal button { width: 100%; background: #f1c40f; color: #000; border: none; padding: 15px; border-radius: 8px; font-size: 16px; font-weight: 700; cursor: pointer; }
         .modal button.secondary { background: #333; color: #fff; margin-top: 10px; }
         .modal p { color: #ccc; font-size: 14px; margin-bottom: 20px; }
@@ -902,8 +903,8 @@
         if (!amount || amount < 50) { alert("Minimum deposit is MWK 50"); return; }
 
         hideDepositModal();
-        document.getElementById('procTitle').innerText = "Initializing Payment";
-        document.getElementById('procText').innerText = "Redirecting to Paychangu...";
+        document.getElementById('procTitle').innerText = "Generating Payment Link";
+        document.getElementById('procText').innerText = "Please wait while we redirect you to Paychangu...";
         document.getElementById('processingModal').style.display = 'flex';
 
         fetch(`${API_BASE}/deposit`, {
@@ -914,20 +915,30 @@
         .then(r => r.json())
         .then(data => {
             if (data.success && data.checkout_url) {
-                window.location.href = data.checkout_url; // Redirect to Paychangu payment page
+                // Redirect user to Paychangu hosted checkout page
+                window.location.href = data.checkout_url; 
             } else {
                 document.getElementById('processingModal').style.display = 'none';
-                alert("Deposit failed: " + (data.message || "Unknown error"));
+                alert("Deposit failed: " + (data.message || "Backend did not return a valid checkout URL."));
             }
         })
         .catch(err => {
             document.getElementById('processingModal').style.display = 'none';
-            alert("Network error: " + err.message);
+            alert("Network error connecting to backend: " + err.message + "\nMake sure your Vercel backend is deployed.");
         });
     }
 
     function showWithdrawModal() { 
-        document.getElementById('wdPhone').value = currentUser.phone || "No phone registered";
+        // Lock phone number to registered number only
+        let phoneInput = document.getElementById('wdPhone');
+        phoneInput.value = currentUser.phone || "No phone registered";
+        phoneInput.readOnly = true; // Strictly lock
+        
+        if(!currentUser.phone) {
+            alert("You do not have a phone number registered. Please contact support.");
+            return;
+        }
+        
         document.getElementById('withdrawModal').style.display = 'flex'; 
     }
     function hideWithdrawModal() { document.getElementById('withdrawModal').style.display = 'none'; }
@@ -1271,4 +1282,4 @@
 </script>
 
 </body>
-                </html>
+            </html>
